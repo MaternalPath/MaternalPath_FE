@@ -3,11 +3,10 @@ import React from 'react'
 const Login = () => {
   return (
     <div>
-      hellllooooooo
+     Login
       
     </div>
   )
 }
 
 export default Login
-

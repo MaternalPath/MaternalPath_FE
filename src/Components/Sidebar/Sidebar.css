@@ -1,10 +1,10 @@
 .sidebar-container {
   width: 240px;
-  height: 70vh;
-  position: fixed;
+  height: 90vh;
+  position: sticky;
   background-color: #0c5e58;
   border-right: 1px solid #eef2f1;
-  position: sticky;
+  
   top: 0;
   font-family: Arial, Helvetica, sans-serif;
 }

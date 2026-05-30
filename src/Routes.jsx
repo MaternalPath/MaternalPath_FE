@@ -14,15 +14,17 @@ import Notifications from './Pages/Notifications/Notifications'
 import DashboardHome from "./pages/DashboardHome/DashboardHome";
 import Profile from './Pages/Profile/Profile'
 
+
 const AppRoutes = () => (
   <Router>
+    
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/how" element={<How />} />
       <Route path="/about" element={<About />} />
 
-      <Route path="/FAQ" element={<FAQ />} />
+      <Route path="/faq" element={<FAQ />} />
 
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<DashboardHome />} />
