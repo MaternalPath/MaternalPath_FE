@@ -1,0 +1,133 @@
+.header-container {
+  width: 100%;
+  height: 85px;
+  background: #f7f5f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-wrapper {
+  width: 95%;
+  height: 100%;
+  /* background-color: red; */
+}
+
+.header {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color:#575f6d
+}
+
+.header-left-image {
+  width: 280px;
+  height:200px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* .header-left-image:hover {
+  transform: scale(1.04);
+} */
+
+.header-center {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3.5rem;
+  color: #575f6d;
+   font-weight: 600;
+   font:25px;
+  cursor: pointer;
+  
+}
+
+.header-center-1,
+.header-center-2,
+.header-center-3,
+.header-center-4 {
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  white-space: nowrap;
+}
+
+.header-center-1:hover,
+.header-center-2:hover,
+.header-center-3:hover,
+.header-center-4:hover {
+  color: #0c5e58;
+}
+
+.header-center-1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -8px;
+  width: 22px;
+  height: 4px;
+  background: #20b2aa;
+  border-radius: 10px;
+}
+
+.header-right {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-right-1,
+.header-right-2 {
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  white-space: nowrap;
+}
+
+.header-right-1 {
+  border: none;
+  border: 2px solid  #0c5e58;
+  color: #0c5e58;
+}
+
+.header-right-1:hover {
+  background:  #6ec9c3;
+  transform: translateY(-2px);
+}
+
+.header-right-2 {
+  color: #dbe4e1;
+  background-color: #0c5e58;
+}
+
+.header-right-2:hover {
+  background: #28a09a;
+  color: #93a6a5;
+  transform: translateY(-2px);
+}
