@@ -23,8 +23,8 @@ const Header = () => {
                 <div onClick={() => nav("/how")}>
                   How it works
                 </div>
-                <div onClick={() => nav("/about")}>About</div>
-                <div onClick={() => nav("/FAQ")}>FAQ</div>
+                <div onClick={() => nav("/about")}>Abouts</div>
+                <div onClick={() => nav("/faq")}>Faq</div>
             
             </div>
 
