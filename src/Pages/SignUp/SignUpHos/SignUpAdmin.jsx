@@ -30,7 +30,7 @@ const SignUpAdmin = () => {
   return (
     <main className="signup-page">
       <AuthHeader />
-      <Progress />
+      <Progress currentStep={2} />
 
       <main className="signup-container">
         <section className="signup-card">
@@ -99,7 +99,13 @@ const SignUpAdmin = () => {
               />
             </div>
 
-            <button type="submit" className="create-account-btn">
+            <button
+              type="submit"
+              className="create-account-btn"
+              onclick={() =>
+                nav("/otpVerification", { state: { role: "complete" } })
+              }
+            >
               Create Professional Account
             </button>
           </form>

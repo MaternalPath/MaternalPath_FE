@@ -38,7 +38,7 @@ const GetStarted = () => {
       <AuthHeader />
 
       <main className="progress-layout">
-        <Progress />
+        <Progress currentStep={1} />
         <section className="title-layout">
           <h3>Join MaternalPath today</h3>
           <p>Choose how you want to continue your journey</p>
