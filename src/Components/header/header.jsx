@@ -18,22 +18,22 @@ const Header = () => {
               />
             </div>
 
-              <div className="header-center">
-                <div onClick={() => nav("/")}>Home</div>
-                <div onClick={() => nav("/how")}>
-                  How it works
-                </div>
-                <div onClick={() => nav("/about")}>Abouts</div>
-                <div onClick={() => nav("/faq")}>Faq</div>
-            
+            <div className="header-center">
+              <div onClick={() => nav("/")}>Home</div>
+              <div onClick={() => nav("/how")}>How it works</div>
+              <div onClick={() => nav("/about")}>Abouts</div>
+              <div onClick={() => nav("/faq")}>Faq</div>
             </div>
 
             <div className="header-right">
-              <button className="header-right-1" onClick={() => nav("/signup")}>
-                Sign up
+              <button className="header-right-1" onClick={() => nav("/login")}>
+                Login in
               </button>
 
-              <button className="header-right-2" onClick={() => nav("/login")}>
+              <button
+                className="header-right-2"
+                onClick={() => nav("/getStarted")}
+              >
                 Get Started now
               </button>
             </div>

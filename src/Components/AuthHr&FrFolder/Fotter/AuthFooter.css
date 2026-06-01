@@ -1,0 +1,40 @@
+.mobile-footer {
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  padding: 30px 16px;
+  margin-top: 0 auto;
+  width: 100%;
+
+  @media (max-width: 640px) {
+    .mobile-footer {
+      padding: 20px 16px;
+      display: block;
+      .footer-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 24px;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 12px 24px;
+    max-width: 420px;
+    margin: 0 auto;
+    justify-content: center;
+
+    a {
+      color: #64748b;
+      font-size: 13px;
+      text-decoration: none;
+      text-align: center;
+
+      &:hover {
+        color: #0f766e;
+      }
+    }
+  }
+}
