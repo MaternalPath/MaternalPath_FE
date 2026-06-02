@@ -1,22 +1,3 @@
-// import React from "react";
-// import "./AuthHeader.css";
-// import logo from "/src/assets/header.png";
-// import { useNavigate } from "react-router-dom";
-
-// const AuthHeader = () => {
-//   const nav = useNavigate();
-
-//   return (
-//     <header className="mobile-header">
-//       <img src={logo} alt="MaternalPath" className="logo" />
-//       <button className="mobile-login" onClick={() => nav("/login")}>
-//         Login
-//       </button>
-//     </header>
-//   );
-// };
-
-// export default AuthHeader;
 import React from "react";
 import "./AuthHeader.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";

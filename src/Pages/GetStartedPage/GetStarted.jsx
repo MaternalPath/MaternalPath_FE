@@ -4,9 +4,9 @@ import "./GetStarted.css";
 import { useNavigate } from "react-router-dom";
 import babyIcon from "/src/assets/signup-baby-card-icon.png";
 import hospitalIcon from "/src/assets/hospital-signup-icon.png";
-import AuthHeader from "../../Components/AuthHr&FrFolder/Header/AuthHeader";
-import AuthFooter from "../../Components/AuthHr&FrFolder/Fotter/AuthFooter";
-import Progress from "../../Components/AuthHr&FrFolder/ProgressBar/Progress";
+import AuthHeader from "../../Components/AuthHr&FrComponent/Header/AuthHeader";
+import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
+import Progress from "../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 
 const GetStarted = () => {
   const nav = useNavigate();
@@ -38,7 +38,7 @@ const GetStarted = () => {
       <AuthHeader />
 
       <main className="progress-layout">
-        <Progress />
+        <Progress currentStep={1} />
         <section className="title-layout">
           <h3>Join MaternalPath today</h3>
           <p>Choose how you want to continue your journey</p>
