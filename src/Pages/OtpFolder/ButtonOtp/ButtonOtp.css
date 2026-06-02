@@ -1,0 +1,32 @@
+.type-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+
+  .type-btn {
+    padding: 7px 5px;
+    background: var(--bg-cards);
+    border: 1px solid var(--grey-outline);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-tint);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: fit-content;
+
+    &:hover {
+      border-color: var(--primary-tint);
+      color: var(--primary-deep-teal);
+    }
+  }
+}
+/* @media (max-width: 375px) {
+  .type-button {
+    gap: 4px;
+    .type-btn {
+      padding: 6px 4px;
+      font-size: 3px;
+    }
+  }
+} */

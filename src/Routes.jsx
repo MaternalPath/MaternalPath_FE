@@ -15,6 +15,7 @@ import DashboardHome from "./Pages/DashboardHome/DashboardHome";
 import Profile from "./Pages/Profile/Profile";
 import GetStarted from "./Pages/GetStartedPage/GetStarted";
 import SignUpAdmin from "./Pages/SignUp/SignUpHos/SignUpAdmin";
+import VerifyOTP from "./Pages/OtpFolder/VerifyOTP";
 
 const AppRoutes = () => (
   <Router>
@@ -26,6 +27,7 @@ const AppRoutes = () => (
       <Route path="/signupUser" element={<Signup />} />
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
+      <Route path="/otpVerification" element={<VerifyOTP />} />
 
       <Route path="/faq" element={<FAQ />} />
 

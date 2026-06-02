@@ -22,7 +22,7 @@ const Progress = ({ currentStep = 1 }) => {
       name: "Completion",
       num: "03",
       active: currentStep === 3,
-      completed: false,
+      completed: currentStep > 3,
     },
   ];
 

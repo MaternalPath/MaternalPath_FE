@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./SignUpUser.css";
-import AuthHeader from "../../../Components/AuthHr&FrFolder/Header/AuthHeader";
-import AuthFooter from "../../../Components/AuthHr&FrFolder/Fotter/AuthFooter";
-import Progress from "../../../Components/AuthHr&FrFolder/ProgressBar/Progress";
+import AuthHeader from "../../../Components/AuthHr&FrComponent/Header/AuthHeader";
+import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
+import Progress from "../../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 
 const SignUp = () => {
   const nav = useNavigate();
@@ -27,7 +27,7 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    nav("/completion", { state: { role } });
+    nav("/otpVerification", { state: { role } });
   };
 
   const roleText =
@@ -36,7 +36,7 @@ const SignUp = () => {
   return (
     <main className="signup-page">
       <AuthHeader />
-      <Progress />
+      <Progress currentStep={2} />
 
       <main className="signup-container">
         <section className="signup-card">
@@ -114,7 +114,11 @@ const SignUp = () => {
               />
             </div>
 
-            <button type="submit" className="create-account-btn">
+            <button
+              type="submit"
+              className="create-account-btn"
+              onClick={() => nav("/otpVerification")}
+            >
               Create Account
             </button>
           </form>
