@@ -1,0 +1,64 @@
+.origin-section {
+  padding: 60px 80px;
+  background: #faf9f6;
+
+  @media (max-width: 1024px) {
+    padding: 48px 40px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 40px 20px;
+  }
+
+  .origin-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 968px) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  .quote-box {
+    background: var(--bg-cards);
+    border-left: 3px solid var(--primary-deep-teal);
+    padding: 32px 28px;
+    border-radius: 8px;
+    position: relative;
+
+    .quote-mark {
+      font-size: 48px;
+      color: var(--primary-deep-teal);
+      opacity: 0.3;
+      line-height: 1;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .quote-text {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-hue);
+      margin: 0 0 20px 0;
+      font-style: italic;
+    }
+
+    .quote-author {
+      font-size: 13px;
+      color: var(--text-tint);
+    }
+  }
+
+  .origin-text {
+    p {
+      color: var(--text-tones);
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 0 0 16px 0;
+    }
+  }
+}

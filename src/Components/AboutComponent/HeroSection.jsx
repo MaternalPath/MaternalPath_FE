@@ -1,0 +1,53 @@
+import { GoShieldCheck } from "react-icons/go";
+import "./Css/HeroSection.css";
+import heroImg from "/src/assets/motherBackground.png";
+
+const HeroSection = () => {
+  return (
+    <section className="hero-section">
+      <div className="hero-badge">
+        <GoShieldCheck size={14} />
+        <span>Our Story & Mission</span>
+      </div>
+      <div className="hero-content">
+        <div className="hero-left">
+          <h1 className="hero-title">
+            Supporting Mothers <br />
+            With Guidance, <br />
+            <span className="highlight">Preparedness</span>, and <br />
+            <span className="highlight-teal">Care</span>
+          </h1>
+          <p className="hero-desc">
+            Because every pregnant woman deserves to feel informed, supported,
+            and financially prepared — not just on delivery day, but every
+            single day of the journey.
+          </p>
+          <div className="hero-cta">
+            <button className="btn-primary">Start Your Journey</button>
+            <button className="btn-outline">Meet the Team</button>
+          </div>
+        </div>
+        <div className="hero-right">
+          <div className="hero-image-wrapper">
+            <img src={heroImg} alt="Pregnant mother" />
+            <div className="float-card week-card">
+              <span className="label">Pregnancy Week</span>
+              <strong>Week 24</strong>
+              <div className="progress-bar">
+                <div className="progress" style={{ width: "60%" }}></div>
+              </div>
+              <span className="percent">60% complete</span>
+            </div>
+            <div className="float-card wallet-card">
+              <span className="label">Emergency Wallet</span>
+              <strong>₦285,000</strong>
+              <span className="sub">On track for delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;
