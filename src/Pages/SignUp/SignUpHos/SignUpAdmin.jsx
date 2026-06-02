@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./SignUpAdmin.css";
-import AuthFooter from "../../../Components/AuthHr&FrFolder/Fotter/AuthFooter";
-import AuthHeader from "../../../Components/AuthHr&FrFolder/Header/AuthHeader";
-import Progress from "../../../Components/AuthHr&FrFolder/ProgressBar/Progress";
+import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
+import AuthHeader from "../../../Components/AuthHr&FrComponent/Header/AuthHeader";
+import Progress from "../../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 
 const SignUpAdmin = () => {
   const nav = useNavigate();
+  const { state } = useLocation();
+  const role = state?.role || "doctor";
 
   const [formData, setFormData] = useState({
     hospitalName: "",
@@ -24,8 +26,10 @@ const SignUpAdmin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Hospital form submitted:", formData);
-    nav("/completion", { state: { role: "doctor" } });
+    nav("/otpVerification", { state: { role } });
   };
+  const roleText =
+    role === "doctor" ? "Healthcare Professional" : "Pregnant Mother";
 
   return (
     <main className="signup-page">
@@ -35,7 +39,7 @@ const SignUpAdmin = () => {
       <main className="signup-container">
         <section className="signup-card">
           <h1 className="signup-title">Create Professional Account</h1>
-          <p className="signup-subtitle">Join as a Healthcare Professional</p>
+          <p className="signup-subtitle">Join as a {roleText}</p>
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="form-group">
               <label htmlFor="hospitalName">Hospital Name</label>
@@ -102,9 +106,7 @@ const SignUpAdmin = () => {
             <button
               type="submit"
               className="create-account-btn"
-              onclick={() =>
-                nav("/otpVerification", { state: { role: "complete" } })
-              }
+              onClick={() => nav("/otpVerification")}
             >
               Create Professional Account
             </button>

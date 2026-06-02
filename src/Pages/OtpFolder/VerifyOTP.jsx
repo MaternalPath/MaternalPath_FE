@@ -10,25 +10,27 @@ import {
   LuArrowLeft,
   LuCircleHelp,
 } from "react-icons/lu";
-import AuthHeader from "/src/Components/AuthHr&FrFolder/Header/AuthHeader";
-import AuthFooter from "/src/Components/AuthHr&FrFolder/Fotter/AuthFooter";
-import Progress from "/src/Components/AuthHr&FrFolder/ProgressBar/Progress";
+import { GoShieldCheck } from "react-icons/go";
+import AuthHeader from "/src/Components/AuthHr&FrComponent/Header/AuthHeader";
+import AuthFooter from "/src/Components/AuthHr&FrComponent/Fotter/AuthFooter";
+import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
+import ButtonOtp from "./ButtonOtp/ButtonOtp";
 // import { Flex, Input, Typography } from "antd";
 // const { Title } = Typography;
 
 const VerifyOTP = () => {
   // const onChange = (text) => {
-  //     console.log("onChange:", text);
-  //   };
-  //   const onInput = (value) => {
-  //     console.log("onInput:", value);
-  //   };
-  //   const sharedProps = {
-  //     onChange,
-  //     onInput,
-  //   };
+  //   console.log("onChange:", text);
+  // };
+  // const onInput = (value) => {
+  //   console.log("onInput:", value);
+  // };
+  // const sharedProps = {
+  //   onChange,
+  //   onInput,
+  // };
 
   const nav = useNavigate();
   const { state } = useLocation();
@@ -56,13 +58,6 @@ const VerifyOTP = () => {
       title: "Mother-Centered",
       desc: "Built with care",
     },
-  ];
-
-  const verificationTypes = [
-    { id: 1, name: "Account Creation" },
-    { id: 2, name: "Login Verification" },
-    { id: 3, name: "Wallet Authorization" },
-    { id: 4, name: "Hospital Approval" },
   ];
 
   useEffect(() => {
@@ -94,7 +89,7 @@ const VerifyOTP = () => {
     const code = otp.join("");
     if (code.length === 6) {
       console.log("Verifying:", code);
-      nav("/completion");
+      nav("/login");
     }
   };
 
@@ -118,7 +113,7 @@ const VerifyOTP = () => {
 
           <div className="verify-card">
             <div className="icon-wrapper">
-              <LuShield size={32} />
+              <GoShieldCheck size={32} />
             </div>
 
             <h1 className="verify-title">Verify Your Account</h1>
@@ -130,7 +125,7 @@ const VerifyOTP = () => {
             <div className="email-badge">{email}</div>
 
             <div className="info-box">
-              <LuCircleHelp size={16} />
+              <LuLock size={16} />
               <p>
                 This code is used for <strong>account verification</strong>. It
                 expires in 10 minutes.
@@ -150,8 +145,9 @@ const VerifyOTP = () => {
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (inputRefs.current[index] = el)}
                     className="otp-input"
-                    // <Input.OTP length={6} {...sharedProps} />
                   />
+                  // <Input.OTP disabled {...sharedProps} />
+                  // <Input.OTP length={6} {...sharedProps} />
                 ))}
               </div>
 
@@ -184,7 +180,7 @@ const VerifyOTP = () => {
                 disabled={otp.join("").length !== 6}
               >
                 Verify Code
-                <LuShield size={18} />
+                <GoShieldCheck size={18} />
               </button>
             </form>
           </div>
@@ -194,13 +190,7 @@ const VerifyOTP = () => {
             <span>Your information is protected and securely verified.</span>
           </div>
 
-          <div className="type-buttons">
-            {verificationTypes.map((type) => (
-              <button key={type.id} className="type-btn">
-                {type.name}
-              </button>
-            ))}
-          </div>
+          <ButtonOtp />
         </section>
 
         <section className="verify-right">

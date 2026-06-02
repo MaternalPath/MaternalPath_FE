@@ -105,8 +105,9 @@
         width: 64px;
         height: 64px;
         border-radius: 16px;
-        background: var(--primary-tint);
-        opacity: 0.1;
+        border: 1px solid var(--primary-deep-teal);
+        background: var(--bg-shade);
+        /* opacity: 0.1; */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -302,29 +303,6 @@
 
       svg {
         color: var(--primary-deep-teal);
-      }
-    }
-
-    .type-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-
-      .type-btn {
-        padding: 8px 16px;
-        background: var(--bg-cards);
-        border: 1px solid var(--grey-outline);
-        border-radius: 20px;
-        font-size: 12px;
-        color: var(--text-tint);
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          border-color: var(--primary-tint);
-          color: var(--primary-deep-teal);
-        }
       }
     }
   }
