@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login/Login";
+import Login from "./Pages/Login/Login";
 import Signup from "./Pages/SignUp/SignUpPatient/SignUpUser";
 import FAQ from "./Pages/FAQ/FAQ";
 import How from "./Pages/How/How";
-import LandingPage from "./pages/landingPage/landingPage";
+import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
 
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 import PregnancyTracker from "./Pages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/EmergencyWallet/EmergencyWallet";
 import HealthGuidance from "./Pages/HealthGuidance/HealthGuidance";
