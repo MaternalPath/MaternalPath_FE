@@ -1,0 +1,131 @@
+.challenge-section {
+  padding: 60px 80px;
+  /* background: #faf9f6; */
+
+  @media (max-width: 1024px) {
+    padding: 48px 40px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 40px 20px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    gap: 40px;
+    max-width: 1200px;
+    /* background: var(--primary-tint); */
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: 968px) {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+      align-items: start;
+      font-family: Arial, sans-serif;
+      gap: 5px;
+      .section-label {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--primary-shade);
+        margin: 0;
+
+        @media (max-width: 480px) {
+          font-size: 10px;
+        }
+      }
+      .section-title {
+        font-size: 27px;
+        font-family: Arial;
+        color: var(--primary-tone2);
+        margin: 0;
+
+        @media (max-width: 480px) {
+          font-size: 20px;
+        }
+        em {
+          font-style: italic;
+          font-weight: 400;
+          color: var(--primary-shade);
+        }
+      }
+    }
+    .header-desc {
+      color: var(--primary-tint);
+      font-size: 11px;
+      line-height: 1.3;
+      text-align: end;
+      margin-top: 4rem;
+      font-family: Arial, sans-serif;
+    }
+  }
+
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .challenge-card {
+    background: var(--bg-cards);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--grey-outline);
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #d1fae5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-deep-teal);
+      }
+
+      .card-tag {
+        background: var(--grey-tint);
+        color: var(--text-tint);
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-weight: 500;
+      }
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-hue);
+      margin: 0 0 12px 0;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-tones);
+      margin: 0;
+    }
+  }
+}
