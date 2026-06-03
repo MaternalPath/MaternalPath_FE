@@ -1,0 +1,333 @@
+.ContactUs-container {
+  width: 100%;
+  height: 80vh;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #f7f5f2;
+
+  h1 {
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 40px;
+    line-height: 45px;
+    letter-spacing: 0px;
+  }
+
+  p {
+    font-family: Arimo;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 31px;
+    letter-spacing: 0px;
+    text-align: center;
+  }
+}
+
+.ContactUs-Cards {
+  width: 100%;
+  height: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.cards {
+  width: 303px;
+  height: 294px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #ffffff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  h4 {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: #3f918b;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    letter-spacing: 0px;
+    color: #242c3a;
+  }
+}
+
+.contact-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
+  background-color: #dcfce7;
+  color: #3f918b;
+  border: none;
+}
+
+.btn-contact {
+  width: 248px;
+  height: 50px;
+  color: #10182b;
+  border-radius: 11.38px;
+  border: 2.28px solid #3f918b;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27.32px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-contact:hover {
+  background-color: #3f918b;
+  color: #ffffff;
+}
+
+.Notice {
+  width: 1281px;
+  height: 73px;
+  border-radius: 14px;
+  border: 1px solid #d8d8d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f8f6;
+
+  p {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #0c5e58;
+  }
+}
+
+@media (max-width: 1024px) {
+  .ContactUs-container {
+    height: auto;
+    min-height: 80vh;
+    padding: 40px 20px;
+
+    h1 {
+      font-size: 36px;
+      line-height: 42px;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+
+  .ContactUs-Cards {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px 0;
+  }
+
+  .cards {
+    width: 280px;
+    height: 280px;
+  }
+
+  .Notice {
+    width: 90%;
+    height: auto;
+    min-height: 73px;
+    padding: 15px 20px;
+    text-align: center;
+
+    p {
+      font-size: 13px;
+      line-height: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .ContactUs-container {
+    padding: 30px 16px;
+    gap: 15px;
+
+    h1 {
+      font-size: 32px;
+      line-height: 38px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 26px;
+    }
+  }
+
+  .ContactUs-Cards {
+    gap: 25px;
+  }
+
+  .cards {
+    width: 260px;
+    height: 270px;
+    gap: 15px;
+
+    h4 {
+      font-size: 18px;
+      line-height: 26px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      padding: 0 10px;
+    }
+  }
+
+  .contact-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .btn-contact {
+    width: 220px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .Notice {
+    width: 95%;
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .ContactUs-container {
+    padding: 30px 16px 40px 16px;
+    gap: 20px;
+
+    h1 {
+      font-size: 28px;
+      line-height: 34px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  .ContactUs-Cards {
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+  }
+
+  .cards {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    min-height: 260px;
+    padding: 20px;
+
+    h4 {
+      font-size: 18px;
+      line-height: 26px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .contact-circle {
+    width: 55px;
+    height: 55px;
+  }
+
+  .btn-contact {
+    width: 200px;
+    height: 45px;
+    font-size: 15px;
+  }
+
+  .Notice {
+    width: 100%;
+    height: auto;
+    padding: 12px 16px;
+
+    p {
+      font-size: 11px;
+      line-height: 16px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .ContactUs-container {
+    padding: 25px 12px 35px 12px;
+
+    h1 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+
+  .ContactUs-Cards {
+    gap: 16px;
+  }
+
+  .cards {
+    max-width: 100%;
+    min-height: 240px;
+    padding: 16px;
+
+    h4 {
+      font-size: 17px;
+      line-height: 24px;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 19px;
+    }
+  }
+
+  .contact-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .btn-contact {
+    width: 180px;
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .Notice {
+    padding: 10px 12px;
+
+    p {
+      font-size: 10px;
+      line-height: 15px;
+    }
+  }
+}

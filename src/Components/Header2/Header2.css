@@ -1,7 +1,7 @@
 .header2-container {
   width: 100%;
-  height: 40px;
-  /* background:red; */
+  height: 80px;
+
   display: flex;
   justify-content: center;
   align-items: center;

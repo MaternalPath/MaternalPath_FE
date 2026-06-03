@@ -1,0 +1,282 @@
+.Footer-container {
+  width: 100%;
+  min-height: 60vh;
+  background-color: #0f766e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 0 0 0;
+}
+
+.Footer-top {
+  width: 90%;
+  max-width: 1400px;
+  min-height: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+.footer-logo-holder {
+  flex: 2;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  p {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 23px;
+    letter-spacing: 0px;
+    color: #f9f7f5;
+    width: 70%;
+    max-width: 400px;
+  }
+}
+
+.footer-logo {
+  width: 200px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.footer-text-holder {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  h2 {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28.48px;
+    letter-spacing: 0px;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    letter-spacing: 0px;
+    color: #f7f5f2;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  li:hover {
+    color: #dcfce7;
+  }
+}
+
+.Footer-bottom {
+  width: 90%;
+  max-width: 1400px;
+  min-height: 30%;
+  border-top: 1px solid rgba(209, 213, 220, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0;
+  margin-top: 20px;
+
+  p {
+    font-family: Arimo;
+    font-weight: 700;
+    font-size: 16.61px;
+    line-height: 23.73px;
+    letter-spacing: 0px;
+    color: #f9f7f5;
+    margin: 0;
+  }
+}
+
+.icons-holder {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.social-icons-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #b9d0b3;
+  font-size: 20px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #0f766e;
+}
+
+.social-icons-circle:hover {
+  background-color: #ffffff;
+  transform: translateY(-3px);
+}
+
+
+@media (max-width: 1024px) {
+  .Footer-top {
+    gap: 30px;
+  }
+
+  .footer-logo-holder {
+    p {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .Footer-container {
+    min-height: auto;
+    padding: 40px 0 20px 0;
+  }
+
+  .Footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .footer-logo-holder {
+    align-items: center;
+    text-align: center;
+
+    p {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+
+  .footer-text-holder {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .Footer-bottom {
+    flex-direction: column-reverse;
+    text-align: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .icons-holder {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .Footer-container {
+    padding: 30px 0 15px 0;
+  }
+
+  .Footer-top {
+    width: 95%;
+    gap: 30px;
+  }
+
+  .footer-logo-holder {
+    min-width: 100%;
+
+    p {
+      font-size: 15px;
+      line-height: 21px;
+    }
+  }
+
+  .footer-logo {
+    width: 160px;
+    height: 40px;
+  }
+
+  .footer-text-holder {
+    width: 100%;
+    gap: 12px;
+
+    h2 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    ul {
+      gap: 12px;
+    }
+
+    li {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .Footer-bottom {
+    width: 95%;
+    padding: 15px 0;
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  .icons-holder {
+    gap: 15px;
+  }
+
+  .social-icons-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 375px) {
+  .footer-logo-holder {
+    p {
+      font-size: 13px;
+      line-height: 19px;
+    }
+  }
+
+  .footer-text-holder {
+    li {
+      font-size: 13px;
+    }
+  }
+
+  .Footer-bottom {
+    p {
+      font-size: 11px;
+    }
+  }
+
+  .social-icons-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+}
