@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/SignUp/SignUpPatient/SignUpUser";
-import FAQ from "./Pages/FAQ/FAQ";
+// import FAQ from "./Pages/FAQ/FAQ";
+import FaqHome from "./Pages/FAQ/FaqHome";
 import How from "./Pages/How/How";
 import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
@@ -29,7 +30,7 @@ const AppRoutes = () => (
       <Route path="/getStarted" element={<GetStarted />} />
       <Route path="/otpVerification" element={<VerifyOTP />} />
 
-      <Route path="/faq" element={<FAQ />} />
+      <Route path="/faq" element={<FaqHome />} />
 
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<DashboardHome />} />

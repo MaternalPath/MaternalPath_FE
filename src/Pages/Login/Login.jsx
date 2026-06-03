@@ -1,40 +1,5 @@
-// import React from "react";
-// import "./login.css";
-// import { HiOutlineArrowSmallLeft } from "react-icons/hi2";
-// import Header2 from "../../Components/Header2/Header2";
-// const Login = () => {
-//   return (
-//     <>
-//       {" "}
-//       <Header2 />
-//       <div className="login-container">
-//         <div className="login-wrapper">
-//           <div className="login-left">
-//             <div className="login-left-wrapper">
-//               <div className="login-left-up">
-//                 <HiOutlineArrowSmallLeft /> <p>Back to Home</p>
-//               </div>
-//               <div className="login-left-center">
-//                 <div className="login-left-center-wrapper">
-//                   <div className="login-left-center-up">
-//                     <p>Welcome Back!</p>
-//                     <p>Continue your pregnancy journey with guidance, preparedness, and support.</p>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className="login-left-down"></div>
-//             </div>
-//           </div>
-//           <div className="login-right"></div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Login;
-
 import React, { useState } from "react";
+import Footer1 from "../../Components/Footer1/Footer1";
 import {
   FiMail,
   FiLock,
@@ -47,7 +12,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { PiHeart, PiStethoscope } from "react-icons/pi";
 import "./login.css";
-import logo from "../../assets/Login.png"; // export the phone + woman illustration
+import logo from "../../assets/Login.png"; 
 import Header2 from "../../Components/Header2/Header2";
 
 const LoginPM = () => {
@@ -143,9 +108,7 @@ const LoginPM = () => {
                       type="button"
                       className="mp-eye"
                       onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <FiEyeOff /> : <FiEye />}
-                    </button>
+                    ></button>
                   </div>
                 </div>
 
@@ -191,7 +154,6 @@ const LoginPM = () => {
               </div>
             </div>
 
-            {/* Right: Illustration */}
             <div className="mp-right">
               <div className="mp-right-inner">
                 <h2>
@@ -220,7 +182,10 @@ const LoginPM = () => {
             </div>
           </div>
         </div>
+         
       </div>
+       <Footer1 />
+    
     </>
   );
 };
