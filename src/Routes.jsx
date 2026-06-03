@@ -17,10 +17,12 @@ import Profile from "./Pages/Profile/Profile";
 import GetStarted from "./Pages/GetStartedPage/GetStarted";
 import SignUpAdmin from "./Pages/SignUp/SignUpHos/SignUpAdmin";
 import VerifyOTP from "./Pages/OtpFolder/VerifyOTP";
+import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 
 const AppRoutes = () => (
   <Router>
     <Routes>
+      <Route path="*" element={<ErrorPage />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/how" element={<How />} />

@@ -1,40 +1,39 @@
 import React from "react";
 import "./DashboardHeader.css";
-import { FiSearch, FiBell, FiChevronDown } from "react-icons/fi";
-import { MdOutlinePeopleOutline } from "react-icons/md";
+import { FiBell, FiMenu } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdOutlinePeopleOutline } from "react-icons/md";
+import logo from "../../assets/header.png";
 
-const DashboardHeader = () => {
-
+const DashboardHeader = ({ onMenuClick }) => {
   return (
     <header className="dashboard-header-container">
-     <div className="sidebar-wrapper">
-        <div className="sidebar-logo">
-          <img
-            className="sidebar-logo-image"
-            src="/src/assets/header.png"
-            alt="Maternal-Path"
-          />
-        </div>
- </div>
-      <div className="dashboard-header-right">
-        <button className="dashboard-header-bell" aria-label="Notifications">
-          <FiBell />
+      <div className="sidebar-logo">
+        <img src={logo} alt="MaternalPath" className="sidebar-logo-image" />
+      </div>
+
+      <div className="dashboard-header-right desktop-only">
+        <button className="header-icon-btn" aria-label="Notifications">
+          <FiBell size={20} />
           <span className="dashboard-header-bell-dot" />
         </button>
 
-        <div className="dashboard-header-user-info">
-          <div className="dashboard-header-user-row">
-            <IoSettingsOutline />
-          </div>
-        </div>
-        <div className="dashboard-header-user">
-          <div className="dashboard-header-avatar">
-            <MdOutlinePeopleOutline />
-          </div>
+        <button className="header-icon-btn" aria-label="Settings">
+          <IoSettingsOutline size={20} />
+        </button>
+
+        <div className="dashboard-header-avatar">
+          <MdOutlinePeopleOutline size={20} />
         </div>
       </div>
-     
+
+      <button
+        className="menu-toggle mobile-only"
+        onClick={onMenuClick}
+        aria-label="Open menu"
+      >
+        <FiMenu size={24} />
+      </button>
     </header>
   );
 };

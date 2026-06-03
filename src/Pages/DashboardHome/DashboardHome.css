@@ -1,1 +1,359 @@
+.dashboard {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  background: #f9faf8;
+  min-height: 100vh;
+  padding: 24px 16px;
+  color: #1f2937;
 
+  .dashboard-container {
+    max-width: 480px;
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+      max-width: 1200px;
+    }
+  }
+
+  .dashboard-header {
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      color: #0f766e;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+    &.card-hero {
+      background: #f0fdf4;
+      border-color: #d1fae5;
+
+      h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        color: #0f766e;
+        line-height: 1.2;
+
+        .trimester {
+          font-size: 14px;
+          font-weight: 500;
+          color: #6b7280;
+          margin-left: 8px;
+        }
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: #6b7280;
+        margin: 0 0 20px 0;
+      }
+    }
+
+    &.card-wallet {
+      .stat-value {
+        font-size: 20px;
+        color: #0f766e;
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .stat-item {
+    &.full-width {
+      grid-column: 1 / -1;
+
+      @media (min-width: 768px) {
+        grid-column: auto;
+      }
+    }
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .progress-section {
+    margin-top: 16px;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .progress-week {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f766e;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #0f766e;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f766e;
+  }
+
+  .card-link {
+    font-size: 14px;
+    color: #0f766e;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .wallet-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .readiness-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .readiness-badge {
+    background: #fef3c7;
+    color: #d97706;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .wallet-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .percentage {
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f766e;
+    }
+  }
+
+  .reminder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .reminder-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .reminder-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .reminder-content {
+    flex: 1;
+  }
+
+  .reminder-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f766e;
+    margin-bottom: 2px;
+  }
+
+  .reminder-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .focus-section {
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f766e;
+    margin: 0 0 12px 0;
+  }
+
+  .focus-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      overflow-x: visible;
+    }
+  }
+
+  .focus-card {
+    min-width: 140px;
+    border-radius: 16px;
+    padding: 16px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      min-width: auto;
+    }
+  }
+
+  .focus-icon {
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .focus-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .focus-desc {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  .notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .notification-item {
+    display: flex;
+    gap: 12px;
+  }
+
+  .notification-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .notification-content {
+    flex: 1;
+    padding-top: 2px;
+  }
+
+  .notification-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f766e;
+    margin-bottom: 2px;
+  }
+
+  .notification-desc {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  .notification-time {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+}
