@@ -1,80 +1,69 @@
-import "./Sidebar.css";
-import { useNavigate, useLocation } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
-import { AiOutlineWallet } from "react-icons/ai";
-import { IoBookOutline } from "react-icons/io5";
-import { GoBell } from "react-icons/go";
-import { CgProfile } from "react-icons/cg";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import {
-  MdSpaceDashboard,
-  
- 
-} from "react-icons/md";
-import { FaUserFriends } from "react-icons/fa";
-import { TbTruckDelivery } from "react-icons/tb";
-import { FiLogOut, FiUserPlus } from "react-icons/fi";
-
-const mainNav = [
-  {
-    label: "Dashboard Overview",
-    icon: <MdSpaceDashboard />,
-    path: "/dashboard",
-  },
-  {
-    label: "Pregnancy Tracker",
-    icon: <FaRegHeart />,
-    path: "/dashboard/pregnancyTracker",
-  },
-  {
-    label: "Emergency Wallet",
-    icon: <AiOutlineWallet />,
-    path: "/dashboard/emergencyWallet",
-  },
-  {
-    label: "Health Guidance",
-    icon: <IoBookOutline />,
-    path: "/dashboard/healthGuidance",
-  },
-  {
-    label: "Notifications",
-    icon: <GoBell />,
-    path: "/dashboard/notifications",
-  },
-  { label: "Profile", icon:<CgProfile />, path: "/dashboard/profile" },
-];
-
-
+  FiGrid,
+  FiHeart,
+  FiCreditCard,
+  FiBookOpen,
+  FiBell,
+  FiUser,
+} from "react-icons/fi";
+import "./Sidebar.css";
 
 const Sidebar = () => {
-  const nav = useNavigate();
-  const location = useLocation();
+  const navItems = [
+    {
+      path: "/dashboard",
+      label: "Dashboard Overview",
+      icon: <FiGrid size={20} />,
+      end: true,
+    },
+    {
+      path: "/dashboard/pregnancyTracker",
+      label: "Pregnancy Tracker",
+      icon: <FiHeart size={20} />,
+    },
+    {
+      path: "/dashboard/emergencyWallet",
+      label: "Emergency Wallet",
+      icon: <FiCreditCard size={20} />,
+    },
+    {
+      path: "/dashboard/healthGuidance",
+      label: "Health Guidance",
+      icon: <FiBookOpen size={20} />,
+    },
+    {
+      path: "/dashboard/notifications",
+      label: "Notifications",
+      icon: <FiBell size={20} />,
+    },
+    {
+      path: "/dashboard/profile",
+      label: "Profile",
+      icon: <FiUser size={20} />,
+    },
+  ];
 
   return (
-    <aside className="sidebar-container">
-      <div className="sidebars-wrapper">
-  
-
-        <nav className="sidebar-nav">
-          {mainNav.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <div
-                key={item.label}
-                className={`sidebar-nav-item ${isActive ? "active" : ""}`}
-                onClick={() => nav(item.path)}
-              >
-                <span className="sidebar-nav-icon">{item.icon}</span>
-                <span className="sidebar-nav-label">{item.label}</span>
-              </div>
-            );
-          })}
-        </nav>
-
-         </div>
-    
+    <aside className="sidebar">
+      <nav className="sidebar-nav">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.end}
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            <span className="sidebar-icon">{item.icon}</span>
+            <span className="sidebar-label">{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </aside>
   );
-  
 };
 
 export default Sidebar;

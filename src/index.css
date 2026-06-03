@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap");
+
 * {
   padding: 0;
   margin: 0;
@@ -13,7 +15,7 @@
   --primary-tone: #0d9488;
   --primary-tone2: #0d8c81;
   --primary-hue: #0d6d65;
-  --primary-outline: #0c5f58;
+  --primary-outline: #0c5e58;
 
   --secondary-sage-green: #9cae9c;
   --secondary-tint: #b8c9b8;
@@ -40,6 +42,14 @@
   --secondary-color: var(--grey-hue);
   --text-color: var(--text-hue);
   --subtext-color: var(--text-tint);
-  --font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  --font-family: "Arimo";
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-warm-ivory);
+  color: var(--text-color);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
