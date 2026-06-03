@@ -42,14 +42,14 @@ const ChallengeSection = () => {
     <section className="challenge-section">
       <div className="section-header">
         <div className="header-left">
-          <span className="section-label">THE CHALLENGE</span>
+          {/* <span className="section-label">THE CHALLENGE</span> */}
           <h2 className="section-title">
             The Problem We're <em>Solving</em>
           </h2>
         </div>
         <p className="header-desc">
-          Four interconnected challenges that leave mothers vulnerable during
-          one of life's most important journeys.
+          Four interconnected challenges that leave mothers <br /> vulnerable
+          during one of life's most important <br /> journeys.
         </p>
       </div>
       <div className="challenge-grid">

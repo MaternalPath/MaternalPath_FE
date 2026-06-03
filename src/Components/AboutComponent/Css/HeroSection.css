@@ -1,7 +1,7 @@
 .hero-section {
   padding: 40px 80px 60px;
-  background: #faf9f6;
-  font-family: "arimo";
+  /* background: #faf9f6; */
+  /* font-family: var(--font-family); */
 
   @media (max-width: 1024px) {
     padding: 32px 40px 48px;
@@ -79,13 +79,44 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
+      .btn-primary {
+        background: var(--primary-shade);
+        color: var(--bg-cards);
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          background: var(--seconday-tint);
+          color: var(--primary-deep-teal);
+          border: 1px solid var(--primary-deep-teal);
+        }
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--primary-deep-teal);
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid var(--primary-deep-teal);
+        cursor: pointer;
+
+        &:hover {
+          background: var(--primary-deep-teal);
+          color: var(--bg-cards);
+        }
+      }
     }
   }
 
   .hero-right {
     .hero-image-wrapper {
       position: relative;
-      background: #c5e1a5;
+      background: var(--bg-cards);
       border-radius: 32px;
       padding: 40px;
       display: flex;

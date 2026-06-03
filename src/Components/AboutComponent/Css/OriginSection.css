@@ -1,6 +1,7 @@
 .origin-section {
   padding: 60px 80px;
-  background: #faf9f6;
+  /* background: #faf9f6; */
+  background-color: var(--bg-tint);
 
   @media (max-width: 1024px) {
     padding: 48px 40px;
@@ -36,15 +37,16 @@
       opacity: 0.3;
       line-height: 1;
       display: block;
-      margin-bottom: 12px;
+      /* margin-bottom: 2px; */
     }
 
     .quote-text {
       font-size: 16px;
       line-height: 1.7;
       color: var(--text-hue);
-      margin: 0 0 20px 0;
+      margin: 0 0 12px 0;
       font-style: italic;
+      text-align: center;
     }
 
     .quote-author {

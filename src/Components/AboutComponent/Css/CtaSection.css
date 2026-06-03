@@ -1,6 +1,6 @@
 .cta-section {
   padding: 80px 80px 60px;
-  background: #c5e1a5;
+  /* background: #c5e1a5; */
   text-align: center;
 
   @media (max-width: 1024px) {

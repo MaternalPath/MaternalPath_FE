@@ -1,6 +1,6 @@
 .principles-section {
   padding: 60px 80px;
-  background: #faf9f6;
+  /* background: #faf9f6; */
 
   @media (max-width: 1024px) {
     padding: 48px 40px;

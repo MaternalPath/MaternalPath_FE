@@ -1,5 +1,6 @@
 .about-page {
   display: flex;
   flex-direction: column;
-  /* gap: 4rem; */
+  background: var(--bg-about);
+  /* font-family: var(--font-family); */
 }

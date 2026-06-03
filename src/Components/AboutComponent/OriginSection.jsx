@@ -4,6 +4,7 @@ const OriginSection = () => {
   return (
     <section className="origin-section">
       <div className="origin-content">
+        {/* <span className="section-label">OUR ORIGIN</span> */}
         <div className="quote-box">
           <span className="quote-mark">"</span>
           <p className="quote-text">
@@ -15,7 +16,6 @@ const OriginSection = () => {
           <span className="quote-author">— Founding Team, MaternalPath</span>
         </div>
         <div className="origin-text">
-          <span className="section-label">OUR ORIGIN</span>
           <p>
             In Nigeria and Africa at large, maternal health outcomes are still
             deeply shaped by access to information and financial readiness. Many
