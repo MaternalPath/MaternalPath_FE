@@ -1,7 +1,6 @@
 .footer-section {
   background: var(--primary-deep-teal);
   color: var(--bg-cards);
-  /* padding: 60px 80px 24px; */
 
   @media (max-width: 1024px) {
     padding: 48px 40px 24px;
