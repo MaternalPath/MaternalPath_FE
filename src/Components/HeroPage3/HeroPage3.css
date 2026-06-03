@@ -1,0 +1,223 @@
+:root {
+  --mp-primary: #2d6a5e;
+  --mp-primary-dark: #235347;
+  --mp-text: #1e1e1e;
+  --mp-text-light: #6b7280;
+  --mp-bg: #f9f9f6;
+  --mp-border: #e5e7eb;
+  --mp-white: #ffffff;
+}
+
+.mp-newsletter {
+  background: #f7f5f2;
+  padding: 80px 0;
+  font-family: "Inter", sans-serif;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mp-newsletter-container {
+  max-width: 2440px;
+  margin: 0 auto;
+  padding: 0 71px;
+  text-align: center;
+}
+
+.mp-newsletter-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #2d6a5e;
+  margin-bottom: 16px;
+}
+
+.mp-newsletter-desc {
+  font-size: 16px;
+  color: #2d6a5e;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mp-newsletter-form {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mp-newsletter-input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1px solid var(--mp-border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.mp-newsletter-input:focus {
+  border-color: var(--mp-primary);
+}
+
+.mp-newsletter-input::placeholder {
+  color: #9ca3af;
+}
+
+.mp-newsletter-btn {
+  padding: 14px 32px;
+  background: var(--mp-primary);
+  color: var(--mp-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.mp-newsletter-btn:hover {
+  background: var(--mp-primary-dark);
+}
+
+.mp-disclaimer {
+  background-color: #f9f8f6;
+  border-radius: 12px;
+  padding: 18px 24px;
+  font-size: 15px;
+  font: 500;
+  line-height: 1.8;
+  color: var(--mp-text);
+  max-width: 1800px;
+  margin: 0 auto;
+  color: #478480;
+}
+
+.mp-disclaimer strong {
+  font-weight: 700;
+  color: var(--mp-text);
+}
+.mp-cta-banner {
+  background: #b5c9a8;
+
+  height: 30.5vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.mp-cta-banner::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><path d="M150 100c-30 0-60 20-80 50s-20 70 0 100c20 30 50 50 80 50s60-20 80-50 20-70 0-100c-20-30-50-50-80-50z" fill="%23ffffff" opacity="0.15"/></svg>');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: cover;
+  opacity: 0.3;
+}
+
+.mp-cta-container {
+    max-width: 2440px;
+  margin: 0 auto;
+  padding: 0 71px;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+
+}
+
+.mp-cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.mp-cta-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f9f7f5;
+  margin: 0;
+}
+
+.mp-cta-btn {
+  padding: 14px 32px;
+  background: var(--mp-primary);
+  color: var(--mp-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.mp-cta-btn:hover {
+  background: var(--mp-primary-dark);
+}
+
+
+/* ========== MOBILE RESPONSIVE ONLY ========== */
+@media (max-width: 768px) {
+  .mp-newsletter {
+    padding: 40px 0;
+  }
+
+  .mp-newsletter-container {
+    padding: 0 20px;
+  }
+
+  .mp-newsletter-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+
+  .mp-newsletter-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .mp-newsletter-form {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .mp-newsletter-input {
+    padding: 16px 20px;
+    font-size: 14px;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .mp-newsletter-btn {
+    padding: 16px 24px;
+    font-size: 14px;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .mp-disclaimer {
+    padding: 16px 20px;
+    font-size: 12px;
+    line-height: 1.6;
+    border-radius: 8px;
+    text-align: left;
+  }
+
+  .mp-cta-banner {
+    height: auto;
+  }
+}
