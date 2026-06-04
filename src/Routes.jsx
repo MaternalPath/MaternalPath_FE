@@ -18,6 +18,10 @@ import GetStarted from "./Pages/GetStartedPage/GetStarted";
 import SignUpAdmin from "./Pages/SignUp/SignUpHos/SignUpAdmin";
 import VerifyOTP from "./Pages/OtpFolder/VerifyOTP";
 import ErrorPage from "./Pages/ErrorPage/ErrorPage";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import CheckEmail from "./Pages/ForgotPassword/CheckEmail";
+import CreateNewPassword from "./Pages/ForgotPassword/CreateNewPassword";
+import PasswordResetSuccess from "./Pages/ForgotPassword/PasswordResetSuccess";
 
 const AppRoutes = () => (
   <Router>
@@ -31,6 +35,11 @@ const AppRoutes = () => (
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
       <Route path="/otpVerification" element={<VerifyOTP />} />
+      
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/checkEmail" element={<CheckEmail />} />
+      <Route path="/createNewPassword" element={<CreateNewPassword />} />
+      <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
 
       <Route path="/faq" element={<FaqHome />} />
 
