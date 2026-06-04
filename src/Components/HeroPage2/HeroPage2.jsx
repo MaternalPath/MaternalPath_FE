@@ -15,6 +15,7 @@ const FeaturesSection = () => {
       icon: <FaSignature />,
       title: "Pregnancy Tracking",
       desc: "Monitor your baby's growth and development week by week with personalized insights.",
+        route: "/hospitals"
     },
     {
       icon: <FaRegHeart />,

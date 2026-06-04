@@ -1,0 +1,243 @@
+.journey-contaner {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #f7f5f2;
+}
+
+.Journey-Text {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  h1 {
+    font-weight: 400;
+    font-size: 37px;
+    line-height: 42px;
+    letter-spacing: 0px;
+    color: #0c5e58;
+  }
+  p {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 29px;
+    letter-spacing: 0px;
+  }
+}
+
+.Journey-Holder {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+.Journey-Cards {
+  width: 404px;
+  height: 476px;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  background-color: #ffffff;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+
+  h6 {
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 29.52px;
+    letter-spacing: 0px;
+    color: #0c5e58;
+  }
+  .week-span {
+    color: #267872;
+    font-weight: 400;
+    font-size: 14.76px;
+    line-height: 21px;
+    letter-spacing: 0px;
+  }
+}
+
+.Journey-circle {
+  width: 67px;
+  height: 67px;
+  border-radius: 20px;
+  font-size: 25px;
+  background-color: #dcfce7;
+  color: #267872;
+  border: none;
+  margin-bottom: 10px;
+  border: 1px solid #e8e8e8;
+}
+
+.smallcards {
+  width: 335px;
+  height: 67px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 4.22px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10.54px;
+  margin-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .Journey-Text {
+    h1 {
+      font-size: 32px;
+      line-height: 38px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 26px;
+    }
+  }
+
+  .Journey-Holder {
+    gap: 30px;
+  }
+
+  .Journey-Cards {
+    width: 340px;
+    height: auto;
+    min-height: 476px;
+  }
+
+  .smallcards {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .journey-contaner {
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 0;
+  }
+
+  .Journey-Text {
+    height: auto;
+    padding: 20px;
+
+    h1 {
+      font-size: 28px;
+      line-height: 34px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
+
+  .Journey-Holder {
+    height: auto;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .Journey-Cards {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  .smallcards {
+    width: 100%;
+    max-width: 335px;
+  }
+}
+
+@media (max-width: 576px) {
+  .Journey-Text {
+    gap: 12px;
+
+    h1 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+
+  .Journey-Holder {
+    gap: 20px;
+  }
+
+  .Journey-Cards {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .Journey-Cards h6 {
+    font-size: 18px;
+    line-height: 25px;
+  }
+
+  .Journey-circle {
+    width: 55px;
+    height: 55px;
+    font-size: 20px;
+  }
+
+  .smallcards {
+    padding: 10px;
+
+    h6 {
+      font-size: 16px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .Journey-Text {
+    h1 {
+      font-size: 22px;
+      line-height: 28px;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 20px;
+    }
+  }
+
+  .Journey-Cards {
+    padding: 14px;
+  }
+
+  .Journey-Cards h6 {
+    font-size: 17px;
+  }
+
+  .Journey-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+
+  .smallcards {
+    padding: 8px;
+
+    h6 {
+      font-size: 15px;
+    }
+  }
+}

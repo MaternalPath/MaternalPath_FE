@@ -1,0 +1,27 @@
+import "./HowStyles/Confidence.css";
+import { FaArrowRight } from "react-icons/fa6";
+
+const Confidence = () => {
+  return (
+    <hero className="Confidence-container">
+      <h1>Start Your Pregnancy Journey With Confidence</h1>
+      <p>
+        Stay informed, stay prepared, and feel supported every step of the way.
+        Join mothers who trust MaternalPath for their pregnancy journey.
+      </p>
+      <section className="confidence-btn-holder">
+        <button className="confidence-btn1">
+          Get Started <FaArrowRight />
+        </button>
+        <button className="confidence-btn2">Learn More</button>
+      </section>
+      <div className="confidence-notice">
+        Important: This platform provides educational wellness support and does
+        not replace professional medical advice. Always consult your healthcare
+        provider for medical decisions.
+      </div>
+    </hero>
+  );
+};
+
+export default Confidence;
