@@ -1,0 +1,14 @@
+.notifications-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #f1f5f2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 768px) {
+  .notifications-page {
+    padding: 16px;
+    max-width: 420px;
+  }
+}

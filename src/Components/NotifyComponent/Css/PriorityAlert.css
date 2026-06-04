@@ -1,0 +1,75 @@
+.card {
+  background: #e8f0ea;
+  border: 1px solid #d4e3d9;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a2e1f;
+  margin: 0 0 16px 0;
+}
+
+.priority-alert {
+  display: flex;
+  gap: 16px;
+  background: #e8f1ff;
+  border: 1px solid #b8d4f7;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.alert-icon {
+  width: 48px;
+  height: 48px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e4a7a;
+  flex-shrink: 0;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-content h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a2e1f;
+  margin: 0 0 4px 0;
+}
+
+.alert-content p {
+  font-size: 14px;
+  color: #5a6f61;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.timeline-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #1e4a7a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .card { padding: 16px; }
+  .priority-alert { padding: 16px; }
+  .alert-icon { width: 44px; height: 44px; }
+  .alert-content h4 { font-size: 15px; }
+  .alert-content p { font-size: 13px; }
+}

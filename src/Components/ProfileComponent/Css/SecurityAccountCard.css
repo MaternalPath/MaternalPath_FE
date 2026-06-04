@@ -1,0 +1,48 @@
+.settings-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 20px;
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0F766E;
+    margin: 0 0 20px 0;
+  }
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+.settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+  .settings-label {
+        font-size: 14px;
+        color: #0F766E;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 400;
+
+        &.logout {
+          color: #F59E0B;
+        }
+
+    .logout-icon {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+  .chevron {
+        color: #D1D5DB;
+      }
+    }
+  }
+}
