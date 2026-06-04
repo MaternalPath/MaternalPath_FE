@@ -1,5 +1,6 @@
 .team-section {
   padding: 60px 80px;
+  font-family: var(--font-family);
 
   @media (max-width: 1024px) {
     padding: 48px 40px;
@@ -30,7 +31,10 @@
     }
   }
 
-  .team-card {
+  .section-label center {
+    text-align: center;
+  }
+  .team-card {  
     .team-img {
       position: relative;
       border-radius: 12px;
@@ -72,12 +76,22 @@
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    background: var(--bg-cards);
+    /* background: var(--bg-cards); */
+    background-color: #F0EDE8;
     border: 1px solid var(--grey-outline);
     border-radius: 12px;
     padding: 20px 24px;
     max-width: 1200px;
     margin: 40px auto 0;
+    .collab-wrap-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #a4cb9a;
+    }
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -92,6 +106,7 @@
 
     .collab-text {
       flex: 1;
+      
 
       strong {
         display: block;
@@ -112,13 +127,13 @@
       display: flex;
       gap: 6px;
       align-items: center;
+      
+      
 
-      span {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: var(--primary-deep-teal);
-        opacity: 0.3;
+      img {
+        width: 120px;
+        height: 30px;
+        /* background: var(--primary-deep-teal); */
       }
     }
   }

@@ -73,12 +73,12 @@ const EmergencyWallet = () => {
           <h1>Emergency Wallet</h1>
           <p>Track your delivery savings and stay financially prepared.</p>
         </div>
-        <button className="add-funds-btn desktop-only">
+        <button className="add-funds-btn desktop-emergency">
           <FiPlus size={18} /> Add Funds
         </button>
       </div>
 
-      <div className="wallet-hero desktop-only">
+      <div className="wallet-hero desktop-emergency">
         <div className="hero-content">
           <div className="hero-main">
             <div className="hero-balance">
@@ -129,7 +129,7 @@ const EmergencyWallet = () => {
         </div>
       </div>
 
-      <div className="wallet-hero-mobile mobile-only">
+      <div className="wallet-hero-mobile mobile-emergency">
         <div className="mobile-hero-card">
           <span className="mobile-hero-label">Current Savings Balance</span>
           <h2>₦285,000</h2>
@@ -179,7 +179,7 @@ const EmergencyWallet = () => {
             <BsGraphUpArrow size={18} />
             <span>Savings Progress</span>
           </div>
-          <div className="savings-list desktop-only">
+          <div className="savings-list desktop-emergency">
             {savingsData.map((item) => (
               <div
                 key={item.month}
@@ -204,7 +204,7 @@ const EmergencyWallet = () => {
               </div>
             ))}
           </div>
-          <div className="savings-scroll mobile-only">
+          <div className="savings-scroll mobile-emergency">
             {savingsData.slice(0, 3).map((item) => (
               <div key={item.month} className="savings-card">
                 <div className="savings-card-icon">
@@ -239,7 +239,7 @@ const EmergencyWallet = () => {
                 </span>
               </div>
             </div>
-            <div className="insight-item desktop-only">
+            <div className="insight-item desktop-emergency">
               <div className="insight-content">
                 <span className="insight-title">
                   Current Weekly Contribution
@@ -247,7 +247,7 @@ const EmergencyWallet = () => {
                 <span className="insight-desc">₦10,000 per week</span>
               </div>
             </div>
-            <div className="insight-item desktop-only">
+            <div className="insight-item desktop-emergency">
               <div className="insight-content">
                 <span className="insight-title">
                   Weeks Remaining Until Due Date
@@ -273,7 +273,7 @@ const EmergencyWallet = () => {
           <span>Transaction History</span>
           <span className="card-link">View All</span>
         </div>
-        <div className="table-wrapper desktop-only">
+        <div className="table-wrapper desktop-emergency">
           <table className="transaction-table">
             <thead>
               <tr>
@@ -303,7 +303,7 @@ const EmergencyWallet = () => {
             </tbody>
           </table>
         </div>
-        <div className="transaction-list mobile-only">
+        <div className="transaction-list mobile-emergency">
           {transactions.slice(0, 3).map((t, i) => (
             <div key={i} className="transaction-item">
               <div className="transaction-icon">
@@ -335,37 +335,37 @@ const EmergencyWallet = () => {
             </div>
             <span>Add Funds</span>
           </button>
-          <button className="action-btn desktop-only">
+          <button className="action-btn desktop-emergency">
             <div className="action-icon">
               <FiTarget size={20} />
             </div>
             <span>Update Savings Goal</span>
           </button>
-          <button className="action-btn mobile-only">
+          <button className="action-btn mobile-emergency">
             <div className="action-icon">
               <BsGraphUpArrow size={20} />
             </div>
             <span>Track Savings</span>
           </button>
-          <button className="action-btn desktop-only">
+          <button className="action-btn desktop-emergency">
             <div className="action-icon">
               <FiDownload size={20} />
             </div>
             <span>Download Statement</span>
           </button>
-          <button className="action-btn mobile-only">
+          <button className="action-btn mobile-emergency">
             <div className="action-icon">
               <FiCalendar size={20} />
             </div>
             <span>Set Reminders</span>
           </button>
-          <button className="action-btn desktop-only">
+          <button className="action-btn desktop-emergency">
             <div className="action-icon">
               <MdOutlineLocalHospital size={20} />
             </div>
             <span>View Hospital Readiness</span>
           </button>
-          <button className="action-btn mobile-only">
+          <button className="action-btn mobile-emergency">
             <div className="action-icon">
               <FiDownload size={20} />
             </div>
@@ -379,7 +379,7 @@ const EmergencyWallet = () => {
           <MdOutlineLocalHospital size={18} />
           <span>Hospital Readiness</span>
         </div>
-        <div className="hospital-card desktop-only">
+        <div className="hospital-card desktop-emergency">
           <div className="hospital-row">
             <div className="hospital-stat">
               <span className="stat-label">Preferred Hospital</span>
@@ -402,7 +402,7 @@ const EmergencyWallet = () => {
             <div className="progress-fill" style={{ width: "71%" }}></div>
           </div>
         </div>
-        <div className="hospital-mobile mobile-only">
+        <div className="hospital-mobile mobile-emergency">
           <div className="hospital-mobile-card">
             <span className="hospital-label">Preferred Hospital</span>
             <span className="hospital-name">Lagos General Hospital</span>
@@ -427,7 +427,7 @@ const EmergencyWallet = () => {
             <div className="feature-content">
               <span className="feature-title">Secured Savings</span>
               <span className="feature-desc">
-                Your funds are protected and can only be accessed for verified
+                Your funds are protected and can emergency be accessed for verified
                 delivery expenses
               </span>
             </div>

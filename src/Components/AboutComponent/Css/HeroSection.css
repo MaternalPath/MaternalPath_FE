@@ -1,7 +1,7 @@
 .hero-section {
   padding: 40px 80px 60px;
   /* background: #faf9f6; */
-  /* font-family: var(--font-family); */
+  font-family: var(--font-family);
 
   @media (max-width: 1024px) {
     padding: 32px 40px 48px;
@@ -116,9 +116,9 @@
   .hero-right {
     .hero-image-wrapper {
       position: relative;
-      background: var(--bg-cards);
+      /* background: var(--bg-cards); */
       border-radius: 32px;
-      padding: 40px;
+      padding: 50px;
       display: flex;
       justify-content: center;
 
@@ -128,8 +128,8 @@
       }
 
       img {
-        width: 100%;
-        max-width: 320px;
+        /* width: 100%; */
+        max-width: 570px;
         height: auto;
         border-radius: 16px;
       }
@@ -162,8 +162,8 @@
         }
 
         &.week-card {
-          top: 20px;
-          right: -20px;
+          top: 100px;
+          right: 70px;
           width: 140px;
 
           @media (max-width: 640px) {
@@ -187,8 +187,8 @@
         }
 
         &.wallet-card {
-          bottom: 40px;
-          left: -20px;
+          bottom: 50px;
+          left: 50px;
           width: 160px;
 
           @media (max-width: 640px) {

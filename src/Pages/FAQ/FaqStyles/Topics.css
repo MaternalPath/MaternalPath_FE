@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 50px;
   padding-top: 20px;
+  font-family: var(--font-family);
 
   h2 {
     font-weight: 700;

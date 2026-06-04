@@ -94,7 +94,7 @@
   justify-content: center;
 }
 
-.desktop-only {
+.desktop-dashHeader {
   display: flex;
 
   @media (max-width: 768px) {
@@ -102,7 +102,7 @@
   }
 }
 
-.mobile-only {
+.mobile-dashHeader {
   display: none;
 
   @media (max-width: 768px) {

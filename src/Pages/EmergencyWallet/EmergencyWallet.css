@@ -904,13 +904,13 @@
     }
   }
 
-  .desktop-only {
+  .desktop-emergency {
     @media (max-width: 768px) {
       display: none;
     }
   }
 
-  .mobile-only {
+  .mobile-emergency {
     display: none;
 
     @media (max-width: 768px) {

@@ -1,6 +1,6 @@
 import { GoShieldCheck } from "react-icons/go";
 import "./Css/HeroSection.css";
-import heroImg from "/src/assets/motherBackground.png";
+import heroImg from "/src/assets/preg.png";
 
 const HeroSection = () => {
   return (
