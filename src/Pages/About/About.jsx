@@ -8,8 +8,8 @@ import HowItWorksSection from "/src/Components/AboutComponent/HowItWorksSection"
 import PrinciplesSection from "/src/Components/AboutComponent/PrinciplesSection";
 import TeamSection from "/src/Components/AboutComponent/TeamSection";
 import CtaSection from "/src/Components/AboutComponent/CtaSection";
-import FooterSection from "/src/Components/AboutComponent/FooterSection";
 import "./About.css";
+import Footer from "../../Components/Footer/Footer";
 const About = () => {
   return (
     <>
@@ -23,7 +23,7 @@ const About = () => {
         <PrinciplesSection />
         <TeamSection />
         <CtaSection />
-        <FooterSection />
+        <Footer />
       </div>
     </>
   );

@@ -74,7 +74,6 @@ const LoginPM = () => {
               </div>
 
               <div className="mp-info-card">
-                <PiHeart />
                 Sign in to access your pregnancy tracker, health guidance, and
                 emergency wallet.
               </div>
@@ -125,7 +124,7 @@ const LoginPM = () => {
                     />
                     Remember me
                   </label>
-                  <a href="/forgot-password">Forgot Password?</a>
+                  <a href="/forgotPassword">Forgot Password?</a>
                 </div>
 
                 <button  type="submit" className="mp-btn-login"    onClick={() => {
@@ -138,7 +137,7 @@ const LoginPM = () => {
 
               <p className="mp-create">
                 Don't have an account? <a href="/signup"  onClick={() => {
-                nav("/ signupUser");
+                nav("/signupUser");
                 closeMobileMenu();
               }}>Create Account</a>
               </p>

@@ -6,6 +6,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  font-family: var(--font-family);
 }
 
 .FaqHome-holder {

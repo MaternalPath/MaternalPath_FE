@@ -1,6 +1,6 @@
 .cta-section {
   padding: 80px 80px 60px;
-  background: #c5e1a5;
+  background: #A7C4A0;
   text-align: center;
 
   @media (max-width: 1024px) {
@@ -58,6 +58,26 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-bottom: 40px;
+    .btn-primary {
+      background: var(--primary-deep-teal);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-outline-light {
+      background: transparent;
+      color: var(--primary-deep-teal);
+      border: 2px solid var(--primary-deep-teal);
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
   }
 
   .cta-features {

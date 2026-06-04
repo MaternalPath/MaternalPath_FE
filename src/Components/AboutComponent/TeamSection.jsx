@@ -1,7 +1,7 @@
 import { LuBuilding2 } from "react-icons/lu";
 import "./Css/TeamSection.css";
 import img1 from "/src/assets/raphaelAyo.jpg";
-import img2 from "/src/assets/Passport2.jpeg";
+import img2 from "/src/assets/abdulbakky.jpg";
 import img3 from "/src/assets/olachi.jpg";
 import img4 from "/src/assets/micheal.jpg";
 import img5 from "/src/assets/maria.jpg";
@@ -23,28 +23,29 @@ const TeamSection = () => {
     },
     {
       id: 3,
-      name: "Olachi Faith",
-      role: "Backend Developer",
-      img: img3,
-    },
-    {
-      id: 4,
-      name: "Michael Monah",
-      role: "Backend Developer",
-      img: img4,
-    },
-    {
-      id: 5,
       name: "Mariaigoretti Nneamaka Nnadi",
       role: "Front End Developer",
       img: img5,
     },
     {
-      id: 6,
+      id: 4,
       name: "Raphael Oluwapelumi John",
       role: "Front End Developer",
       img: img6,
     },
+    {
+      id: 5,
+      name: "Olachi Faith",
+      role: "Backend Developer",
+      img: img3,
+    },
+    {
+      id: 6,
+      name: "Michael Monah",
+      role: "Backend Developer",
+      img: img4,
+    },
+    
   ];
 
   return (
@@ -73,7 +74,10 @@ const TeamSection = () => {
         ))}
       </div>
       <div className="collab-banner">
-        <LuBuilding2 size={20} />
+        <aside className="collab-wrap-layout">
+          <LuBuilding2  size={20} />
+        </aside>
+        
         <div className="collab-text">
           <strong>Healthcare Collaboration Network</strong>
           <p>
@@ -84,11 +88,8 @@ const TeamSection = () => {
           </p>
         </div>
         <div className="collab-dots">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <img src="/src/assets/Container.png" alt="" />
+          
         </div>
       </div>
     </section>

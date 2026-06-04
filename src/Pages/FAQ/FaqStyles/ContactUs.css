@@ -7,6 +7,7 @@
   justify-content: center;
   flex-direction: column;
   background-color: #f7f5f2;
+  font-family: var(--font-family);
 
   h1 {
     font-weight: 700;

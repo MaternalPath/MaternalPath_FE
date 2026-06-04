@@ -12,7 +12,7 @@ const DashboardHeader = ({ onMenuClick }) => {
         <img src={logo} alt="MaternalPath" className="sidebar-logo-image" />
       </div>
 
-      <div className="dashboard-header-right desktop-only">
+      <div className="dashboard-header-right desktop-dashHeader">
         <button className="header-icon-btn" aria-label="Notifications">
           <FiBell size={20} />
           <span className="dashboard-header-bell-dot" />
@@ -28,7 +28,7 @@ const DashboardHeader = ({ onMenuClick }) => {
       </div>
 
       <button
-        className="menu-toggle mobile-only"
+        className="menu-toggle mobile-dashHeader"
         onClick={onMenuClick}
         aria-label="Open menu"
       >

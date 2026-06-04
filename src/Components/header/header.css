@@ -9,7 +9,8 @@
   top: 0;
   z-index: 999;
   font-family: var(--font-family);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+  /* border-bottom: 1px solid var(--grey-outline); */
+  /* box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2); */
 
   @media (max-width: 768px) {
     height: 73px;
@@ -26,6 +27,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  border-bottom: 2px solid #eef2f1;
 }
 
 .header-left {

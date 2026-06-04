@@ -12,12 +12,12 @@
   line-height: 1.4;
 }
 
-.mobile-only { display: none; }
-.desktop-only { display: block; }
+.mobile-notify { display: none; }
+.desktop-notify { display: block; }
 
 @media (max-width: 768px) {
-  .mobile-only { display: block; }
-  .desktop-only { display: none; }
+  .mobile-notify { display: block; }
+  .desktop-notify { display: none; }
   .notif-header h1 { font-size: 28px; }
   .notif-header p { font-size: 14px; margin: 0 0 20px 0; }
 }
