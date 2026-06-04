@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+
 import Footer1 from "../../Components/Footer1/Footer1";
 import {
   FiMail,
@@ -16,6 +18,7 @@ import logo from "../../assets/Login.png";
 import Header2 from "../../Components/Header2/Header2";
 
 const LoginPM = () => {
+  
   const [userType, setUserType] = useState("mother");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -36,7 +39,7 @@ const LoginPM = () => {
     e.preventDefault();
     console.log({ ...formData, userType });
   };
-
+  const nav = useNavigate();
   return (
     <>
       <Header2 />
@@ -125,13 +128,19 @@ const LoginPM = () => {
                   <a href="/forgot-password">Forgot Password?</a>
                 </div>
 
-                <button type="submit" className="mp-btn-login">
+                <button  type="submit" className="mp-btn-login"    onClick={() => {
+                nav("/dashboard");
+                closeMobileMenu();
+              }}>
                   Log In <FiArrowRight />
-                </button>
+                </button>  signupUser
               </form>
 
               <p className="mp-create">
-                Don't have an account? <a href="/signup">Create Account</a>
+                Don't have an account? <a href="/signup"  onClick={() => {
+                nav("/ signupUser");
+                closeMobileMenu();
+              }}>Create Account</a>
               </p>
 
               <div className="mp-divider">or continue with</div>
