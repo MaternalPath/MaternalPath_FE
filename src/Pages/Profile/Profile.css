@@ -1,0 +1,41 @@
+.profile-settings {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: var(--font-family);
+
+  .page-header {
+    margin-bottom: 24px;
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 4px 0;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
+  .settings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: var(--font-family);
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+
+    .page-title {
+      font-size: 24px;
+    }
+  }
+}
