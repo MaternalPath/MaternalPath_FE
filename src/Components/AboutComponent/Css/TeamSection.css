@@ -9,6 +9,25 @@
   @media (max-width: 640px) {
     padding: 40px 20px;
   }
+  .teamW-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-deep-teal);
+    text-align: center;
+    .section-label{
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: 38px;
+      font-weight: 500;
+      color: var(--primary-deep-teal);
+      line-height: 1.1;
+    }
+  }
 
   .team-grid {
     display: grid;
@@ -31,9 +50,7 @@
     }
   }
 
-  .section-label center {
-    text-align: center;
-  }
+  
   .team-card {  
     .team-img {
       position: relative;
@@ -70,7 +87,16 @@
         }
       }
     }
+    &:nth-child(5) {
+      grid-column: 2 / 3;
+    }
+
+    &:nth-child(6) {
+      grid-column: 3 / 4;
+    }
+  
   }
+  
 
   .collab-banner {
     display: flex;

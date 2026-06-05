@@ -22,10 +22,18 @@
       gap: 32px;
     }
   }
+  .section-titleHead {
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--primary-deep-teal);
+    /* text-align: left; */
+    line-height: 1.1;
+  }
 
   .principles-left {
     .section-desc {
       max-width: 400px;
+      line-height: 1.6;
     }
   }
 
@@ -49,7 +57,7 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: #d1fae5;
+      background: #A7C4A0;
       display: flex;
       align-items: center;
       justify-content: center;

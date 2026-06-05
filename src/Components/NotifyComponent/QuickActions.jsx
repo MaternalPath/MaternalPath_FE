@@ -9,7 +9,7 @@ const QuickActions = () => {
   ];
 
   return (
-    <div className="card">
+    <div className="cardQuick">
       <h3 className="section-title">Quick Actions</h3>
       <div className="grid-2">
         {actions.map((action, idx) => (
