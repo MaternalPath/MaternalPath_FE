@@ -6,6 +6,7 @@ import { CiHeart } from "react-icons/ci";
 import { LuWallet } from "react-icons/lu";
 import { FaSignature } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import pregnantWoman from '../../assets/pregnantWoman.png'
 
 const HeroPage1 = () => {
    const nav = useNavigate();
@@ -51,7 +52,7 @@ const HeroPage1 = () => {
         </div>
 
         <div className="mp-hero-image">
-          <img src="/src/assets/pregnantWoman.png" alt="Pregnant woman" />
+          <img src={pregnantWoman} alt="Pregnant woman" />
         </div>
       </div>
     </section>

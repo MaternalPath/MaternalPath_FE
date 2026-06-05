@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./HeroPage3.css";
+import holdingTommy from '../../assets/holdingTommy.png'
 
 const NewsletterCTA = () => {
   const [email, setEmail] = useState("");
@@ -47,7 +48,7 @@ const NewsletterCTA = () => {
       <section className="mp-cta-banner">
         <div className="mp-cta-container">
           <div className="mp-cta-content">
-            <img src="/src/assets/holdingTommy.png" alt="CTA Image" />
+            <img src={holdingTommy }alt="CTA Image" />
             <h2 className="mp-cta-title">
               Start Your Safe Motherhood Journey!
             </h2>
