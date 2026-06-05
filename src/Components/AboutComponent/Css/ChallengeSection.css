@@ -97,7 +97,7 @@
         width: 40px;
         height: 40px;
         border-radius: 10px;
-        background: #d1fae5;
+        background: #A7C4A0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -105,8 +105,8 @@
       }
 
       .card-tag {
-        background: var(--grey-tint);
-        color: var(--text-tint);
+        background: #A7C4A0;
+        color: var(--primary-deep-teal);
         font-size: 11px;
         padding: 4px 12px;
         border-radius: 12px;
