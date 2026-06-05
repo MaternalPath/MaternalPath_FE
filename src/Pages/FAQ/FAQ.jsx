@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./FaqStyles/FAQ.css";
 import { IoIosArrowDown } from "react-icons/io";
-import { frequentAskquestion } from "./FaqData";
+import { frequentAskquestion } from "./Data";
 
 const FAQ = ({ activeQuestion, searchTerm = "" }) => {
   const [openId, setOpenId] = useState(null);
