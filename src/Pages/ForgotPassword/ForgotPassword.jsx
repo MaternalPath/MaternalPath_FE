@@ -31,13 +31,14 @@ const ForgotPassword = () => {
           <div className="form-group">
             <label>Email Address</label>
             <div className="input-wrapper">
-              <FiMail size={16} />
+              <FiMail className="svg" size={16} />
               <input 
                 type="email" 
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className= "inputSpace"
               />
             </div>
           </div>
