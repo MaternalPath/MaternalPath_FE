@@ -34,8 +34,8 @@ const PrinciplesSection = () => {
       <div className="principles-content">
         <div className="principles-left">
           <span className="section-label">OUR PRINCIPLES</span>
-          <h2 className="section-title">
-            Built with Care, <em>Trust</em>, and Purpose
+          <h2 className="section-titleHead">
+            Built with Care, <em>Trust</em>, <br /> and Purpose
           </h2>
           <p className="section-desc">
             Everything we build begins with a single question: does this make a

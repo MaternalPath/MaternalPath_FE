@@ -3,8 +3,8 @@ import "./Css/OriginSection.css";
 const OriginSection = () => {
   return (
     <section className="origin-section">
+      <span className="section-label">OUR ORIGIN</span>
       <div className="origin-content">
-        {/* <span className="section-label">OUR ORIGIN</span> */}
         <div className="quote-box">
           <span className="quote-mark">"</span>
           <p className="quote-text">

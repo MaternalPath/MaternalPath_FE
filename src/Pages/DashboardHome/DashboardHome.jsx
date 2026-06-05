@@ -6,6 +6,7 @@ import EmergencyWalletCard from "../../Components/DashboardHomeComponent/Emergen
 import TodaysRemindersCard from "../../Components/DashboardHomeComponent/TodaysRemindersCard";
 import WeeklyFocusSection from "../../Components/DashboardHomeComponent/WeeklyFocusSection";
 import RecentNotificationsCard from "../../Components/DashboardHomeComponent/RecentNotificationsCard";
+import QuickActions from "../../Components/NotifyComponent/QuickActions";
 
 const DashboardHome = ({ data }) => {
   const userData = data || {
@@ -31,6 +32,7 @@ const DashboardHome = ({ data }) => {
         <TodaysRemindersCard />
         <WeeklyFocusSection />
         <RecentNotificationsCard />
+        <QuickActions />
       </section>
     </main>
   );

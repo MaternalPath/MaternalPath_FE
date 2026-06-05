@@ -92,12 +92,13 @@
 .confidence-notice {
   width: 90%;
   height: 73px;
+  font-size: 15px;
   border: 1.05px solid #e5e5e5;
   border-radius: 14.76px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: #c0dfb8;
 }
 
 
