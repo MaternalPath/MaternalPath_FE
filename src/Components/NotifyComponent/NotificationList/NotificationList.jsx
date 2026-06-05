@@ -9,7 +9,7 @@ import {
   FiCreditCard, 
   FiActivity 
 } from 'react-icons/fi';
-import NotificationItem from '../NotificationList/NotificationItem/NotificationItem';
+import NotificationItem from './NotificationItem/NotificationItem';
 import '../Css/NotificationList.css';
 
 const NotificationList = ({ isMobile }) => {
