@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useRole } from "./context/RoleContext";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/SignUp/SignUpPatient/SignUpUser";
 // import FAQ from "./Pages/FAQ/FAQ";
@@ -13,6 +19,7 @@ import EmergencyWallet from "./Pages/EmergencyWallet/EmergencyWallet";
 import HealthGuidance from "./Pages/HealthGuidance/HealthGuidance";
 import Notifications from "./Pages/Notifications/Notifications";
 import DashboardHome from "./Pages/DashboardHome/DashboardHome";
+import HospitalOverview from "./Pages/HospitalOverview/HospitalOverview";
 import Profile from "./Pages/Profile/Profile";
 import GetStarted from "./Pages/GetStartedPage/GetStarted";
 import SignUpAdmin from "./Pages/SignUp/SignUpHos/SignUpAdmin";
@@ -22,6 +29,15 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import CheckEmail from "./Pages/ForgotPassword/CheckEmail";
 import CreateNewPassword from "./Pages/ForgotPassword/CreateNewPassword";
 import PasswordResetSuccess from "./Pages/ForgotPassword/PasswordResetSuccess";
+
+const DashboardIndex = () => {
+  const { role } = useRole();
+  return role === "hospital" ? (
+    <Navigate to="/dashboard/hospitalOverview" replace />
+  ) : (
+    <DashboardHome />
+  );
+};
 
 const AppRoutes = () => (
   <Router>
@@ -44,7 +60,9 @@ const AppRoutes = () => (
       <Route path="/faq" element={<FaqHome />} />
 
       <Route path="/dashboard" element={<Dashboard />}>
-        <Route index element={<DashboardHome />} />
+        <Route index element={<DashboardIndex />} />
+        <Route path="hospitalOverview" element={<HospitalOverview />} />
+        <Route path="hospitalDashboard" element={<HospitalOverview />} />
         <Route path="pregnancyTracker" element={<PregnancyTracker />} />
         <Route path="emergencyWallet" element={<EmergencyWallet />} />
         <Route path="healthGuidance" element={<HealthGuidance />} />

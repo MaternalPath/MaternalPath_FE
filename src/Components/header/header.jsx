@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Header.css";
+import "./header.css";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useNavigate, NavLink } from "react-router-dom";
 import logo from "/src/assets/header.png";

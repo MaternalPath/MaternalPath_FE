@@ -1,4 +1,3 @@
-import React from "react";
 import "./Profile.css";
 import ProfileHeaderCard from "../../Components/ProfileComponent/ProfileHeaderCard";
 import PersonalInfoCard from "../../Components/ProfileComponent/PersonalInfoCard";

@@ -1,5 +1,5 @@
 import React from "react";
-import "./header2.css";
+import "./Header2.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Header2 = () => {

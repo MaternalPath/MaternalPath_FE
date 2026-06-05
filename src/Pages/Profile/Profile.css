@@ -1,5 +1,5 @@
 .profile-settings {
-  background: #ffffff;
+  /* background: #ffffff; */
   min-height: 100vh;
   padding: 20px;
   font-family: var(--font-family);
@@ -32,8 +32,7 @@
   }
 
   @media (min-width: 1024px) {
-    max-width: 1200px;
-    margin: 0 auto;
+    margin: 0;
     padding: 32px;
 
     .page-title {

@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import {
-  FiX,
-  FiGrid,
-  FiHeart,
-  FiCreditCard,
-  FiBookOpen,
-  FiBell,
-  FiUser,
-} from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import DashboardHeader from "../../Components/DashboardHeader/DashboardHeader";
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import { useRole } from "../../context/RoleContext";
+import { getNavItems } from "../../config/navItems";
 import logo from "../../assets/header.png";
 import "./Dashboard.css";
 
@@ -18,14 +12,8 @@ const Dashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const navItems = [
-    { path: "/dashboard", label: "Dashboard overview", end: true },
-    { path: "/dashboard/pregnancyTracker", label: "Pregnancy Tracker" },
-    { path: "/dashboard/emergencyWallet", label: "Emergency Wallet" },
-    { path: "/dashboard/healthGuidance", label: "Health Guidance" },
-    { path: "/dashboard/notifications", label: "Notification" },
-    { path: "/dashboard/profile", label: "Profile & Settings" },
-  ];
+  const { role } = useRole();
+  const navItems = getNavItems(role);
 
   return (
     <div className="dashboard-layout">
