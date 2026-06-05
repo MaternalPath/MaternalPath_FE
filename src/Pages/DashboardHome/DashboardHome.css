@@ -8,11 +8,10 @@
   color: #1f2937;
 
   .dashboard-container {
-    max-width: 480px;
+    max-width: 1500px;
     margin: 0 auto;
-
-    @media (min-width: 768px) {
-      max-width: 1200px;
-    }
   }
+  @media (max-width: 768px) {
+    max-width: 510px;
+}
 }

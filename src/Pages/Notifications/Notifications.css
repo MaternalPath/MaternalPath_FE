@@ -1,5 +1,5 @@
 .notifications-page {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 24px;
   background: #f1f5f2;
@@ -9,6 +9,6 @@
 @media (max-width: 768px) {
   .notifications-page {
     padding: 16px;
-    max-width: 420px;
+    max-width: 500px;
   }
 }
