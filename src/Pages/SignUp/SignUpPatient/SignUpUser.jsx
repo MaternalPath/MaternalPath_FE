@@ -5,6 +5,9 @@ import AuthHeader from "../../../Components/AuthHr&FrComponent/Header/AuthHeader
 import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
 import Progress from "../../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import axios from "axios";
+import { toast } from "react-toastify";
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const SignUp = () => {
   const nav = useNavigate();
@@ -14,6 +17,7 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [Passmeet, setPassmeet] = useState({
     length: false,
@@ -187,10 +191,37 @@ const SignUp = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const signUpApi = async () => {
+    if (!baseURL) {
+      console.error("VITE_BASE_URL is not defined");
+      alert("Signup service is not configured. Please check VITE_BASE_URL.");
+      return null;
+    }
+
+    setIsLoading(true);
+    try {
+      const url = `${baseURL.replace(/\/+$/, "")}/mother/register`;
+      const response = await axios.post(url, formData);
+      console.log("Signup response:", response);
+      if (response?.status === 201) {
+        toast(response?.data?.message);
+      }
+      return response;
+    } catch (error) {
+      console.error("Signup API error:", error);
+      toast(error?.response?.data?.message || error.message || "Signup failed");
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateAllFields()) return;
-    nav("/otpVerification", { state: { role } });
+    const response = await signUpApi();
+    if (!response) return;
+    nav('/otpverification')
   };
 
   const roleText = role === "mother" ? "Pregnant Mother" : "Healthcare Professional";
@@ -356,8 +387,16 @@ const SignUp = () => {
             <button
               type="submit"
               className="create-account-btn"
+              disabled={isLoading}
             >
-              Create Account
+              {isLoading ? (
+                <>
+                  <span className="button-spinner" aria-hidden="true">⏳</span>
+                  Creating your account...
+                </>
+              ) : (
+                "Create Account"
+              )}
             </button>
           </form>
 
