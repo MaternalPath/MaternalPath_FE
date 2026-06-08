@@ -51,7 +51,7 @@ const AppRoutes = () => (
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
       <Route path="/otpVerification" element={<VerifyOTP />} />
-      
+
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
