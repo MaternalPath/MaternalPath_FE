@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import "./VerifyOTP.css";
+import "../VerifyOTP.css";
 import verifyIllustration from "/src/assets/IllustrationPanel.png";
 import {
   LuShield,
@@ -17,26 +17,13 @@ import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
 import ButtonOtp from "./ButtonOtp/ButtonOtp";
-// import { Flex, Input, Typography } from "antd";
-// const { Title } = Typography;
 
-const VerifyOTP = () => {
-  // const onChange = (text) => {
-  //   console.log("onChange:", text);
-  // };
-  // const onInput = (value) => {
-  //   console.log("onInput:", value);
-  // };
-  // const sharedProps = {
-  //   onChange,
-  //   onInput,
-  // };
-
+const VerifyHosOTP = () => {
   const nav = useNavigate();
   const { state } = useLocation();
   const email = state?.email || "thecurve22@gmail.com";
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(180);
   const inputRefs = useRef([]);
 
   const featureCards = [
@@ -128,7 +115,7 @@ const VerifyOTP = () => {
               <LuLock size={16} />
               <p>
                 This code is used for <strong>account verification</strong>. It
-                expires in 1 minutes.
+                expires in 10 minutes.
               </p>
             </div>
 
@@ -146,8 +133,6 @@ const VerifyOTP = () => {
                     ref={(el) => (inputRefs.current[index] = el)}
                     className="otp-input"
                   />
-                  // <Input.OTP disabled {...sharedProps} />
-                  // <Input.OTP length={6} {...sharedProps} />
                 ))}
               </div>
 
@@ -166,7 +151,7 @@ const VerifyOTP = () => {
                     <button
                       type="button"
                       className="resend-btn"
-                      onClick={() => setTimer(120)}
+                      onClick={() => setTimer(180)}
                     >
                       Resend code
                     </button>
@@ -212,4 +197,4 @@ const VerifyOTP = () => {
   );
 };
 
-export default VerifyOTP;
+export default VerifyHosOTP;

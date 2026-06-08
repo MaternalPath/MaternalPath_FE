@@ -182,7 +182,7 @@
             line-height: 1.4;
 
             &.valid {
-              color: #16a34a;
+              color: var(--primary-hue);
             }
           }
         }

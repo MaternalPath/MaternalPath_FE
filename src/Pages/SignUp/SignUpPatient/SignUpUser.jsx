@@ -248,7 +248,7 @@ const SignUp = () => {
                 onBlur={catchFirstName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "firstName" ? errMsg.msg : ""}
               </span>
             </div>
@@ -265,7 +265,7 @@ const SignUp = () => {
                 onBlur={catchLastName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "lastName" ? errMsg.msg : ""}
               </span>
             </div>
@@ -282,7 +282,7 @@ const SignUp = () => {
                 onBlur={catchEmail}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "email" ? errMsg.msg : ""}
               </span>
             </div>
@@ -299,7 +299,7 @@ const SignUp = () => {
                 onBlur={catchPhoneNum}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "phoneNumber" ? errMsg.msg : ""}
               </span>
             </div>
@@ -331,7 +331,7 @@ const SignUp = () => {
                 </button>
               </div>
 
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "password" ? errMsg.msg : ""}
               </span>
 
@@ -379,7 +379,7 @@ const SignUp = () => {
                   {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "confirmPassword" ? errMsg.msg : ""}
               </span>
             </div>
