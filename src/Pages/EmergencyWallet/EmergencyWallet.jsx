@@ -82,8 +82,10 @@ const EmergencyWallet = () => {
         <div className="hero-content">
           <div className="hero-main">
             <div className="hero-balance">
-              <h2>₦285,000</h2>
+              <section className="hero-wrap-layout">
+                <p className="head-value">₦285,000</p>
               <span>Current Savings Balance</span>
+              </section>
               <p>You're making great progress toward your delivery goal.</p>
             </div>
             <div className="hero-stats">
@@ -175,7 +177,7 @@ const EmergencyWallet = () => {
 
       <div className="wallet-grid">
         <div className="card">
-          <div className="card-header">
+          <div className="card-header-save">
             <BsGraphUpArrow size={18} />
             <span>Savings Progress</span>
           </div>
@@ -220,15 +222,15 @@ const EmergencyWallet = () => {
         </div>
 
         <div className="card">
-          <div className="card-header">
+          <div className="card-header-save">
             <FiInfo size={18} />
             <span>Savings Insights</span>
           </div>
           <div className="insights-list">
             <div className="insight-item blue">
-              <div className="insight-icon">
+              {/* <div className="insight-icon">
                 <BsGraphUpArrow size={18} />
-              </div>
+              </div> */}
               <div className="insight-content">
                 <span className="insight-title">
                   Weekly Contribution Recommendation
@@ -341,23 +343,17 @@ const EmergencyWallet = () => {
             </div>
             <span>Update Savings Goal</span>
           </button>
-          <button className="action-btn mobile-emergency">
+          {/* <button className="action-btn mobile-emergency">
             <div className="action-icon">
               <BsGraphUpArrow size={20} />
             </div>
             <span>Track Savings</span>
-          </button>
+          </button> */}
           <button className="action-btn desktop-emergency">
             <div className="action-icon">
               <FiDownload size={20} />
             </div>
             <span>Download Statement</span>
-          </button>
-          <button className="action-btn mobile-emergency">
-            <div className="action-icon">
-              <FiCalendar size={20} />
-            </div>
-            <span>Set Reminders</span>
           </button>
           <button className="action-btn desktop-emergency">
             <div className="action-icon">
@@ -365,12 +361,19 @@ const EmergencyWallet = () => {
             </div>
             <span>View Hospital Readiness</span>
           </button>
+          {/* <button className="action-btn mobile-emergency">
+            <div className="action-icon">
+              <FiCalendar size={20} />
+            </div>
+            <span>Set Reminders</span>
+          </button>
+          
           <button className="action-btn mobile-emergency">
             <div className="action-icon">
               <FiDownload size={20} />
             </div>
             <span>Download Reports</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
