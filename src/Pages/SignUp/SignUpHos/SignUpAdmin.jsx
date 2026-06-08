@@ -197,7 +197,7 @@ const SignUpAdmin = () => {
                 onBlur={catchHospitalName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color" }}>
                 {errMsg.msg && errMsg.name === "hospitalName" ? errMsg.msg : ""}
               </span>
             </div>
@@ -215,7 +215,7 @@ const SignUpAdmin = () => {
                   onBlur={catchEmail}
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
-                <span style={{ color: "var(--primary-tone)" }}>
+                <span style={{ color: "var(--error-color)" }}>
                   {errMsg.msg && errMsg.name === "email" ? errMsg.msg : ""}
                 </span>
               </div>
@@ -232,7 +232,7 @@ const SignUpAdmin = () => {
                   onBlur={catchPhoneNum}
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
-                <span style={{ color: "var(--primary-tone)" }}>
+                <span style={{ color: "var(--error-color)" }}>
                   {errMsg.msg && errMsg.name === "phoneNumber" ? errMsg.msg : ""}
                 </span>
               </div>
@@ -265,7 +265,7 @@ const SignUpAdmin = () => {
                 </button>
               </div>
 
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "password" ? errMsg.msg : ""}
               </span>
 
@@ -302,7 +302,7 @@ const SignUpAdmin = () => {
                 onBlur={catchHospitalAddress}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--primary-tone)" }}>
+              <span style={{ color: "var(--error-color)" }}>
                 {errMsg.msg && errMsg.name === "hospitalAddress" ? errMsg.msg : ""}
               </span>
             </div>
