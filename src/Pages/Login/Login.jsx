@@ -268,10 +268,15 @@ import login from "../../assets/Login.png";
 import { CiHeart } from "react-icons/ci";
 import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
+import axios from "axios";
+import { toast } from "react-toastify";
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
+
 
 const LoginPage = () => {
   const [userType, setUserType] = useState("mother");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [formData, setFormData] = useState({
@@ -332,7 +337,35 @@ const LoginPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const loginApi = async () => {
+    if (!baseURL) {
+      toast.error("Login service is not configured");
+      return null;
+    }
+
+    setIsLoading(true);
+    try {
+      const endpoint = userType === "mother" ? "mother/loginmother" : "hospital/login";
+      const url = `${baseURL.replace(/\/+$/, "")}/${endpoint}`;
+      const response = await axios.post(url, {
+        emailOrPhoneNumber: formData.email,
+        password: formData.password,
+      });
+      console.log("Login response:", response);
+      if (response?.status === 200) {
+        toast.success(response?.data?.message || "Login successful!");
+        return response;
+      }
+    } catch (error) {
+      console.error("Login API error:", error);
+      toast.error(error?.response?.data?.message || error.message || "Login failed");
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setTouched({ email: true, password: true });
 
@@ -340,8 +373,13 @@ const LoginPage = () => {
       return;
     }
 
-    console.log("Form valid:", { userType, ...formData });
-    setErrors({ submit: "Login successful! API not connected yet." });
+    const response = await loginApi();
+    if (response?.status === 200) {
+      console.log("Login successful:", { userType, ...formData });
+      // TODO: Store token and redirect to dashboard
+      localStorage.setItem('token', response?.data?.token)
+      nav("/dashboard");
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -381,24 +419,19 @@ const LoginPage = () => {
             </div>
 
             <div className="mp-info-banner">
-              <CiHeart />
+              {
+                userType === 'mother'
+                ? <CiHeart /> 
+                : <GiHospital />
+              }
               <span>
-                Sign in to access your pregnancy tracker, health guidance, and
-                emergency wallet.
+                {userType === "mother"
+                  ? "Sign in to access your pregnancy tracker, health guidance, and emergency wallet."
+                  : "Sign in to access the patient verification portal and hospital authorization tools."}
               </span>
             </div>
 
-            {errors.submit && (
-              <div
-                className={
-                  errors.submit.includes("successful")
-                    ? "mp-success-banner"
-                    : "mp-error-banner"
-                }
-              >
-                <MdError /> {errors.submit}
-              </div>
-            )}
+
 
             <form onSubmit={handleSubmit} className="mp-login-form" noValidate>
               <div className="mp-form-group">
@@ -460,12 +493,21 @@ const LoginPage = () => {
                 <Link to="/forgotPassword">Forgot Password?</Link>
               </div>
 
-              <button type="submit" className="mp-login-btn">
-                Log In <MdArrowForward />
+              <button type="submit" className="mp-login-btn" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <span className="login-spinner" aria-hidden="true">⏳</span>
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Log In <MdArrowForward />
+                  </>
+                )}
               </button>
 
               <p className="mp-signup-text">
-                Don't have an account? <Link to="/signup">Create Account</Link>
+                Don't have an account? <Link to="/getStarted">Create Account</Link>
               </p>
 
               <div className="mp-divider">
