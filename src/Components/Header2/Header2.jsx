@@ -20,11 +20,9 @@ const Header2 = () => {
             </div>
 
             <div className="header2-center">
-              <div onClick={() => nav("/about")}>Abouts</div>
-              <div onClick={() => nav("/faq")}>Faq</div>
+              <div onClick={() => nav("/about")}>About</div>
+              <div onClick={() => nav("/faq")}>FAQ</div>
             </div>
-
-            <div className="header2-right"></div>
           </div>
         </div>
       </header>
