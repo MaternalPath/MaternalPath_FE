@@ -1,6 +1,6 @@
 .header2-container {
   width: 100%;
-  height: 70px;
+  height: 12.5vh;
   display: flex;
   justify-content: center;
   top: 0;
@@ -9,46 +9,51 @@
   border-bottom: 1px solid grey;
   border-bottom: 1px solid #eef2f1;
   background-color: #f6f5f2;
+
 }
 
 .header2-wrapper {
-  width: 90%;
+  width: 87.9%;
   height: 100%;
+    gap:2rem
 }
 
 .header2 {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
 }
 
 .header2-left {
-  width: 20%;
+  width: 26.5%;
   height: 100%;
   display: flex;
   align-items: center;
   color: #575f6d;
+
 }
 
 .header2-left-image {
-  width: 230px;
-  height: 150px;
+  width: 78%;
+  height: 100%;
   object-fit: contain;
   cursor: pointer;
   transition: 0.3s ease;
+
+  
 }
 
 .header2-center {
-  width: 60%;
+  width: 52%;
   height: 100%;
   display: flex;
-  font-size: 13.5px;
+  font-size: 12.5px;
   justify-content: flex-end;
   align-items: center;
   gap: 2.5rem;
   color: #575f6d;
   cursor: pointer;
+ 
 
     @media (max-width: 768px) {
     display: none;
