@@ -5,10 +5,10 @@ import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter
 import AuthHeader from "../../../Components/AuthHr&FrComponent/Header/AuthHeader";
 import Progress from "../../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { FiUpload } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
-
 
 const SignUpAdmin = () => {
   const nav = useNavigate();
@@ -17,6 +17,8 @@ const SignUpAdmin = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fileName, setFileName] = useState("");
 
   const [Passmeet, setPassmeet] = useState({
     length: false,
@@ -32,6 +34,9 @@ const SignUpAdmin = () => {
     phoneNumber: "",
     password: "",
     hospitalAddress: "",
+    deliveryFee: "",
+    medicalLicenseNumber: "",
+    verificationDocument: null,
   });
 
   const [errMsg, setErrMsg] = useState({
@@ -43,7 +48,7 @@ const SignUpAdmin = () => {
   const catchHospitalName = (e) => {
     setShowText(false);
     const newHospitalName = e.target.value;
-    setFormData({ ...formData, hospitalName: newHospitalName });
+    setFormData({...formData, hospitalName: newHospitalName });
     if (newHospitalName.trim() === "") {
       setErrMsg({
         err: true,
@@ -59,7 +64,7 @@ const SignUpAdmin = () => {
     setShowText(false);
     const newEmail = e.target.value;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    setFormData({ ...formData, email: newEmail });
+    setFormData({...formData, email: newEmail });
     if (newEmail.trim() === "") {
       setErrMsg({
         err: true,
@@ -80,7 +85,7 @@ const SignUpAdmin = () => {
   const catchPhoneNum = (e) => {
     setShowText(false);
     const newPhoneNum = e.target.value;
-    setFormData({ ...formData, phoneNumber: newPhoneNum });
+    setFormData({...formData, phoneNumber: newPhoneNum });
     if (newPhoneNum.trim() === "") {
       setErrMsg({
         err: true,
@@ -94,7 +99,7 @@ const SignUpAdmin = () => {
 
   const catchPassword = (e) => {
     const newPassword = e.target.value;
-    setFormData({ ...formData, password: newPassword });
+    setFormData({...formData, password: newPassword });
     setShowText(true);
 
     setPassmeet({
@@ -123,7 +128,7 @@ const SignUpAdmin = () => {
   const catchHospitalAddress = (e) => {
     setShowText(false);
     const newAddress = e.target.value;
-    setFormData({ ...formData, hospitalAddress: newAddress });
+    setFormData({...formData, hospitalAddress: newAddress });
     if (newAddress.trim() === "") {
       setErrMsg({
         err: true,
@@ -131,6 +136,54 @@ const SignUpAdmin = () => {
         msg: "Hospital address is required",
       });
     } else {
+      setErrMsg({ err: false, name: "", msg: "" });
+    }
+  };
+
+  const catchDeliveryFee = (e) => {
+    setShowText(false);
+    const newFee = e.target.value;
+    setFormData({...formData, deliveryFee: newFee });
+    if (newFee.trim() === "") {
+      setErrMsg({
+        err: true,
+        name: "deliveryFee",
+        msg: "Delivery fee is required",
+      });
+    } else {
+      setErrMsg({ err: false, name: "", msg: "" });
+    }
+  };
+
+  const catchMedicalLicense = (e) => {
+    setShowText(false);
+    const newLicense = e.target.value;
+    setFormData({...formData, medicalLicenseNumber: newLicense });
+    if (newLicense.trim() === "") {
+      setErrMsg({
+        err: true,
+        name: "medicalLicenseNumber",
+        msg: "Medical license number is required",
+      });
+    } else {
+      setErrMsg({ err: false, name: "", msg: "" });
+    }
+  };
+
+  const catchFileUpload = (e) => {
+    setShowText(false);
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setErrMsg({
+          err: true,
+          name: "verificationDocument",
+          msg: "File size must be less than 5MB",
+        });
+        return;
+      }
+      setFormData({...formData, verificationDocument: file });
+      setFileName(file.name);
       setErrMsg({ err: false, name: "", msg: "" });
     }
   };
@@ -166,47 +219,71 @@ const SignUpAdmin = () => {
       setErrMsg({ err: true, name: "hospitalAddress", msg: "Hospital address is required" });
       return false;
     }
+    if (formData.deliveryFee.trim() === "") {
+      setErrMsg({ err: true, name: "deliveryFee", msg: "Delivery fee is required" });
+      return false;
+    }
+    if (formData.medicalLicenseNumber.trim() === "") {
+      setErrMsg({ err: true, name: "medicalLicenseNumber", msg: "Medical license number is required" });
+      return false;
+    }
+    if (!formData.verificationDocument) {
+      setErrMsg({ err: true, name: "verificationDocument", msg: "Verification document is required" });
+      return false;
+    }
     return true;
   };
 
-   const signUpApi = async () => {
+  const signUpApi = async () => {
     if (!baseURL) {
       console.error("VITE_BASE_URL is not defined");
-      alert("Signup service is not configured. Please check VITE_BASE_URL.");
+      toast.error("Signup service is not configured. Please check VITE_BASE_URL.");
       return null;
     }
 
     setIsLoading(true);
     try {
       const url = `${baseURL.replace(/\/+$/, "")}/hospital/register`;
-      const response = await axios.post(url, formData);
+      
+      const data = new FormData();
+      data.append("hospitalName", formData.hospitalName);
+      data.append("email", formData.email);
+      data.append("phoneNumber", formData.phoneNumber);
+      data.append("password", formData.password);
+      data.append("hospitalAddress", formData.hospitalAddress);
+      data.append("deliveryFee", formData.deliveryFee);
+      data.append("medicalLicenseNumber", formData.medicalLicenseNumber);
+      data.append("verificationDocument", formData.verificationDocument);
+
+      const response = await axios.post(url, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      
       console.log("Signup response:", response);
       if (response?.status === 201) {
-        toast(response?.data?.message);
+        toast.success(response?.data?.message || "Account created successfully");
       }
       return response;
     } catch (error) {
       console.error("Signup API error:", error);
-      toast(error?.response?.data?.message || error.message || "Signup failed");
+      toast.error(error?.response?.data?.message || error.message || "Signup failed");
       return null;
     } finally {
       setIsLoading(false);
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateAllFields()) return;
     console.log("Hospital form submitted:", formData);
-     const response = await signUpApi();
+    const response = await signUpApi();
     if (!response) return;
-    nav('/otpverification')
-    // nav("/otpVerification", { state: { role } });
+    nav("/otpVerification", { state: { role } });
   };
 
   const roleText =
-    role === "doctor" ? "Healthcare Professional" : "Pregnant Mother";
+    role === "doctor"? "Healthcare Professional" : "Pregnant Mother";
 
   return (
     <main className="signup-page">
@@ -230,8 +307,8 @@ const SignUpAdmin = () => {
                 onBlur={catchHospitalName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color" }}>
-                {errMsg.msg && errMsg.name === "hospitalName" ? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "hospitalName"? errMsg.msg : ""}
               </span>
             </div>
 
@@ -249,7 +326,7 @@ const SignUpAdmin = () => {
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
                 <span style={{ color: "var(--error-color)" }}>
-                  {errMsg.msg && errMsg.name === "email" ? errMsg.msg : ""}
+                  {errMsg.msg && errMsg.name === "email"? errMsg.msg : ""}
                 </span>
               </div>
 
@@ -266,7 +343,7 @@ const SignUpAdmin = () => {
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
                 <span style={{ color: "var(--error-color)" }}>
-                  {errMsg.msg && errMsg.name === "phoneNumber" ? errMsg.msg : ""}
+                  {errMsg.msg && errMsg.name === "phoneNumber"? errMsg.msg : ""}
                 </span>
               </div>
             </div>
@@ -275,7 +352,7 @@ const SignUpAdmin = () => {
               <label htmlFor="password">Password</label>
               <div className="password-input-wrapper">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Create a strong password"
@@ -292,32 +369,32 @@ const SignUpAdmin = () => {
                   type="button"
                   className="toggle_password"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={showPassword? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                  {showPassword? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
 
               <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "password" ? errMsg.msg : ""}
+                {errMsg.msg && errMsg.name === "password"? errMsg.msg : ""}
               </span>
 
               {showText && (
                 <div className="password-requirements">
-                  <p className={`requirement-item ${Passmeet.length ? "valid" : ""}`}>
-                    {Passmeet.length ? "✔" : "●"} Must have 8+ characters
+                  <p className={`requirement-item ${Passmeet.length? "valid" : ""}`}>
+                    {Passmeet.length? "✔" : "●"} Must have 8+ characters
                   </p>
-                  <p className={`requirement-item ${Passmeet.upper ? "valid" : ""}`}>
-                    {Passmeet.upper ? "✔" : "●"} Must contain uppercase
+                  <p className={`requirement-item ${Passmeet.upper? "valid" : ""}`}>
+                    {Passmeet.upper? "✔" : "●"} Must contain uppercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.lower ? "valid" : ""}`}>
-                    {Passmeet.lower ? "✔" : "●"} Must contain lowercase
+                  <p className={`requirement-item ${Passmeet.lower? "valid" : ""}`}>
+                    {Passmeet.lower? "✔" : "●"} Must contain lowercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.number ? "valid" : ""}`}>
-                    {Passmeet.number ? "✔" : "●"} Must contain numbers
+                  <p className={`requirement-item ${Passmeet.number? "valid" : ""}`}>
+                    {Passmeet.number? "✔" : "●"} Must contain numbers
                   </p>
-                  <p className={`requirement-item ${Passmeet.special ? "valid" : ""}`}>
-                    {Passmeet.special ? "✔" : "●"} Add special characters
+                  <p className={`requirement-item ${Passmeet.special? "valid" : ""}`}>
+                    {Passmeet.special? "✔" : "●"} Add special characters
                   </p>
                 </div>
               )}
@@ -336,12 +413,72 @@ const SignUpAdmin = () => {
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
               <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "hospitalAddress" ? errMsg.msg : ""}
+                {errMsg.msg && errMsg.name === "hospitalAddress"? errMsg.msg : ""}
               </span>
             </div>
 
-            <button type="submit" className="create-account-btn">
-              Create Professional Account
+            <div className="form-group">
+              <label htmlFor="deliveryFee">Delivery Fee</label>
+              <input
+                type="text"
+                id="deliveryFee"
+                name="deliveryFee"
+                placeholder="₦ 500,000"
+                value={formData.deliveryFee}
+                onChange={catchDeliveryFee}
+                onBlur={catchDeliveryFee}
+                onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
+              />
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "deliveryFee"? errMsg.msg : ""}
+              </span>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="medicalLicenseNumber">Medical License Number</label>
+              <input
+                type="text"
+                id="medicalLicenseNumber"
+                name="medicalLicenseNumber"
+                placeholder="Enter your license number"
+                value={formData.medicalLicenseNumber}
+                onChange={catchMedicalLicense}
+                onBlur={catchMedicalLicense}
+                onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
+              />
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "medicalLicenseNumber"? errMsg.msg : ""}
+              </span>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="verificationDocument">Verification Document</label>
+              <div className={`file-upload-wrapper ${fileName? "has-file" : ""}`}>
+                <input
+                  type="file"
+                  id="verificationDocument"
+                  name="verificationDocument"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={catchFileUpload}
+                  className="file-input"
+                />
+                <div className="file-upload-box">
+                  <FiUpload className="upload-icon" />
+                  <p className="upload-text">
+                    Upload medical license or professional certification
+                    <br />
+                    PDF, JPG, or PNG (max 5MB)
+                  </p>
+                  {fileName && <p className="file-name">Selected: {fileName}</p>}
+                </div>
+              </div>
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "verificationDocument"? errMsg.msg : ""}
+              </span>
+            </div>
+
+            <button type="submit" className="create-account-btn" disabled={isLoading}>
+              {isLoading? "Creating Account..." : "Create Professional Account"}
             </button>
           </form>
 
