@@ -5,6 +5,10 @@ import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter
 import AuthHeader from "../../../Components/AuthHr&FrComponent/Header/AuthHeader";
 import Progress from "../../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import axios from "axios";
+import { toast } from "react-toastify";
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
+
 
 const SignUpAdmin = () => {
   const nav = useNavigate();
@@ -165,11 +169,40 @@ const SignUpAdmin = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+   const signUpApi = async () => {
+    if (!baseURL) {
+      console.error("VITE_BASE_URL is not defined");
+      alert("Signup service is not configured. Please check VITE_BASE_URL.");
+      return null;
+    }
+
+    setIsLoading(true);
+    try {
+      const url = `${baseURL.replace(/\/+$/, "")}/hospital/register`;
+      const response = await axios.post(url, formData);
+      console.log("Signup response:", response);
+      if (response?.status === 201) {
+        toast(response?.data?.message);
+      }
+      return response;
+    } catch (error) {
+      console.error("Signup API error:", error);
+      toast(error?.response?.data?.message || error.message || "Signup failed");
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateAllFields()) return;
     console.log("Hospital form submitted:", formData);
-    nav("/otpVerification", { state: { role } });
+     const response = await signUpApi();
+    if (!response) return;
+    nav('/otpverification')
+    // nav("/otpVerification", { state: { role } });
   };
 
   const roleText =

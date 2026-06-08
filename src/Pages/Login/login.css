@@ -263,6 +263,22 @@ font-size: 21px;
   cursor: not-allowed;
 }
 
+.login-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: login-spin 0.8s linear infinite;
+}
+
+@keyframes login-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .mp-signup-text {
   text-align: center;
   font-size: 14px;
