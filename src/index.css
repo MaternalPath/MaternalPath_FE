@@ -43,6 +43,14 @@
   --text-color: var(--text-hue);
   --subtext-color: var(--text-tint);
   --font-family: "Arimo";
+
+  /* Emergency Wallet specific */
+  --info-bg: #eff6ff;
+  --info-accent: #2563eb;
+  --warning-bg: #fefce8;
+  --warning-accent: #ca8a04;
+  --success-bg: #f0fdf4;
+  --success-accent: #16a34a;
 }
 
 body {

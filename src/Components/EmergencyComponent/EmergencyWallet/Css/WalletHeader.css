@@ -1,0 +1,60 @@
+.wallet-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    h1 {
+      color: var(--text-hue);
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+
+      @media (max-width: 768px) {
+        font-size: 24px;
+      }
+    }
+
+    p {
+      color: var(--text-tint);
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+
+  .add-funds-btn {
+    background: var(--primary-deep-teal);
+    color: var(--bg-tint);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    font-family: var(--font-family);
+
+    &:hover {
+      background: var(--primary-hue);
+    }
+
+    @media (max-width: 640px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
