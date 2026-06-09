@@ -16,7 +16,7 @@ import AuthFooter from "/src/Components/AuthHr&FrComponent/Fotter/AuthFooter";
 import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
-import ButtonOtp from "./ButtonOtp/ButtonOtp";
+import ButtonOtp from '../ButtonOtp/ButtonOtp'
 
 const VerifyHosOTP = () => {
   const nav = useNavigate();
