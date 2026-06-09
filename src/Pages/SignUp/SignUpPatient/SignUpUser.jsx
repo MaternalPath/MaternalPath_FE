@@ -224,7 +224,7 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/mother/register`;
+      const url = `${baseURL}/mother/register`;
       const response = await axios.post(url, formData);
       console.log("Signup response:", response);
       if (response?.status === 201) {

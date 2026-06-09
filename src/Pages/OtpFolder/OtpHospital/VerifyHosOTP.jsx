@@ -16,7 +16,10 @@ import AuthFooter from "/src/Components/AuthHr&FrComponent/Fotter/AuthFooter";
 import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
-import ButtonOtp from '../ButtonOtp/ButtonOtp'
+import ButtonOtp from "../ButtonOtp/ButtonOtp";
+import axios from "axios";
+import { toast } from "react-toastify";
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const VerifyHosOTP = () => {
   const nav = useNavigate();
@@ -25,6 +28,7 @@ const VerifyHosOTP = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const featureCards = [
     {
@@ -71,12 +75,63 @@ const VerifyHosOTP = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const verifyApi = async (otp) => {
+    setIsLoading(true);
+    try {
+      const url = `${baseURL}/hospital/verify`;
+      const response = await axios.post(url, {
+        email,
+        otp,
+      });
+      if (response?.status === 200) {
+        toast.success(
+          response?.data?.message || "OTP verification successful!",
+        );
+        return response;
+      }
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "OTP verification failed",
+      );
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
-      console.log("Verifying:", code);
-      nav("/login");
+      const response = await verifyApi(code);
+      if (response?.status === 200) {
+        nav("/login");
+      }
+    }
+  };
+  const resendOtpApi = async () => {
+    setIsLoading(true);
+    try {
+      const url = `${baseURL}/hospital/resend-otp`;
+      const response = await axios.post(url, {
+        email,
+      });
+      if (response?.status === 200) {
+        toast.success(
+          response?.data?.message || "OTP resend successful!",
+        );
+        return response;
+      }
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "OTP resend failed",
+      );
+      return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -151,9 +206,13 @@ const VerifyHosOTP = () => {
                     <button
                       type="button"
                       className="resend-btn"
-                      onClick={() => setTimer(30)}
+                      disabled={isLoading}
+                      onClick={() => {
+                        setTimer(60);
+                        resendOtpApi();
+                      }}
                     >
-                      Resend code
+                      {isLoading ? "Resending..." : "Resend code"}
                     </button>
                   )}
                 </span>
@@ -162,10 +221,19 @@ const VerifyHosOTP = () => {
               <button
                 type="submit"
                 className="verify-btn"
-                disabled={otp.join("").length !== 6}
+                disabled={isLoading || otp.join("").length !== 6}
               >
-                Verify Code
-                <GoShieldCheck size={18} />
+                {isLoading ? (
+                  <>
+                    <span className="otp-spinner" aria-hidden="true" />
+                    Verifying...
+                  </>
+                ) : (
+                  <>
+                    Verify Code
+                    <GoShieldCheck size={18} />
+                  </>
+                )}
               </button>
             </form>
           </div>

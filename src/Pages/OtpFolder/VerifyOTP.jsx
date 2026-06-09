@@ -20,20 +20,10 @@ import ButtonOtp from "./ButtonOtp/ButtonOtp";
 import axios from "axios";
 import { toast } from "react-toastify";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
-// import { Flex, Input, Typography } from "antd";
-// const { Title } = Typography;
+
 
 const VerifyOTP = () => {
-  // const onChange = (text) => {
-  //   console.log("onChange:", text);
-  // };
-  // const onInput = (value) => {
-  //   console.log("onInput:", value);
-  // };
-  // const sharedProps = {
-  //   onChange,
-  //   onInput,
-  // };
+
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   const { state } = useLocation();
@@ -94,7 +84,7 @@ const VerifyOTP = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/mother/verify`;
+      const url = `${baseURL}/mother/verify`;
       const response = await axios.post(url, {
         email,
         otp,
@@ -106,7 +96,6 @@ const VerifyOTP = () => {
         return response;
       }
     } catch (error) {
-      // console.error("Login API error:", error);
       toast.error(
         error?.response?.data?.message ||
           error.message ||
@@ -121,7 +110,6 @@ const VerifyOTP = () => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
-      console.log("Verifying:", code);
       const response = await verifyApi(code);
       if (response?.status === 200) {
         nav("/login");
@@ -136,7 +124,7 @@ const VerifyOTP = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/mother/resend-otp`;
+      const url = `${baseURL}/mother/resend-otp`;
       const response = await axios.post(url, {
         email,
       });
@@ -233,7 +221,7 @@ const VerifyOTP = () => {
                       className="resend-btn"
                       disabled={isLoading}
                       onClick={() => {
-                        setTimer(10);
+                        setTimer(60);
                         resendOtpApi();
                       }}
                     >
