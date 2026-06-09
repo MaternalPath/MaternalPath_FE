@@ -11,7 +11,7 @@ import FaqHome from "./Pages/FAQ/FaqHome";
 import How from "./Pages/How/How";
 import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
-
+import VerifyHosOTP from './Pages/OtpFolder/OtpHospital/VerifyHosOTP'
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import PregnancyTracker from "./Pages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/EmergencyWallet/EmergencyWallet";
@@ -51,6 +51,7 @@ const AppRoutes = () => (
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
       <Route path="/otpVerification" element={<VerifyOTP />} />
+      <Route path="/otpVerificationHos" element={<VerifyHosOTP  />} />
 
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/checkEmail" element={<CheckEmail />} />

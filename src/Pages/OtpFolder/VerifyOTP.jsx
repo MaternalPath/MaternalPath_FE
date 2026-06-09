@@ -17,6 +17,9 @@ import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
 import ButtonOtp from "./ButtonOtp/ButtonOtp";
+import axios from "axios";
+import { toast } from "react-toastify";
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 // import { Flex, Input, Typography } from "antd";
 // const { Title } = Typography;
 
@@ -31,7 +34,7 @@ const VerifyOTP = () => {
   //   onChange,
   //   onInput,
   // };
-
+  const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   const { state } = useLocation();
   const email = state?.email || "thecurve22@gmail.com";
@@ -83,13 +86,75 @@ const VerifyOTP = () => {
       inputRefs.current[index - 1].focus();
     }
   };
+  const verifyApi = async (otp) => {
+    if (!baseURL) {
+      toast.error("Services not Configured");
+      return null;
+    }
 
-  const handleSubmit = (e) => {
+    setIsLoading(true);
+    try {
+      const url = `${baseURL.replace(/\/+$/, "")}/mother/verify`;
+      const response = await axios.post(url, {
+        email,
+        otp,
+      });
+      if (response?.status === 200) {
+        toast.success(
+          response?.data?.message || "OTP verification successful!",
+        );
+        return response;
+      }
+    } catch (error) {
+      // console.error("Login API error:", error);
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "OTP verification failed",
+      );
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
       console.log("Verifying:", code);
-      nav("/login");
+      const response = await verifyApi(code);
+      if (response?.status === 200) {
+        nav("/login");
+      }
+    }
+  };
+  const resendOtpApi = async () => {
+    if (!baseURL) {
+      toast.error("Services not Configured");
+      return null;
+    }
+
+    setIsLoading(true);
+    try {
+      const url = `${baseURL.replace(/\/+$/, "")}/mother/resend-otp`;
+      const response = await axios.post(url, {
+        email,
+      });
+      if (response?.status === 200) {
+        toast.success(
+          response?.data?.message || "OTP verification successful!",
+        );
+        return response;
+      }
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "OTP verification failed",
+      );
+      return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -166,9 +231,13 @@ const VerifyOTP = () => {
                     <button
                       type="button"
                       className="resend-btn"
-                      onClick={() => setTimer(30)}
+                      disabled={isLoading}
+                      onClick={() => {
+                        setTimer(10);
+                        resendOtpApi();
+                      }}
                     >
-                      Resend code
+                      {isLoading ? "Resending..." : "Resend code"}
                     </button>
                   )}
                 </span>
@@ -177,10 +246,19 @@ const VerifyOTP = () => {
               <button
                 type="submit"
                 className="verify-btn"
-                disabled={otp.join("").length !== 6}
+                disabled={isLoading || otp.join("").length !== 6}
               >
-                Verify Code
-                <GoShieldCheck size={18} />
+                {isLoading ? (
+                  <>
+                    <span className="otp-spinner" aria-hidden="true" />
+                    Verifying...
+                  </>
+                ) : (
+                  <>
+                    Verify Code
+                    <GoShieldCheck size={18} />
+                  </>
+                )}
               </button>
             </form>
           </div>
