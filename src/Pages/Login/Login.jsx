@@ -348,7 +348,7 @@ const LoginPage = () => {
     try {
       const endpoint =
         userType === "mother" ? "mother/loginmother" : "hospital/login";
-      const url = `${baseURL.replace(/\/+$/, "")}/${endpoint}`;
+      const url = `${baseURL}/${endpoint}`;
       const response = await axios.post(url, {
         emailOrPhoneNumber: formData.email,
         password: formData.password,

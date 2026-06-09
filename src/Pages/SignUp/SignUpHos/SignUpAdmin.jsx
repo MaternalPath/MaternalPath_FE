@@ -298,7 +298,6 @@ const SignUpAdmin = () => {
 
     setIsLoading(true);
     try {
-      console.log('baseurl: ',baseURL)
       const url = `${baseURL}/hospital/register`;
       
       const data = new FormData();

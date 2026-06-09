@@ -20,20 +20,10 @@ import ButtonOtp from "./ButtonOtp/ButtonOtp";
 import axios from "axios";
 import { toast } from "react-toastify";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
-// import { Flex, Input, Typography } from "antd";
-// const { Title } = Typography;
+
 
 const VerifyOTP = () => {
-  // const onChange = (text) => {
-  //   console.log("onChange:", text);
-  // };
-  // const onInput = (value) => {
-  //   console.log("onInput:", value);
-  // };
-  // const sharedProps = {
-  //   onChange,
-  //   onInput,
-  // };
+
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   const { state } = useLocation();
