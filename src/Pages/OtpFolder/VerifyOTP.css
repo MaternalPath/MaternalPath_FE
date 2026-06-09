@@ -325,12 +325,6 @@
     justify-content: center;
     width: 100%;
 
-  @keyframes otp-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
     .illustration {
       max-width: 472px;
       width: 100%;
@@ -348,3 +342,9 @@
     }
   }
 }
+
+    @keyframes otp-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
