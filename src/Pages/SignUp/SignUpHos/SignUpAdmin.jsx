@@ -16,9 +16,11 @@ const SignUpAdmin = () => {
   const role = state?.role || "doctor";
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showText, setShowText] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [fileName, setFileName] = useState("");
+  const [logoFileName, setLogoFileName] = useState("");
+  const [docFileName, setDocFileName] = useState("");
 
   const [Passmeet, setPassmeet] = useState({
     length: false,
@@ -33,9 +35,11 @@ const SignUpAdmin = () => {
     email: "",
     phoneNumber: "",
     password: "",
+    confirmPassword: "",
     hospitalAddress: "",
     deliveryFee: "",
     medicalLicenseNumber: "",
+    hospitalLogo: null,
     verificationDocument: null,
   });
 
@@ -121,6 +125,27 @@ const SignUpAdmin = () => {
     }
   };
 
+  const catchConfirmPassword = (e) => {
+    setShowText(false);
+    const newConfirmPass = e.target.value;
+    setFormData({...formData, confirmPassword: newConfirmPass });
+    if (newConfirmPass.trim() === "") {
+      setErrMsg({
+        err: true,
+        name: "confirmPassword",
+        msg: "Confirm your password",
+      });
+    } else if (newConfirmPass!== formData.password) {
+      setErrMsg({
+        err: true,
+        name: "confirmPassword",
+        msg: "Passwords do not match",
+      });
+    } else {
+      setErrMsg({ err: false, name: "", msg: "" });
+    }
+  };
+
   const handlePasswordBlur = () => {
     setShowText(false);
   };
@@ -170,7 +195,25 @@ const SignUpAdmin = () => {
     }
   };
 
-  const catchFileUpload = (e) => {
+  const catchLogoUpload = (e) => {
+    setShowText(false);
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setErrMsg({
+          err: true,
+          name: "hospitalLogo",
+          msg: "File size must be less than 5MB",
+        });
+        return;
+      }
+      setFormData({...formData, hospitalLogo: file });
+      setLogoFileName(file.name);
+      setErrMsg({ err: false, name: "", msg: "" });
+    }
+  };
+
+  const catchDocUpload = (e) => {
     setShowText(false);
     const file = e.target.files[0];
     if (file) {
@@ -183,7 +226,7 @@ const SignUpAdmin = () => {
         return;
       }
       setFormData({...formData, verificationDocument: file });
-      setFileName(file.name);
+      setDocFileName(file.name);
       setErrMsg({ err: false, name: "", msg: "" });
     }
   };
@@ -215,6 +258,14 @@ const SignUpAdmin = () => {
       setErrMsg({ err: true, name: "password", msg: "Password doesn't meet all requirements" });
       return false;
     }
+    if (formData.confirmPassword.trim() === "") {
+      setErrMsg({ err: true, name: "confirmPassword", msg: "Confirm your password" });
+      return false;
+    }
+    if (formData.confirmPassword!== formData.password) {
+      setErrMsg({ err: true, name: "confirmPassword", msg: "Passwords do not match" });
+      return false;
+    }
     if (formData.hospitalAddress.trim() === "") {
       setErrMsg({ err: true, name: "hospitalAddress", msg: "Hospital address is required" });
       return false;
@@ -225,6 +276,10 @@ const SignUpAdmin = () => {
     }
     if (formData.medicalLicenseNumber.trim() === "") {
       setErrMsg({ err: true, name: "medicalLicenseNumber", msg: "Medical license number is required" });
+      return false;
+    }
+    if (!formData.hospitalLogo) {
+      setErrMsg({ err: true, name: "hospitalLogo", msg: "Hospital logo is required" });
       return false;
     }
     if (!formData.verificationDocument) {
@@ -253,11 +308,10 @@ const SignUpAdmin = () => {
       data.append("hospitalAddress", formData.hospitalAddress);
       data.append("deliveryFee", formData.deliveryFee);
       data.append("medicalLicenseNumber", formData.medicalLicenseNumber);
+      data.append("hospitalLogo", formData.hospitalLogo);
       data.append("verificationDocument", formData.verificationDocument);
 
-      const response = await axios.post(url, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(url, data);
       
       console.log("Signup response:", response);
       if (response?.status === 201) {
@@ -401,6 +455,34 @@ const SignUpAdmin = () => {
             </div>
 
             <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="password-input-wrapper">
+                <input
+                  type={showConfirmPassword? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={catchConfirmPassword}
+                  onBlur={catchConfirmPassword}
+                  onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
+                  style={{ paddingRight: "45px" }}
+                />
+                <button
+                  type="button"
+                  className="toggle_password"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword? <IoMdEyeOff /> : <IoMdEye />}
+                </button>
+              </div>
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "confirmPassword"? errMsg.msg : ""}
+              </span>
+            </div>
+
+            <div className="form-group">
               <label htmlFor="hospitalAddress">Hospital Address</label>
               <input
                 type="text"
@@ -452,14 +534,40 @@ const SignUpAdmin = () => {
             </div>
 
             <div className="form-group">
+              <label htmlFor="hospitalLogo">Hospital Logo</label>
+              <div className={`file-upload-wrapper ${logoFileName? "has-file" : ""}`}>
+                <input
+                  type="file"
+                  id="hospitalLogo"
+                  name="hospitalLogo"
+                  accept=".jpg,.jpeg,.png"
+                  onChange={catchLogoUpload}
+                  className="file-input"
+                />
+                <div className="file-upload-box">
+                  <FiUpload className="upload-icon" />
+                  <p className="upload-text">
+                    Upload hospital Logo
+                    <br />
+                    JPG, or PNG (max 5MB)
+                  </p>
+                  {logoFileName && <p className="file-name">Selected: {logoFileName}</p>}
+                </div>
+              </div>
+              <span style={{ color: "var(--error-color)" }}>
+                {errMsg.msg && errMsg.name === "hospitalLogo"? errMsg.msg : ""}
+              </span>
+            </div>
+
+            <div className="form-group">
               <label htmlFor="verificationDocument">Verification Document</label>
-              <div className={`file-upload-wrapper ${fileName? "has-file" : ""}`}>
+              <div className={`file-upload-wrapper ${docFileName? "has-file" : ""}`}>
                 <input
                   type="file"
                   id="verificationDocument"
                   name="verificationDocument"
                   accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={catchFileUpload}
+                  onChange={catchDocUpload}
                   className="file-input"
                 />
                 <div className="file-upload-box">
@@ -469,7 +577,7 @@ const SignUpAdmin = () => {
                     <br />
                     PDF, JPG, or PNG (max 5MB)
                   </p>
-                  {fileName && <p className="file-name">Selected: {fileName}</p>}
+                  {docFileName && <p className="file-name">Selected: {docFileName}</p>}
                 </div>
               </div>
               <span style={{ color: "var(--error-color)" }}>
