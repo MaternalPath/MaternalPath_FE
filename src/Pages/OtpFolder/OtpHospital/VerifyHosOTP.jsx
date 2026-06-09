@@ -23,7 +23,7 @@ const VerifyHosOTP = () => {
   const { state } = useLocation();
   const email = state?.email || "thecurve22@gmail.com";
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(180);
+  const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
 
   const featureCards = [
@@ -151,7 +151,7 @@ const VerifyHosOTP = () => {
                     <button
                       type="button"
                       className="resend-btn"
-                      onClick={() => setTimer(180)}
+                      onClick={() => setTimer(30)}
                     >
                       Resend code
                     </button>

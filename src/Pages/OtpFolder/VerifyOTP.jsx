@@ -39,7 +39,7 @@ const VerifyOTP = () => {
   const { state } = useLocation();
   const email = state?.email || "thecurve22@gmail.com";
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
 
   const featureCards = [
