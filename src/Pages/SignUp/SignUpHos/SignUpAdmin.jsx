@@ -262,7 +262,7 @@ const SignUpAdmin = () => {
       setErrMsg({ err: true, name: "confirmPassword", msg: "Confirm your password" });
       return false;
     }
-    if (formData.confirmPassword!== formData.password) {
+    if (formData.confirmPassword !== formData.password) {
       setErrMsg({ err: true, name: "confirmPassword", msg: "Passwords do not match" });
       return false;
     }
@@ -298,18 +298,20 @@ const SignUpAdmin = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/hospital/register`;
+      console.log('baseurl: ',baseURL)
+      const url = `${baseURL}/hospital/register`;
       
       const data = new FormData();
       data.append("hospitalName", formData.hospitalName);
       data.append("email", formData.email);
       data.append("phoneNumber", formData.phoneNumber);
       data.append("password", formData.password);
-      data.append("hospitalAddress", formData.hospitalAddress);
+      data.append('confirmPassword', formData.confirmPassword)
+      data.append("address", formData.hospitalAddress);
       data.append("deliveryFee", formData.deliveryFee);
       data.append("medicalLicenseNumber", formData.medicalLicenseNumber);
       data.append("hospitalLogo", formData.hospitalLogo);
-      data.append("verificationDocument", formData.verificationDocument);
+      data.append("verificationDocuments", formData.verificationDocument);
 
       const response = await axios.post(url, data);
       
@@ -333,7 +335,7 @@ const SignUpAdmin = () => {
     console.log("Hospital form submitted:", formData);
     const response = await signUpApi();
     if (!response) return;
-    nav("/otpVerification", { state: { role } });
+    nav("/otpVerificationHos", { state: { email: formData.email } });
   };
 
   const roleText =

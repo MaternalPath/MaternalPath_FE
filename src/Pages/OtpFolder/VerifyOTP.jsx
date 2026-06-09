@@ -94,7 +94,7 @@ const VerifyOTP = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/mother/verify`;
+      const url = `${baseURL}/mother/verify`;
       const response = await axios.post(url, {
         email,
         otp,
@@ -106,7 +106,6 @@ const VerifyOTP = () => {
         return response;
       }
     } catch (error) {
-      // console.error("Login API error:", error);
       toast.error(
         error?.response?.data?.message ||
           error.message ||
@@ -121,7 +120,6 @@ const VerifyOTP = () => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
-      console.log("Verifying:", code);
       const response = await verifyApi(code);
       if (response?.status === 200) {
         nav("/login");
@@ -136,7 +134,7 @@ const VerifyOTP = () => {
 
     setIsLoading(true);
     try {
-      const url = `${baseURL.replace(/\/+$/, "")}/mother/resend-otp`;
+      const url = `${baseURL}/mother/resend-otp`;
       const response = await axios.post(url, {
         email,
       });
@@ -233,7 +231,7 @@ const VerifyOTP = () => {
                       className="resend-btn"
                       disabled={isLoading}
                       onClick={() => {
-                        setTimer(10);
+                        setTimer(60);
                         resendOtpApi();
                       }}
                     >
