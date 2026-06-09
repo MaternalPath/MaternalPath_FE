@@ -1,0 +1,98 @@
+.reminder-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+  }
+
+  .reminder-card {
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+
+    &.blue {
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+
+      .card-icon {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      h4 {
+        color: #1e40af;
+      }
+
+      p {
+        color: #1e3a8a;
+      }
+    }
+
+    &.yellow {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+
+      .card-icon {
+        background: #fef08a;
+        color: #ca8a04;
+      }
+
+      h4 {
+        color: #854d0e;
+      }
+
+      p {
+        color: #713f12;
+      }
+    }
+
+    &.green {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+
+      .card-icon {
+        background: #bbf7d0;
+        color: #16a34a;
+      }
+
+      h4 {
+        color: #14532d;
+      }
+
+      p {
+        color: #166534;
+      }
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .card-content {
+      flex: 1;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+      }
+
+      p {
+        font-size: 12px;
+        margin: 0;
+        line-height: 1.5;
+      }
+    }
+  }
+}
