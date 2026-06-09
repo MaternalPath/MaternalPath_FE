@@ -1,0 +1,366 @@
+.savings-insights-wrapper {
+  .desktop-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .mobile-view {
+    display: none;
+  }
+
+  @media (max-width: 968px) {
+    .desktop-view {
+      display: none;
+    }
+
+    .mobile-view {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}
+
+.savings-progress-card,
+.savings-insights-card {
+  background: var(--bg-cards);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.savings-progress-card h3,
+.savings-insights-card h3 {
+  color: var(--text-hue);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.savings-progress-card .months-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.savings-progress-card .month-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.savings-progress-card .month-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.savings-progress-card .month-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--grey-hue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-deep-teal);
+  font-size: 16px;
+}
+
+.savings-progress-card .month-icon.active {
+  background: var(--primary-deep-teal);
+  border-color: var(--primary-deep-teal);
+}
+
+.savings-progress-card .month-icon.active .dot {
+  width: 10px;
+  height: 10px;
+  background: var(--bg-tint);
+  border-radius: 50%;
+}
+
+.savings-progress-card .month-item.done .month-icon {
+  background: var(--success-bg);
+  border-color: var(--primary-deep-teal);
+}
+
+.savings-progress-card .month-item.active .month-icon {
+  background: var(--primary-deep-teal);
+  border-color: var(--primary-deep-teal);
+}
+
+.savings-progress-card .month-name {
+  color: var(--text-hue);
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+}
+
+.savings-progress-card .target-label {
+  color: var(--text-tint);
+  font-size: 12px;
+  display: block;
+  margin-top: 2px;
+}
+
+.savings-progress-card .month-amount {
+  color: var(--text-hue);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.savings-progress-card .months-grid-mobile {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.savings-progress-card .month-card {
+  background: var(--bg-shade);
+  border-radius: 10px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.savings-progress-card .month-card .month-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--grey-hue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  color: var(--primary-deep-teal);
+}
+
+.savings-progress-card .month-card .month-icon.done {
+  background: var(--success-bg);
+  border-color: var(--primary-deep-teal);
+}
+
+.savings-progress-card .month-card .month-name {
+  display: block;
+  color: var(--text-hue);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.savings-progress-card .month-card .month-amount {
+  display: block;
+  color: var(--text-tint);
+  font-size: 12px;
+}
+
+.savings-insights-card .insight-box {
+  background: var(--bg-shade);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.savings-insights-card .insight-box:last-child {
+  margin-bottom: 0;
+}
+
+.savings-insights-card .insight-box.recommendation {
+  background: var(--info-bg);
+  display: flex;
+  gap: 12px;
+}
+
+.savings-insights-card .insight-box.recommendation .insight-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--grey-tint);
+  color: var(--info-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.savings-insights-card .insight-box.recommendation .insight-content h4 {
+  color: var(--info-accent);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.savings-insights-card .insight-box.recommendation .insight-content p {
+  color: var(--text-tones);
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.savings-insights-card .insight-box.track {
+  background: var(--success-bg);
+  border: 1px solid var(--success-accent);
+}
+
+.savings-insights-card .insight-box.track .insight-label {
+  color: var(--success-accent);
+  font-weight: 600;
+}
+
+.savings-insights-card .insight-box.track .insight-text {
+  color: var(--success-accent);
+}
+
+.savings-insights-card .insight-label {
+  color: var(--text-tint);
+  font-size: 12px;
+  margin: 0 0 4px 0;
+}
+
+.savings-insights-card .insight-value {
+  color: var(--text-hue);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.savings-insights-card .insight-text {
+  color: var(--text-tones);
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.savings-insights-card.mobile-carousel .carousel-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.savings-insights-card.mobile-carousel .carousel-track {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide {
+  min-width: 100%;
+  background: var(--bg-shade);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.recommendation {
+  background: var(--info-bg);
+  display: flex;
+  gap: 12px;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.recommendation .insight-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: var(--grey-tint);
+  color: var(--info-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.recommendation .insight-content h4 {
+  color: var(--info-accent);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.recommendation .insight-content p {
+  color: var(--text-tones);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.track {
+  background: var(--success-bg);
+  border: 1px solid var(--success-accent);
+}
+
+.savings-insights-card.mobile-carousel .insight-content-full .insight-label {
+  color: var(--text-tint);
+  font-size: 12px;
+  margin: 0 0 8px 0;
+}
+
+.savings-insights-card.mobile-carousel .insight-content-full .insight-value {
+  color: var(--text-hue);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.savings-insights-card.mobile-carousel .insight-content-full .insight-text {
+  color: var(--text-tones);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.savings-insights-card.mobile-carousel .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-cards);
+  border: 1px solid var(--grey-hue);
+  color: var(--text-tones);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.savings-insights-card.mobile-carousel .carousel-btn.prev {
+  left: -16px;
+}
+
+.savings-insights-card.mobile-carousel .carousel-btn.next {
+  right: -16px;
+}
+
+.savings-insights-card.mobile-carousel .carousel-btn:hover {
+  background: var(--bg-shade);
+}
+
+.savings-insights-card.mobile-carousel .carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.savings-insights-card.mobile-carousel .carousel-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grey-hue);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.savings-insights-card.mobile-carousel .carousel-dots .dot.active {
+  background: var(--primary-deep-teal);
+  width: 24px;
+  border-radius: 4px;
+}

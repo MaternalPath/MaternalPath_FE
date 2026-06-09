@@ -7,7 +7,6 @@ import {
 import { useRole } from "./context/RoleContext";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/SignUp/SignUpPatient/SignUpUser";
-// import FAQ from "./Pages/FAQ/FAQ";
 import FaqHome from "./Pages/FAQ/FaqHome";
 import How from "./Pages/How/How";
 import LandingPage from "./Pages/LandingPage/landingPage";
@@ -16,6 +15,7 @@ import About from "./Pages/About/About";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import PregnancyTracker from "./Pages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/EmergencyWallet/EmergencyWallet";
+import AddFunds from "./Components/EmergencyComponent/AddFundCom/AddFunds";
 import HealthGuidance from "./Pages/HealthGuidance/HealthGuidance";
 import Notifications from "./Pages/Notifications/Notifications";
 import DashboardHome from "./Pages/DashboardHome/DashboardHome";
@@ -65,6 +65,7 @@ const AppRoutes = () => (
         <Route path="hospitalDashboard" element={<HospitalOverview />} />
         <Route path="pregnancyTracker" element={<PregnancyTracker />} />
         <Route path="emergencyWallet" element={<EmergencyWallet />} />
+        <Route path="add-funds" element={<AddFunds />} />
         <Route path="healthGuidance" element={<HealthGuidance />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="profile" element={<Profile />} />
