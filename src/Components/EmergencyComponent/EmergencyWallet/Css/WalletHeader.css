@@ -1,60 +1,92 @@
 .wallet-header {
-  max-width: 1200px;
-  margin: 0 auto 24px;
+  max-width: 800px;
+  margin: 0 auto 20px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 32px;
+  min-height: 52px;
+}
 
-  @media (max-width: 640px) {
+.wallet-header .header-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wallet-header .header-left h1 {
+  color: var(--text-hue);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 2px 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.wallet-header .header-left p {
+  color: var(--text-tint);
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.wallet-header .add-funds-btn {
+  background: var(--primary-deep-teal);
+  color: var(--bg-tint);
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: background 0.2s;
+  font-family: var(--font-family);
+  flex-shrink: 0;
+}
+
+.wallet-header .add-funds-btn:hover {
+  background: var(--primary-hue);
+}
+
+.wallet-header .add-funds-btn svg {
+  font-size: 16px;
+  stroke-width: 2.5;
+}
+
+@media (max-width: 1024px) {
+  .wallet-header .header-left h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 900px) {
+  .wallet-header {
     flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
   }
 
-  .header-left {
-    display: flex;
-    flex-direction: column;
-    max-width: 800px;
-    h1 {
-      color: var(--text-hue);
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0 0 6px 0;
-
-      @media (max-width: 768px) {
-        font-size: 24px;
-      }
-    }
-
-    p {
-      color: var(--text-tint);
-      font-size: 14px;
-      margin: 0;
-    }
+  .wallet-header .header-left h1 {
+    white-space: normal;
+  }
+  
+  .wallet-header .header-left p {
+    white-space: normal;
   }
 
-  .add-funds-btn {
-    background: var(--primary-deep-teal);
-    color: var(--bg-tint);
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    transition: background 0.2s;
-    font-family: var(--font-family);
+  .wallet-header .add-funds-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 
-    &:hover {
-      background: var(--primary-hue);
-    }
-
-    @media (max-width: 640px) {
-      width: 100%;
-      justify-content: center;
-    }
+@media (max-width: 768px) {
+  .wallet-header .header-left h1 {
+    font-size: 24px;
   }
 }
