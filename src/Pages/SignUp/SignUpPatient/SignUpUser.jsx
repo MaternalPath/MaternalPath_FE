@@ -160,11 +160,19 @@ const SignUp = () => {
 
   const validateAllFields = () => {
     if (formData.firstName.trim() === "") {
-      setErrMsg({ err: true, name: "firstName", msg: "Your first name is required" });
+      setErrMsg({
+        err: true,
+        name: "firstName",
+        msg: "Your first name is required",
+      });
       return false;
     }
     if (formData.lastName.trim() === "") {
-      setErrMsg({ err: true, name: "lastName", msg: "Your last name is required" });
+      setErrMsg({
+        err: true,
+        name: "lastName",
+        msg: "Your last name is required",
+      });
       return false;
     }
     if (formData.email.trim() === "") {
@@ -172,20 +180,36 @@ const SignUp = () => {
       return false;
     }
     if (formData.phoneNumber.trim() === "") {
-      setErrMsg({ err: true, name: "phoneNumber", msg: "Your phone number is required" });
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Your phone number is required",
+      });
       return false;
     }
     if (formData.password.trim() === "") {
-      setErrMsg({ err: true, name: "password", msg: "Your password is required" });
+      setErrMsg({
+        err: true,
+        name: "password",
+        msg: "Your password is required",
+      });
       return false;
     }
     const allPassValid = Object.values(Passmeet).every(Boolean);
     if (!allPassValid) {
-      setErrMsg({ err: true, name: "password", msg: "Password doesn't meet all requirements" });
+      setErrMsg({
+        err: true,
+        name: "password",
+        msg: "Password doesn't meet all requirements",
+      });
       return false;
     }
     if (formData.confirmPassword !== formData.password) {
-      setErrMsg({ err: true, name: "confirmPassword", msg: "Passwords do not match" });
+      setErrMsg({
+        err: true,
+        name: "confirmPassword",
+        msg: "Passwords do not match",
+      });
       return false;
     }
     return true;
@@ -221,10 +245,11 @@ const SignUp = () => {
     if (!validateAllFields()) return;
     const response = await signUpApi();
     if (!response) return;
-    nav('/otpverification')
+    nav("/otpverification", {state: {email:formData.email} });
   };
 
-  const roleText = role === "mother" ? "Pregnant Mother" : "Healthcare Professional";
+  const roleText =
+    role === "mother" ? "Pregnant Mother" : "Healthcare Professional";
 
   return (
     <main className="signup-page">
@@ -337,19 +362,29 @@ const SignUp = () => {
 
               {showText && (
                 <div className="password-requirements">
-                  <p className={`requirement-item ${Passmeet.length ? "valid" : ""}`}>
+                  <p
+                    className={`requirement-item ${Passmeet.length ? "valid" : ""}`}
+                  >
                     {Passmeet.length ? "✔" : "●"} Must have 8+ characters
                   </p>
-                  <p className={`requirement-item ${Passmeet.upper ? "valid" : ""}`}>
+                  <p
+                    className={`requirement-item ${Passmeet.upper ? "valid" : ""}`}
+                  >
                     {Passmeet.upper ? "✔" : "●"} Must contain uppercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.lower ? "valid" : ""}`}>
+                  <p
+                    className={`requirement-item ${Passmeet.lower ? "valid" : ""}`}
+                  >
                     {Passmeet.lower ? "✔" : "●"} Must contain lowercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.number ? "valid" : ""}`}>
+                  <p
+                    className={`requirement-item ${Passmeet.number ? "valid" : ""}`}
+                  >
                     {Passmeet.number ? "✔" : "●"} Must contain numbers
                   </p>
-                  <p className={`requirement-item ${Passmeet.special ? "valid" : ""}`}>
+                  <p
+                    className={`requirement-item ${Passmeet.special ? "valid" : ""}`}
+                  >
                     {Passmeet.special ? "✔" : "●"} Add special characters
                   </p>
                 </div>
@@ -374,13 +409,17 @@ const SignUp = () => {
                   type="button"
                   className="toggle_password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                  aria-label={
+                    showConfirmPassword ? "Hide password" : "Show password"
+                  }
                 >
                   {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
               <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "confirmPassword" ? errMsg.msg : ""}
+                {errMsg.msg && errMsg.name === "confirmPassword"
+                  ? errMsg.msg
+                  : ""}
               </span>
             </div>
 
@@ -391,7 +430,9 @@ const SignUp = () => {
             >
               {isLoading ? (
                 <>
-                  <span className="button-spinner" aria-hidden="true">⏳</span>
+                  <span className="button-spinner" aria-hidden="true">
+                    ⏳
+                  </span>
                   Creating your account...
                 </>
               ) : (

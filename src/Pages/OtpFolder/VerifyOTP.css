@@ -285,6 +285,16 @@
             cursor: not-allowed;
           }
         }
+
+        .otp-spinner {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          border: 2px solid rgba(255, 255, 255, 0.5);
+          border-top-color: #ffffff;
+          border-radius: 50%;
+          animation: otp-spin 0.8s linear infinite;
+        }
       }
     }
 
@@ -314,6 +324,12 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+
+  @keyframes otp-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
     .illustration {
       max-width: 472px;

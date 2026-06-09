@@ -250,7 +250,7 @@ export default LoginPM; */
 }
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   MdEmail,
   MdLock,
@@ -270,10 +270,11 @@ import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
 import axios from "axios";
 import { toast } from "react-toastify";
+// import {useNavigate } from "react-router-dom";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
-
 const LoginPage = () => {
+  const nav = useNavigate();
   const [userType, setUserType] = useState("mother");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -345,7 +346,8 @@ const LoginPage = () => {
 
     setIsLoading(true);
     try {
-      const endpoint = userType === "mother" ? "mother/loginmother" : "hospital/login";
+      const endpoint =
+        userType === "mother" ? "mother/loginmother" : "hospital/login";
       const url = `${baseURL.replace(/\/+$/, "")}/${endpoint}`;
       const response = await axios.post(url, {
         emailOrPhoneNumber: formData.email,
@@ -358,7 +360,9 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error("Login API error:", error);
-      toast.error(error?.response?.data?.message || error.message || "Login failed");
+      toast.error(
+        error?.response?.data?.message || error.message || "Login failed",
+      );
       return null;
     } finally {
       setIsLoading(false);
@@ -376,15 +380,16 @@ const LoginPage = () => {
     const response = await loginApi();
     if (response?.status === 200) {
       console.log("Login successful:", { userType, ...formData });
-      // TODO: Store token and redirect to dashboard
-      localStorage.setItem('token', response?.data?.token)
-      nav("/dashboard");
+
+      localStorage.setItem("token", response?.data?.token);
+      nav("/dashboard/profile");
     }
   };
 
   const handleGoogleLogin = () => {
     setErrors({ submit: "Google login not connected yet" });
   };
+
 
   return (
     <>
@@ -419,19 +424,13 @@ const LoginPage = () => {
             </div>
 
             <div className="mp-info-banner">
-              {
-                userType === 'mother'
-                ? <CiHeart /> 
-                : <GiHospital />
-              }
+              {userType === "mother" ? <CiHeart /> : <GiHospital />}
               <span>
                 {userType === "mother"
                   ? "Sign in to access your pregnancy tracker, health guidance, and emergency wallet."
                   : "Sign in to access the patient verification portal and hospital authorization tools."}
               </span>
             </div>
-
-
 
             <form onSubmit={handleSubmit} className="mp-login-form" noValidate>
               <div className="mp-form-group">
@@ -493,10 +492,16 @@ const LoginPage = () => {
                 <Link to="/forgotPassword">Forgot Password?</Link>
               </div>
 
-              <button type="submit" className="mp-login-btn" disabled={isLoading}>
+              <button
+                type="submit"
+                className="mp-login-btn"
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
-                    <span className="login-spinner" aria-hidden="true">⏳</span>
+                    <span className="login-spinner" aria-hidden="true">
+                      ⏳
+                    </span>
                     Signing in...
                   </>
                 ) : (
@@ -507,7 +512,8 @@ const LoginPage = () => {
               </button>
 
               <p className="mp-signup-text">
-                Don't have an account? <Link to="/getStarted">Create Account</Link>
+                Don't have an account?{" "}
+                <Link to="/getStarted">Create Account</Link>
               </p>
 
               <div className="mp-divider">
