@@ -11,6 +11,9 @@
   }
 
   .header-left {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
     h1 {
       color: var(--text-hue);
       font-size: 28px;

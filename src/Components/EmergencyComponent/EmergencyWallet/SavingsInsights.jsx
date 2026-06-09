@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiCheck, FiTrendingUp, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import "./SavingsInsights.css";
+import "./Css/SavingsInsights.css";
 
 const SavingsInsights = ({ monthlyData, data }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
