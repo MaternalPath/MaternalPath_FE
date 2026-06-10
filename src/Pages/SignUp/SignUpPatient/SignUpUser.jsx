@@ -273,7 +273,7 @@ const SignUp = () => {
                 onBlur={catchFirstName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "6px" }}>
                 {errMsg.msg && errMsg.name === "firstName" ? errMsg.msg : ""}
               </span>
             </div>

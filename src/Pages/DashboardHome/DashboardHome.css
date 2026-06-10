@@ -1,8 +1,6 @@
 .dashboard {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  background: #f9faf8;
+  font-family: var(--font-family);
+  /* background: var(--bg-cards); */
   min-height: 100vh;
   padding: 28px;
   color: #1f2937;
@@ -11,7 +9,12 @@
     max-width: 1500px;
     margin: 0 auto;
   }
-  @media (max-width: 768px) {
-    max-width: 510px;
 }
-}
+@media (max-width: 768px) {
+    .dashboard {
+      padding: 0;
+        .dashboard-container {
+        max-width: 600px;
+      }
+    }
+  }
