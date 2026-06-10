@@ -4,27 +4,75 @@ import { FiBell, FiMenu } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import logo from "../../assets/header.png";
+import { useNavigate } from "react-router-dom";
+import { useRole } from "../../context/RoleContext";
 
 const DashboardHeader = ({ onMenuClick }) => {
+  const navigate = useNavigate();
+  const { role } = useRole();
+
+  const handleNotificationsClick = () => {
+    const targetRoute =
+      role === "hospital"
+        ? "/dashboard/notificationsHospital"
+        : "/dashboard/notifications";
+    navigate(targetRoute);
+  };
+
+  const handleSettingsClick = () => {
+    const targetRoute =
+      role === "hospital"
+        ? "/dashboard/settingsHospital"
+        : "/dashboard/settings";
+    navigate(targetRoute);
+  };
+
+  const handleProfileClick = () => {
+    const targetRoute =
+      //   role === "hospital"
+      //     ? "/dashboard/settingsHospital"
+      //     : "/dashboard/profile";
+      // navigate(targetRoute);
+      navigate("/dashboard/profile");
+  };
+
   return (
     <header className="dashboard-header-container">
       <div className="sidebar-logo">
-        <img src={logo} alt="MaternalPath" className="sidebar-logo-image" />
+        <img
+          src={logo}
+          onClick={()=>navigate("/")}
+          alt="MaternalPath"
+          className="sidebar-logo-image"
+        />
       </div>
 
       <div className="dashboard-header-right desktop-dashHeader">
-        <button className="header-icon-btn" aria-label="Notifications">
-          <FiBell size={20} />
+        <button
+          className="header-icon-btn"
+          aria-label="Notifications"
+          onClick={handleNotificationsClick}
+        >
+          <FiBell size={21} />
           <span className="dashboard-header-bell-dot" />
         </button>
 
-        <button className="header-icon-btn" aria-label="Settings">
-          <IoSettingsOutline size={20} />
+        <button
+          className="header-icon-btn"
+          aria-label="Settings"
+          onClick={handleSettingsClick}
+        >
+          <IoSettingsOutline size={21} />
         </button>
 
-        <div className="dashboard-header-avatar">
-          <MdOutlinePeopleOutline size={20} />
-        </div>
+        <button
+          className="dashboard-header-avatar"
+          aria-label="Profile"
+          onClick={handleProfileClick}
+          type="button"
+        >
+          <MdOutlinePeopleOutline size={21} />
+        </button>
       </div>
 
       <button

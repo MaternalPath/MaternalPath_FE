@@ -11,7 +11,7 @@ import FaqHome from "./Pages/FAQ/FaqHome";
 import How from "./Pages/How/How";
 import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
-import VerifyHosOTP from './Pages/OtpFolder/OtpHospital/VerifyHosOTP'
+import VerifyHosOTP from "./Pages/OtpFolder/OtpHospital/VerifyHosOTP";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import PregnancyTracker from "./Pages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/EmergencyWallet/EmergencyWallet";
@@ -29,7 +29,12 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import CheckEmail from "./Pages/ForgotPassword/CheckEmail";
 import CreateNewPassword from "./Pages/ForgotPassword/CreateNewPassword";
 import PasswordResetSuccess from "./Pages/ForgotPassword/PasswordResetSuccess";
-
+import VerifyPatient from "./Pages/VerifyPatient/VerifyPatient";
+import UploadedBills from "./Pages/UploadedBills/UploadedBills";
+import VerificationHistory from "./Pages/VerificationHistory/VerificationHistory";
+import NotificationsHospital from "./Pages/NotificationsHospiatal/NotificationsHospital";
+import SettingsHospital from "./Pages/SettingsHospital/SettingsHospital";
+import Settings from "./Pages/Settings/Settings";
 const DashboardIndex = () => {
   const { role } = useRole();
   return role === "hospital" ? (
@@ -51,8 +56,7 @@ const AppRoutes = () => (
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
       <Route path="/otpVerification" element={<VerifyOTP />} />
-      <Route path="/otpVerificationHos" element={<VerifyHosOTP  />} />
-
+      <Route path="/otpVerificationHos" element={<VerifyHosOTP />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
@@ -64,6 +68,16 @@ const AppRoutes = () => (
         <Route index element={<DashboardIndex />} />
         <Route path="hospitalOverview" element={<HospitalOverview />} />
         <Route path="hospitalDashboard" element={<HospitalOverview />} />
+        <Route path="verifyPatient" element={<VerifyPatient />} />
+        <Route path="uploadedBills" element={<UploadedBills />} />
+        <Route path="verificationHistory" element={<VerificationHistory />} />
+        <Route
+          path="notificationsHospital"
+          element={<NotificationsHospital />}
+        />
+        <Route path="settingsHospital" element={<SettingsHospital />} />
+        <Route path="settings" element={<Settings />} />
+
         <Route path="pregnancyTracker" element={<PregnancyTracker />} />
         <Route path="emergencyWallet" element={<EmergencyWallet />} />
         <Route path="add-funds" element={<AddFunds />} />

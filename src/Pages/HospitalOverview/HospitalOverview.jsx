@@ -11,7 +11,7 @@ const HospitalOverview = () => {
       </header>
 
       <div className="hospital-overview-placeholder">
-        <p>Hospital dashboard content will go here.</p>
+        <p>Hospital dashboard content will go here.andddd</p>
       </div>
     </div>
   );
