@@ -1,6 +1,8 @@
 .dashboard-layout {
   min-height: 100vh;
   background: #f9faf8;
+  /* background-color: orange; */
+   /* flex: 1; */
 }
 
 .dashboard-body {
@@ -9,11 +11,20 @@
 
 .dashboard-content {
   width: 100%;
-  /* flex: 1; */
+  flex: 1;
   min-height: calc(100vh - 64px);
 
   @media (max-width: 768px) {
     padding: 16px;
+  }
+}
+
+@media (min-width: 769px) {
+  /* account for the fixed sidebar (260px) so main content doesn't shrink under it */
+  .dashboard-content {
+    margin-left: 240px;
+    box-sizing: border-box;
+    padding: 10px 50px;
   }
 }
 
