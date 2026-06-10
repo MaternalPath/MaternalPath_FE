@@ -1,0 +1,98 @@
+.week-overview-card {
+  background: #f0f7f2;
+  border: 1px solid #e2e8e2;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 32px;
+  align-items: center;
+
+}
+
+.week-header h2 {
+  display: inline;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.trimester {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.week-desc {
+  color: #4b5563;
+  font-size: 13px;
+  margin: 8px 0 18px 0;
+}
+
+.wellness-status {
+  background: #e6f4ea;
+  border: 1px solid #cde9d7;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.status-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #166534;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.wellness-status p {
+  margin: 0;
+  font-size: 12px;
+  color: #2f6b4a;
+  line-height: 1.4;
+}
+
+.focus-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.focus-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.focus-card .label {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.focus-card .value {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.overview-illustration {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+    width: 300px;
+}
+}

@@ -1,0 +1,270 @@
+.reminders-card {
+  background: #e6f5f1;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  color: var(--primary-deep-teal);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.reminders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.reminder-item {
+  background: var(--bg-cards);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.reminder-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-shade);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-deep-teal);
+  flex-shrink: 0;
+}
+
+.reminder-content h4 {
+  color: var(--text-hue);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+}
+
+.reminder-content p {
+  color: var(--text-tint);
+  font-size: 12px;
+  margin: 0 0 4px 0;
+}
+
+.reminder-time {
+  color: var(--text-tint);
+  font-size: 11px;
+}
+
+.timeline-card {
+  background: #e6f5f1;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timeline-item {
+  background: var(--bg-cards);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.timeline-item.current {
+  border: 2px solid var(--primary-deep-teal);
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.timeline-header h4 {
+  color: var(--text-hue);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.badge {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge.completed {
+  background: var(--success-bg);
+  color: var(--success-accent);
+}
+
+.badge.current {
+  background: var(--primary-deep-teal);
+  color: var(--bg-tint);
+}
+
+.timeline-weeks {
+  color: var(--text-tint);
+  font-size: 12px;
+  margin: 0 0 12px 0;
+}
+
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: var(--bg-shade);
+  color: var(--text-tones);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .mobile-section {
+    margin-bottom: 24px;
+  }
+
+  .reminders-carousel {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .reminder-card {
+    background: var(--bg-cards);
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 280px;
+    flex-shrink: 0;
+  }
+
+  .reminder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .reminder-header h4 {
+    color: var(--text-hue);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grey-hue);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+  }
+
+  .reminder-desc {
+    color: var(--text-tint);
+    font-size: 12px;
+    margin: 0 0 12px 0;
+  }
+
+  .reminder-progress {
+    height: 3px;
+    background: var(--grey-tint);
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+
+  .reminder-status {
+    color: var(--text-tint);
+    font-size: 11px;
+  }
+
+  .carousel-container {
+    position: relative;
+  }
+
+  .timeline-card-mobile {
+    background: var(--bg-cards);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .timeline-card-mobile h4 {
+    color: var(--text-hue);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+
+  .timeline-tag {
+    background: var(--bg-shade);
+    color: var(--text-tones);
+    padding: 8px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--bg-cards);
+    border: 1px solid var(--grey-hue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tones);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .carousel-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--grey-hue);
+  }
+
+  .carousel-dots .dot.active {
+    background: var(--primary-deep-teal);
+    width: 20px;
+    border-radius: 3px;
+  }
+}
