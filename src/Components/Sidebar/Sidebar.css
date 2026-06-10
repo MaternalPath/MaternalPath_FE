@@ -1,11 +1,14 @@
 .sidebar-navi {
-  width: 320px;
-  background: #0f766e;
-  height: calc(100vh - 64px);
-  position: sticky;
+  /* background: #0f766e; */
+  height:90vh;
+    position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
   top: 64px;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 2.5rem;
   box-sizing: border-box;
+  background-color: #0c5e58;
 
   @media (max-width: 768px) {
     display: none;
@@ -16,6 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  /* background-color: red; */
 }
 
 .sidebar-link {
@@ -26,8 +30,8 @@
   border-radius: 12px;
   color: #ccfbf1;
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
   transition: all 0.2s;
 
   &:hover {
