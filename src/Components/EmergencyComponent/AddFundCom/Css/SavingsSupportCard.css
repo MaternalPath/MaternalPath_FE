@@ -1,9 +1,9 @@
 .support-card {
-  background: #fef3c7;
+  background: #fafaf8;
   border-radius: 12px;
   padding: 28px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  text-align: center;
+  text-align: left;
 
   @media (max-width: 768px) {
     padding: 20px;
@@ -13,24 +13,24 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: #fde68a;
-    color: #d97706;
+    background: var(--bg-cards);
+    color: #099161;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 12px;
+    /* margin: 0 auto 12px; */
     font-size: 20px;
   }
 
   h3 {
-    color: #92400e;
+    color: #096e47;
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 8px 0;
   }
 
   p {
-    color: #78350f;
+    color: #0f786c;
     font-size: 13px;
     line-height: 1.6;
     margin: 0;

@@ -8,7 +8,7 @@ const Sidebar = () => {
   const navItems = getNavItems(role);
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar-navi">
       <nav className="sidebar-nav">
         {navItems.map((item) => (
           <NavLink
