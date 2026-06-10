@@ -1,8 +1,9 @@
 .emergency-wallet-page {
   min-height: 100vh;
   background: var(--bg-shade);
-  padding: 24px 20px 60px;
+  padding: 30px;
   font-family: var(--font-family);
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     padding: 16px 12px 40px;
@@ -10,7 +11,7 @@
 }
 
 .wallet-content {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

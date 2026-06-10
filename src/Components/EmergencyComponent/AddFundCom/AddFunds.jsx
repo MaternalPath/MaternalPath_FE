@@ -44,15 +44,16 @@ const AddFunds = () => {
               walletData={walletData}
               onSubmit={handleSubmit}
             />
-            <RecentTransactions transactions={transactions} />
           </div>
-
+          
           <aside className="sidebar">
-            <WalletBalanceCard walletData={walletData} />
             <PaymentSecurityCard />
             <SavingsSupportCard />
+            <WalletBalanceCard walletData={walletData} />
           </aside>
+          
         </div>
+        <RecentTransactions transactions={transactions} />
       </div>
     </main>
   );

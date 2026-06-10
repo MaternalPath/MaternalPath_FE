@@ -32,6 +32,9 @@
       gap: 8px;
       color: #374151;
       font-size: 13px;
+      padding: 0.7rem;
+      background-color: rgb(245, 244, 242);
+      border-radius: 0.5rem;
 
       svg {
         color: #0f766e;

@@ -1,4 +1,4 @@
-.fund-wallet-card {
+.wallet-balance-card {
   background: #ffffff;
   border-radius: 12px;
   padding: 28px;
@@ -8,285 +8,71 @@
     padding: 20px;
   }
 
-  h2 {
-    color: #0f766e;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 0 8px 0;
-
-    @media (max-width: 768px) {
-      font-size: 18px;
-    }
-  }
-
-  .subtitle {
+  .label {
     color: #6b7280;
     font-size: 13px;
-    margin: 0 0 24px 0;
-    line-height: 1.5;
+    margin: 0 0 8px 0;
   }
 
-  .form-group {
-    margin-bottom: 20px;
+  .balance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 
-    label {
-      display: block;
-      color: #374151;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    .amount-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      border: 2px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 14px 16px;
-      background: #f9fafb;
-      transition: all 0.2s;
-
-      &:focus-within {
-        border-color: #0f766e;
-        background: #ffffff;
-      }
-
-      .currency {
-        color: #1a1a1a;
-        font-size: 18px;
-        font-weight: 600;
-        margin-right: 8px;
-      }
-
-      input {
-        border: none;
-        background: transparent;
-        font-size: 18px;
-        font-weight: 600;
-        color: #1a1a1a;
-        width: 100%;
-        outline: none;
-
-        &::placeholder {
-          color: #9ca3af;
-        }
-      }
-    }
-  }
-
-  .quick-amounts {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
-
-    @media (max-width: 480px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .quick-amount-btn {
-      padding: 10px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: #ffffff;
-      color: #374151;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-
-      &:hover {
-        border-color: #0f766e;
-      }
-
-      &.active {
-        background: #d1fae5;
-        border-color: #0f766e;
-        color: #0f766e;
-      }
-    }
-  }
-
-  .payment-method-section {
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-
-      label {
-        color: #374151;
-        font-size: 13px;
-        font-weight: 500;
-        margin: 0;
-      }
-
-      .powered-by {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        color: #6b7280;
-        font-size: 11px;
-      }
-    }
-
-    .payment-methods {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-
-      .payment-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          border-color: #0f766e;
-        }
-
-        &.selected {
-          border-color: #0f766e;
-          background: #f0fdfa;
-        }
-
-        .payment-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 8px;
-          background: #0f766e;
-          color: #ffffff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-          flex-shrink: 0;
-        }
-
-        .payment-info {
-          flex: 1;
-
-          h4 {
-            color: #1a1a1a;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0 0 2px 0;
-          }
-
-          p {
-            color: #6b7280;
-            font-size: 12px;
-            margin: 0;
-          }
-        }
-
-        .radio {
-          width: 20px;
-          height: 20px;
-          border: 2px solid #d1d5db;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          .radio-circle {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: transparent;
-
-            &.checked {
-              background: #0f766e;
-            }
-          }
-        }
-
-        &.selected .radio {
-          border-color: #0f766e;
-        }
-      }
-    }
-  }
-
-  .savings-progress-card {
-    background: #f0fdfa;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 20px 0;
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #374151;
-
-      .progress-percent {
-        color: #0f766e;
-        font-weight: 600;
-      }
-    }
-
-    .progress-amounts {
-      font-size: 16px;
+    h2 {
+      color: #0f766e;
+      font-size: 32px;
       font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 10px;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: #d1fae5;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 8px;
-
-      .progress-fill {
-        height: 100%;
-        background: #0f766e;
-        border-radius: 4px;
-        transition: width 0.3s ease;
-      }
-    }
-
-    .remaining {
-      color: #6b7280;
-      font-size: 12px;
       margin: 0;
     }
-  }
 
-  .continue-btn {
-    width: 100%;
-    padding: 14px;
-    background: #0f766e;
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background 0.2s;
-
-    &:hover {
-      background: #0d6e64;
+    .wallet-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #d1fae5;
+      color: #0f766e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
     }
   }
 
-  .redirect-text {
-    text-align: center;
-    color: #9ca3af;
+  .goal-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar.small {
+    height: 6px;
+    background: #d1fae5;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+
+    .progress-fill {
+      height: 100%;
+      background: #0f766e;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+  }
+
+  .goal-stats {
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
-    margin: 12px 0 0 0;
+    color: #6b7280;
+    margin-top: 8px;
+    .goal-amount {
+      font: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
   }
 }

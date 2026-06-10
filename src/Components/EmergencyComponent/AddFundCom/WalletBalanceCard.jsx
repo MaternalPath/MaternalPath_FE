@@ -18,14 +18,10 @@ const WalletBalanceCard = ({ walletData }) => {
       </div>
       <div className="goal-row">
         <span>Savings Goal</span>
-        <span className="goal-amount">{formatCurrency(savingsGoal)}</span>
-      </div>
-      <div className="progress-bar small">
-        <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
+        <span>{progressPercent}% Complete</span>
       </div>
       <div className="goal-stats">
-        <span>{progressPercent}% Complete</span>
-        <span>Remaining: {formatCurrency(savingsGoal - currentBalance)}</span>
+        <span className="goal-amount">{formatCurrency(savingsGoal)}</span>
       </div>
     </div>
   );

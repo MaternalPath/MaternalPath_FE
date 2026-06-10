@@ -1,12 +1,12 @@
 import React from "react";
-import { BsGraphUpArrow } from "react-icons/bs";
+import { FiHeart } from "react-icons/fi";
 import "../AddFundCom/Css/SavingsSupportCard.css";
 
 const SavingsSupportCard = () => {
   return (
     <div className="support-card">
       <div className="support-icon">
-        <BsGraphUpArrow />
+        <FiHeart />
       </div>
       <h3>Savings Support</h3>
       <p>

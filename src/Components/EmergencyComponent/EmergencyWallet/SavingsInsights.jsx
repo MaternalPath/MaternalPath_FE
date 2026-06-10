@@ -112,7 +112,7 @@ const SavingsInsights = ({ monthlyData, data }) => {
                   {insight.type === "recommendation" ? (
                     <>
                       <div className="insight-icon">
-                        <FiTrendingUp />
+                        {/* <FiTrendingUp /> */}
                       </div>
                       <div className="insight-content">
                         <h4>{insight.title}</h4>
