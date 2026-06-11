@@ -1,24 +1,50 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
 
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
+
 const CreateNewPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const email = location.state?.email || '';
+  const role = location.state?.role || 'mother';
+  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      alert('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
-    navigate('/passwordResetSuccess'); // Reset password → next page
+
+    const endpoint = role === 'hospital' ? 'hospital/reset-password' : 'mother/reset-password';
+    setIsLoading(true);
+
+    try {
+      if (baseURL) {
+        await axios.post(`${baseURL}/${endpoint}`, {
+          email,
+          password: newPassword,
+        });
+      }
+      navigate('/passwordResetSuccess', { state: { role } });
+    } catch (error) {
+      toast.error('Unable to reset password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -32,7 +58,9 @@ const CreateNewPassword = () => {
       
       <div className="auth-right">
         <h2>Create New Password</h2>
-        <p className="auth-subtitle">Enter a strong new password for your account.</p>
+        <p className="auth-subtitle">
+          Enter a strong new password for your {roleLabel} account.
+        </p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -75,7 +103,9 @@ const CreateNewPassword = () => {
             </div>
           </div>
           
-          <button type="submit" className="btn-primary">Reset Password</button>
+          <button type="submit" className="btn-primary" disabled={isLoading}>
+            {isLoading ? 'Resetting...' : 'Reset Password'}
+          </button>
         </form>
       </div>
     </div>

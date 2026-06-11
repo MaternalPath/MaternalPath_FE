@@ -9,13 +9,15 @@ const CheckEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email || 'your email';
+  const role = location.state?.role || 'mother';
+  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
 
   const handleOpenEmail = () => {
-    navigate('/createNewPassword'); // Open email app → Create Password for now
+    navigate('/createNewPassword', { state: { email, role } });
   };
 
   const handleResend = () => {
-    navigate('/createNewPassword'); // Resend → next page per your request
+    navigate('/createNewPassword', { state: { email, role } });
   };
 
   return (
@@ -32,7 +34,9 @@ const CheckEmail = () => {
           <FiMail size={32} />
         </div>
         <h2>Check Your Email</h2>
-        <p className="auth-subtitle">We've sent a password reset link to your email address.</p>
+        <p className="auth-subtitle">
+          We've sent a password reset link to your {roleLabel} account.
+        </p>
         <p className="email-text">{email}</p>
         <p className="auth-subtitle">Please check your inbox and follow the instructions to reset your password.</p>
         

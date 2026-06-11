@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FiCheckCircle } from "react-icons/fi";
 import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
@@ -7,6 +7,9 @@ import backgroundImage from "../../assets/pana.png";
 
 const PasswordResetSuccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const role = location.state?.role || 'mother';
+  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
 
   return (
     <div className="auth-container">
@@ -30,11 +33,13 @@ const PasswordResetSuccess = () => {
         </div>
         <h2>Password Reset Successful</h2>
         <p className="auth-subtitle">
-          Your password has been updated successfully. You can now sign in using
-          your new credentials.
+          Your {roleLabel} account password has been updated successfully. You can now sign in using your new credentials.
         </p>
 
-        <button onClick={() => navigate("/login")} className="btn-primary">
+        <button
+          onClick={() => navigate("/login", { state: { role } })}
+          className="btn-primary"
+        >
           Return to Login
         </button>
       </div>

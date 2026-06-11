@@ -250,7 +250,7 @@ export default LoginPM; */
 }
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   MdEmail,
   MdLock,
@@ -270,12 +270,16 @@ import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
 import axios from "axios";
 import { toast } from "react-toastify";
-// import {useNavigate } from "react-router-dom";
+import { useRole } from "../../context/RoleContext";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const LoginPage = () => {
   const nav = useNavigate();
-  const [userType, setUserType] = useState("mother");
+  const location = useLocation();
+  const { role: defaultRole, setRole } = useRole();
+  const [userType, setUserType] = useState(
+    location.state?.role || defaultRole || "mother"
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -409,16 +413,22 @@ const LoginPage = () => {
                 <button
                   type="button"
                   className={userType === "mother" ? "active" : ""}
-                  onClick={() => setUserType("mother")}
+                  onClick={() => {
+                    setUserType("mother");
+                    setRole("mother");
+                  }}
                 >
                   <PiBaby /> Pregnant Mother
                 </button>
                 <button
                   type="button"
-                  className={userType === "professional" ? "active" : ""}
-                  onClick={() => setUserType("professional")}
+                  className={userType === "hospital" ? "active" : ""}
+                  onClick={() => {
+                    setUserType("hospital");
+                    setRole("hospital");
+                  }}
                 >
-                  <GiHospital /> Heaithcare Professional
+                  <GiHospital /> Healthcare Professional
                 </button>
               </div>
             </div>
@@ -489,7 +499,9 @@ const LoginPage = () => {
                   />
                   Remember me
                 </label>
-                <Link to="/forgotPassword">Forgot Password?</Link>
+                <Link to="/forgotPassword" state={{ role: userType }}>
+            Forgot Password?
+          </Link>
               </div>
 
               <button

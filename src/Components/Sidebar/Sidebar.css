@@ -1,12 +1,11 @@
 .sidebar-navi {
-  /* background: #0f766e; */
-  height:90vh;
-    position: fixed;
+  height: 90vh;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 259px;
   top: 64px;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem 1.5rem;
   box-sizing: border-box;
   background-color: #0c5e58;
 
