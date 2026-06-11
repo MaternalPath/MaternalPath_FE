@@ -1,6 +1,6 @@
 .cta-section {
-  padding: 80px 80px 60px;
-  background: #A7C4A0;
+  padding:  60px;
+  background: #a7c4a0;
   text-align: center;
 
   @media (max-width: 1024px) {
@@ -58,7 +58,7 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-bottom: 40px;
-    .btn-primary {
+    .cta-btn-primary {
       background: var(--primary-deep-teal);
       color: white;
       border: none;
@@ -68,7 +68,7 @@
       font-weight: 500;
       cursor: pointer;
     }
-    .btn-outline-light {
+    .cta-btn-outline-light {
       background: transparent;
       color: var(--primary-deep-teal);
       border: 2px solid var(--primary-deep-teal);
@@ -106,9 +106,9 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    background: #C1D6BD;
+    background: #c1d6bd;
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 20px;
     max-width: 100%;
     margin: 0 auto;
     text-align: left;
@@ -120,9 +120,10 @@
     }
 
     p {
-      font-size: 11px;
+      font-size: 14px;
+      font-weight: 500;
       line-height: 1.6;
-      color: var(--text-tones);
+      color: var(--primary-deep-teal);
       margin: 0;
 
       strong {

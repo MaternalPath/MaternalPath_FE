@@ -24,7 +24,7 @@ const MissionVisionSection = () => {
 
   return (
     <section className="mission-section">
-      <span className="section-label center">WHAT GUIDES US</span>
+      <span className="section-center">WHAT GUIDES US</span>
       <div className="mission-grid">
         {cards.map((item) => (
           <div key={item.id} className="mission-card">
