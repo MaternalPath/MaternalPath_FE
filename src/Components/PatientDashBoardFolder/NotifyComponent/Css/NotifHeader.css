@@ -1,0 +1,27 @@
+.notif-header h1 {
+  font-size: 23px;
+  font-weight: 700;
+  color: #1a2e1f;
+  margin: 0 0 4px 0;
+}
+
+.notif-header {
+  display: flex;
+  flex-direction: column;
+} 
+.notif-header p {
+  color: #5a6f61;
+  font-size: 15px;
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+.mobile-notify { display: none; }
+.desktop-notify { display: block; }
+
+@media (max-width: 768px) {
+  .mobile-notify { display: block; }
+  .desktop-notify { display: none; }
+  .notif-header h1 { font-size: 28px; }
+  .notif-header p { font-size: 14px; margin: 0 0 20px 0; }
+}

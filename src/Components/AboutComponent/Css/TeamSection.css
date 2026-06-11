@@ -1,166 +1,184 @@
 .team-section {
   padding: 60px 80px;
   font-family: var(--font-family);
+}
 
-  @media (max-width: 1024px) {
+@media (max-width: 1024px) {
+  .team-section {
     padding: 48px 40px;
   }
+}
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
+  .team-section {
     padding: 40px 20px;
   }
-  .teamW-layout {
+}
+
+.team-section .teamW-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-deep-teal);
+  text-align: center;
+}
+
+.team-section .teamW-layout .section-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.team-section .teamW-layout .section-title {
+  font-size: 38px;
+  font-weight: 500;
+  color: var(--primary-deep-teal);
+  line-height: 1.1;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto 0;
+}
+
+@media (max-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+  }
+}
+
+.team-card .team-img {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+}
+
+.team-card .team-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-card .team-img .team-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--primary-deep-teal);
+  padding: 16px;
+  text-align: center;
+}
+
+.team-card .team-img .team-overlay .team-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bg-cards);
+  margin: 0 0 4px 0;
+}
+
+.team-card .team-img .team-overlay .team-role {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+/* Remove this if you want a normal grid on all sizes */
+@media (min-width: 1025px) {
+  .team-card:nth-child(5) {
+    grid-column: 2 / 3;
+  }
+  
+  .team-card:nth-child(6) {
+    grid-column: 3 / 4;
+  }
+}
+
+.collab-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background-color: #F0EDE8;
+  border: 1px solid var(--grey-outline);
+  border-radius: 12px;
+  padding: 20px 24px;
+  max-width: 1200px;
+  margin: 40px auto 0;
+}
+
+.collab-banner .collab-wrap-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #a4cb9a;
+}
+
+@media (max-width: 768px) {
+  .collab-banner {
+    flex-direction: column;
+    padding: 20px;
+  }
+}
+
+.collab-banner svg {
+  color: var(--primary-deep-teal);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.collab-banner .collab-text {
+  flex: 1;
+}
+
+.collab-banner .collab-text strong {
+  display: block;
+  font-size: 15px;
+  color: var(--text-hue);
+  margin-bottom: 6px;
+}
+
+.collab-banner .collab-text p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-tones);
+  margin: 0;
+}
+
+.collab-banner .collab-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.collab-banner .collab-dots img {
+  width: 120px;
+  height: 30px;
+}
+
+@media (max-width: 768px) {
+  .section-title {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-deep-teal);
-    text-align: center;
-    .section-label{
-      font-size: 15px;
-      font-weight: 600;
-    }
-    .section-title {
-      font-size: 38px;
-      font-weight: 500;
-      color: var(--primary-deep-teal);
-      line-height: 1.1;
-    }
-  }
-
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    max-width: 1200px;
-    margin: 40px auto 0;
-
-    @media (max-width: 1024px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 480px) {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-  }
-
-  
-  .team-card {  
-    .team-img {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      aspect-ratio: 3/4;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .team-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--primary-deep-teal);
-        padding: 16px;
-        text-align: center;
-
-        .team-name {
-          font-size: 14px;
-          font-weight: 600;
-          color: var(--bg-cards);
-          margin: 0 0 4px 0;
-        }
-
-        .team-role {
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.9);
-          margin: 0;
-        }
-      }
-    }
-    &:nth-child(5) {
-      grid-column: 2 / 3;
-    }
-
-    &:nth-child(6) {
-      grid-column: 3 / 4;
-    }
-  
-  }
-  
-
-  .collab-banner {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    /* background: var(--bg-cards); */
-    background-color: #F0EDE8;
-    border: 1px solid var(--grey-outline);
-    border-radius: 12px;
-    padding: 20px 24px;
-    max-width: 1200px;
-    margin: 40px auto 0;
-    .collab-wrap-layout {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #a4cb9a;
-    }
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      padding: 20px;
-    }
-
-    svg {
-      color: var(--primary-deep-teal);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .collab-text {
-      flex: 1;
-      
-
-      strong {
-        display: block;
-        font-size: 15px;
-        color: var(--text-hue);
-        margin-bottom: 6px;
-      }
-
-      p {
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--text-tones);
-        margin: 0;
-      }
-    }
-
-    .collab-dots {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      
-      
-
-      img {
-        width: 120px;
-        height: 30px;
-        /* background: var(--primary-deep-teal); */
-      }
-    }
   }
 }

@@ -1,0 +1,19 @@
+.dashboard {
+  font-family: var(--font-family);
+  min-height: 100vh;
+  padding: 15px;
+  color: #1f2937;
+
+  .dashboard-container {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 768px) {
+    .dashboard {
+      padding: 0;
+        .dashboard-container {
+        max-width: 600px;
+      }
+    }
+  }

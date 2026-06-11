@@ -1,0 +1,52 @@
+.profile-settings {
+  font-family: var(--font-family);
+  min-height: 100vh;
+  background: var(--bg-shade);
+  padding: 15px;
+  /* don't put margin or max-width here */
+}
+
+.profile-content {
+  max-width: 1200px; /* use 1200 not 1500 */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-content .page-header {
+  margin-bottom: 24px;
+}
+
+.profile-content .page-header .page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.profile-content .page-header .page-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.profile-content .settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .profile-settings {
+    padding: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-content .page-header .page-title {
+    font-size: 24px;
+  }
+}

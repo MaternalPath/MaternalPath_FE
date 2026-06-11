@@ -30,7 +30,31 @@ const Footer = () => {
             Empowering mothers with guidance, support, and financial security
             throughout their pregnancy journey.
           </p>
+          <p className="paragraph-footer">
+            A comprehensive platform with resources, support, and
+            financial security for your pregnancy journey.
+          </p>
         </aside>
+
+        {/* <section className="mobile-footer">
+
+          <aside className="footer-text-holder">
+          <h2>Platform</h2>
+          <ul>
+            <li>For Mothers</li>
+            <li>For Hospitals</li>
+          </ul>
+          </aside>
+          <aside className="footer-text-holder">
+            <h2>Company</h2>
+            <ul>
+              <li>About Us</li>
+              <li>Privacy Policy</li>
+            </ul>
+          </aside>
+          <p>© 2026 MaternalPath All rights reserved.</p>
+        </section> */}
+
         <aside className="footer-text-holder">
           <h2>Platform</h2>
           <ul>
@@ -40,6 +64,7 @@ const Footer = () => {
             <li>FAQ</li>
           </ul>
         </aside>
+
         <aside className="footer-text-holder">
           <h2>Resources</h2>
           <ul>
@@ -59,6 +84,24 @@ const Footer = () => {
           </ul>
         </aside>
       </section>
+
+      <section className="mobile-footer-container">
+        <aside className="footer-text-holder">
+        <h2>Platform</h2>
+        <ul>
+          <li>For Mothers</li>
+          <li>For Hospitals</li>
+        </ul>
+        </aside>
+        <aside className="footer-text-holder">
+          <h2>Company</h2>
+          <ul>
+            <li>About Us</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </aside>
+      </section>
+      
       <section className="Footer-bottom">
         <p>© 2026 MaternalPath All rights reserved.</p>
         <aside className="icons-holder">

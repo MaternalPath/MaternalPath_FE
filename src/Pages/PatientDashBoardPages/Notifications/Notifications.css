@@ -1,0 +1,13 @@
+.notifications-page {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 15px;
+  font-family: var(--font-family);
+}
+
+@media (max-width: 768px) {
+  .notifications-page {
+    padding: 0;
+    max-width: 500px;
+  }
+}
