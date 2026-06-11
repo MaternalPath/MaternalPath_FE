@@ -1,10 +1,13 @@
-.hospital-overview {
+/* .hospital-overview {
   min-height: 100vh;
+  width:100%;
   padding: 20px;
   background: #f9faf8;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   color: #1f2937;
+  background-color: red;
 }
 
 .hospital-overview-header {
@@ -42,4 +45,10 @@
   .hospital-overview-title {
     font-size: 24px;
   }
+} */
+
+.overview-container{
+  width:100%;
+  height:100vh;
+  background-color: red;
 }

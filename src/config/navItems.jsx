@@ -52,7 +52,7 @@ export const motherNavItems = [
 export const hospitalNavItems = [
   {
     path: "/dashboard/hospitalOverview",
-    label: "Hospital Overview",
+    label: "Dashboar Overview",
     icon: <FiGrid size={20} />,
     end: true,
   },

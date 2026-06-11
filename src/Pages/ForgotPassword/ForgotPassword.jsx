@@ -5,11 +5,13 @@ import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
 
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     navigate("/checkEmail", { state: { email } });
   };

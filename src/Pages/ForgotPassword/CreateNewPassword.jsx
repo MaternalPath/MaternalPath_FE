@@ -5,14 +5,21 @@ import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
 
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
+
 const CreateNewPassword = () => {
   const navigate = useNavigate();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const email = location.state?.email || '';
+  const role = location.state?.role || 'mother';
+  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match");
