@@ -41,20 +41,19 @@
 }
 
 .auth-check-logo {
-  width: 180px;
-  margin-bottom: 24px;
+  width: 200px;
+  margin-bottom: 10px;
 }
 
 .auth-check-illustration {
   width: 100%;
-  /* margin-bottom: 24px; */
 }
 
 .auth-check-left h3 {
-  color: #0e2420;
+  color: #1b4332;
   font-size: 20px;
-  font-weight: 700;
-  margin: 8px 0;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .auth-check-left p {
@@ -64,8 +63,8 @@
 }
 
 .icon-check-circle {
-  width: 50px;
-  height: 20%;
+  width: 64px;
+  height: 64%;
   border-radius: 50%;
   background-color: #e7efe6;
   display: flex;

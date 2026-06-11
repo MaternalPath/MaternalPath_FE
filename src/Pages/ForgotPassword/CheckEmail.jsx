@@ -11,18 +11,6 @@ const RESEND_SECONDS = 30;
 const CheckEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
-<<<<<<< HEAD
-  const email = location.state?.email || 'your email';
-  const role = location.state?.role || 'mother';
-  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
-
-  const handleOpenEmail = () => {
-    navigate('/createNewPassword', { state: { email, role } });
-  };
-
-  const handleResend = () => {
-    navigate('/createNewPassword', { state: { email, role } });
-=======
   const email = location.state?.email || "thecurve22@gmail.com";
 
   const [code, setCode] = useState(Array(CODE_LENGTH).fill(""));
@@ -92,7 +80,6 @@ const CheckEmail = () => {
     setSecondsLeft(RESEND_SECONDS);
     setCode(Array(CODE_LENGTH).fill(""));
     inputsRef.current[0]?.focus();
->>>>>>> e09dc2ee229c90cef159971862a353b0f98bc47b
   };
 
   return (
@@ -111,26 +98,6 @@ const CheckEmail = () => {
             security protocols
           </p>
         </div>
-<<<<<<< HEAD
-        <h2>Check Your Email</h2>
-        <p className="auth-subtitle">
-          We've sent a password reset link to your {roleLabel} account.
-        </p>
-        <p className="email-text">{email}</p>
-        <p className="auth-subtitle">Please check your inbox and follow the instructions to reset your password.</p>
-        
-        <button onClick={handleOpenEmail} className="btn-primary">Open Email App</button>
-        <button onClick={handleResend} className="btn-secondary">Resend Link</button>
-        
-        <Link to="/login" className="back-link">
-          <FiArrowLeft size={14} /> Back to Login
-        </Link>
-      </div>
-    </div>
-  )
-}
-=======
->>>>>>> e09dc2ee229c90cef159971862a353b0f98bc47b
 
         <div className="auth-check-right">
           <div className="icon-check-circle">
