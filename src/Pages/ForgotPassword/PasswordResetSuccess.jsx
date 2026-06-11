@@ -12,25 +12,22 @@ const PasswordResetSuccess = () => {
   const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
 
   return (
-    <div className="auth-container">
-      <div className="auth-left">
-        <img src={logo} alt="MaternalPath" className="auth-logo" />
-        <img
-          src={backgroundImage}
-          alt="Secure Account Recovery"
-          className="auth-illustration"
-        />
-        <h3>Secure Account Recovery</h3>
-        <p>
-          Your maternal health journey is protected with industry-leading
-          security protocols
-        </p>
-      </div>
-
-      <div className="auth-right">
-        <div className="icon-circle success">
-          <FiCheckCircle size={32} />
+    <mian className="auth-main">
+      <div className="auth-container">
+        <div className="auth-left">
+          <img src={logo} alt="MaternalPath" className="auth-logo" />
+          <img
+            src={backgroundImage}
+            alt="Secure Account Recovery"
+            className="auth-illustration"
+          />
+          <h3>Secure Account Recovery</h3>
+          <p>
+            Your maternal health journey is protected with industry-leading
+            security protocols
+          </p>
         </div>
+<<<<<<< HEAD
         <h2>Password Reset Successful</h2>
         <p className="auth-subtitle">
           Your {roleLabel} account password has been updated successfully. You can now sign in using your new credentials.
@@ -42,8 +39,25 @@ const PasswordResetSuccess = () => {
         >
           Return to Login
         </button>
+=======
+
+        <div className="auth-right">
+          <div className="icon-circle success">
+            <FiCheckCircle size={32} />
+          </div>
+          <h2>Password Reset Successful</h2>
+          <p className="auth-subtitle">
+            Your password has been updated successfully. You can now sign in
+            using your new credentials.
+          </p>
+
+          <button onClick={() => navigate("/login")} className="btn-primary">
+            Return to Login
+          </button>
+        </div>
+>>>>>>> e09dc2ee229c90cef159971862a353b0f98bc47b
       </div>
-    </div>
+    </mian>
   );
 };
 

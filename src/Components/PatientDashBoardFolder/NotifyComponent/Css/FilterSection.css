@@ -1,0 +1,101 @@
+.cardQuick {
+  background: #F0FDF4;
+  border: 1px solid #d4e3d9;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.filters {
+  /* background: #F0FDF4; */
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #d4e3d9;
+  background: white;
+  color: #5a6f61;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-btn.active {
+  background: #0F766E;
+  color: white;
+  border-color: #0F766E;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #d4e3d9;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #1a2e1f;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.mark-read-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #0d5c3e;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+}
+
+@media (min-width: 769px) {
+  .search-box {
+    margin-bottom: 0;
+  }
+  
+  .filter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .mark-read-btn {
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #d4e3d9;
+    border-radius: 10px;
+    margin-left: 12px;
+  }
+  
+  .filter-card > div:last-child {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .card { padding: 16px; }
+  .filters { overflow-x: auto; flex-wrap: nowrap; }
+  .mark-read-btn { justify-content: flex-end; width: 100%; }
+}
