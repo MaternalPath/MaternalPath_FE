@@ -1,0 +1,153 @@
+.card {
+  /* background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); */
+
+  &.card-hero {
+    background: #f0fdf4;
+    border-color: #d1fae5;
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #296c4e;
+      line-height: 1.2;
+
+      .trimester {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6ebb7f;
+      }
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0 0 24px 0;
+    }
+  }
+
+  .hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 32px;
+    min-height: 260px;
+
+    .hero-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-right {
+      flex-shrink: 0;
+      width: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .baby-img {
+        height: 100%;
+        max-height: 90%;
+        width: auto;
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
+    margin-bottom: 24px;
+
+    .stat-item {
+      &:nth-child(3) {
+        grid-column: 1;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 4px;
+      }
+
+      .stat-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+      }
+    }
+  }
+
+  .progress-section {
+    margin-top: auto;
+
+    .progress-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 6px;
+
+      .progress-fill {
+        height: 100%;
+        background: #0f766e;
+        border-radius: 999px;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .progress-range {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-content {
+      flex-direction: column;
+      min-height: auto;
+
+      .hero-left {
+        text-align: left;
+        width: 100%;
+      }
+
+      .hero-right {
+        display: none;
+
+        .baby-img {
+          height: 100%;
+          width: auto;
+        }
+      }
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .progress-section {
+      margin-top: 0;
+    }
+  }
+}
