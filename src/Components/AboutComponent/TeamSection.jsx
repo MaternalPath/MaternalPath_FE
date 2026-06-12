@@ -17,13 +17,13 @@ const TeamSection = () => {
     },
     {
       id: 2,
-      name: "Abdulbakky Tiamiyu",
+      name: "Tiamiyu Abdulbakky",
       role: "Product Designer",
       img: img2,
     },
     {
       id: 3,
-      name: "Mariagoretti Nnaemeka",
+      name: "Mariagoretti Nnaemeka Nnadi",
       role: "Front End Developer",
       img: img5,
     },

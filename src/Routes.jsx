@@ -35,7 +35,7 @@ import VerificationHistory from "./Pages/HospitalDashBoardPages/VerificationHist
 import NotificationsHospital from "./Pages/HospitalDashBoardPages/NotificationsHospiatal/NotificationsHospital";
 import SettingsHospital from "./Pages/HospitalDashBoardPages/SettingsHospital/SettingsHospital";
 import Settings from "./Pages/Settings/Settings";
-import TeamSection from "./Components/AboutComponent/TeamSection";
+// import TeamSection from "./Components/AboutComponent/TeamSection";
 const DashboardIndex = () => {
   const { role } = useRole();
   return role === "hospital" ? (
