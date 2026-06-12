@@ -6,6 +6,7 @@
   justify-content: center;
   flex-direction: column;
   background-color: #f7f5f2;
+  padding-top: 4rem;
 }
 
 .Journey-Text {
@@ -33,12 +34,12 @@
 }
 
 .Journey-Holder {
-  width: 100%;
+  width: 91%;
   height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 35px;
 }
 .Journey-Cards {
   width: 404px;

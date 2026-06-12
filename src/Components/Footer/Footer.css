@@ -198,9 +198,9 @@
       padding-left: 5px;
     }
   }
-  .icons-holder {
+  /* .icons-holder {
     display: none;
-  }
+  } */
 
   .Footer-bottom {
     flex-direction: column-reverse;

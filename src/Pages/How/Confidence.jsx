@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./HowStyles/Confidence.css";
 import { FaArrowRight } from "react-icons/fa6";
 
 const Confidence = () => {
+  const nav = useNavigate()
   return (
     <hero className="Confidence-container">
       <h1>Start Your Pregnancy Journey With Confidence</h1>
@@ -10,7 +12,7 @@ const Confidence = () => {
         Join mothers who trust MaternalPath for their pregnancy journey.
       </p>
       <section className="confidence-btn-holder">
-        <button className="confidence-btn1">
+        <button className="confidence-btn1" onClick={() => nav("/getStarted")}>
           Get Started <FaArrowRight />
         </button>
         <button className="confidence-btn2">Learn More</button>

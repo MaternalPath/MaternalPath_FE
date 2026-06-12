@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "./FaqStyles/FAQ.css";
 import { IoIosArrowDown } from "react-icons/io";
@@ -33,7 +32,7 @@ const FAQ = ({ activeQuestion, searchTerm = "" }) => {
   );
 
   return (
-    <section className="Fag-container">
+    <section className="Faq-container">
       {filteredQuestions.length > 0 ? (
         filteredQuestions.map((item) => (
           <div className="Faqholder" key={item.id} id={`faq-${item.id}`}>

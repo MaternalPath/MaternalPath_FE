@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../Components/header/header";
 import "./FaqStyles/FaqHome.css";
 import { FiSearch } from "react-icons/fi";
@@ -9,37 +9,65 @@ import HelpCenter from "./HelpCenter";
 import Footer from "../../Components/Footer/Footer";
 
 const FaqHome = () => {
+  const [activeQuestion, setActiveQuestion] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <>
       <Header />
+
       <main className="FaqHome-container">
         <div className="FaqHome-holder">
           <h1>Frequently Asked Questions</h1>
+
           <p>
             Find answers to common questions about MaternalPath, pregnancy
             tracking, and delivery fund savings.
           </p>
+
           <div className="search-input-holder">
-            <FiSearch className="search-icon" />
+            <FiSearch className="search-icons" />
+
             <input
               type="text"
               className="faqHome-input"
               placeholder="Search for answers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
+
         <div className="faqHome-buttom">
-          <button style={{ backgroundColor: "#267872", color: "#ffffff" }}>
+          <button
+            style={{
+              backgroundColor: "#267872",
+              color: "#ffffff",
+            }}
+            onClick={() => setActiveQuestion(1)}
+          >
             All Questions
           </button>
-          <button>Getting Started</button>
-          <button className="longerBtn"> Savings & Payments</button>
-          <button className="longerBtn">Pregnancy Tracking</button>
-          <button>Hospitals</button>
-          <button className="longerBtn">Security & Privacy</button>
+
+          <button onClick={() => setActiveQuestion(1)}>Getting Started</button>
+
+          <button className="longerBtn" onClick={() => setActiveQuestion(4)}>
+            Savings & Payments
+          </button>
+
+          <button className="longerBtn" onClick={() => setActiveQuestion(9)}>
+            Pregnancy Tracking
+          </button>
+
+          <button onClick={() => setActiveQuestion(12)}>Hospitals</button>
+
+          <button className="longerBtn" onClick={() => setActiveQuestion(16)}>
+            Security & Privacy
+          </button>
         </div>
       </main>
-      <FAQs />
+
+      <FAQs activeQuestion={activeQuestion} searchTerm={searchTerm} />
       <PTopics />
       <ContactUs />
       <HelpCenter />

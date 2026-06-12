@@ -35,6 +35,7 @@ import VerificationHistory from "./Pages/HospitalDashBoardPages/VerificationHist
 import NotificationsHospital from "./Pages/HospitalDashBoardPages/NotificationsHospiatal/NotificationsHospital";
 import SettingsHospital from "./Pages/HospitalDashBoardPages/SettingsHospital/SettingsHospital";
 import Settings from "./Pages/Settings/Settings";
+import TeamSection from "./Components/AboutComponent/TeamSection";
 const DashboardIndex = () => {
   const { role } = useRole();
   return role === "hospital" ? (
@@ -51,7 +52,9 @@ const AppRoutes = () => (
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/how" element={<How />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/about" element={<About />}>
+        {/* <Route path="/teamSection" element={<TeamSection />} /> */}
+      </Route>
       <Route path="/signupUser" element={<Signup />} />
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
