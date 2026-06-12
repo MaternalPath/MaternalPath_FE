@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import "./HeroPage1.css";
 import { CiHeart } from "react-icons/ci";

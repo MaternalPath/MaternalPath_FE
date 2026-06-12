@@ -1,14 +1,13 @@
 .Topic_container {
   width: 100%;
-  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f7f5f2;
   flex-direction: column;
   gap: 50px;
-  padding-top: 20px;
-  font-family: var(--font-family);
+  padding: 20px;
+  padding-top:7rem;
 
   h2 {
     font-weight: 700;
@@ -22,7 +21,7 @@
 }
 
 .TopicsHolder {
-  width: 100%;
+  width: 99%;
   height: auto;
   display: flex;
   align-items: center;
@@ -32,7 +31,7 @@
 }
 
 .Cards {
-  width: 437px;
+  width: 30%;
   max-width: 100%;
   height: auto;
   min-height: 268px;
@@ -46,7 +45,7 @@
 
   h5 {
     font-weight: 700;
-    font-size: 22px;
+    font-size: 21px;
     line-height: 31px;
     letter-spacing: 0px;
     color: #0c5e58;
@@ -54,7 +53,7 @@
 
   p {
     font-weight: 400;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 27px;
     letter-spacing: 0px;
     color: #242c3a;
@@ -66,6 +65,7 @@
     line-height: 27px;
     letter-spacing: 0px;
     color: #3f918b;
+    cursor: pointer;
   }
 }
 

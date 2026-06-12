@@ -1,0 +1,138 @@
+.security-compliance-container {
+  background-color: #e5f4f2;
+  padding: 48px 20px;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.security-compliance-content {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #eaf2e7;
+  min-height: 257px;
+  width: 1000;
+  border-radius: 12px;
+  padding-top: 32px;
+  padding-right: 32px;
+  padding-left: 32px;
+}
+
+.security-compliance-title {
+  color: #0f4d4e;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0px;
+  margin: 0 0 25px 0;
+  letter-spacing: -0.7px;
+}
+
+.security-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.feature-card {
+  background-color: #f9fbfb;
+  border: 1px solid #e8f0f0;
+  /* padding: 48px 32px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 216px;
+  height: 139px;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+  font-size: 20px;
+  background-color: #eaf2e7;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+.feature-icon svg {
+  font-size: 25px;
+  color: #0d5a5a;
+}
+
+.feature-label {
+  margin: 0;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  line-height: 19.6px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #1a1a1a;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .security-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .security-compliance-title {
+    font-size: 28px;
+  }
+
+  .feature-card {
+    padding: 40px 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .security-compliance-container {
+    padding: 32px 16px;
+    min-height: auto;
+  }
+
+  .security-features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .security-compliance-title {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .feature-card {
+    padding: 36px 24px;
+    min-height: 200px;
+  }
+
+  .feature-label {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .feature-icon {
+    margin-bottom: 16px;
+  }
+}

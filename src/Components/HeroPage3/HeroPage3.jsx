@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./HeroPage3.css";
 import holdingTommy from '../../assets/holdingTommy.png'
+import { useNavigate } from "react-router-dom";
 
 const NewsletterCTA = () => {
   const [email, setEmail] = useState("");
+  const nav = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,7 +54,7 @@ const NewsletterCTA = () => {
             <h2 className="mp-cta-title">
               Start Your Safe Motherhood Journey!
             </h2>
-            <button className="mp-cta-btn">Get Started</button>
+            <button className="mp-cta-btn" onClick={() => nav("/getStarted")}>Get Started</button>
           </div>
         </div>
       </section>
