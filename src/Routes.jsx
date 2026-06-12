@@ -35,6 +35,7 @@ import VerificationHistory from "./Pages/HospitalDashBoardPages/VerificationHist
 import NotificationsHospital from "./Pages/HospitalDashBoardPages/NotificationsHospiatal/NotificationsHospital";
 import SettingsHospital from "./Pages/HospitalDashBoardPages/SettingsHospital/SettingsHospital";
 import Settings from "./Pages/Settings/Settings";
+import HospitalForgotPassword from "./Pages/ForgotPassword/HospitalForgotPassword";
 const DashboardIndex = () => {
   const { role } = useRole();
   return role === "hospital" ? (
@@ -58,6 +59,7 @@ const AppRoutes = () => (
       <Route path="/otpVerification" element={<VerifyOTP />} />
       <Route path="/otpVerificationHos" element={<VerifyHosOTP />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/hospitalForgotPassword" element={<HospitalForgotPassword />} />
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
       <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />

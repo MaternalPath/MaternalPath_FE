@@ -8,11 +8,12 @@ import backgroundImage from "../../assets/pana.png";
 const PasswordResetSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const role = location.state?.role || 'mother';
-  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
+  const role = location.state?.role || "mother";
+  const roleLabel =
+    role === "hospital" ? "Healthcare Professional" : "Pregnant Mother";
 
   return (
-    <mian className="auth-main">
+    <main className="auth-main">
       <div className="auth-container">
         <div className="auth-left">
           <img src={logo} alt="MaternalPath" className="auth-logo" />
@@ -27,19 +28,6 @@ const PasswordResetSuccess = () => {
             security protocols
           </p>
         </div>
-<<<<<<< HEAD
-        <h2>Password Reset Successful</h2>
-        <p className="auth-subtitle">
-          Your {roleLabel} account password has been updated successfully. You can now sign in using your new credentials.
-        </p>
-
-        <button
-          onClick={() => navigate("/login", { state: { role } })}
-          className="btn-primary"
-        >
-          Return to Login
-        </button>
-=======
 
         <div className="auth-right">
           <div className="icon-circle success">
@@ -55,9 +43,8 @@ const PasswordResetSuccess = () => {
             Return to Login
           </button>
         </div>
->>>>>>> e09dc2ee229c90cef159971862a353b0f98bc47b
       </div>
-    </mian>
+    </main>
   );
 };
 

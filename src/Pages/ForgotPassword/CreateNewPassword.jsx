@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import  { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "axios";
+import { toast } from "react-toastify";
 import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
@@ -9,27 +11,42 @@ const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const CreateNewPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const email = location.state?.email || '';
-  const role = location.state?.role || 'mother';
-  const roleLabel = role === 'hospital' ? 'Healthcare Professional' : 'Pregnant Mother';
+  const email = location.state?.email || "";
+  const role = location.state?.role || "mother";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-    navigate("/passwordResetSuccess"); // Reset password → next page
+    setIsLoading(true);
+    try {
+      await axios.post(`${baseURL}/${role}/reset-password`, {
+        email,
+        newPassword,
+        confirmNewPassword: confirmPassword,
+      });
+      navigate("/passwordResetSuccess", { state: { role } });
+    } catch (error) {
+      console.error("Reset password error:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to reset password",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <mian className="auth-main">
+    <main className="auth-main">
       <div className="auth-container">
         <div className="auth-left">
           <img src={logo} alt="MaternalPath" className="auth-logo" />
@@ -100,13 +117,13 @@ const CreateNewPassword = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              Reset Password
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         </div>
       </div>
-    </mian>
+    </main>
   );
 };
 

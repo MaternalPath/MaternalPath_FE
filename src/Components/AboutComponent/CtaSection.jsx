@@ -27,8 +27,8 @@ const CtaSection = () => {
         milestone, every step toward delivery day.
       </p>
       <div className="cta-buttons">
-        <button className="btn-primary">Get Started</button>
-        <button className="btn-outline-light">Learn More</button>
+        <button className="cta-btn-primary">Get Started</button>
+        <button className="cta-btn-outline-light">Learn More</button>
       </div>
       <div className="cta-features">
         {features.map((f) => (
@@ -41,7 +41,7 @@ const CtaSection = () => {
       <div className="cta-notice">
         <LuCircleAlert size={16} />
         <p>
-          <strong>Important:</strong> This platform provides educational
+          <strong style={{color: "var(--primary-deep-teal)"}}>Important:</strong> This platform provides educational
           wellness support and does not replace professional medical advice.
           Always consult your healthcare provider for medical decisions.
         </p>

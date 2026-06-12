@@ -1,5 +1,5 @@
 .how-section {
-  padding: 60px 80px;
+  padding: 60px;
   /* background: #faf9f6; */
 
   @media (max-width: 1024px) {
@@ -10,11 +10,25 @@
     padding: 40px 20px;
   }
 
+  .section-how-center {
+    color: var(--primary-deep-teal);
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+  }
+  .section-hows-center {
+    color: var(--primary-deep-teal);
+    font-size: 30px;
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+  }
   .steps-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    max-width: 1200px;
+    gap: 28px;
+    max-width: 1230px;
     margin: 40px auto 0;
     position: relative;
 
@@ -48,8 +62,8 @@
     z-index: 1;
 
     .step-icon {
-      width: 56px;
-      height: 56px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       background: #A7C4A0;
       display: flex;

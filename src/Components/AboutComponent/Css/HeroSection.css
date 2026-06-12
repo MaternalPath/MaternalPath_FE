@@ -1,5 +1,5 @@
 .hero-section {
-  padding: 40px 80px 60px;
+  padding: 62px;
   /* background: #faf9f6; */
   font-family: var(--font-family);
 
@@ -21,7 +21,6 @@
     padding: 6px 14px;
     font-size: 12px;
     color: var(--text-tint);
-    margin-bottom: 20px;
 
     svg {
       color: var(--primary-deep-teal);
@@ -46,12 +45,12 @@
   .hero-left {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     .hero-title {
       font-size: 50px;
       font-weight: 600;
       line-height: 1.2;
-      color: #A7C4A0;
+      color: #a7c4a0;
       margin: 0 0 20px 0;
 
       .highlight {
@@ -79,11 +78,11 @@
       max-width: 480px;
     }
 
-    .hero-cta {
+    .hero-cta-btn {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      .btn-primary {
+      .btn-primary-hero {
         background: var(--primary-shade);
         color: var(--bg-cards);
         padding: 12px 24px;
@@ -99,7 +98,7 @@
           border: 1px solid var(--primary-deep-teal);
         }
       }
-      .btn-outline {
+      .btn-outline-hero {
         background: transparent;
         color: var(--primary-deep-teal);
         padding: 12px 24px;
@@ -133,7 +132,7 @@
       }
 
       img {
-        max-width: 300px;
+        max-width: 500px;
       }
 
       .float-card {
