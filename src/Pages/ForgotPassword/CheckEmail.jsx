@@ -1,17 +1,21 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
 import "./Css/CheckEmail.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
+const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const CheckEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email || "thecurve22@gmail.com";
+  const role = location.state?.role || "mother";
 
   const [code, setCode] = useState(Array(CODE_LENGTH).fill(""));
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
@@ -71,8 +75,19 @@ const CheckEmail = () => {
     e.preventDefault();
   };
 
-  const handleVerify = () => {
-    navigate("/createNewPassword");
+  const handleVerify = async () => {
+    const verificationCode = code.join("");
+    if (verificationCode.length !== CODE_LENGTH) {
+      toast.error("Please enter a valid verification code.");
+      return;
+    }
+    await axios.post(`${baseURL}/${role}/verify-reset`, {
+      email,
+      otp: verificationCode,
+    });
+    navigate("/createNewPassword", {
+      state: { email, role, otp: verificationCode },
+    });
   };
 
   const handleResend = () => {
@@ -81,7 +96,6 @@ const CheckEmail = () => {
     setCode(Array(CODE_LENGTH).fill(""));
     inputsRef.current[0]?.focus();
   };
-
   return (
     <main className="auth-main-check">
       <div className="auth-check-container">
