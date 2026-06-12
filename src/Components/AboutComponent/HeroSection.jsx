@@ -1,8 +1,11 @@
 import { GoShieldCheck } from "react-icons/go";
 import "./Css/HeroSection.css";
 import heroImg from "/src/assets/preg-about.png";
+import mobileImage from "../../assets/mobileAbout.png"
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const nav = useNavigate();
   return (
     <section className="hero-section">
       <div className="hero-badge">
@@ -26,14 +29,25 @@ const HeroSection = () => {
             single day of the journey.
           </p>
           <div className="hero-cta-btn">
-            <button className="btn-primary-hero">Start Your Journey</button>
-            <button className="btn-outline-hero">Meet the Team</button>
+            <button
+              className="btn-primary-hero"
+              onClick={() => nav("/getStarted")}
+            >
+              Start Your Journey
+            </button>
+            <button
+              className="btn-outline-hero"
+              // onClick={() => nav("/teamSection")}
+            >
+              Meet the Team
+            </button>
           </div>
         </div>
 
         <div className="hero-right">
           <div className="hero-image-wrapper">
-            <img src={heroImg} alt="Pregnant mother" />
+            <img className="image-desk" src={heroImg} alt="Pregnant mother" />
+            <img className="image-mobile" src={mobileImage} alt="preg" />
             <div className="float-card week-card">
               <span className="label">Pregnancy Week</span>
               <strong>Week 24</strong>

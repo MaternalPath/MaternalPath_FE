@@ -39,12 +39,10 @@ const ContactUs = () => {
           </div>
         ))}
       </aside>
-      <div className="Notice">
-        <p>
+      <div className="Notice-desc-space">
           Important: This platform provides educational wellness support and
           does not replace professional medical advice. Always consult your
           healthcare provider for medical decisions.
-        </p>
       </div>
     </main>
   );

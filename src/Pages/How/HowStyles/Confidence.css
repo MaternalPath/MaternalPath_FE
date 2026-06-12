@@ -1,18 +1,19 @@
 .Confidence-container {
   width: 100%;
   width: 1440;
-  height: 502px;
-  gap: 10px;
+  height: 550px;
+  gap: 20px;
   background-color: #f7f5f2;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-top: 6rem;
 
   h1 {
     font-weight: 400;
     font-style: Regular;
-    font-size: 50.6px;
+    font-size: 45px;
     line-height: 50.6px;
     letter-spacing: 0px;
     text-align: center;
@@ -22,12 +23,12 @@
   p {
     font-weight: 400;
     font-style: Regular;
-    font-size: 21.08px;
+    font-size: 20px;
     line-height: 34.26px;
     letter-spacing: 0px;
     text-align: center;
     color: #242c3a;
-    width: 54%;
+    width: 60%;
   }
 }
 .confidence-btn-holder {
@@ -90,15 +91,15 @@
 }
 
 .confidence-notice {
-  width: 90%;
+  width: 91%;
   height: 73px;
   font-size: 15px;
-  border: 1.05px solid #e5e5e5;
+  border: 1.05px solid #c1d6bd;
   border-radius: 14.76px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #c0dfb8;
+  background-color: #ddf7d7;
 }
 
 

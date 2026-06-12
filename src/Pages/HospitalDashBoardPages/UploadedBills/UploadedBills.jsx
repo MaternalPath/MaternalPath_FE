@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useState } from "react";
+import UploadedTop from "../../../Components/HospitalDashBoardFolder/UploadedBillsComponent/UploadedTop";
+import BillsOverview from "../../../Components/HospitalDashBoardFolder/UploadedBillsComponent/BillsOverviwe";
+import RecentActivity from "../../../Components/HospitalDashBoardFolder/UploadedBillsComponent/RecentActivity";
+import "./UploadedBills.css";
 
-const UploadedBills = () => {
+function UploadedBills() {
+  const [search, setSearch] = useState("");
+
   return (
-    <div>
-      upload bills
+    <div className="page">
+      <div className="page-content">
+        <UploadedTop searchValue={search} onSearchChange={setSearch} />
+        <BillsOverview />
+        <RecentActivity />
+      </div>
     </div>
-  )
+  );
 }
 
-export default UploadedBills
+export default UploadedBills;
