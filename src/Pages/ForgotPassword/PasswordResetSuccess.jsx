@@ -13,7 +13,7 @@ const PasswordResetSuccess = () => {
     role === "hospital" ? "Healthcare Professional" : "Pregnant Mother";
 
   return (
-    <mian className="auth-main">
+    <main className="auth-main">
       <div className="auth-container">
         <div className="auth-left">
           <img src={logo} alt="MaternalPath" className="auth-logo" />
@@ -44,7 +44,7 @@ const PasswordResetSuccess = () => {
           </button>
         </div>
       </div>
-    </mian>
+    </main>
   );
 };
 

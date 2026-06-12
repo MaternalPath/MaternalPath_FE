@@ -253,7 +253,7 @@
   }
 
   .mp-features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 4fr;
     gap: 16px;
     padding: 0;
   }

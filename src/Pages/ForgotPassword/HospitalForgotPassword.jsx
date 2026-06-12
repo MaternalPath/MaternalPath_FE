@@ -9,18 +9,18 @@ import { toast } from "react-toastify";
 
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
-const ForgotPassword = () => {
+const HospitalForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${baseURL}/mother/forgot-password`, {
+      await axios.post(`${baseURL}/hospital/forgot-password`, {
         email,
       });
       toast.success("Password reset link sent! Please check your email.");
-      navigate("/checkEmail", { state: { email, role: "mother" } });
+      navigate("/checkEmail", { state: { email, role: "hospital" } });
     } catch (error) {
       console.error("Forgot password error:", error);
     }
@@ -80,4 +80,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default HospitalForgotPassword;

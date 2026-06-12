@@ -117,3 +117,25 @@
   color: #0f766e;
   font-weight: 600;
 }
+
+.mobile-drawer-logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 8px;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  background: transparent;
+  color: #dc2626;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.mobile-drawer-logout:hover {
+  background: #fef2f2;
+}

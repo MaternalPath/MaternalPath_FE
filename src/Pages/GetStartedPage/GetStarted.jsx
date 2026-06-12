@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "./CardSignup/Card";
 import "./GetStarted.css";
 import { useNavigate } from "react-router-dom";

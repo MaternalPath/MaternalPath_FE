@@ -88,16 +88,7 @@ const FeaturesSection = () => {
           <h2 className="mp-section-title">
             Everything you need for a healthy pregnancy and a prepared delivery
           </h2>
-          {/* <div className="mp-features-grid">
-            {features.map((feature, idx) => (
-              <div key={idx} className="mp-feature-card">
-                <div className="mp-feature-icon">{feature.icon}</div>
-                <h3 className="mp-feature-title">{feature.title}</h3>
-                <p className="mp-feature-desc">{feature.desc}</p>
-              </div>
-            ))}
-          </div> */}
-    
+
           <div className="mp-features-grid">
             {features.map((feature, idx) => (
               <div
