@@ -1,47 +1,47 @@
-.uploaded {
+.uploadeds {
   margin-bottom: 0;
 }
 
-.uploaded-top {
+.uploadeds-top {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
 }
 
-.uploaded-title {
+.uploadeds-title {
   font-size: 24px;
   font-weight: 700;
   color: #1f3d2e;
   margin: 0;
 }
 
-.uploaded-subtitle {
+.uploadeds-subtitle {
   font-size: 14px;
   color: #6b7280;
   margin: 6px 0 0;
 }
 
-.upload-btn {
+.uploads-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #1f3d2e;
+  background-color: #2c5541;
   color: #ffffff;
   border: none;
+  padding: 15px;
+  height: 50%;
   border-radius: 8px;
-  padding: 12px 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  width: 100%;
 }
 
-.upload-btn:hover {
+.uploads-btn:hover {
   background-color: #163022;
 }
 
-.upload-icon {
+.uploads-icon {
   font-size: 16px;
 }
 

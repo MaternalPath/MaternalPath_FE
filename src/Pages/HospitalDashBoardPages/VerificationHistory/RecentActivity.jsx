@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  FiActivity,
+  FiTrendingUp,
+  FiBarChart2,
+  FiCheckCircle,
+} from "react-icons/fi";
 import "./Styles/RecentActivity.css";
 
 const RecentActivity = () => {
@@ -29,26 +35,30 @@ const RecentActivity = () => {
     {
       id: 1,
       label: "Verification Trends",
+      shortLabel: "Verification Trend",
       value: "+18%",
-      icon: "📈",
+      icon: <FiTrendingUp />,
     },
     {
       id: 2,
       label: "Monthly Approvals",
+      shortLabel: "Monthly Approvals",
       value: "986",
-      icon: "📊",
+      icon: <FiBarChart2 />,
     },
     {
       id: 3,
       label: "Approval Rate",
+      shortLabel: "Approval Rate",
       value: "79%",
-      icon: "✓",
+      icon: <FiCheckCircle />,
     },
     {
       id: 4,
       label: "Readiness Score",
+      shortLabel: "Readiness Score",
       value: "92%",
-      icon: "⚡",
+      icon: <FiActivity />,
     },
   ];
 
@@ -61,10 +71,15 @@ const RecentActivity = () => {
               Recent Activity Timeline
             </h2>
             <div className="recent-activity-timeline">
-              {timelineEvents.map((event) => (
+              {timelineEvents.map((event, index) => (
                 <div key={event.id} className="recent-activity-timeline-item">
-                  <div className="recent-activity-timeline-icon">
-                    <span className="recent-activity-pulse-icon">⚡</span>
+                  <div className="recent-activity-timeline-icon-wrapper">
+                    <div className="recent-activity-timeline-icon">
+                      <FiActivity/>
+                    </div>
+                    {index !== timelineEvents.length - 1 && (
+                      <span className="recent-activity-timeline-line"></span>
+                    )}
                   </div>
                   <div className="recent-activity-timeline-content">
                     <p className="recent-activity-timeline-message">
@@ -80,9 +95,12 @@ const RecentActivity = () => {
           </div>
 
           <div className="recent-activity-insights-section">
-            <h2 className="recent-activity-section-title">
-              Insights & Reports
-            </h2>
+            <div className="recent-activity-insights-header">
+              <h2 className="recent-activity-section-title">
+                Insights &amp; Reports
+              </h2>
+              <FiBarChart2 className="recent-activity-insights-header-icon" />
+            </div>
             <div className="recent-activity-insights-grid">
               {insights.map((insight) => (
                 <div key={insight.id} className="recent-activity-insight-card">
@@ -91,7 +109,8 @@ const RecentActivity = () => {
                   </div>
                   <div className="recent-activity-insight-content">
                     <p className="recent-activity-insight-label">
-                      {insight.label}
+                      <span className="label-full">{insight.label}</span>
+                      <span className="label-short">{insight.shortLabel}</span>
                     </p>
                     <p className="recent-activity-insight-value">
                       {insight.value}
