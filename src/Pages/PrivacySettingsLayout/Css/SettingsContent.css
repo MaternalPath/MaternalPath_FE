@@ -13,6 +13,13 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.content-cards {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
 .content-card h3 {
   margin: 0 0 1rem;
   font-size: 0.95rem;
@@ -200,9 +207,6 @@
 
 .action-item.danger .action-chevron {
   color: #f08a8a;
-}
-
-.mobile-wrapper-bg {
 }
 
 @media (max-width: 1024px) {
