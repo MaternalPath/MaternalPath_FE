@@ -1,20 +1,22 @@
 import React from "react";
 import { FiUpload, FiSearch } from "react-icons/fi";
 import "./Css/UploadedTop.css";
+import { useNavigate } from "react-router-dom";
 
-const UploadedTop = ({ searchValue, onSearchChange }) => {
+const UploadedTop = ({ onUploadNewBill, searchValue, onSearchChange }) => {
+  const nav = useNavigate();
   return (
-    <div className="uploaded">
-      <div className="uploaded-top">
+    <div className="uploadeds">
+      <div className="uploadeds-top">
         <div>
-          <h1 className="uploaded-title">Uploaded Bills</h1>
-          <p className="uploaded-subtitle">
+          <h1 className="uploadeds-title">Uploaded Bills</h1>
+          <p className="uploadeds-subtitle">
             Manage maternal healthcare billing and uploaded delivery records.
           </p>
         </div>
 
-        <button className="upload-btn">
-          <FiUpload className="upload-icon" />
+        <button className="uploads-btn" onClick={onUploadNewBill}>
+          <FiUpload className="uploads-icon"/>
           Upload New Bill
         </button>
       </div>

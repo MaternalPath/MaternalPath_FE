@@ -73,7 +73,7 @@ const EmergencyWallet = () => {
   ];
 
   const handleAddFunds = () => {
-    navigate("/dashboard/add-funds");
+    navigate("/dashboard/addFunds");
   };
 
   return (

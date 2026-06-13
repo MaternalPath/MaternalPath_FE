@@ -85,7 +85,7 @@ const FeaturesSection = () => {
     <>
       <section className="mp-features">
         <div className="mp-features-container">
-          <h2 className="mp-section-title">
+          <h2 className="mp-sections-title">
             Everything you need for a healthy pregnancy and a prepared delivery
           </h2>
 

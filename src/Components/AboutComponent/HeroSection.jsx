@@ -37,7 +37,7 @@ const HeroSection = () => {
             </button>
             <button
               className="btn-outline-hero"
-              // onClick={() => nav("/teamSection")}
+              onClick={() => nav("/teamSection")}
             >
               Meet the Team
             </button>

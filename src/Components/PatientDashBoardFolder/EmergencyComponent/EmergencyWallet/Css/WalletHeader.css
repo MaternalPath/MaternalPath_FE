@@ -76,7 +76,6 @@
   }
 
   .wallet-header .add-funds-btn {
-    width: 100%;
-    justify-content: center;
+    display: none;
   }
 }
