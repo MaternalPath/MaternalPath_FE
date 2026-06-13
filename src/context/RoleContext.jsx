@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-const DEFAULT_ROLE = "hospital"; // "mother" | "hospital"
+const DEFAULT_ROLE = "mother";
 
 const RoleContext = createContext({
   role: DEFAULT_ROLE,
@@ -17,5 +17,4 @@ export const RoleProvider = ({ children }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useRole = () => useContext(RoleContext);

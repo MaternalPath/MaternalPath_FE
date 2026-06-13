@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   background-color: #f7f5f2;
+  padding-top: 6rem;
 }
 
 .PlatformFeatures-Top {
@@ -39,7 +40,7 @@
 }
 
 .PlatformFeatures-container {
-  width: 100%;
+  width: 91%;
   height: auto;
   min-height: 80%;
   display: flex;
@@ -47,11 +48,11 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .FeaturesHolder {
-  width: 624px;
+  width: 594px;
   max-width: 90%;
   height: auto;
   min-height: 394px;

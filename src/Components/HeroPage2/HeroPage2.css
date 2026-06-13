@@ -1,11 +1,12 @@
-
-
 .mp-features {
-  background: #f7f5f2;
-  padding: 80px 0;
+  background: #f9f9f6;
   font-family: "Inter", sans-serif;
   position: relative;
   overflow: hidden;
+  background-image: url(/src/assets/backgroungDesign.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .mp-features::before {
@@ -25,32 +26,35 @@
 }
 
 .mp-features-container {
-  max-width: 2440px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 71px;
   position: relative;
+  padding-right: 60px;
+  padding-left: 60px;
 }
 
 .mp-section-title {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 27px;
+  font-weight: 700;
   color: #2d6a5e;
   text-align: center;
   margin-bottom: 59px;
+  width: 100%;
 }
 
 .mp-features-grid {
   display: grid;
   grid-template-columns: repeat(4.5, 1fr);
-  gap: 32px;
-  padding: 9 200px;
+  gap: 20px;
+  /* padding: 9 200px; */
 }
 
 .mp-feature-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  padding: 65px 35px;
+  padding: 30px;
+  width: 100%;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
@@ -249,7 +253,7 @@
   }
 
   .mp-features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 4fr;
     gap: 16px;
     padding: 0;
   }

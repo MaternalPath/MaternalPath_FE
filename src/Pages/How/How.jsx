@@ -45,9 +45,16 @@ import React from "react";
 import "./HowStyles/How.css";
 import Header from "../../Components/header/header";
 import { useNavigate } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import Works from "./Works";
+import Journey from "./Journey";
+import PlatformFeatures from "./PlatformFeatures";
+import Secure from "./Secure";
+import Confidence from "./Confidence";
+import Footer from "../../Components/Footer/Footer";
 
 const HeroSection = () => {
-    const nav = useNavigate()
+  const nav = useNavigate();
   return (
     <>
       <Header />
@@ -64,7 +71,7 @@ const HeroSection = () => {
             guidance, and prepare financially for delivery—all in one supportive
             platform designed for mothers.
           </p>
-          <button className="hero__cta"   onClick={() => nav("/getStarted")}>
+          <button className="hero__cta" onClick={() => nav("/getStarted")}>
             Get Started <span className="hero__arrow">→</span>
           </button>
         </div>
@@ -77,6 +84,12 @@ const HeroSection = () => {
           />
         </div>
       </section>
+      <Works />
+      <Journey />
+      <PlatformFeatures />
+      <Secure />
+      <Confidence />
+      <Footer />
     </>
   );
 };

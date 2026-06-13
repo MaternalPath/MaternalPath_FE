@@ -1,5 +1,5 @@
 .principles-section {
-  padding: 60px 80px;
+  padding: 60px;
   /* background: #faf9f6; */
 
   @media (max-width: 1024px) {
@@ -13,8 +13,8 @@
   .principles-content {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
-    gap: 60px;
-    max-width: 1200px;
+    gap: 80px;
+    max-width: 1230px;
     margin: 0 auto;
 
     @media (max-width: 968px) {
@@ -31,6 +31,9 @@
   }
 
   .principles-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     .section-desc {
       max-width: 400px;
       line-height: 1.6;
@@ -57,7 +60,7 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: #A7C4A0;
+      background: #a7c4a0;
       display: flex;
       align-items: center;
       justify-content: center;

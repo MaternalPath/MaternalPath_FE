@@ -5,8 +5,10 @@ import {
   LuCircleAlert,
 } from "react-icons/lu";
 import "./Css/CtaSection.css";
+import { useNavigate } from "react-router-dom";
 
 const CtaSection = () => {
+  const nav = useNavigate();
   const features = [
     { id: 1, icon: <LuShield size={16} />, text: "Secure & Private" },
     { id: 2, icon: <LuHeart size={16} />, text: "Mother-Centered" },
@@ -27,8 +29,10 @@ const CtaSection = () => {
         milestone, every step toward delivery day.
       </p>
       <div className="cta-buttons">
-        <button className="btn-primary">Get Started</button>
-        <button className="btn-outline-light">Learn More</button>
+        <button className="cta-btn-primary" onClick={() => nav("/getStarted")}>
+          Get Started
+        </button>
+        <button className="cta-btn-outline-light">Learn More</button>
       </div>
       <div className="cta-features">
         {features.map((f) => (
@@ -41,9 +45,12 @@ const CtaSection = () => {
       <div className="cta-notice">
         <LuCircleAlert size={16} />
         <p>
-          <strong>Important:</strong> This platform provides educational
-          wellness support and does not replace professional medical advice.
-          Always consult your healthcare provider for medical decisions.
+          <strong style={{ color: "var(--primary-deep-teal)" }}>
+            Important:
+          </strong>{" "}
+          This platform provides educational wellness support and does not
+          replace professional medical advice. Always consult your healthcare
+          provider for medical decisions.
         </p>
       </div>
     </section>

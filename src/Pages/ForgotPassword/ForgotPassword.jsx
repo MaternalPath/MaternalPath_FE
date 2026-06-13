@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
 import "./Css/ForgotPassword.css";
 import logo from "../../assets/header.png";
 import backgroundImage from "../../assets/pana.png";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
@@ -13,11 +15,19 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/checkEmail", { state: { email } });
+    try {
+      await axios.post(`${baseURL}/mother/forgot-password`, {
+        email,
+      });
+      toast.success("Password reset link sent! Please check your email.");
+      navigate("/checkEmail", { state: { email, role: "mother" } });
+    } catch (error) {
+      console.error("Forgot password error:", error);
+    }
   };
 
   return (
-    <mian className="auth-main">
+    <main className="auth-main">
       <div className="auth-container">
         <div className="auth-left">
           <img src={logo} alt="MaternalPath" className="auth-logo" />
@@ -66,7 +76,7 @@ const ForgotPassword = () => {
           </Link>
         </div>
       </div>
-    </mian>
+    </main>
   );
 };
 

@@ -2,6 +2,8 @@
   width: 100%;
   height: 80vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   background-color: #f7f5f2;
 }
@@ -36,12 +38,12 @@
   }
 }
 .Works-top-card-holder {
-  width: 100%;
+  width: 91%;
   height: 70%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 .Works-Cards {
   width: 404px;
