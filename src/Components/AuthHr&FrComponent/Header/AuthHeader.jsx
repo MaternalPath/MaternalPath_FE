@@ -21,7 +21,7 @@ const Header = () => {
             <div className="AuthHeader-right">
               <button
                 className="AuthHeader-right-1"
-                onClick={() => nav("/login")}
+                // onClick={() => nav("/login")}
               >
                 Login
               </button>
