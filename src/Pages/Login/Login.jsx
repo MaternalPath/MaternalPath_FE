@@ -130,6 +130,8 @@ const LoginPage = () => {
       console.log("Login successful:", { userType, ...formData });
 
       localStorage.setItem("token", response?.data?.token);
+      localStorage.setItem("user_id", response?.data?.id);
+
       nav("/dashboard/profile");
     }
   };
