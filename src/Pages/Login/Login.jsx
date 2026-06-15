@@ -127,12 +127,16 @@ const LoginPage = () => {
 
     const response = await loginApi();
     if (response?.status === 200) {
-      console.log("Login successful:", { userType, ...formData });
-
       localStorage.setItem("token", response?.data?.token);
-      localStorage.setItem("user_id", response?.data?.id);
 
-      nav("/dashboard/profile");
+      if (userType === "mother") {
+        const isUpdated = Boolean(response?.data?.isUpdated);
+        localStorage.setItem("isUpdated", String(isUpdated));
+        nav(isUpdated ? "/dashboard" : "/dashboard/profile");
+      } else {
+        localStorage.removeItem("isUpdated");
+        nav("/dashboard");
+      }
     }
   };
 

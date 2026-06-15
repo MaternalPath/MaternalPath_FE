@@ -48,6 +48,16 @@
   font-weight: 600;
 }
 
+.sidebar-link.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
+.sidebar-link.disabled:hover {
+  background: transparent;
+}
+
 .sidebar-icon {
   display: flex;
   align-items: center;
