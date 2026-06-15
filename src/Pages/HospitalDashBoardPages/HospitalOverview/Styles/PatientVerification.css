@@ -1,6 +1,6 @@
 .patient-verification-container {
   display: flex;
-  gap: 32px;
+  gap: 25px;
   padding: 24px;
   min-height: 100vh;
   min-height: max-content;
@@ -17,7 +17,7 @@
 }
 
 .patient-verification-notifications-section {
-  width: 35%;
+  width: 33%;
   background-color: #eaf2e7;
   padding-top: 26px;
   padding-right: 26px;
@@ -273,8 +273,9 @@
 
 .patient-verification-notification-item {
   display: flex;
+  width: 100%;
   gap: 12px;
-  padding: 12px;
+  padding: 10px;
   background-color: transparent;
   border-bottom: 1px solid #e5e5e5;
   transition: all 0.3s ease;

@@ -6,8 +6,6 @@ import { IoTimeOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
 
 const PatientVerification = () => {
-  const [searchInput, setSearchInput] = useState("");
-
   const handleSearch = () => {};
 
   const handleKeyPress = (e) => {
@@ -57,7 +55,7 @@ const PatientVerification = () => {
             type="text"
             className="patient-verification-search-input"
             placeholder="Enter Patient ID or Phone Number"
-            value={searchInput}
+            // value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={handleKeyPress}
           />

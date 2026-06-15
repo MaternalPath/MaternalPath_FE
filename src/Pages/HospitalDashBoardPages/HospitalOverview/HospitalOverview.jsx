@@ -40,18 +40,20 @@ const HospitalOverview = () => {
 
   return (
     <>
-      <div className="hospital-overview">
-        <div className="overview-header">
-          <h1>Dashboard Overview</h1>
-          <p>Patient verification and fund authorization portal</p>
+      <div className="hospital-overview-container">
+        <div className="hospital-overview-header">
+          <h1 className="hospital-overview-title">Dashboard Overview</h1>
+          <p className="hospital-overview-subtitle">
+            Patient verification and fund authorization portal
+          </p>
         </div>
 
-        <div className="stat-cards-container">
+        <div className="hospital-overview-stat-cards-container">
           {statCards.map((card, index) => (
-            <div key={index} className="stat-card">
-              <div className="stat-icon">{card.icon}</div>
-              <div className="stat-number">{card.number}</div>
-              <div className="stat-label">{card.label}</div>
+            <div key={index} className="hospital-overview-stat-card">
+              <div className="hospital-overview-stat-icon">{card.icon}</div>
+              <div className="hospital-overview-stat-number">{card.number}</div>
+              <div className="hospital-overview-stat-label">{card.label}</div>
             </div>
           ))}
         </div>
