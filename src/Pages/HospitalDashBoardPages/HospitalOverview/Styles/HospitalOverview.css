@@ -75,6 +75,7 @@
   color: #525252;
 }
 
+
 @media (max-width: 768px) {
   .hospital-overview-stat-cards-container {
     grid-template-columns: repeat(2, 1fr);

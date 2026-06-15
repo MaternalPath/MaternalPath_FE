@@ -391,7 +391,7 @@ const SignUpAdmin = () => {
                   type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
-                  placeholder="+234 800 000 0000"
+                  placeholder="800 000 0000"
                   value={formData.phoneNumber}
                   onChange={catchPhoneNum}
                   onBlur={catchPhoneNum}
@@ -523,7 +523,7 @@ const SignUpAdmin = () => {
                 type="text"
                 id="medicalLicenseNumber"
                 name="medicalLicenseNumber"
-                placeholder="Enter your license number"
+                placeholder="HEFAMAA/CL/001234 or MDCN/R/68971"
                 value={formData.medicalLicenseNumber}
                 onChange={catchMedicalLicense}
                 onBlur={catchMedicalLicense}

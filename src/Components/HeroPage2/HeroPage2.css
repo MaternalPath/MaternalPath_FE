@@ -254,6 +254,7 @@
     grid-template-columns: 4fr;
     gap: 16px;
     padding: 0;
+    flex-direction: column;
   }
 
   .mp-feature-card {
@@ -309,7 +310,7 @@
   }
 
   .mp-testimonial-card {
-    padding: 24px 20px;
+    padding: 30px;
     border-radius: 12px;
   }
 
@@ -338,7 +339,7 @@
 
   .mp-testimonial-quote {
     font-size: 14px;
-    line-height: 22px;
+    line-height: 24px;
   }
 
   .mp-carousel-btn {

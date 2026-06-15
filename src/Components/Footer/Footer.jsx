@@ -15,8 +15,10 @@ import { GrFacebookOption } from "react-icons/gr";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { RiTwitterXFill } from "react-icons/ri";
 import { BiLogoLinkedin } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const nav = useNavigate();
   return (
     <main className="Footer-container">
       <section className="Footer-top">
@@ -31,8 +33,8 @@ const Footer = () => {
             throughout their pregnancy journey.
           </p>
           <p className="paragraph-footer">
-            A comprehensive platform with resources, support, and
-            financial security for your pregnancy journey.
+            A comprehensive platform with resources, support, and financial
+            security for your pregnancy journey.
           </p>
         </aside>
 
@@ -58,14 +60,15 @@ const Footer = () => {
         <aside className="footer-text-holder">
           <h2>Platform</h2>
           <ul>
-            <li>How It Works</li>
-            <li>Features</li>
-            <li>Pricing</li>
-            <li>FAQ</li>
+            <li onClick={() => nav("/how")}>How It Works</li>
+            {/* <li>Features</li>
+            <li>Pricing</li> */}
+            <li onClick={() => nav("/about")}>About Us</li>
+            <li onClick={() => nav("/faq")}>FAQ</li>
           </ul>
         </aside>
 
-        <aside className="footer-text-holder">
+        {/* <aside className="footer-text-holder">
           <h2>Resources</h2>
           <ul>
             <li>Pregnancy Guide</li>
@@ -73,35 +76,34 @@ const Footer = () => {
             <li>Financial Planning</li>
             <li>Blog</li>
           </ul>
-        </aside>
+        </aside> */}
         <aside className="footer-text-holder">
           <h2>Company</h2>
           <ul>
-            <li>About Us</li>
             <li>Contact</li>
-            <li>Privacy Policy</li>
-            <li>Terms of Service</li>
+            <li onClick={() => nav("/privacySettings")}>Privacy Policy</li>
+            <li onClick={() => nav("/terms")}>Terms of Service</li>
           </ul>
         </aside>
       </section>
 
       <section className="mobile-footer-container">
         <aside className="footer-text-holder">
-        <h2>Platform</h2>
-        <ul>
-          <li>For Mothers</li>
-          <li>For Hospitals</li>
-        </ul>
+          <h2>Platform</h2>
+          <ul>
+            <li onClick={() => nav("/signupUser")}>For Mothers</li>
+            <li onClick={() => nav("/signupHospital")}>For Hospitals</li>
+          </ul>
         </aside>
         <aside className="footer-text-holder">
           <h2>Company</h2>
           <ul>
-            <li>About Us</li>
-            <li>Privacy Policy</li>
+            <li onClick={() => nav("/about")}>About Us</li>
+            <li onClick={() => nav("/privacySettings")}>Privacy Policy</li>
           </ul>
         </aside>
       </section>
-      
+
       <section className="Footer-bottom">
         <p>© 2026 MaternalPath All rights reserved.</p>
         <aside className="icons-holder">
