@@ -94,6 +94,247 @@
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
 }
 
+.personal-edit-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-help-text {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.modal-grid-two {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.modal-field-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-field-wrap label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.modal-footer-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.header-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header-image-section {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.profile-preview-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+.image-upload-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0f5c5d;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.header-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-field-wrap label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f5c5d;
+}
+
+.field-input {
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: #f4f3f1;
+  padding: 0 16px;
+  font-size: 15px;
+  outline: none;
+}
+
+.field-input:focus {
+  border: 1px solid #0f5c5d;
+}
+
+
+.personal-modal-container {
+  padding-top: 10px;
+}
+
+.personal-search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.personal-modal-input {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 16px;
+  background: #f4f2ef;
+  padding: 0 18px;
+  font-size: 15px;
+  color: #0f5c5d;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.personal-modal-input::placeholder {
+  color: #8ba2a1;
+}
+
+.personal-modal-input:focus {
+  border: 1px solid #0f5c5d;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(15, 92, 93, 0.08);
+}
+
+.hospital-modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hospital-modal-search-wrap {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+
+.hospital-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.hospital-option-card {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 14px;
+  text-align: left;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hospital-option-card:hover {
+  border-color: #0f766e;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.08);
+}
+
+.hospital-option-card.active {
+  border-color: #0f766e;
+  background: #ecfdf5;
+}
+
+.hospital-option-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hospital-option-top h4 {
+  margin: 0;
+  color: #064e3b;
+  font-size: 15px;
+}
+
+.hospital-option-top span {
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hospital-option-card p {
+  margin: 8px 0;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.hospital-option-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hospital-option-meta span {
+  font-size: 12px;
+  color: #0f5c5d;
+  background: #eef9f9;
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+
+.hospital-modal-state {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.hospital-selected-summary {
+  border: 1px solid #a7f3d0;
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #065f46;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 @media (max-width: 768px) {
   .profile-settings {
     padding: 0;
@@ -103,5 +344,17 @@
 @media (min-width: 1024px) {
   .profile-content .page-header .page-title {
     font-size: 24px;
+  }
+
+  .modal-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modal-field-wrap-full {
+    grid-column: span 2;
+  }
+
+  .hospital-list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
