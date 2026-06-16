@@ -1,6 +1,6 @@
 import "./AuthHeader.css";
 import { useNavigate } from "react-router-dom";
-import authLogo from "../../../assets/header.png";
+import authLogo from "/src/assets/header.png";
 
 const Header = () => {
   const nav = useNavigate();
@@ -9,19 +9,20 @@ const Header = () => {
     <>
       <header className="AuthHeader-container">
         <div className="AuthHeader-wrapper">
-          <div className="AuthHeader" onClick={() => nav("/")}>
+          <div className="AuthHeader">
             <div className="AuthHeader-left">
               <img
                 className="AuthHeader-left-image"
                 src={authLogo}
                 alt="logo"
+                onClick={() => nav("/")}
               />
             </div>
 
             <div className="AuthHeader-right">
               <button
                 className="AuthHeader-right-1"
-                // onClick={() => nav("/login")}
+                onClick={() => nav("/login")}
               >
                 Login
               </button>

@@ -11,7 +11,7 @@ import {
 import { PiBaby } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { GiHospital } from "react-icons/gi";
-import login from "../../assets/Login.png";
+import login from "/src/assets/Login.png";
 import { CiHeart } from "react-icons/ci";
 import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
@@ -219,7 +219,7 @@ const LoginPage = () => {
                   <MdLock />
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="123456"
+                    placeholder="Password123"
                     value={formData.password}
                     onChange={(e) => handleChange("password", e.target.value)}
                     onBlur={() => handleBlur("password")}

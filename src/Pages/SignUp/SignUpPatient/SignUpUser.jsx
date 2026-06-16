@@ -245,7 +245,7 @@ const SignUp = () => {
     if (!validateAllFields()) return;
     const response = await signUpApi();
     if (!response) return;
-    nav("/otpverification", {state: {email:formData.email} });
+    nav("/otpverification", { state: { email: formData.email } });
   };
 
   const roleText =
@@ -273,7 +273,7 @@ const SignUp = () => {
                 onBlur={catchFirstName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)", fontSize: "6px" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "firstName" ? errMsg.msg : ""}
               </span>
             </div>
@@ -290,7 +290,7 @@ const SignUp = () => {
                 onBlur={catchLastName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "lastName" ? errMsg.msg : ""}
               </span>
             </div>
@@ -307,7 +307,7 @@ const SignUp = () => {
                 onBlur={catchEmail}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "email" ? errMsg.msg : ""}
               </span>
             </div>
@@ -324,7 +324,7 @@ const SignUp = () => {
                 onBlur={catchPhoneNum}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "phoneNumber" ? errMsg.msg : ""}
               </span>
             </div>
@@ -356,7 +356,7 @@ const SignUp = () => {
                 </button>
               </div>
 
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "password" ? errMsg.msg : ""}
               </span>
 
@@ -416,7 +416,7 @@ const SignUp = () => {
                   {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
-              <span style={{ color: "var(--error-color)" }}>
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "confirmPassword"
                   ? errMsg.msg
                   : ""}
@@ -447,7 +447,7 @@ const SignUp = () => {
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="/privacy" className="terms-link">
+            <a href="/privacySettings" className="terms-link">
               Privacy Policy
             </a>
           </p>

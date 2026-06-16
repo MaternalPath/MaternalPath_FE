@@ -20,17 +20,21 @@ const ProfileHeaderCard = ({ data = {}, onEditClick }) => {
             <div className="profile-details">
               <div className="detail-item">
                 <div className="detail-label">Estimated Due Date</div>
-                <div className="detail-value">{data?.dueDate || "September 18, 2026"}</div>
+                <div className="detail-value">
+                  {data?.dueDate || "September 18, 2026"}
+                </div>
               </div>
               <div className="detail-item">
                 <div className="detail-label">Preferred Hospital</div>
-                <div className="detail-value">{data?.hospital || "Lagos General Hospital"}</div>
+                <div className="detail-value">
+                  {data?.hospital || "Lagos General Hospital"}
+                </div>
               </div>
             </div>
           </div>
-                  <button className="btn-edit" onClick={onEditClick}>
-          <FiEdit2 size={14} /> Edit Profile
-        </button>
+          <button className="btn-edit" onClick={onEditClick}>
+            <FiEdit2 size={14} /> Edit Profile
+          </button>
         </div>
       </div>
 
@@ -47,14 +51,20 @@ const ProfileHeaderCard = ({ data = {}, onEditClick }) => {
         <div className="profile-details-mobile">
           <div className="detail-item">
             <div className="detail-label">Estimated Due Date</div>
-            <div className="detail-value">{data?.dueDate || "September 18, 2026"}</div>
+            <div className="detail-value">
+              {data?.dueDate || "September 18, 2026"}
+            </div>
           </div>
           <div className="detail-item">
             <div className="detail-label">Preferred Hospital</div>
-            <div className="detail-value">{data?.hospital || "Lagos General Hospital"}</div>
+            <div className="detail-value">
+              {data?.hospital || "Lagos General Hospital"}
+            </div>
           </div>
         </div>
-        <button className="btn-edit-full" onClick={onEditClick}>Edit Profile</button>
+        <button className="btn-edit-full" onClick={onEditClick}>
+          Edit Profile
+        </button>
       </div>
     </div>
   );

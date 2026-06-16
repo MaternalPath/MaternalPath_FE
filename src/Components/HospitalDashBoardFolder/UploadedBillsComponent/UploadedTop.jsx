@@ -3,7 +3,7 @@ import { FiUpload, FiSearch } from "react-icons/fi";
 import "./Css/UploadedTop.css";
 import { useNavigate } from "react-router-dom";
 
-const UploadedTop = ({ onUploadNewBill, searchValue, onSearchChange }) => {
+const UploadedTop = ({ searchValue, onSearchChange }) => {
   const nav = useNavigate();
   return (
     <div className="uploadeds">
@@ -15,7 +15,7 @@ const UploadedTop = ({ onUploadNewBill, searchValue, onSearchChange }) => {
           </p>
         </div>
 
-        <button className="uploads-btn" onClick={onUploadNewBill}>
+        <button className="uploads-btn" onClick={() => nav("/")}>
           <FiUpload className="uploads-icon"/>
           Upload New Bill
         </button>

@@ -16,6 +16,74 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.patient-verification-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 16px;
+}
+
+.patient-verification-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #0f766e;
+  border-radius: 50%;
+  animation: patient-verification-spin 0.8s linear infinite;
+}
+
+@keyframes patient-verification-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.patient-verification-error {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.patient-verification-error p {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.retry-btn {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* No Results */
+.patient-verification-no-results {
+  text-align: center;
+  padding: 40px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  color: #6b7280;
+}
+
+/* Disabled state for search button */
+.patient-verification-search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.patient-verification-search-input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
 .patient-verification-notifications-section {
   width: 35%;
   background-color: #eaf2e7;
