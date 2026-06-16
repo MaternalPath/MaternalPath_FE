@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import "./PregnancyTracker.css";
 import PregnancyOverview from "../../../Components/PatientDashBoardFolder/PregnantTrackerComponent/PregnancyOverview";
 import CareSection from "../../../Components/PatientDashBoardFolder/PregnantTrackerComponent/CareSection";

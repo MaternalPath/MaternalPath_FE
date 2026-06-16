@@ -318,7 +318,7 @@ const SignUp = () => {
                 type="tel"
                 id="phoneNumber"
                 name="phoneNumber"
-                placeholder="+234 812 345 6789"
+                placeholder="812 345 6789"
                 value={formData.phoneNumber}
                 onChange={catchPhoneNum}
                 onBlur={catchPhoneNum}
