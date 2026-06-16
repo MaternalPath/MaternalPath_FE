@@ -7,9 +7,8 @@ import {
   FiCalendar,
   FiFilter,
   FiDownload,
-  FiEye,
 } from "react-icons/fi";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import {
   getVerificationHistoryStats,
   getVerificationRequests,
@@ -53,7 +52,6 @@ const VerificationHistory = () => {
   const [verificationRecords, setVerificationRecords] = useState([]);
   const [recordsLoading, setRecordsLoading] = useState(true);
 
-  // Fetch verification history stats
   useEffect(() => {
     let isMounted = true;
     getVerificationHistoryStats()
@@ -74,7 +72,6 @@ const VerificationHistory = () => {
     };
   }, []);
 
-  // Fetch verification requests
   useEffect(() => {
     let isMounted = true;
 
@@ -83,7 +80,6 @@ const VerificationHistory = () => {
         const data = await getVerificationRequests();
         console.log("Verification requests:", data);
 
-        // Handle different response structures
         const requests = data?.data || data || [];
         if (isMounted) setVerificationRecords(requests);
       } catch (error) {
@@ -110,7 +106,6 @@ const VerificationHistory = () => {
   const statusClass = (status) =>
     `status-badge status-${status?.toLowerCase().replace(/\s+/g, "-") || "pending"}`;
 
-  // Filter records based on search
   const filteredRecords = verificationRecords.filter((record) => {
     const matchesPatient =
       searchPatient === "" ||
@@ -128,11 +123,69 @@ const VerificationHistory = () => {
     return matchesPatient && matchesDate;
   });
 
-  // Display loading state
+  const handleExportHistory = () => {
+    if (filteredRecords.length === 0) {
+      toast.warning("No records available to export.");
+      return;
+    }
+
+    try {
+      const headers = [
+        "Verification ID",
+        "Patient Name",
+        "Pregnancy Week",
+        "Preferred Hospital",
+        "Wallet Amount",
+        "Verification Status",
+        "Verification Date",
+      ];
+
+      const rows = filteredRecords.map((record) => [
+        record.verificationId || record.id || "",
+        record.patientName || record.patient_name || "",
+        record.pregnancyWeek || record.pregnancy_stage || "Week —",
+        record.preferredHospital || record.hospital || "",
+        record.amountRequested || record.amount || "",
+        record.authorizationStatus || record.status || "Pending",
+        record.verificationDate || record.date || "",
+      ]);
+
+      let csvContent = headers.join(",") + "\n";
+      rows.forEach((row) => {
+        const escapedRow = row.map((cell) => {
+          if (
+            typeof cell === "string" &&
+            (cell.includes(",") || cell.includes('"'))
+          ) {
+            return `"${cell.replace(/"/g, '""')}"`;
+          }
+          return cell;
+        });
+        csvContent += escapedRow.join(",") + "\n";
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      const date = new Date();
+      const dateStr = date.toISOString().split("T")[0];
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Verification_History_${dateStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`Exported ${filteredRecords.length} records successfully!`);
+    } catch (error) {
+      console.error("Export error:", error);
+      toast.error("Failed to export records. Please try again.");
+    }
+  };
+
   if (recordsLoading || statsLoading) {
     return (
       <div className="verification-history-container">
-        <ToastContainer />
         <div className="loading-state">
           <div className="loading-spinner"></div>
           <p>Loading verification history...</p>
@@ -143,6 +196,7 @@ const VerificationHistory = () => {
 
   return (
     <div className="verification-history-container">
+      <ToastContainer />
       <header className="header-section">
         <div className="header-content">
           <h1>Verification History</h1>
@@ -155,7 +209,11 @@ const VerificationHistory = () => {
             <FiFilter size={16} />
             Filter Verification
           </button>
-          <button className="btn-export" type="button">
+          <button
+            className="btn-export"
+            type="button"
+            onClick={handleExportHistory}
+          >
             <FiDownload size={16} />
             Export History
           </button>
@@ -205,9 +263,6 @@ const VerificationHistory = () => {
       <section className="records-section">
         <div className="records-header">
           <h2>Verification Records</h2>
-          <a href="#" className="see-all-link">
-            See All
-          </a>
         </div>
 
         <div className="records-table-wrap">
@@ -220,9 +275,7 @@ const VerificationHistory = () => {
                 <th>Preferred Hospital</th>
                 <th>Wallet Amount</th>
                 <th>Verification Status</th>
-                <th>Approved By</th>
                 <th>Verification Date</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -254,25 +307,12 @@ const VerificationHistory = () => {
                           "Pending"}
                       </span>
                     </td>
-                    <td>{record.approvedBy || "-"}</td>
                     <td>{record.verificationDate || record.date}</td>
-                    <td className="actions-cell">
-                      <button className="action-btn" title="View" type="button">
-                        <FiEye size={16} />
-                      </button>
-                      <button
-                        className="action-btn"
-                        title="Download"
-                        type="button"
-                      >
-                        <FiDownload size={16} />
-                      </button>
-                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9" className="no-records">
+                  <td colSpan="7" className="no-records">
                     No verification records found.
                   </td>
                 </tr>
