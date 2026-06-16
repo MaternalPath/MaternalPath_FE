@@ -1,14 +1,3 @@
-:root {
-  --mp-primary: #2d6a5e;
-  --mp-primary-dark: #235347;
-  --mp-text: #1e1e1e;
-  --mp-text-light: #6b7280;
-  --mp-bg: #f9f9f6;
-  --mp-border: #e5e7eb;
-  --mp-white: #ffffff;
-  --mp-title-accent: #8fa99e;
-}
-
 .mp-hero {
   background: #f9f9f6;
   font-family: "Inter", sans-serif;
@@ -24,6 +13,13 @@
   align-items: center;
 }
 
+@media (max-width: 1200px) {
+  .mp-hero-container {
+    padding: 50px 40px;
+    gap: 50px;
+  }
+}
+
 .mp-badge {
   display: inline-block;
   padding: 8px 20px;
@@ -35,12 +31,25 @@
   margin-bottom: 32px;
 }
 
+@media (max-width: 1200px) {
+  .mp-badge {
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+}
+
 .mp-hero-title {
   font-size: 50px;
   line-height: 1.2;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 1200px) {
+  .mp-hero-title {
+    font-size: 42px;
+  }
 }
 
 .mp-title-light {
@@ -61,6 +70,13 @@
   max-width: 520px;
 }
 
+@media (max-width: 1200px) {
+  .mp-hero-desc {
+    font-size: 16px;
+    margin-bottom: 26px;
+  }
+}
+
 .mp-btn {
   padding: 16px 40px;
   border-radius: 8px;
@@ -70,6 +86,13 @@
   transition: all 0.2s;
   border: none;
   font-family: "Inter", sans-serif;
+}
+
+@media (max-width: 1200px) {
+  .mp-btn {
+    padding: 15px 36px;
+    font-size: 17px;
+  }
 }
 
 .mp-btn-primary {
@@ -89,6 +112,13 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 1200px) {
+  .mp-trust-badges {
+    gap: 24px;
+    margin-top: 28px;
+  }
+}
+
 .mp-trust-item {
   display: flex;
   align-items: center;
@@ -96,6 +126,12 @@
   color: #2d6a5e;
   font-size: 14px;
   font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+  .mp-trust-item {
+    font-size: 13px;
+  }
 }
 
 .mp-trust-item svg {
@@ -112,6 +148,35 @@
   height: auto;
 }
 
+@media (max-width: 1024px) {
+  .mp-hero-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 32px;
+    text-align: center;
+  }
+
+  .mp-hero-content {
+    order: 1;
+  }
+
+  .mp-hero-image {
+    order: 2;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .mp-hero-desc {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mp-trust-badges {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .mp-hero {
     padding: 32px 0 40px;
@@ -122,6 +187,7 @@
     padding: 0 16px;
     grid-template-columns: 1fr;
     gap: 32px;
+    text-align: left;
   }
 
   .mp-badge {
@@ -165,6 +231,10 @@
     height: 14px;
   }
 
+  .mp-hero-content {
+    order: 1;
+  }
+
   .mp-hero-image {
     order: 2;
   }
@@ -174,7 +244,6 @@
   }
 }
 
-/* SMALL MOBILE 375px */
 @media (max-width: 375px) {
   .mp-hero-title {
     font-size: 28px;

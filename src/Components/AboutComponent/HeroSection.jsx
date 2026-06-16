@@ -9,8 +9,10 @@ const HeroSection = () => {
   return (
     <section className="hero-section">
       <div className="hero-badge">
-        <GoShieldCheck size={14} />
-        <span>Our Story & Mission</span>
+        <span>
+          <GoShieldCheck size={14} />
+          Our Story & Mission
+        </span>
       </div>
       <div className="hero-content">
         <div className="hero-left">

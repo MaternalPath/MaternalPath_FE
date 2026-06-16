@@ -1,43 +1,147 @@
 .Confidence-container {
   width: 100%;
-  /* height: 550px; */
-  gap: 20px;
   background-color: #f7f5f2;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 6rem;
-  padding-bottom: 4.5rem;
+  padding: 6rem 0 4.5rem;
+  gap: 20px;
+}
 
-  h1 {
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 45px;
-    line-height: 50.6px;
-    letter-spacing: 0px;
-    text-align: center;
-    color: #0c5e58;
-    width: 60%;
-  }
-  p {
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 20px;
-    line-height: 34.26px;
-    letter-spacing: 0px;
-    text-align: center;
-    color: #242c3a;
-    width: 60%;
+@media (max-width: 1024px) {
+  .Confidence-container {
+    padding: 40px 0;
   }
 }
+
+@media (max-width: 768px) {
+  .Confidence-container {
+    padding: 40px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .Confidence-container {
+    padding: 30px 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .Confidence-container {
+    padding: 20px 0;
+  }
+}
+
+.Confidence-container h1 {
+  width: 92%;
+  margin: 0 auto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 45px;
+  line-height: 50.6px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #0c5e58;
+}
+
+@media (max-width: 1200px) {
+  .Confidence-container h1 {
+    font-size: 42px;
+    line-height: 48px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .Confidence-container h1 {
+    font-size: 40px;
+    line-height: 45px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Confidence-container h1 {
+    font-size: 32px;
+    line-height: 38px;
+  }
+}
+
+@media (max-width: 576px) {
+  .Confidence-container h1 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+}
+
+@media (max-width: 375px) {
+  .Confidence-container h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+.Confidence-container p {
+  width: 92%;
+  margin: 0 auto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 20px;
+  line-height: 34.26px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #242c3a;
+}
+
+@media (max-width: 1200px) {
+  .Confidence-container p {
+    font-size: 19px;
+    line-height: 30px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .Confidence-container p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Confidence-container p {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+
+@media (max-width: 576px) {
+  .Confidence-container p {
+    font-size: 15px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 375px) {
+  .Confidence-container p {
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
 .confidence-btn-holder {
-  width: 100%;
+  width: 92%;
+  margin: 0 auto;
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 768px) {
+  .confidence-btn-holder {
+    gap: 15px;
+  }
+}
+
 .confidence-btn1 {
   width: 179px;
   padding: 18px;
@@ -57,6 +161,33 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .confidence-btn1 {
+    width: 160px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .confidence-btn1 {
+    width: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .confidence-btn1 {
+    width: 160px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .confidence-btn1 {
+    width: 150px;
+    font-size: 13px;
+  }
 }
 
 .confidence-btn1:hover {
@@ -82,6 +213,33 @@
   transition: all 0.3s ease;
 }
 
+@media (max-width: 1024px) {
+  .confidence-btn2 {
+    width: 160px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .confidence-btn2 {
+    width: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .confidence-btn2 {
+    width: 160px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .confidence-btn2 {
+    width: 150px;
+    font-size: 13px;
+  }
+}
+
 .confidence-btn2:hover {
   background-color: #3f918b;
   color: #ffffff;
@@ -90,150 +248,35 @@
 }
 
 .confidence-notice {
-  width: 91%;
+  width: 92%;
+  margin: 0 auto;
   padding: 25px;
   font-size: 15px;
   border: 1.05px solid #c1d6bd;
   border-radius: 14.76px;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   background-color: #ddf7d7;
-}
-
-
-@media (max-width: 1024px) {
-  .Confidence-container {
-    height: auto;
-    min-height: 502px;
-    padding: 40px 20px;
-    
-    h1 {
-      font-size: 40px;
-      line-height: 45px;
-      width: 80%;
-    }
-    
-    p {
-      font-size: 18px;
-      line-height: 28px;
-      width: 70%;
-    }
-  }
-  
-  .confidence-btn1,
-  .confidence-btn2 {
-    width: 160px;
-    height: 55px;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  text-align: center;
 }
 
 @media (max-width: 768px) {
-  .Confidence-container {
-    padding: 40px 16px;
-    
-    h1 {
-      font-size: 32px;
-      line-height: 38px;
-      width: 90%;
-    }
-    
-    p {
-      font-size: 16px;
-      line-height: 26px;
-      width: 85%;
-    }
-  }
-  
-  .confidence-btn-holder {
-    height: auto;
-    gap: 15px;
-    padding: 20px 0;
-  }
-  
-  .confidence-btn1,
-  .confidence-btn2 {
-    width: 180px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
   .confidence-notice {
-    width: 95%;
-    height: auto;
-    min-height: 73px;
     padding: 15px;
-    /* text-align: center; */
     font-size: 14px;
   }
 }
 
 @media (max-width: 576px) {
-  .Confidence-container {
-    padding: 30px 12px;
-    
-    h1 {
-      font-size: 28px;
-      line-height: 34px;
-      width: 100%;
-    }
-    
-    p {
-      font-size: 15px;
-      line-height: 24px;
-      width: 100%;
-    }
-  }
-  
-  .confidence-btn1,
-  .confidence-btn2 {
-    width: 160px;
-    height: 48px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
   .confidence-notice {
-    font-size: 12px;
     padding: 12px;
+    font-size: 12px;
   }
 }
 
 @media (max-width: 375px) {
-  .Confidence-container {
-    padding: 20px 12px;
-    
-    h1 {
-      font-size: 24px;
-      line-height: 30px;
-    }
-    
-    p {
-      font-size: 14px;
-      line-height: 22px;
-    }
-  }
-  
-  .confidence-btn1,
-  .confidence-btn2 {
-    width: 150px;
-    height: 45px;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
   .confidence-notice {
-    font-size: 11px;
     padding: 10px;
+    font-size: 11px;
   }
 }

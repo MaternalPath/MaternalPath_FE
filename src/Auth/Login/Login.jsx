@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MdEmail,
   MdLock,
@@ -11,18 +11,20 @@ import {
 import { PiBaby } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { GiHospital } from "react-icons/gi";
-import login from "/src/assets/Login.png";
+import loginImg from "/src/assets/Login.png";
 import { CiHeart } from "react-icons/ci";
 import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRole } from "../../context/RoleContext";
+import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const LoginPage = () => {
   const nav = useNavigate();
-  const { role: defaultRole, setRole } = useRole();
+  const location = useLocation();
+  const { role: defaultRole, setRole, login } = useRole();
   const [userType, setUserType] = useState(defaultRole);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -127,15 +129,18 @@ const LoginPage = () => {
 
     const response = await loginApi();
     if (response?.status === 200) {
-      localStorage.setItem("token", response?.data?.token);
+      login(response?.data?.token, userType);
+      // login(response?.data?.token, userType, formData.rememberMe);
+
+      const from = location.state?.from?.pathname || "/dashboard";
 
       if (userType === "mother") {
         const isUpdated = Boolean(response?.data?.isUpdated);
         localStorage.setItem("isUpdated", String(isUpdated));
-        nav(isUpdated ? "/dashboard" : "/dashboard/profile");
+        nav(isUpdated ? from : "/dashboard/profile", { replace: true });
       } else {
         localStorage.removeItem("isUpdated");
-        nav("/dashboard");
+        nav(from === "/getStarted" ? "/dashboard" : from, { replace: true });
       }
     }
   };
@@ -261,16 +266,11 @@ const LoginPage = () => {
 
               <button
                 type="submit"
-                className="mp-login-btn"
+                className={`mp-login-btn ${isLoading ? "loading" : ""}`}
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <>
-                    <span className="login-spinner" aria-hidden="true">
-                      ⏳
-                    </span>
-                    Signing in...
-                  </>
+                  "Signing in..."
                 ) : (
                   <>
                     Log In <MdArrowForward />
@@ -321,7 +321,7 @@ const LoginPage = () => {
             </p>
 
             <div className="mp-illustration">
-              <img src={login} alt="Pregnant woman with phone" />
+              <img src={loginImg} alt="Pregnant woman with phone" />
             </div>
 
             <div className="mp-feature-tags">
@@ -333,6 +333,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <AuthFooter />
     </>
   );
 };

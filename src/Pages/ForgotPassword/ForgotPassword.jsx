@@ -12,9 +12,11 @@ const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await axios.post(`${baseURL}/mother/forgot-password`, {
         email,
@@ -23,6 +25,11 @@ const ForgotPassword = () => {
       navigate("/checkEmail", { state: { email, role: "mother" } });
     } catch (error) {
       console.error("Forgot password error:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to send reset link",
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,12 +69,17 @@ const ForgotPassword = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="inputSpace"
+                  disabled={isLoading}
                 />
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              Send Reset Link
+            <button
+              type="submit"
+              className={`btn-primary ${isLoading ? "loading" : ""}`}
+              disabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Send Reset Link"}
             </button>
           </form>
 

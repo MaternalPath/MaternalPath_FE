@@ -5,11 +5,11 @@
   justify-content: center;
 
   .type-btn {
-    padding: 7px 5px;
+    padding: 7px 6.5px;
     background: var(--bg-cards);
     border: 1px solid var(--grey-outline);
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--text-tint);
     cursor: pointer;
     transition: all 0.2s;
@@ -21,12 +21,12 @@
     }
   }
 }
-/* @media (max-width: 375px) {
-  .type-button {
-    gap: 4px;
+@media (max-width: 768px) {
+  .type-buttons {
+    gap: 5px;
     .type-btn {
-      padding: 6px 4px;
-      font-size: 3px;
+      padding: 6px 5px;
+      font-size: 9px;
     }
   }
-} */
+}

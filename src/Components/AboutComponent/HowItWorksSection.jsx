@@ -33,7 +33,8 @@ const HowItWorksSection = () => {
     <section className="how-section">
       <span className="section-how-center">HOW IT WORKS</span>
       <h2 className="section-hows-center">
-        How We Support <em style={{marginLeft : "10px", color: "#454646"}}> Mothers</em>
+        How We Support{" "}
+        <em style={{ marginLeft: "10px", color: "#454646" }}> Mothers</em>
       </h2>
       <div className="steps-row">
         {steps.map((step) => (

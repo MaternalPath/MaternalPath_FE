@@ -90,8 +90,10 @@
     gap: 10px;
   }
 
-  .stat-card {
-    padding: 16px;
+  .stats-card {
+    padding: 18px;
+    border: solid silver 1px;
+    border-radius: 10px;
   }
 
   .stat-number {
