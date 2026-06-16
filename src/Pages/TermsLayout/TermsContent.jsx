@@ -246,10 +246,10 @@ const TermsContent = ({ onVisibleSectionChange }) => {
         </label>
 
         <div className="action-buttons">
-          <button className="btn-primary" disabled={!agreed}>
+          <button className="btn-primary-terms" disabled={!agreed}>
             Accept & Continue
           </button>
-          <button className="btn-outline">
+          <button className="btn-outline-terms">
             <FiDownload />
             Download PDF
           </button>

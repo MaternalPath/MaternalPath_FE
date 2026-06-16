@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import SettingsSidebar from "./SettingsSidebar";
 import SettingsContent from "./SettingsContent";
+import { FiChevronLeft } from "react-icons/fi";
+
 import "./Css/PrivacySettings.css";
+import { useNavigate } from "react-router-dom";
 
 const PrivacySettings = () => {
+  const nav = useNavigate()
   const [activeSection, setActiveSection] = useState("data-sharing");
   const [hasChanges, setHasChanges] = useState(false);
   const [settings, setSettings] = useState({
@@ -40,10 +44,14 @@ const PrivacySettings = () => {
       <header className="privacy-settings-header">
         <div className="header-content">
           <div>
+            <div className="breadcrumb" onClick={() => nav(-1)}>
+              <FiChevronLeft className="breadcrumb-icon" />
+              <span>Home</span>
+              <span>/</span>
+              <span>Privacy Settings</span>
+            </div>
             <h1>Privacy Settings</h1>
-            <p className="subtitle">
-              Manage your personal and pregnancy data
-            </p>
+            <p className="subtitle">Manage your personal and pregnancy data</p>
           </div>
           <button
             className="btn-save"

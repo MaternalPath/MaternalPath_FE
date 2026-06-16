@@ -106,7 +106,7 @@
 }
 .mp-cta-banner {
   background: #b5c9a8;
-  height: 45vh;
+  height: 44vh;
   position: relative;
   overflow: hidden;
 }
@@ -218,5 +218,19 @@
 
   .mp-cta-banner {
     height: auto;
+  }
+  
+  .mp-cta-content {
+    position: relative;
+  }
+
+  .wraps-cta-btn {
+    flex-direction: column;
+    position: absolute;
+    text-align: center;
+  }
+
+  .mp-cta-title {
+    font-size: 30px;
   }
 }

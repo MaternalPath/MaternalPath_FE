@@ -96,7 +96,7 @@
   border: 1.05px solid #c1d6bd;
   border-radius: 14.76px;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   background-color: #ddf7d7;
 }
@@ -126,6 +126,9 @@
     width: 160px;
     height: 55px;
     font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -148,7 +151,6 @@
   
   .confidence-btn-holder {
     height: auto;
-    flex-direction: column;
     gap: 15px;
     padding: 20px 0;
   }
@@ -157,6 +159,9 @@
   .confidence-btn2 {
     width: 180px;
     height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .confidence-notice {
@@ -164,7 +169,7 @@
     height: auto;
     min-height: 73px;
     padding: 15px;
-    text-align: center;
+    /* text-align: center; */
     font-size: 14px;
   }
 }
@@ -191,6 +196,9 @@
     width: 160px;
     height: 48px;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .confidence-notice {
@@ -219,6 +227,9 @@
     width: 150px;
     height: 45px;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .confidence-notice {

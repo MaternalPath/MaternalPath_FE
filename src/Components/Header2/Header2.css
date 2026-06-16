@@ -39,7 +39,9 @@
   object-fit: contain;
   cursor: pointer;
   transition: 0.3s ease;
-
+  @media (max-width: 768px) {
+    width: 200px;
+  }
   
 }
 

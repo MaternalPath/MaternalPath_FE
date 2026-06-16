@@ -1,0 +1,320 @@
+.bill-upload-authorization-container {
+  display: flex;
+  min-height: 100vh;
+  /* background-color: #f5f5f5; */
+  padding: 20px;
+  min-height: max-content;
+}
+
+.bill-upload-authorization-card {
+  width: 63%;
+  background-color: #eaf2e7;
+  border: 1px solid #d4d4d4;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.bill-upload-authorization-header {
+  margin-bottom: 28px;
+}
+
+.bill-upload-authorization-title {
+  margin: 0 0 8px 0;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 18.98px;
+  line-height: 29.52px;
+  letter-spacing: 0px;
+  color: #171717;
+}
+
+.bill-upload-authorization-subtitle {
+  color: #525252;
+  margin: 0;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14.76px;
+  line-height: 21.08px;
+  letter-spacing: 0px;
+}
+
+.bill-upload-authorization-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bill-upload-authorization-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.bill-upload-authorization-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bill-upload-authorization-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  display: block;
+}
+
+/* Bill Amount Input */
+.bill-upload-authorization-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bill-upload-authorization-currency-symbol {
+  position: absolute;
+  left: 14px;
+  font-size: 14px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.bill-upload-authorization-bill-input {
+  width: 100%;
+  padding: 10px 10px 10px 30px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  background-color: transparent;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  color: #525252;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14.76px;
+  line-height: 21.08px;
+  letter-spacing: 0px;
+}
+
+.bill-upload-authorization-bill-input:focus {
+  outline: none;
+  border-color: #009688;
+  box-shadow: 0 0 0 2px rgba(0, 150, 136, 0.1);
+}
+
+.bill-upload-authorization-bill-input::placeholder {
+  color: #999999;
+}
+
+.bill-upload-authorization-file-upload-wrapper {
+  position: relative;
+}
+
+.bill-upload-authorization-file-input {
+  display: none;
+}
+
+.bill-upload-authorization-file-upload-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 10px 10px 30px;
+  border: 1px dashed #d4d4d4;
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #525252;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14.76px;
+  line-height: 21.08px;
+  letter-spacing: 0px;
+  text-align: center;
+}
+
+.bill-upload-authorization-file-upload-button:hover {
+  border-color: #009688;
+  background-color: #f0fffe;
+}
+
+.bill-upload-authorization-file-upload-button:active {
+  border-color: #00796b;
+}
+
+.bill-upload-authorization-upload-icon {
+  width: 16px;
+  height: 16px;
+  color: #666666;
+  flex-shrink: 0;
+}
+
+.bill-upload-authorization-notes-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  background-color: transparent;
+  font-size: 14px;
+  color: #0a0a0a80;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14.76px;
+  line-height: 21.08px;
+  letter-spacing: 0px;
+}
+
+.bill-upload-authorization-notes-textarea:focus {
+  outline: none;
+  border-color: #009688;
+  box-shadow: 0 0 0 2px rgba(0, 150, 136, 0.1);
+}
+
+.bill-upload-authorization-notes-textarea::placeholder {
+  color: #999999;
+}
+
+.bill-upload-authorization-button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.bill-upload-authorization-btn-primary {
+  flex: 1;
+  padding: 12px 20px;
+  background-color: #0c5e58;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14.76px;
+  line-height: 21.08px;
+  letter-spacing: 0px;
+  text-align: center;
+}
+
+.bill-upload-authorization-btn-primary:hover {
+  background-color: #00796b;
+  box-shadow: 0 2px 8px rgba(0, 150, 136, 0.2);
+}
+
+.bill-upload-authorization-btn-primary:active {
+  background-color: #005f57;
+}
+
+.bill-upload-authorization-btn-secondary {
+  padding: 12px 20px;
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bill-upload-authorization-btn-secondary:hover {
+  background-color: #eeeeee;
+  border-color: #b0b0b0;
+}
+
+.bill-upload-authorization-btn-secondary:active {
+  background-color: #e0e0e0;
+}
+
+.bill-upload-authorization-status-alert {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: #fef8f0;
+  border: 1px solid #ffe0b2;
+  border-radius: 6px;
+  margin-top: 12px;
+  animation: billUploadAuthorizationSlideDown 0.3s ease;
+}
+
+@keyframes billUploadAuthorizationSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bill-upload-authorization-alert-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff9800;
+}
+
+.bill-upload-authorization-alert-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.bill-upload-authorization-alert-content {
+  flex: 1;
+}
+
+.bill-upload-authorization-alert-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff9800;
+}
+
+.bill-upload-authorization-alert-message {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #c27803;
+}
+
+@media (max-width: 600px) {
+  .bill-upload-authorization-card {
+    padding: 24px;
+  }
+
+  .bill-upload-authorization-title {
+    font-size: 18px;
+  }
+
+  .bill-upload-authorization-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .bill-upload-authorization-button-group {
+    flex-direction: column;
+  }
+
+  .bill-upload-authorization-btn-secondary {
+    width: 100%;
+  }
+}

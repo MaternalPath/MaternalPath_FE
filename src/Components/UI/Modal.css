@@ -1,0 +1,8 @@
+.mp-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:2000}
+.mp-modal{background:#fff;border-radius:8px;max-width:720px;width:95%;padding:20px;box-shadow:0 6px 24px rgba(0,0,0,0.18)}
+.mp-modal-header{border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:12px}
+.mp-modal-body{max-height:70vh;overflow:auto}
+.field-input{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px;margin:6px 0}
+.btn-primary{background:#0b69ff;color:#fff;border:none;padding:8px 12px;border-radius:6px}
+.btn-secondary{background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:6px}
+.modal-form label{font-size:13px;color:#333;margin-top:6px;display:block}

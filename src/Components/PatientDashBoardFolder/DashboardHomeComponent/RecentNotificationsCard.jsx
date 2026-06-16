@@ -28,15 +28,7 @@ const RecentNotificationsCard = () => {
       titleColor: "#10B981",
       icon: <FiCreditCard size={16} />,
     },
-    {
-      title: "Appointment tomorrow",
-      desc: "Dr. Okonkwo at 10:00 AM",
-      time: "1 day ago",
-      iconBg: "#FEF3C7",
-      iconColor: "#F59E0B",
-      titleColor: "#10B981",
-      icon: <FiCalendar size={16} />,
-    },
+
   ];
 
   return (

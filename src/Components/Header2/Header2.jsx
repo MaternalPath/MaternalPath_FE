@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header2.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import LoginHed from "/src/assets/header.png";
 
 const Header2 = () => {
   const nav = useNavigate();
@@ -13,7 +14,7 @@ const Header2 = () => {
             <div className="header2-left">
               <img
                 className="header2-left-image"
-                src="/src/assets/header.png"
+                src={LoginHed}
                 alt="logo"
                 onClick={() => nav("/")}
               />

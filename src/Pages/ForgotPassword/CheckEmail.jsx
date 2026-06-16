@@ -96,6 +96,7 @@ const CheckEmail = () => {
     setCode(Array(CODE_LENGTH).fill(""));
     inputsRef.current[0]?.focus();
   };
+
   return (
     <main className="auth-main-check">
       <div className="auth-check-container">
@@ -118,11 +119,11 @@ const CheckEmail = () => {
             <FiMail size={22} />
           </div>
           <h2>Check Your Email</h2>
-          <p className="auth-subtitle">
+          <p className="auth-check-subtitle">
             We've sent a verification code to your email address.
           </p>
-          <p className="email-text">{email}</p>
-          <p className="auth-subtitle">
+          <p className="auth-check-email-text">{email}</p>
+          <p className="auth-check-subtitle">
             Please check your inbox and input the code below to reset your
             password.
           </p>
@@ -156,11 +157,11 @@ const CheckEmail = () => {
             )}
           </p>
 
-          <button onClick={handleVerify} className="btn-primary">
+          <button onClick={handleVerify} className="btn-primary-check">
             Verify Code
           </button>
 
-          <Link to="/login" className="back-link">
+          <Link to="/login" className="back-link-check">
             <FiArrowLeft size={14} /> Back to Login
           </Link>
         </div>

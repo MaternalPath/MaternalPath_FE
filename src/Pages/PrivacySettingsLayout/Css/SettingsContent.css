@@ -209,6 +209,9 @@
   color: #f08a8a;
 }
 
+/* .mobile-wrapper-bg {
+} */
+
 @media (max-width: 1024px) {
   .content-card {
     padding: 1rem;
