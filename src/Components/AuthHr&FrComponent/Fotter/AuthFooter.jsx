@@ -8,7 +8,7 @@ const AuthFooter = () => {
       <div className="footer-links">
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
-        <a href="/privacy">Privacy Policy</a>
+        <a href="/privacySettings">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>
       </div>
     </footer>

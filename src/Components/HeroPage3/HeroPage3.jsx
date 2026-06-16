@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./HeroPage3.css";
-import holdingTommy from '../../assets/holdingTommy.png'
+import holdingTommy from "../../assets/holdingTommy.png";
 import { useNavigate } from "react-router-dom";
 
 const NewsletterCTA = () => {
@@ -50,11 +50,15 @@ const NewsletterCTA = () => {
       <section className="mp-cta-banner">
         <div className="mp-cta-container">
           <div className="mp-cta-content">
-            <img src={holdingTommy }alt="CTA Image" />
-            <h2 className="mp-cta-title">
-              Start Your Safe Motherhood Journey!
-            </h2>
-            <button className="mp-cta-btn" onClick={() => nav("/getStarted")}>Get Started</button>
+            <img src={holdingTommy} alt="CTA Image" />
+            <div className="wraps-cta-btn">
+              <h2 className="mp-cta-title">
+                Start Your Safe Motherhood Journey!
+              </h2>
+              <button className="mp-cta-btn" onClick={() => nav("/getStarted")}>
+                Get Started
+              </button>
+            </div>
           </div>
         </div>
       </section>

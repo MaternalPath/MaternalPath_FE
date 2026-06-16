@@ -3,7 +3,7 @@ import "./DashboardHeader.css";
 import { FiBell, FiMenu } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlinePeopleOutline } from "react-icons/md";
-import logo from "../../assets/header.png";
+import logo from "/src/assets/header.png";
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../context/RoleContext";
 

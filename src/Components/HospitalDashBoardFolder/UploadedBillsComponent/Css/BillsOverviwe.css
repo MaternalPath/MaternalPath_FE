@@ -13,7 +13,10 @@
 .stat-card {
   background-color: #e7efe6;
   border-radius: 12px;
-  padding: 16px;
+  padding: 25px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-card-top {
@@ -53,9 +56,9 @@
   margin: 0;
 }
 
-.stat-value.strike {
+/* .stat-value.strike {
   text-decoration: line-through;
-}
+} */
 
 .stat-label {
   font-size: 12px;
