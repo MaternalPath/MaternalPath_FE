@@ -1,39 +1,115 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiActivity, FiHeart, FiChevronRight } from "react-icons/fi";
 import "./Css/PregnancyOverview.css";
 import babyIllustration from "../../../assets/baby.png";
+import { getTrimesterInformation } from "../../../api/mothers";
+
+const defaultSymptoms = [
+  "Mild back discomfort",
+  "Increased energy levels",
+  "Occasional leg cramps",
+  "Improved sleep quality"
+];
+
+const defaultNutrition = [
+  "Iron-rich foods: Spinach, beans, lean meat",
+  "Calcium sources: Milk, yogurt, cheese",
+  "Whole grains: Brown rice, oats, millet",
+  "Hydrate with 8-10 glasses of water daily"
+];
+
+const defaultMobileSymptoms = [
+  "Increased energy levels typical for second trimester",
+  "Mild backaches as baby grows",
+  "Baby movements becoming more noticeable",
+  "Skin may develop pregnancy glow"
+];
 
 const PregnancyOverview = () => {
+  const [trimesterInfo, setTrimesterInfo] = useState(null);
+  const [trimesterLoading, setTrimesterLoading] = useState(false);
+  const [trimesterError, setTrimesterError] = useState("");
+
+  const trimesterLabel =
+    typeof trimesterInfo?.trimester === "number"
+      ? `Trimester ${trimesterInfo.trimester}`
+      : trimesterInfo?.trimesterName ||
+        trimesterInfo?.trimester ||
+        trimesterInfo?.currentTrimester ||
+        "Second Trimester";
+
   const data = {
-    week: 24,
-    trimester: "Second Trimester",
-    dueDate: "September 18, 2026",
-    daysRemaining: 128,
-    babySize: "Size of a cantaloupe",
-    progress: 60,
-    totalWeeks: 40
+    week:
+      trimesterInfo?.week ||
+      trimesterInfo?.currentPregnancyWeek ||
+      trimesterInfo?.pregnancyWeek ||
+      24,
+    trimester: trimesterLabel,
+    dueDate:
+      trimesterInfo?.dueDate ||
+      trimesterInfo?.estimatedDueDate ||
+      trimesterInfo?.expectedDeliveryDate ||
+      "September 18, 2026",
+    daysRemaining:
+      trimesterInfo?.daysRemaining ||
+      trimesterInfo?.days_until_due ||
+      trimesterInfo?.daysUntilDue ||
+      128,
+    babySize:
+      trimesterInfo?.babySize ||
+      trimesterInfo?.baby_size ||
+      trimesterInfo?.growthComparison ||
+      "Size of a cantaloupe",
+    progress:
+      trimesterInfo?.progress ||
+      trimesterInfo?.pregnancyProgress ||
+      trimesterInfo?.completion ||
+      60,
+    totalWeeks:
+      trimesterInfo?.totalWeeks ||
+      trimesterInfo?.total_weeks ||
+      trimesterInfo?.pregnancyDurationWeeks ||
+      40
   };
 
-  const symptoms = [
-    "Mild back discomfort",
-    "Increased energy levels",
-    "Occasional leg cramps",
-    "Improved sleep quality"
-  ];
+  const symptoms =
+    trimesterInfo?.symptoms ||
+    trimesterInfo?.whatToExpect ||
+    trimesterInfo?.weekHighlights ||
+    defaultSymptoms;
+  const nutrition =
+    trimesterInfo?.nutrition ||
+    trimesterInfo?.nutritionGuidance ||
+    trimesterInfo?.nutritionTips ||
+    defaultNutrition;
+  const mobileSymptoms =
+    trimesterInfo?.mobileSymptoms ||
+    trimesterInfo?.mobileTips ||
+    trimesterInfo?.weekMobileHighlights ||
+    defaultMobileSymptoms;
 
-  const nutrition = [
-    "Iron-rich foods: Spinach, beans, lean meat",
-    "Calcium sources: Milk, yogurt, cheese",
-    "Whole grains: Brown rice, oats, millet",
-    "Hydrate with 8-10 glasses of water daily"
-  ];
+  useEffect(() => {
+    const loadTrimesterInfo = async () => {
+      setTrimesterLoading(true);
+      setTrimesterError("");
 
-  const mobileSymptoms = [
-    "Increased energy levels typical for second trimester",
-    "Mild backaches as baby grows",
-    "Baby movements becoming more noticeable",
-    "Skin may develop pregnancy glow"
-  ];
+      try {
+        const info = await getTrimesterInformation();
+        setTrimesterInfo(info);
+      } catch (error) {
+        setTrimesterError(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Unable to load trimester information."
+        );
+      } finally {
+        setTrimesterLoading(false);
+      }
+    };
+
+    loadTrimesterInfo();
+  }, []);
+
 
   return (
     <>
@@ -44,7 +120,7 @@ const PregnancyOverview = () => {
               <h2>Week {data.week}</h2>
               <span className="trimester">{data.trimester}</span>
             </div>
-            <p className="week-desc desktop-only">Your baby is growing steadily this week.</p>
+            <p className="week-desc desktop-only"></p>
             <p className="week-desc mobile-only">{data.progress}% complete • {data.totalWeeks} weeks total</p>
 
             <div className="stats-grid desktop-only">
@@ -118,6 +194,13 @@ const PregnancyOverview = () => {
           </ul>
         </div>
       </div>
+
+      {trimesterLoading && (
+        <div className="trimester-loading">Loading trimester information...</div>
+      )}
+      {trimesterError && (
+        <div className="trimester-error">{trimesterError}</div>
+      )}
 
       <section className="mobile-section mobile-only">
         <h3 className="section-title">What to Expect This Week</h3>

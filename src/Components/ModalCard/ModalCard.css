@@ -1,0 +1,417 @@
+/* Color Palette variables based on the image */
+:root {
+  --primary-dark: #0f4c4a;      /* The deep teal color */
+  --text-muted: #1a4d4a;       /* Dark green/teal for labels */
+  --input-bg: #f8f6f4;         /* Soft warm-white input backgrounds */
+  --input-text: #1a4a49;       /* Input text color */
+  --avatar-bg: #e5e5e5;        /* Soft grey for avatar placeholder */
+}
+
+/* Overlay to dim background */
+/* 1. FORCE THE OVERLAY TO STAY EXACTLY THE SIZE OF THE SCREEN */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensures it sits on top of all dashboard elements */
+  box-sizing: border-box;
+}
+
+/* 2. FORCE THE MODAL CONTAINER TO NEVER EXCEED THE VIEWPORT */
+.scrollable-modal {
+  width: 100%;
+  max-width: 460px;     /* Limits width to a clean card size */
+  max-height: 85vh;     /* CRITICAL: Enforces that the modal can NEVER be taller than 85% of the screen */
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column; /* Stacks Header, Body, and Buttons vertically */
+  overflow: hidden;     /* CRITICAL: Stops the child items from stretching the card down */
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 3. ENSURE THE FORM OBEYS THE FLEX CONFIGURATION */
+.scrollable-modal .modal-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden; /* Keeps form components cleanly packed inside */
+  width: 100%;
+}
+
+/* 5. LOCK THE BUTTONS AT THE BASE */
+.dual-btn-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: #ffffff;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f2;
+  margin-top: auto;          /* Pushes the button array to stay glued to the bottom layout line */
+  flex-shrink: 0;            /* Prevents buttons from getting squished out of view */
+}
+/* Card Container */
+.modal-container {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 24px;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Header styling */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  color: var(--primary-dark);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-dark);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Profile Avatar section */
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.avatar-circle {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  background-color: var(--avatar-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background-color: var(--primary-dark);
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Form Styles */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input {
+  background-color: var(--input-bg);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: var(--input-text);
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  box-shadow: 0 0 0 2px rgba(15, 76, 74, 0.2);
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: var(--primary-dark);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover {
+  opacity: 0.95;
+}
+
+/* Container for icon-embedded input wrappers */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Adjust layout so text clears the left side icon position */
+.input-with-icon input {
+  padding-left: 48px !important; 
+}
+
+/* absolute centering rule for input inline vectors */
+.field-icon {
+  position: absolute;
+  left: 18px;
+  pointer-events: none;
+}
+
+/* Textarea variant matching standard fields */
+.form-group textarea {
+  background-color: var(--input-bg);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: var(--input-text);
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  font-family: inherit;
+}
+
+/* Redefines layout sizing to let buttons split evenly */
+.dual-btn-container .submit-btn{
+  flex: 1;
+  margin-top: 0; /* Clears prior singular margin offset rule */
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Dark Slate color variant logic for skip actions */
+.skip-btn {
+  background-color: #5b6271; 
+  color: #ffffff;
+}
+
+.skip-btn:hover {
+  opacity: 0.95;
+}
+
+
+/* Flex layout rule for form structure */
+.scrollable-modal .modal-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Scroll area container rule */
+.modal-body {
+  flex-grow: 1;
+  overflow-y: auto;  /* Turns on smooth inner scrolling */
+  padding-right: 6px; /* Space for the scrollbar gutter layout */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+/* Custom modern scrollbar styles for a cleaner UI match */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: rgba(15, 76, 74, 0.2); /* Soft match to primary dark teal */
+  border-radius: 10px;
+}
+
+/* Previous action styling configuration */
+.previous-btn {
+  background-color: #5b6271; 
+  color: #ffffff;
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+}
+
+.previous-btn:hover {
+  opacity: 0.95;
+}
+
+/* Card size custom override for wallet layout simplicity */
+.wallet-modal-override {
+  max-width: 460px;
+}
+
+/* Static data column layout block */
+.modal-form-static {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.info-display-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Small top label description styling */
+.info-label {
+  font-size: 14px;
+  color: #707d7c; /* Muted grey layout text */
+  font-weight: 500;
+}
+
+.readonly-input {
+  background: #F5F5F5 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+}
+
+.readonly-input:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+
+/* Base style rule for numeric data */
+.info-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Deep Green/Teal accent variable color mapping */
+.info-value.text-highlight {
+  color: var(--primary-dark);
+}
+
+/* Muted state variant color rule */
+.info-value.text-muted-value {
+  color: #2c4d4c;
+}
+
+/* Padding adjuster utility to clear border lines */
+.padding-top-override {
+  border-top: none !important;
+  padding-top: 8px !important;
+  margin-top: 8px;
+}
+
+/* Styling to match the bold, centered numeric field layout text */
+.numeric-input-style {
+  font-weight: 700 !important;
+  color: var(--input-text) !important;
+  font-size: 18px !important;
+  padding: 18px 20px !important;
+}
+
+/* Green-tinted summary block panel layout rules */
+.savings-summary-box {
+  background-color: #edf5f4; /* Match green-tint panel background color */
+  border-radius: 18px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.savings-summary-box h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* Flex rows layout settings for the panel stats metadata */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #707d7c;
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Dynamic Text Accent Rules matching layout indicators */
+.emphasis-teal {
+  color: var(--primary-dark);
+}
+
+.emphasis-orange {
+  color: #d97706; /* Dark amber/orange color match */
+}
+
+/* Horizontal line separator rule inside the summary element panel */
+.summary-divider {
+  height: 1px;
+  background-color: #cedad9;
+  margin: 2px 0;
+}
+
+.base-metric-row {
+  margin-top: 2px;
+}

@@ -1,8 +1,9 @@
 // import React from "react";
 import "./Css/ProfileHeaderCard.css";
 import { FiUser, FiEdit2 } from "react-icons/fi";
+import { TiEdit } from "react-icons/ti";
 
-const ProfileHeaderCard = ({ data = {}, onEditClick }) => {
+const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
   return (
     <div className="settings-card profile-header-card">
       <div className="profile-content">
@@ -25,16 +26,15 @@ const ProfileHeaderCard = ({ data = {}, onEditClick }) => {
                 </div>
               </div>
               <div className="detail-item">
-                <div className="detail-label">Preferred Hospital</div>
-                <div className="detail-value">
-                  {data?.hospital || "Lagos General Hospital"}
-                </div>
+                <button className="btn-edit" onClick={onEditClick}>
+                  <TiEdit size={14} /> Edit Profile
+                </button>
               </div>
             </div>
           </div>
-          <button className="btn-edit" onClick={onEditClick}>
+          {/* <button className="btn-edit" onClick={onEditClick}>
             <FiEdit2 size={14} /> Edit Profile
-          </button>
+          </button> */}
         </div>
       </div>
 

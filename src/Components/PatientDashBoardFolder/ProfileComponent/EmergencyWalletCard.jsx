@@ -9,9 +9,9 @@ const EmergencyWalletCard = ({ data = {}, onEditClick }) => {
         <h3 className="card-title">
           <FiCreditCard size={18} /> Emergency Wallet Settings
         </h3>
-        <button type="button" className="btn-primary" onClick={onEditClick}>
+        {/* <button type="button" className="btn-primary" onClick={onEditClick}>
           <FiEdit2 size={14} /> Edit Savings Goal
-        </button>
+        </button> */}
       </div>
 
       <div className="info-grid">

@@ -1,0 +1,108 @@
+/* Search Input styling wrapper rules */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.hospital-search-input {
+  background-color: var(--input-bg);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: #7a8b8b;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* Custom internal padding configurations for hospital list view */
+.hospital-list {
+  padding-right: 4px;
+}
+
+/* Hospital Card defaults */
+.hospital-card {
+  border: 1px solid #eef1f1;
+  border-radius: 18px;
+  padding: 20px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Active Selected State matching image color profiles */
+.hospital-card.active-hospital {
+  border: 2px solid var(--primary-dark);
+  background-color: #edf5f4; /* Subtle soft teal-tint background match */
+}
+
+/* Individual Card title layout elements */
+.hospital-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.hospital-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* Metadata textual details styling line */
+.hospital-detail {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #707d7c;
+  font-weight: 500;
+}
+
+/* Subtle separator row inside card items */
+.hospital-card-divider {
+  height: 1px;
+  background-color: #eef1f1;
+  margin: 14px 0;
+}
+
+/* Cost text grid layout block */
+.hospital-cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cost-label {
+  font-size: 12px;
+  color: #707d7c;
+  font-weight: 500;
+}
+
+.cost-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* Radio-style verification badge icon container rules */
+.check-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ced5d5;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Success status switch color engine rules */
+.check-circle.checked,
+.hospital-card.active-hospital .check-circle {
+  background-color: #10b981; /* Bright emerald green matching check asset */
+  border-color: #10b981;
+}
