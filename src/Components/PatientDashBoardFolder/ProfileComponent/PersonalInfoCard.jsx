@@ -7,9 +7,7 @@ const PersonalInfoCard = ({ data = {}, onEditClick }) => {
     <div className="settings-card personal-info-card">
       <div className="card-header">
         <h3 className="card-title">Personal Information</h3>
-        <button type="button" className="btn-text" onClick={onEditClick}>
-          <FiEdit2 size={14} /> Edit
-        </button>
+     
       </div>
 
       <div className="info-grid-web">

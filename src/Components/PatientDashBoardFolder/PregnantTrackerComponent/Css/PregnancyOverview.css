@@ -162,6 +162,26 @@
   color: var(--primary-deep-teal);
 }
 
+.trimester-loading,
+.trimester-error {
+  max-width: 560px;
+  margin: 0 0 16px 0;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+}
+
+.trimester-loading {
+  background: #effaf7;
+  color: #14532d;
+}
+
+.trimester-error {
+  background: #fbe4e6;
+  color: #9f1239;
+  border: 1px solid #f2a0ae;
+}
+
 .mobile-only {
   display: none;
 }

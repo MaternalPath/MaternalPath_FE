@@ -7,9 +7,7 @@ const PregnancyInfoCard = ({ data = {}, onEditClick }) => {
     <div className="settings-card pregnancy-info-card">
       <div className="card-header">
         <h3 className="card-title">Pregnancy Information</h3>
-        <button type="button" className="btn-primary" onClick={onEditClick}>
-          <FiEdit2 size={14} /> Update Pregnancy Information
-        </button>
+    
       </div>
 
       <div className="info-grid">

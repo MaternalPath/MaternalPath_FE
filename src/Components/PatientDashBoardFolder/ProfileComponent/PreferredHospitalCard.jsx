@@ -2,16 +2,14 @@ import React from "react";
 import "./Css/PreferredHospitalCard.css";
 import { FiHome, FiEdit2 } from "react-icons/fi";
 
-const PreferredHospitalCard = ({ data = {}, onEditClick }) => {
-  return (
-    <div className="settings-card preferred-hospital-card">
-      <div className="card-header">
-        <h3 className="card-title">
-          <FiHome size={18} /> Preferred Hospital
-        </h3>
-        <button type="button" className="btn-primary" onClick={onEditClick}>
-          <FiEdit2 size={14} /> Select Hospital
-        </button>
+  const PreferredHospitalCard = ({ data = {}, onEditClick }) => {
+    return (
+      <div className="settings-card preferred-hospital-card">
+        <div className="card-header">
+          <h3 className="card-title">
+            <FiHome size={18} /> Preferred Hospital
+          </h3>
+          
       </div>
 
       <div className="info-grid">
