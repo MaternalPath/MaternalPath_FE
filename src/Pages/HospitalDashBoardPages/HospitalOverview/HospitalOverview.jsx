@@ -1,53 +1,52 @@
 import React, { useEffect, useState } from "react";
 import "./Styles/HospitalOverview.css";
 import { FileText, Clock, CheckCircle, XCircle } from "lucide-react";
-import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getHospitalDashboardStats } from "../../../api/hospital";
 import HospitalVerificationHistory from "./HospitalVerificationHistory";
 import PatientVerification from "./PatientVerification";
-import { ToastContainer, toast } from "react-toastify";
 
 const HospitalOverview = () => {
-  const baseURL = import.meta.env.VITE_BASE_URL;
-  const token = localStorage.getItem("token");
-
-  const [dashboardData, setDashboardData] = useState({
+  const [stats, setStats] = useState({
     totalVerificationRequests: 0,
     pendingAuthorizations: 0,
-    approvedRequest: 0,
-    declinedRequest: 0,
+    approvedRequests: 0,
+    declinedRequests: 0,
   });
+  const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const fetchDashboardData = async () => {
-    if (!token) {
-      toast.error("Authentication token not found.");
-      return;
-    }
-
+  const fetchHospitalDashboardStats = async () => {
     setLoading(true);
-    setError("");
 
     try {
-      const response = await axios.get(`${baseURL}/hospital/dashboard`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data);
+      const data = await getHospitalDashboardStats();
 
-      setDashboardData({
-        totalVerificationRequests: response.data.totalVerificationRequests || 0,
-        pendingAuthorizations: response.data.pendingAuthorizations || 0,
-        approvedRequest: response.data.approvedRequest || 0,
-        declinedRequest: response.data.declinedRequest || 0,
+      console.log("Dashboard stats response:", data);
+
+      const statsData = data?.data || data;
+
+      setStats({
+        totalVerificationRequests:
+          statsData.totalVerificationRequests ||
+          statsData.totalVerification ||
+          0,
+        pendingAuthorizations:
+          statsData.pendingAuthorizations ||
+          statsData.pendingAuthorization ||
+          0,
+        approvedRequests:
+          statsData.approvedRequests || statsData.approvedRequest || 0,
+        declinedRequests:
+          statsData.declinedRequests || statsData.declinedRequest || 0,
       });
-    } catch (err) {
+
+      toast.success("Dashboard statistics loaded successfully!");
+    } catch (error) {
+      console.error("Hospital dashboard stats error:", error);
       toast.error(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to fetch hospital dashboard data.",
+        error?.response?.data?.message ||
+          "Failed to load hospital dashboard statistics",
       );
     } finally {
       setLoading(false);
@@ -55,68 +54,75 @@ const HospitalOverview = () => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
+    fetchHospitalDashboardStats();
   }, []);
 
   const statCards = [
     {
       icon: <FileText size={18} />,
-      number: dashboardData.totalVerificationRequests,
+      number: loading ? "..." : stats.totalVerificationRequests,
       label: "Total Verification Requests",
     },
     {
       icon: <Clock size={18} />,
-      number: dashboardData.pendingAuthorizations,
+      number: loading ? "..." : stats.pendingAuthorizations,
       label: "Pending Authorizations",
     },
     {
       icon: <CheckCircle size={18} />,
-      number: dashboardData.approvedRequest,
+      number: loading ? "..." : stats.approvedRequests,
       label: "Approved Requests",
     },
     {
       icon: <XCircle size={18} />,
-      number: dashboardData.declinedRequest,
+      number: loading ? "..." : stats.declinedRequests,
       label: "Declined Requests",
     },
   ];
 
+  if (loading) {
+    return (
+      <>
+        <div className="hospital-overview">
+          <div className="overview-header">
+            <h1>Dashboard Overview</h1>
+            <p>Patient verification and fund authorization portal</p>
+          </div>
+          <div className="stat-cards-container">
+            {statCards.map((card, index) => (
+              <div key={index} className="stat-card">
+                <div className="stat-icon">{card.icon}</div>
+                <div className="stat-number">...</div>
+                <div className="stat-label">{card.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <PatientVerification />
+        <HospitalVerificationHistory />
+      </>
+    );
+  }
+
   return (
     <>
-      <div className="hospital-overview-container">
-        <ToastContainer />
-        <div className="hospital-overview-header">
-          <h1 className="hospital-overview-title">Dashboard Overview</h1>
-          <p className="hospital-overview-subtitle">
-            Patient verification and fund authorization portal
-          </p>
+      <ToastContainer />
+      <div className="hospital-overview">
+        <div className="overview-header">
+          <h1>Dashboard Overview</h1>
+          <p>Patient verification and fund authorization portal</p>
         </div>
 
-        <div className="hospital-overview-stat-cards-container">
+        <div className="stat-cards-container">
           {statCards.map((card, index) => (
-            <div key={index} className="hospital-overview-stat-card">
-              <div className="hospital-overview-stat-icon">{card.icon}</div>
-              <div className="hospital-overview-stat-number">
-                {loading ? "..." : card.number}
-              </div>
-              <div className="hospital-overview-stat-label">{card.label}</div>
+            <div key={index} className="stat-card">
+              <div className="stat-icon">{card.icon}</div>
+              <div className="stat-number">{card.number}</div>
+              <div className="stat-label">{card.label}</div>
             </div>
           ))}
         </div>
-
-        {error && (
-          <p
-            style={{
-              color: "red",
-              textAlign: "center",
-              marginTop: "20px",
-            }}
-          >
-            {error}
-          </p>
-        )}
       </div>
-
       <PatientVerification />
       <HospitalVerificationHistory />
     </>

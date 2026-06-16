@@ -1,6 +1,6 @@
 import "./AuthHeader.css";
 import { useNavigate } from "react-router-dom";
-import authLogo from "../../../assets/header.png";
+import authLogo from "/src/assets/header.png";
 
 const Header = () => {
   const nav = useNavigate();

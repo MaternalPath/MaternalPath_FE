@@ -4,80 +4,62 @@ import { FiSearch } from "react-icons/fi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoTimeOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+import { searchPatient } from "../../../api/hospital";
 
 const PatientVerification = () => {
-  const baseURL = import.meta.env.VITE_BASE_URL;
-  const token = localStorage.getItem("token");
-
   const [searchInput, setSearchInput] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const [patientData, setPatientData] = useState({
-    patientName: "",
-    patientId: "",
-    pregnancyStage: "",
-    walletBalance: 0,
-    deliverySavingsGoal: 0,
-    preferredHospital: "",
-    readinessPercentage: 0,
-    status: "",
-  });
-
-  const resetPatientData = () => {
-    setPatientData({
-      patientName: "",
-      patientId: "",
-      pregnancyStage: "",
-      walletBalance: 0,
-      deliverySavingsGoal: 0,
-      preferredHospital: "",
-      readinessPercentage: 0,
-      status: "",
-    });
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [patientData, setPatientData] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleSearch = async () => {
     if (!searchInput.trim()) {
-      toast.error("Please enter a Patient ID or Phone Number.");
+      toast.warning("Please enter a Patient ID or Phone Number");
       return;
     }
 
-    if (!token) {
-      toast.error("Authentication token not found.");
-      return;
-    }
-
-    setLoading(true);
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const { data } = await axios.get(`${baseURL}/hospital/search-patient`, {
-        params: {
-          search: searchInput.trim(),
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await searchPatient(searchInput.trim());
 
-      setPatientData(data);
+      console.log("Search response:", data);
 
-      toast.success("Patient found successfully.");
+      const patient = data?.data || data;
+
+      if (patient && Object.keys(patient).length > 0) {
+        setPatientData(patient);
+        toast.success("Patient found successfully!");
+      } else {
+        setPatientData(null);
+        toast.info("No patient found with the provided information.");
+      }
     } catch (error) {
-      resetPatientData();
-
-      toast.error(
-        error.response?.data?.message ||
-          "No patient found with the provided details.",
-      );
+      console.error("Error searching patient:", error);
+      const errorMessage =
+        error?.response?.data?.message || "Failed to search patient";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      setPatientData(null);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    // Clear error and patient data when input is cleared or changed
+    if (error || patientData) {
+      setError(null);
+      setPatientData(null);
+    }
+  };
+
+  const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -107,118 +89,183 @@ const PatientVerification = () => {
     },
   ];
 
+  // Calculate progress percentage
+  const walletBalance =
+    patientData?.walletBalance || patientData?.wallet_balance || 0;
+  const savingsGoal =
+    patientData?.deliverySavingsGoal || patientData?.delivery_savings_goal || 1;
+  const progressPercentage = Math.min((walletBalance / savingsGoal) * 100, 100);
+
   return (
-    <>
-      <div className="patient-verification-container">
-        <div className="patient-verification-section">
-          <div className="patient-verification-section-header">
-            <h2 className="patient-verification-section-title">
-              Patient Verification
-            </h2>
-            <p className="patient-verification-section-subtitle">
-              Search and verify patient delivery fund status
-            </p>
-          </div>
+    <div className="patient-verification-container">
+      <ToastContainer />
+      <div className="patient-verification-section">
+        <div className="patient-verification-section-header">
+          <h2 className="patient-verification-section-title">
+            Patient Verification
+          </h2>
+          <p className="patient-verification-section-subtitle">
+            Search and verify patient delivery fund status
+          </p>
+        </div>
 
-          <div className="patient-verification-search-container">
-            <input
-              type="text"
-              className="patient-verification-search-input"
-              placeholder="Enter Patient ID or Phone Number"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-
-            <button
-              className="patient-verification-search-button"
-              onClick={handleSearch}
-              disabled={loading}
-            >
+        <div className="patient-verification-search-container">
+          <input
+            type="text"
+            className="patient-verification-search-input"
+            placeholder="Enter Patient ID or Phone Number"
+            value={searchInput}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+            disabled={isLoading}
+          />
+          <button
+            className="patient-verification-search-button"
+            onClick={handleSearch}
+            disabled={isLoading}
+          >
+            <span className="patient-verification-search-icon">
               <FiSearch />
-              {loading ? "Searching..." : "Search Patient"}
-            </button>
-          </div>
+            </span>
+            {isLoading ? "Searching..." : "Search Patient"}
+          </button>
+        </div>
 
+        {isLoading && (
+          <div className="patient-verification-loading">
+            <div className="patient-verification-loading-spinner"></div>
+            <p>Searching for patient...</p>
+          </div>
+        )}
+
+        {error && !isLoading && (
+          <div className="patient-verification-error">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {patientData && !isLoading && !error && (
           <div className="patient-verification-patient-card">
             <div className="patient-verification-patient-header">
               <div>
                 <h3 className="patient-verification-patient-name">
-                  {patientData.patientName || "No Patient Selected"}
+                  {patientData.patientName ||
+                    patientData.patient_name ||
+                    patientData.name ||
+                    "N/A"}
                 </h3>
                 <p className="patient-verification-patient-id">
-                  Patient ID: {patientData.patientId || "--"}
+                  Patient ID:{" "}
+                  {patientData.patientId ||
+                    patientData.patient_id ||
+                    patientData.id ||
+                    "N/A"}
                 </p>
               </div>
-
               <div className="patient-verification-eligibility-badge">
-                {patientData.status || "N/A"}
+                {walletBalance >= savingsGoal
+                  ? "Eligible for Admission"
+                  : "Insufficient Funds"}
               </div>
             </div>
 
             <div className="patient-verification-patient-info-grid">
               <div className="patient-verification-info-item">
-                <label>Pregnancy Stage</label>
-                <p>{patientData.pregnancyStage || "--"}</p>
+                <label className="patient-verification-info-label">
+                  Pregnancy Stage
+                </label>
+                <p className="patient-verification-info-value">
+                  {patientData.pregnancyStage ||
+                    patientData.pregnancy_stage ||
+                    "Week 0 · Not specified"}
+                </p>
               </div>
-
               <div className="patient-verification-info-item">
-                <label>Preferred Hospital</label>
-                <p>{patientData.preferredHospital || "--"}</p>
+                <label className="patient-verification-info-label">
+                  Preferred Hospital
+                </label>
+                <p className="patient-verification-info-value">
+                  {patientData.preferredHospital ||
+                    patientData.preferred_hospital ||
+                    patientData.hospital ||
+                    "Not specified"}
+                </p>
               </div>
             </div>
 
             <div className="patient-verification-patient-info-grid">
               <div className="patient-verification-info-item">
-                <label>Wallet Balance</label>
-                <p>₦{patientData.walletBalance.toLocaleString()}</p>
+                <label className="patient-verification-info-label">
+                  Wallet Balance
+                </label>
+                <p className="patient-verification-info-value">
+                  ₦{walletBalance.toLocaleString()}
+                </p>
               </div>
-
               <div className="patient-verification-info-item">
-                <label>Delivery Savings Goal</label>
-                <p>₦{patientData.deliverySavingsGoal.toLocaleString()}</p>
+                <label className="patient-verification-info-label">
+                  Delivery Savings Goal
+                </label>
+                <p className="patient-verification-info-value">
+                  ₦{savingsGoal.toLocaleString()}
+                </p>
               </div>
             </div>
 
             <div className="patient-verification-readiness-section">
-              <label>Readiness Status</label>
-
+              <label className="patient-verification-readiness-label">
+                Readiness Status
+              </label>
               <div className="patient-verification-progress-bar-container">
                 <div
                   className="patient-verification-progress-bar"
-                  style={{
-                    width: `${patientData.readinessPercentage}%`,
-                  }}
-                />
+                  style={{ width: `${progressPercentage}%` }}
+                ></div>
               </div>
-
-              <p>{patientData.readinessPercentage}% of goal achieved</p>
+              <p className="patient-verification-progress-text">
+                {progressPercentage.toFixed(0)}% of goal achieved
+              </p>
             </div>
           </div>
-        </div>
-
-        <div className="patient-verification-notifications-section">
-          <h2>Notifications</h2>
-
-          <div className="patient-verification-notifications-list">
-            {notifications.map((n) => (
-              <div
-                key={n.id}
-                className={`patient-verification-notification-item`}
-              >
-                <div>{n.icon}</div>
-                <div>
-                  <p>{n.title}</p>
-                  <small>{n.time}</small>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
       </div>
 
-      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
-    </>
+      <div className="patient-verification-notifications-section">
+        <div className="patient-verification-section-header">
+          <h2 className="patient-verification-section-title">Notifications</h2>
+          <p className="patient-verification-section-subtitle">
+            Recent activity updates
+          </p>
+        </div>
+
+        <div className="patient-verification-notifications-list">
+          {notifications.map((notification) => (
+            <div
+              key={notification.id}
+              className={`patient-verification-notification-item patient-verification-notification-${notification.type}`}
+            >
+              <div
+                className={`patient-verification-notification-icon patient-verification-icon-${notification.type}`}
+              >
+                {notification.icon}
+              </div>
+              <div className="patient-verification-notification-content">
+                <p className="patient-verification-notification-title">
+                  {notification.title}
+                </p>
+                <p className="patient-verification-notification-time">
+                  {notification.time}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button className="patient-verification-view-all-button">
+          View All Notifications
+        </button>
+      </div>
+    </div>
   );
 };
 

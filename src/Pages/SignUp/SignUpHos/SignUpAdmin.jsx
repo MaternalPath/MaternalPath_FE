@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./SignUpAdmin.css";
 import AuthFooter from "../../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
@@ -21,6 +21,8 @@ const SignUpAdmin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [logoFileName, setLogoFileName] = useState("");
   const [docFileName, setDocFileName] = useState("");
+  const [logoPreview, setLogoPreview] = useState("");
+  const [docPreview, setDocPreview] = useState("");
 
   const [Passmeet, setPassmeet] = useState({
     length: false,
@@ -52,7 +54,7 @@ const SignUpAdmin = () => {
   const catchHospitalName = (e) => {
     setShowText(false);
     const newHospitalName = e.target.value;
-    setFormData({...formData, hospitalName: newHospitalName });
+    setFormData({ ...formData, hospitalName: newHospitalName });
     if (newHospitalName.trim() === "") {
       setErrMsg({
         err: true,
@@ -68,7 +70,7 @@ const SignUpAdmin = () => {
     setShowText(false);
     const newEmail = e.target.value;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    setFormData({...formData, email: newEmail });
+    setFormData({ ...formData, email: newEmail });
     if (newEmail.trim() === "") {
       setErrMsg({
         err: true,
@@ -89,7 +91,7 @@ const SignUpAdmin = () => {
   const catchPhoneNum = (e) => {
     setShowText(false);
     const newPhoneNum = e.target.value;
-    setFormData({...formData, phoneNumber: newPhoneNum });
+    setFormData({ ...formData, phoneNumber: newPhoneNum });
     if (newPhoneNum.trim() === "") {
       setErrMsg({
         err: true,
@@ -103,7 +105,7 @@ const SignUpAdmin = () => {
 
   const catchPassword = (e) => {
     const newPassword = e.target.value;
-    setFormData({...formData, password: newPassword });
+    setFormData({ ...formData, password: newPassword });
     setShowText(true);
 
     setPassmeet({
@@ -128,14 +130,14 @@ const SignUpAdmin = () => {
   const catchConfirmPassword = (e) => {
     setShowText(false);
     const newConfirmPass = e.target.value;
-    setFormData({...formData, confirmPassword: newConfirmPass });
+    setFormData({ ...formData, confirmPassword: newConfirmPass });
     if (newConfirmPass.trim() === "") {
       setErrMsg({
         err: true,
         name: "confirmPassword",
         msg: "Confirm your password",
       });
-    } else if (newConfirmPass!== formData.password) {
+    } else if (newConfirmPass !== formData.password) {
       setErrMsg({
         err: true,
         name: "confirmPassword",
@@ -153,7 +155,7 @@ const SignUpAdmin = () => {
   const catchHospitalAddress = (e) => {
     setShowText(false);
     const newAddress = e.target.value;
-    setFormData({...formData, hospitalAddress: newAddress });
+    setFormData({ ...formData, hospitalAddress: newAddress });
     if (newAddress.trim() === "") {
       setErrMsg({
         err: true,
@@ -168,7 +170,7 @@ const SignUpAdmin = () => {
   const catchDeliveryFee = (e) => {
     setShowText(false);
     const newFee = e.target.value;
-    setFormData({...formData, deliveryFee: newFee });
+    setFormData({ ...formData, deliveryFee: newFee });
     if (newFee.trim() === "") {
       setErrMsg({
         err: true,
@@ -183,7 +185,7 @@ const SignUpAdmin = () => {
   const catchMedicalLicense = (e) => {
     setShowText(false);
     const newLicense = e.target.value;
-    setFormData({...formData, medicalLicenseNumber: newLicense });
+    setFormData({ ...formData, medicalLicenseNumber: newLicense });
     if (newLicense.trim() === "") {
       setErrMsg({
         err: true,
@@ -198,6 +200,7 @@ const SignUpAdmin = () => {
   const catchLogoUpload = (e) => {
     setShowText(false);
     const file = e.target.files[0];
+
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         setErrMsg({
@@ -207,15 +210,27 @@ const SignUpAdmin = () => {
         });
         return;
       }
-      setFormData({...formData, hospitalLogo: file });
+
+      setFormData({
+        ...formData,
+        hospitalLogo: file,
+      });
+
       setLogoFileName(file.name);
-      setErrMsg({ err: false, name: "", msg: "" });
+      setLogoPreview(URL.createObjectURL(file));
+
+      setErrMsg({
+        err: false,
+        name: "",
+        msg: "",
+      });
     }
   };
 
   const catchDocUpload = (e) => {
     setShowText(false);
     const file = e.target.files[0];
+
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         setErrMsg({
@@ -225,15 +240,45 @@ const SignUpAdmin = () => {
         });
         return;
       }
-      setFormData({...formData, verificationDocument: file });
+
+      setFormData({
+        ...formData,
+        verificationDocument: file,
+      });
+
       setDocFileName(file.name);
-      setErrMsg({ err: false, name: "", msg: "" });
+
+      if (file.type.startsWith("image/")) {
+        setDocPreview(URL.createObjectURL(file));
+      }
+
+      setErrMsg({
+        err: false,
+        name: "",
+        msg: "",
+      });
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (logoPreview) {
+        URL.revokeObjectURL(logoPreview);
+      }
+
+      if (docPreview) {
+        URL.revokeObjectURL(docPreview);
+      }
+    };
+  }, [logoPreview, docPreview]);
+
   const validateAllFields = () => {
     if (formData.hospitalName.trim() === "") {
-      setErrMsg({ err: true, name: "hospitalName", msg: "Hospital name is required" });
+      setErrMsg({
+        err: true,
+        name: "hospitalName",
+        msg: "Hospital name is required",
+      });
       return false;
     }
     if (formData.email.trim() === "") {
@@ -246,7 +291,11 @@ const SignUpAdmin = () => {
       return false;
     }
     if (formData.phoneNumber.trim() === "") {
-      setErrMsg({ err: true, name: "phoneNumber", msg: "Phone number is required" });
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Phone number is required",
+      });
       return false;
     }
     if (formData.password.trim() === "") {
@@ -255,35 +304,67 @@ const SignUpAdmin = () => {
     }
     const allPassValid = Object.values(Passmeet).every(Boolean);
     if (!allPassValid) {
-      setErrMsg({ err: true, name: "password", msg: "Password doesn't meet all requirements" });
+      setErrMsg({
+        err: true,
+        name: "password",
+        msg: "Password doesn't meet all requirements",
+      });
       return false;
     }
     if (formData.confirmPassword.trim() === "") {
-      setErrMsg({ err: true, name: "confirmPassword", msg: "Confirm your password" });
+      setErrMsg({
+        err: true,
+        name: "confirmPassword",
+        msg: "Confirm your password",
+      });
       return false;
     }
     if (formData.confirmPassword !== formData.password) {
-      setErrMsg({ err: true, name: "confirmPassword", msg: "Passwords do not match" });
+      setErrMsg({
+        err: true,
+        name: "confirmPassword",
+        msg: "Passwords do not match",
+      });
       return false;
     }
     if (formData.hospitalAddress.trim() === "") {
-      setErrMsg({ err: true, name: "hospitalAddress", msg: "Hospital address is required" });
+      setErrMsg({
+        err: true,
+        name: "hospitalAddress",
+        msg: "Hospital address is required",
+      });
       return false;
     }
     if (formData.deliveryFee.trim() === "") {
-      setErrMsg({ err: true, name: "deliveryFee", msg: "Delivery fee is required" });
+      setErrMsg({
+        err: true,
+        name: "deliveryFee",
+        msg: "Delivery fee is required",
+      });
       return false;
     }
     if (formData.medicalLicenseNumber.trim() === "") {
-      setErrMsg({ err: true, name: "medicalLicenseNumber", msg: "Medical license number is required" });
+      setErrMsg({
+        err: true,
+        name: "medicalLicenseNumber",
+        msg: "Medical license number is required",
+      });
       return false;
     }
     if (!formData.hospitalLogo) {
-      setErrMsg({ err: true, name: "hospitalLogo", msg: "Hospital logo is required" });
+      setErrMsg({
+        err: true,
+        name: "hospitalLogo",
+        msg: "Hospital logo is required",
+      });
       return false;
     }
     if (!formData.verificationDocument) {
-      setErrMsg({ err: true, name: "verificationDocument", msg: "Verification document is required" });
+      setErrMsg({
+        err: true,
+        name: "verificationDocument",
+        msg: "Verification document is required",
+      });
       return false;
     }
     return true;
@@ -292,20 +373,22 @@ const SignUpAdmin = () => {
   const signUpApi = async () => {
     if (!baseURL) {
       console.error("VITE_BASE_URL is not defined");
-      toast.error("Signup service is not configured. Please check VITE_BASE_URL.");
+      toast.error(
+        "Signup service is not configured. Please check VITE_BASE_URL.",
+      );
       return null;
     }
 
     setIsLoading(true);
     try {
       const url = `${baseURL}/hospital/register`;
-      
+
       const data = new FormData();
       data.append("hospitalName", formData.hospitalName);
       data.append("email", formData.email);
       data.append("phoneNumber", formData.phoneNumber);
       data.append("password", formData.password);
-      data.append('confirmPassword', formData.confirmPassword)
+      data.append("confirmPassword", formData.confirmPassword);
       data.append("address", formData.hospitalAddress);
       data.append("deliveryFee", formData.deliveryFee);
       data.append("medicalLicenseNumber", formData.medicalLicenseNumber);
@@ -313,15 +396,19 @@ const SignUpAdmin = () => {
       data.append("verificationDocuments", formData.verificationDocument);
 
       const response = await axios.post(url, data);
-      
+
       console.log("Signup response:", response);
       if (response?.status === 201) {
-        toast.success(response?.data?.message || "Account created successfully");
+        toast.success(
+          response?.data?.message || "Account created successfully",
+        );
       }
       return response;
     } catch (error) {
       console.error("Signup API error:", error);
-      toast.error(error?.response?.data?.message || error.message || "Signup failed");
+      toast.error(
+        error?.response?.data?.message || error.message || "Signup failed",
+      );
       return null;
     } finally {
       setIsLoading(false);
@@ -338,7 +425,7 @@ const SignUpAdmin = () => {
   };
 
   const roleText =
-    role === "doctor"? "Healthcare Professional" : "Pregnant Mother";
+    role === "doctor" ? "Healthcare Professional" : "Pregnant Mother";
 
   return (
     <main className="signup-page">
@@ -362,8 +449,8 @@ const SignUpAdmin = () => {
                 onBlur={catchHospitalName}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "hospitalName"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "hospitalName" ? errMsg.msg : ""}
               </span>
             </div>
 
@@ -380,8 +467,8 @@ const SignUpAdmin = () => {
                   onBlur={catchEmail}
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
-                <span style={{ color: "var(--error-color)" }}>
-                  {errMsg.msg && errMsg.name === "email"? errMsg.msg : ""}
+                <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                  {errMsg.msg && errMsg.name === "email" ? errMsg.msg : ""}
                 </span>
               </div>
 
@@ -397,8 +484,10 @@ const SignUpAdmin = () => {
                   onBlur={catchPhoneNum}
                   onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
                 />
-                <span style={{ color: "var(--error-color)" }}>
-                  {errMsg.msg && errMsg.name === "phoneNumber"? errMsg.msg : ""}
+                <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                  {errMsg.msg && errMsg.name === "phoneNumber"
+                    ? errMsg.msg
+                    : ""}
                 </span>
               </div>
             </div>
@@ -407,7 +496,7 @@ const SignUpAdmin = () => {
               <label htmlFor="password">Password</label>
               <div className="password-input-wrapper">
                 <input
-                  type={showPassword? "text" : "password"}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Create a strong password"
@@ -424,32 +513,42 @@ const SignUpAdmin = () => {
                   type="button"
                   className="toggle_password"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword? "Hide password" : "Show password"}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword? <IoMdEyeOff /> : <IoMdEye />}
+                  {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
 
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "password"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "password" ? errMsg.msg : ""}
               </span>
 
               {showText && (
                 <div className="password-requirements">
-                  <p className={`requirement-item ${Passmeet.length? "valid" : ""}`}>
-                    {Passmeet.length? "✔" : "●"} Must have 8+ characters
+                  <p
+                    className={`requirement-item ${Passmeet.length ? "valid" : ""}`}
+                  >
+                    {Passmeet.length ? "✔" : "●"} Must have 8+ characters
                   </p>
-                  <p className={`requirement-item ${Passmeet.upper? "valid" : ""}`}>
-                    {Passmeet.upper? "✔" : "●"} Must contain uppercase
+                  <p
+                    className={`requirement-item ${Passmeet.upper ? "valid" : ""}`}
+                  >
+                    {Passmeet.upper ? "✔" : "●"} Must contain uppercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.lower? "valid" : ""}`}>
-                    {Passmeet.lower? "✔" : "●"} Must contain lowercase
+                  <p
+                    className={`requirement-item ${Passmeet.lower ? "valid" : ""}`}
+                  >
+                    {Passmeet.lower ? "✔" : "●"} Must contain lowercase
                   </p>
-                  <p className={`requirement-item ${Passmeet.number? "valid" : ""}`}>
-                    {Passmeet.number? "✔" : "●"} Must contain numbers
+                  <p
+                    className={`requirement-item ${Passmeet.number ? "valid" : ""}`}
+                  >
+                    {Passmeet.number ? "✔" : "●"} Must contain numbers
                   </p>
-                  <p className={`requirement-item ${Passmeet.special? "valid" : ""}`}>
-                    {Passmeet.special? "✔" : "●"} Add special characters
+                  <p
+                    className={`requirement-item ${Passmeet.special ? "valid" : ""}`}
+                  >
+                    {Passmeet.special ? "✔" : "●"} Add special characters
                   </p>
                 </div>
               )}
@@ -459,7 +558,7 @@ const SignUpAdmin = () => {
               <label htmlFor="confirmPassword">Confirm Password</label>
               <div className="password-input-wrapper">
                 <input
-                  type={showConfirmPassword? "text" : "password"}
+                  type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirm your password"
@@ -473,13 +572,17 @@ const SignUpAdmin = () => {
                   type="button"
                   className="toggle_password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  aria-label={showConfirmPassword? "Hide password" : "Show password"}
+                  aria-label={
+                    showConfirmPassword ? "Hide password" : "Show password"
+                  }
                 >
-                  {showConfirmPassword? <IoMdEyeOff /> : <IoMdEye />}
+                  {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
                 </button>
               </div>
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "confirmPassword"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "confirmPassword"
+                  ? errMsg.msg
+                  : ""}
               </span>
             </div>
 
@@ -496,7 +599,9 @@ const SignUpAdmin = () => {
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
               <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "hospitalAddress"? errMsg.msg : ""}
+                {errMsg.msg && errMsg.name === "hospitalAddress"
+                  ? errMsg.msg
+                  : ""}
               </span>
             </div>
 
@@ -512,13 +617,15 @@ const SignUpAdmin = () => {
                 onBlur={catchDeliveryFee}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "deliveryFee"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "deliveryFee" ? errMsg.msg : ""}
               </span>
             </div>
 
             <div className="form-group">
-              <label htmlFor="medicalLicenseNumber">Medical License Number</label>
+              <label htmlFor="medicalLicenseNumber">
+                Medical License Number
+              </label>
               <input
                 type="text"
                 id="medicalLicenseNumber"
@@ -529,14 +636,18 @@ const SignUpAdmin = () => {
                 onBlur={catchMedicalLicense}
                 onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
               />
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "medicalLicenseNumber"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "medicalLicenseNumber"
+                  ? errMsg.msg
+                  : ""}
               </span>
             </div>
 
             <div className="form-group">
               <label htmlFor="hospitalLogo">Hospital Logo</label>
-              <div className={`file-upload-wrapper ${logoFileName? "has-file" : ""}`}>
+              <div
+                className={`file-upload-wrapper ${logoFileName ? "has-file" : ""}`}
+              >
                 <input
                   type="file"
                   id="hospitalLogo"
@@ -546,23 +657,41 @@ const SignUpAdmin = () => {
                   className="file-input"
                 />
                 <div className="file-upload-box">
-                  <FiUpload className="upload-icon" />
-                  <p className="upload-text">
-                    Upload hospital Logo
-                    <br />
-                    JPG, or PNG (max 5MB)
-                  </p>
-                  {logoFileName && <p className="file-name">Selected: {logoFileName}</p>}
+                  {logoPreview ? (
+                    <>
+                      <img
+                        src={logoPreview}
+                        alt="Hospital Logo Preview"
+                        className="logo-preview"
+                      />
+
+                      <p className="file-name">{logoFileName}</p>
+                    </>
+                  ) : (
+                    <>
+                      <FiUpload className="upload-icon-sign" />
+
+                      <p className="upload-text">
+                        Upload hospital Logo
+                        <br />
+                        JPG, or PNG (max 5MB)
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "hospitalLogo"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "hospitalLogo" ? errMsg.msg : ""}
               </span>
             </div>
 
             <div className="form-group">
-              <label htmlFor="verificationDocument">Verification Document</label>
-              <div className={`file-upload-wrapper ${docFileName? "has-file" : ""}`}>
+              <label htmlFor="verificationDocument">
+                Verification Document
+              </label>
+              <div
+                className={`file-upload-wrapper ${docFileName ? "has-file" : ""}`}
+              >
                 <input
                   type="file"
                   id="verificationDocument"
@@ -572,22 +701,44 @@ const SignUpAdmin = () => {
                   className="file-input"
                 />
                 <div className="file-upload-box">
-                  <FiUpload className="upload-icon" />
-                  <p className="upload-text">
-                    Upload medical license or professional certification
-                    <br />
-                    PDF, JPG, or PNG (max 5MB)
-                  </p>
-                  {docFileName && <p className="file-name">Selected: {docFileName}</p>}
+                  {docPreview ? (
+                    <>
+                      <img
+                        src={docPreview}
+                        alt="Verification Document Preview"
+                        className="logo-preview"
+                      />
+
+                      <p className="file-name">{docFileName}</p>
+                    </>
+                  ) : (
+                    <>
+                      <FiUpload className="upload-icon-sign" />
+
+                      <p className="upload-text">
+                        Upload medical license or professional certification
+                        <br />
+                        PDF, JPG, or PNG (max 5MB)
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
-              <span style={{ color: "var(--error-color)" }}>
-                {errMsg.msg && errMsg.name === "verificationDocument"? errMsg.msg : ""}
+              <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
+                {errMsg.msg && errMsg.name === "verificationDocument"
+                  ? errMsg.msg
+                  : ""}
               </span>
             </div>
 
-            <button type="submit" className="create-account-btn" disabled={isLoading}>
-              {isLoading? "Creating Account..." : "Create Professional Account"}
+            <button
+              type="submit"
+              className="create-account-btn"
+              disabled={isLoading}
+            >
+              {isLoading
+                ? "Creating Account..."
+                : "Create Professional Account"}
             </button>
           </form>
 
@@ -601,7 +752,7 @@ const SignUpAdmin = () => {
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="/privacy" className="terms-link">
+            <a href="/privacySettings" className="terms-link">
               Privacy Policy
             </a>
           </p>

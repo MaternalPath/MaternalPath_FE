@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import "./header.css";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useNavigate, NavLink } from "react-router-dom";
