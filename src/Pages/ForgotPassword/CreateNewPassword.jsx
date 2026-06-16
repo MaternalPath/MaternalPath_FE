@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
@@ -37,9 +37,7 @@ const CreateNewPassword = () => {
       navigate("/passwordResetSuccess", { state: { role } });
     } catch (error) {
       console.error("Reset password error:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to reset password",
-      );
+      toast.error(error?.response?.data?.message || "Failed to reset password");
     } finally {
       setIsLoading(false);
     }
@@ -78,11 +76,13 @@ const CreateNewPassword = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   className="eye-btn"
                   onClick={() => setShowNewPassword(!showNewPassword)}
+                  disabled={isLoading}
                 >
                   {showNewPassword ? (
                     <FiEyeOff size={16} />
@@ -102,11 +102,13 @@ const CreateNewPassword = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   className="eye-btn"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  disabled={isLoading}
                 >
                   {showConfirmPassword ? (
                     <FiEyeOff size={16} />
@@ -117,7 +119,11 @@ const CreateNewPassword = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary" disabled={isLoading}>
+            <button
+              type="submit"
+              className={`btn-primary ${isLoading ? "loading" : ""}`}
+              disabled={isLoading}
+            >
               {isLoading ? "Resetting..." : "Reset Password"}
             </button>
           </form>

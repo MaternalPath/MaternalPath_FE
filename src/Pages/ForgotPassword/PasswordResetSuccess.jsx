@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiCheckCircle } from "react-icons/fi";
 import "./Css/ForgotPassword.css";
@@ -8,9 +8,17 @@ import backgroundImage from "../../assets/pana.png";
 const PasswordResetSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const role = location.state?.role || "mother";
   const roleLabel =
     role === "hospital" ? "Healthcare Professional" : "Pregnant Mother";
+
+  const handleReturnToLogin = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate("/login");
+    }, 300);
+  };
 
   return (
     <main className="auth-main">
@@ -39,8 +47,12 @@ const PasswordResetSuccess = () => {
             using your new credentials.
           </p>
 
-          <button onClick={() => navigate("/login")} className="btn-primary">
-            Return to Login
+          <button
+            onClick={handleReturnToLogin}
+            className={`btn-primary ${isLoading ? "loading" : ""}`}
+            disabled={isLoading}
+          >
+            {isLoading ? "Redirecting..." : "Return to Login"}
           </button>
         </div>
       </div>

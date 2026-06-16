@@ -53,7 +53,7 @@ const SettingsContent = ({ settings, onToggle, onVisibleSectionChange }) => {
       <section
         id="data-sharing"
         ref={setRef("data-sharing")}
-        className="content-cards"
+        className="contents-card"
       >
         <p className="section-desc">
           Manage how your personal and pregnancy information is stored and
