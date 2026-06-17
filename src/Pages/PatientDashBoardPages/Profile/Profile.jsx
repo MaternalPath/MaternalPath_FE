@@ -12,9 +12,55 @@ import UpdatePregnancyModal from "../../../Components/ModalCard/UpdatePregnacySe
 import EditPersonalInformationModal from "../../../Components/ModalCard/EditProfileModal";
 import SelectHospitalModal from "../../../Components/ModalCard/SelectHospitalModal";
 import EmergencyWalletModal from "../../../Components/ModalCard/WalletModal";
+import { getMotherProfile, updateMotherProfile } from "../../../api/mothers";
+
+const normalizeImageUrl = (imageValue) => {
+  if (!imageValue) return "";
+  if (typeof imageValue === "string") return imageValue;
+  if (typeof imageValue === "object") {
+    if (imageValue.url) return imageValue.url;
+    if (imageValue.path) return imageValue.path;
+    if (imageValue.imageUrl) return imageValue.imageUrl;
+    if (imageValue.profilePicture) return normalizeImageUrl(imageValue.profilePicture);
+    return "";
+  }
+  return "";
+};
+
+const normalizeTrimesterValue = (trimester) => {
+  if (trimester === undefined || trimester === null || trimester === "") return "";
+  if (typeof trimester === "number") return trimester;
+  if (typeof trimester === "string") {
+    const normalized = trimester.trim().toLowerCase();
+    if (/^\d+$/.test(normalized)) return parseInt(normalized, 10);
+    if (normalized.includes("first")) return 1;
+    if (normalized.includes("second")) return 2;
+    if (normalized.includes("third")) return 3;
+    return parseInt(normalized, 10) || "";
+  }
+  return "";
+};
+
+const normalizeEmergencyContact = (rawData) => {
+  return rawData?.emergencyContactNumber || rawData?.emergencyContact || "";
+};
+
+const normalizeProfileData = (rawData) => {
+  if (!rawData) return rawData;
+
+  const normalizedImage = normalizeImageUrl(rawData.profilePicture || rawData.image || rawData.photo);
+
+  return {
+    ...rawData,
+    profilePicture: normalizedImage,
+    emergencyContact: normalizeEmergencyContact(rawData),
+    trimester: normalizeTrimesterValue(rawData.trimester),
+    imageFile: null,
+  };
+};
 
 const Profile = () => {
-  // 1. Unified state holding empty values for all required API schema fields
+  // 1. Initial full schema containing empty values for fields not yet collected during onboarding
   const [profileData, setProfileData] = useState({
     firstName: "",
     lastName: "",
@@ -27,6 +73,7 @@ const Profile = () => {
     bloodType: "",
     existingHealthConditions: "",
     currentPregnancyWeek: "",
+    emergencyContactName: "",
     emergencyContact: "",
     allergies: "",
     savingsGoalAmount: 0,
@@ -37,64 +84,42 @@ const Profile = () => {
     hospitalContact: "",
     estimatedDeliveryCost: 0,
     profilePicture: "",
+    imageFile: null, // Store the actual File object
   });
 
   const [isLoading, setIsLoading] = useState(true);
 
   // Modal Step States
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);       // Step 1
-  const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);     // Step 2
-  const [isPregnancyModalOpen, setIsPregnancyModalOpen] = useState(false); // Step 3
-  const [isHospitalModalOpen, setIsHospitalModalOpen] = useState(false);   // Step 4
-  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);       // Step 5
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);
+  const [isPregnancyModalOpen, setIsPregnancyModalOpen] = useState(false);
+  const [isHospitalModalOpen, setIsHospitalModalOpen] = useState(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
-  // 2. Fetch data from backend API on component mount
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        setIsLoading(true);
-        // Replace with your actual endpoints, e.g., await axios.get('/api/profile')
-        // const response = await api.getProfile();
-        // setProfileData(response.data);
-
-        // Simulated Delay for Hydration testing:
-        setTimeout(() => {
-          setProfileData({
-            firstName: "Sarah",
-            lastName: "Johnson",
-            email: "sarah.johnson@email.com",
-            phoneNumber: "801 234 5678",
-            address: "12 Allen Avenue, Ikeja, Lagos",
-            dateOfBirth: "1995-03-15",
-            estimatedDueDate: "2026-11-20",
-            trimester: 2,
-            bloodType: "O+",
-            existingHealthConditions: "None",
-            currentPregnancyWeek: 22,
-            emergencyContact: "+234 802 345 6789",
-            allergies: "Penicillin",
-            savingsGoalAmount: 400000,
-            weeklyContribution: 7500,
-            linkedPaymentMethod: "Opay",
-            preferredHospital: "Lagos University Teaching Hospital",
-            hospitalAddress: "Idi-Araba, Lagos",
-            hospitalContact: "+234 1 280 6944",
-            estimatedDeliveryCost: 250000,
-            profilePicture: "",
-          });
-          setIsLoading(false);
-        }, 1000);
-
-      } catch (error) {
-        console.error("Error loading user profile context:", error);
-        setIsLoading(false);
+  // 2. Consume real API data on mount and merge it with our fallback schema
+  const fetchUserProfile = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getMotherProfile();
+      
+      if (response && response.data) {
+        setProfileData((prevSchema) => ({
+          ...prevSchema,
+          ...normalizeProfileData(response.data),
+        }));
       }
-    };
+    } catch (error) {
+      console.error("Error loading user profile context from API:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUserProfile();
   }, []);
 
-  // Handler to update deep state fields directly from sub-modal component inputs
+  // Handler to update fields directly as the user types across the onboarding steps
   const updateProfileFields = (updatedFields) => {
     setProfileData((prev) => ({
       ...prev,
@@ -127,16 +152,90 @@ const Profile = () => {
   // 3. Centralized Asynchronous API Submission Engine
   const handleFinalFormSubmit = async () => {
     try {
-      console.log("Initiating API call sequence with payload execution:", profileData);
+      console.log("Initiating API update sequence");
       
-      // Example endpoint call configuration:
-      // const response = await axios.put('/api/profile/update', profileData);
+      // Get user ID from localStorage
+      const id = localStorage.getItem('userId');
       
+      if (!id) {
+        alert("User ID not found. Please log in again.");
+        return;
+      }
+      
+      // Create FormData and append ALL fields
+      const formData = new FormData();
+      
+      // Append all text fields
+      const fields = {
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+        email: profileData.email,
+        phoneNumber: profileData.phoneNumber,
+        address: profileData.address,
+        dateOfBirth: profileData.dateOfBirth,
+        estimatedDueDate: profileData.estimatedDueDate,
+        bloodType: profileData.bloodType,
+        existingHealthConditions: profileData.existingHealthConditions,
+        currentPregnancyWeek: profileData.currentPregnancyWeek,
+        emergencyContactName: profileData.emergencyContactName,
+        allergies: profileData.allergies,
+        linkedPaymentMethod: profileData.linkedPaymentMethod,
+        preferredHospital: profileData.preferredHospital,
+        hospitalAddress: profileData.hospitalAddress,
+        hospitalContact: profileData.hospitalContact,
+      };
+      
+      // Append all text fields
+      Object.keys(fields).forEach(key => {
+        if (fields[key]) {
+          formData.append(key, fields[key]);
+        }
+      });
+      
+      // Append numeric fields
+      formData.append('savingsGoalAmount', String(profileData.savingsGoalAmount || 0));
+      formData.append('weeklyContribution', String(profileData.weeklyContribution || 0));
+      formData.append('estimatedDeliveryCost', String(profileData.estimatedDeliveryCost || 0));
+      formData.append('trimester', String(normalizeTrimesterValue(profileData.trimester) || ""));
+      formData.append('emergencyContactNumber', profileData.emergencyContact || profileData.emergencyContactNumber || "");
+      
+      if (profileData.imageFile && profileData.imageFile instanceof File) {
+        console.log("Appending image file:", profileData.imageFile.name);
+        console.log("File type:", profileData.imageFile.type);
+        console.log("File size:", profileData.imageFile.size);
+        formData.append('image', profileData.imageFile, profileData.imageFile.name);
+      } else {
+        console.log("No image file to append");
+      }
+      
+      // Log all form data entries for debugging
+      console.log("FormData entries:");
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(key, value.name, value.type, value.size);
+        } else {
+          console.log(key, value);
+        }
+      }
+      
+      // Call the API with FormData
+      const response = await updateMotherProfile(id, formData);
+      
+      console.log("Profile updated successfully:", response);
       setIsWalletModalOpen(false);
       alert("Profile settings synchronized successfully via API!");
+      
+      setProfileData(prev => ({
+        ...prev,
+        ...normalizeProfileData(response?.data || response),
+      }));
+      
+      // Refresh the profile data to reflect the changes if needed
+      await fetchUserProfile();
+      
     } catch (error) {
       console.error("API update failure exception handling:", error);
-      alert("Failed to synchronize changes. Please try again.");
+      alert(error || "Failed to synchronize changes. Please try again.");
     }
   };
 
@@ -149,13 +248,17 @@ const Profile = () => {
     );
   }
 
-  // Fallback string configurations for UI display consistency
+  // 4. Fallback layout mappings to gracefully handle non-onboarded blank fields on the cards
   const displayData = {
     ...profileData,
-    name: `${profileData.firstName} ${profileData.lastName}`,
-    dueDate: profileData.estimatedDueDate,
-    week: `Week ${profileData.currentPregnancyWeek}`,
-    hospital: profileData.preferredHospital
+    name: profileData.firstName && profileData.lastName 
+      ? `${profileData.firstName} ${profileData.lastName}` 
+      : "Update your name",
+    dueDate: profileData.estimatedDueDate || "Not set yet",
+    week: profileData.currentPregnancyWeek 
+      ? `Week ${profileData.currentPregnancyWeek}` 
+      : "Click to add week tracking",
+    hospital: profileData.preferredHospital || "No hospital selected"
   };
 
   return (
@@ -168,6 +271,7 @@ const Profile = () => {
           </p>
         </div>
 
+        {/* Dashboard Grid View cards reading values cleanly */}
         <div className="settings-grid">
           <ProfileHeaderCard data={displayData} onEditClick={() => handleEdit("header")} />
           <PersonalInfoCard data={displayData} onEditClick={() => handleEdit("personal")} />
@@ -222,6 +326,7 @@ const Profile = () => {
       <EmergencyWalletModal
         isOpen={isWalletModalOpen}
         data={profileData}
+        updateFields={updateProfileFields}
         onClose={() => setIsWalletModalOpen(false)}
         onPrevious={handleStep5BackToStep4}
         onSubmit={handleFinalFormSubmit}

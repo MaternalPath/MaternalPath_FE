@@ -2,8 +2,13 @@ import React from 'react';
 import './ModalCard.css';
 import { IoPersonCircleOutline } from "react-icons/io5";
 
-const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) => {
+const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious, data, updateFields }) => {
   if (!isOpen) return null;
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    updateFields({ [id]: value });
+  };
 
   return (
     <div className="modal-overlay">
@@ -32,8 +37,8 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
               <input 
                 type="text" 
                 id="firstName" 
-                defaultValue="Adeaze" 
-                readOnly 
+                value={data.firstName || 'Adeaze'}
+                onChange={handleChange}
                 className="readonly-input"
               />
             </div>
@@ -44,8 +49,8 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
               <input 
                 type="text" 
                 id="lastName" 
-                defaultValue="Nnamdi" 
-                readOnly 
+                value={data.lastName || 'Nnamdi'}
+                onChange={handleChange}
                 className="readonly-input"
               />
             </div>
@@ -61,8 +66,8 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
                 <input 
                   type="email" 
                   id="email" 
-                  defaultValue="adeaze.nnamdi@email.com" 
-                  readOnly 
+                  value={data.email || 'adeaze.nnamdi@email.com'}
+                  onChange={handleChange}
                   className="readonly-input"
                 />
               </div>
@@ -72,21 +77,21 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
             <div className="form-group">
               <label htmlFor="phoneNumber">Phone Number</label>
               <div className="input-with-icon">
-                {/* FIXED: Removed the broken nested IoPersonCircleOutline here */}
                 <svg className="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a0abaa" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
                 <input 
                   type="text" 
                   id="phoneNumber" 
-                  defaultValue="08012345678" 
+                  value={data.phoneNumber || '08012345678'}
+                  onChange={handleChange}
                 />
               </div>
             </div>
 
             {/* Date of Birth - Editable */}
             <div className="form-group">
-              <label htmlFor="dob">Date of Birth</label>
+              <label htmlFor="dateOfBirth">Date of Birth</label>
               <div className="input-with-icon">
                 <svg className="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a0abaa" strokeWidth="2">
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -96,15 +101,16 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
                 </svg>
                 <input 
                   type="date" 
-                  id="dob" 
-                  defaultValue="1995-03-15" 
+                  id="dateOfBirth" 
+                  value={data.dateOfBirth || '1995-03-15'}
+                  onChange={handleChange}
                 />
               </div>
             </div>
 
             {/* Location - Editable */}
             <div className="form-group">
-              <label htmlFor="location">Location</label>
+              <label htmlFor="address">Location</label>
               <div className="input-with-icon">
                 <svg className="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a0abaa" strokeWidth="2">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -112,8 +118,9 @@ const EditPersonalInformationModal = ({ isOpen, onClose, onNext, onPrevious }) =
                 </svg>
                 <input 
                   type="text" 
-                  id="location" 
-                  defaultValue="Lagos, Nigeria" 
+                  id="address" 
+                  value={data.address || 'Lagos, Nigeria'}
+                  onChange={handleChange}
                 />
               </div>
             </div>

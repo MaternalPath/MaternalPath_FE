@@ -103,30 +103,71 @@
 }
 
 .avatar-circle {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  background-color: var(--avatar-bg);
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
+  position: relative;
+  overflow: hidden; /* This is key - it clips the image to the circle */
+  background-color: #f0f2f2;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the circle properly */
+  border-radius: 50%;
+}
+
+.avatar-icon {
+  width: 60px;
+  height: 60px;
 }
 
 .edit-avatar-btn {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background-color: var(--primary-dark);
-  border: 2px solid #ffffff;
+  bottom: 0;
+  right: 0;
+  background: #2d9cdb;
+  border: 2px solid white;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  z-index: 2;
+}
+
+.edit-avatar-btn:hover {
+  transform: scale(1.1);
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: #7a8b8b;
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  text-align: center;
 }
 
 /* Form Styles */
@@ -414,4 +455,16 @@
 
 .base-metric-row {
   margin-top: 2px;
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }
