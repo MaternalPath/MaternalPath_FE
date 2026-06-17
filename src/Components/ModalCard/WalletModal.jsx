@@ -1,8 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ModalCard.css';
 
-const EmergencyWalletModal = ({ isOpen, onClose, onSubmit, onPrevious }) => {
+const EmergencyWalletModal = ({ isOpen, onClose, onSubmit, onPrevious, data, updateFields }) => {
+  const [formData, setFormData] = useState({
+    savingsGoal: data?.savingsGoalAmount || 0,
+    weeklyContribution: data?.weeklyContribution || 0,
+  });
+
+  const [errors, setErrors] = useState({});
+
   if (!isOpen) return null;
+
+  const validateField = (field, value) => {
+    const numValue = parseFloat(value);
+    let error = '';
+
+    if (field === 'savingsGoal') {
+      if (!value || value === '') {
+        error = 'Savings goal is required';
+      } else if (isNaN(numValue)) {
+        error = 'Please enter a valid number';
+      } else if (numValue < 1000) {
+        error = 'Savings goal must be at least ₦1,000';
+      } else if (numValue > 100000000) {
+        error = 'Savings goal cannot exceed ₦100,000,000';
+      }
+    }
+
+    if (field === 'weeklyContribution') {
+      if (!value || value === '') {
+        error = 'Weekly contribution is required';
+      } else if (isNaN(numValue)) {
+        error = 'Please enter a valid number';
+      } else if (numValue < 100) {
+        error = 'Weekly contribution must be at least ₦100';
+      } else if (numValue > 1000000) {
+        error = 'Weekly contribution cannot exceed ₦1,000,000';
+      }
+    }
+
+    return error;
+  };
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({...prev, [field]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({...prev, [field]: '' }));
+    }
+  };
+
+  const handleBlur = (field, value) => {
+    const error = validateField(field, value);
+    setErrors(prev => ({...prev, [field]: error }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validate all fields
+    const savingsGoalError = validateField('savingsGoal', formData.savingsGoal);
+    const weeklyError = validateField('weeklyContribution', formData.weeklyContribution);
+    
+    const newErrors = {
+      savingsGoal: savingsGoalError,
+      weeklyContribution: weeklyError,
+    };
+    
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    if (savingsGoalError || weeklyError) {
+      return;
+    }
+    
+    // Update parent state with wallet data
+    updateFields({
+      savingsGoalAmount: parseFloat(formData.savingsGoal) || 0,
+      weeklyContribution: parseFloat(formData.weeklyContribution) || 0,
+    });
+    onSubmit();
+  };
+
+  // Calculate derived values for summary
+  const currentBalance = 0; // This could come from API in the future
+  const goalAmount = parseFloat(formData.savingsGoal) || 0;
+  const weeklyAmount = parseFloat(formData.weeklyContribution) || 0;
+  const remaining = goalAmount - currentBalance;
+  const weeksToGoal = weeklyAmount > 0 ? Math.ceil(remaining / weeklyAmount) : 0;
 
   return (
     <div className="modal-overlay">
@@ -20,28 +106,40 @@ const EmergencyWalletModal = ({ isOpen, onClose, onSubmit, onPrevious }) => {
         </div>
 
         {/* Form Content */}
-        <form className="modal-form" onSubmit={(e) => e.preventDefault()}>
+        <form className="modal-form" onSubmit={handleFormSubmit}>
           
           {/* Savings Goal Input */}
           <div className="form-group">
             <label htmlFor="savingsGoal">Savings Goal</label>
             <input 
-              type="text" 
+              type="number" 
               id="savingsGoal" 
-              defaultValue="400000" 
-              className="numeric-input-style" 
+              value={formData.savingsGoal}
+              onChange={(e) => handleChange("savingsGoal", e.target.value)}
+              onBlur={(e) => handleBlur("savingsGoal", e.target.value)}
+              className={`numeric-input-style ${errors.savingsGoal ? 'input-error' : ''}`}
+              min="0"
+              step="1000"
+              placeholder="Enter savings goal amount"
             />
+            {errors.savingsGoal && <span className="error-message">{errors.savingsGoal}</span>}
           </div>
 
           {/* Weekly Contribution Input */}
           <div className="form-group">
             <label htmlFor="weeklyContribution">Weekly Contribution</label>
             <input 
-              type="text" 
+              type="number" 
               id="weeklyContribution" 
-              defaultValue="7500" 
-              className="numeric-input-style" 
+              value={formData.weeklyContribution}
+              onChange={(e) => handleChange("weeklyContribution", e.target.value)}
+              onBlur={(e) => handleBlur("weeklyContribution", e.target.value)}
+              className={`numeric-input-style ${errors.weeklyContribution ? 'input-error' : ''}`}
+              min="0"
+              step="100"
+              placeholder="Enter weekly contribution amount"
             />
+            {errors.weeklyContribution && <span className="error-message">{errors.weeklyContribution}</span>}
           </div>
 
           {/* Savings Summary Container Box */}
@@ -50,31 +148,31 @@ const EmergencyWalletModal = ({ isOpen, onClose, onSubmit, onPrevious }) => {
             
             <div className="summary-row">
               <span className="summary-label">Current Balance</span>
-              <span className="summary-value emphasis-teal">₦285,000</span>
+              <span className="summary-value emphasis-teal">₦{currentBalance.toLocaleString()}</span>
             </div>
             
             <div className="summary-row">
               <span className="summary-label">New Goal</span>
-              <span className="summary-value emphasis-teal">₦400,000</span>
+              <span className="summary-value emphasis-teal">₦{goalAmount.toLocaleString()}</span>
             </div>
             
             <div className="summary-row">
               <span className="summary-label">Remaining</span>
-              <span className="summary-value emphasis-orange">₦115,000</span>
+              <span className="summary-value emphasis-orange">₦{remaining.toLocaleString()}</span>
             </div>
             
             <div className="summary-divider"></div>
             
             <div className="summary-row base-metric-row">
               <span className="summary-label">Weeks to Goal</span>
-              <span className="summary-value emphasis-teal">16 weeks</span>
+              <span className="summary-value emphasis-teal">{weeksToGoal} weeks</span>
             </div>
           </div>
 
           {/* Action Footer Buttons Layer */}
           <div className="dual-btn-container">
             <button type="button" className="previous-btn" onClick={onPrevious}>Previous</button>
-            <button type="button" className="submit-btn" onClick={onSubmit}>Submit</button>
+            <button type="submit" className="submit-btn">Submit</button>
           </div>
         </form>
 

@@ -14,29 +14,29 @@ const PersonalInfoCard = ({ data = {}, onEditClick }) => {
         <div className="info-col">
           <div className="info-item">
             <div className="info-label">First name</div>
-            <div className="info-value">{data?.firstName || "Adaeze"}</div>
+            <div className="info-value">{data?.firstName || "Not Set yet"}</div>
           </div>
           <div className="info-item">
             <div className="info-label">Last name</div>
-            <div className="info-value">{data?.lastName || "Nnamdi"}</div>
+            <div className="info-value">{data?.lastName || "Not Set yet"}</div>
           </div>
           <div className="info-item">
             <div className="info-label">Phone Number</div>
-            <div className="info-value">{data?.phoneNumber || "+234 803 456 7890"}</div>
+            <div className="info-value">{data?.phoneNumber || " Not Set yet"}</div>
           </div>
           <div className="info-item">
             <div className="info-label">Residential Location</div>
-            <div className="info-value">{data?.address || "Lagos, Nigeria"}</div>
+            <div className="info-value">{data?.address || " Not Set yet"}</div>
           </div>
         </div>
         <div className="info-col">
           <div className="info-item">
             <div className="info-label">Email Address</div>
-            <div className="info-value">{data?.email || "adeaze.nnamdi@email.com"}</div>
+            <div className="info-value">{data?.email || "Not Set yet"}</div>
           </div>
           <div className="info-item">
             <div className="info-label">Date of Birth</div>
-            <div className="info-value">{data?.dateOfBirth || "1995-03-15"}</div>
+            <div className="info-value">{data?.dateOfBirth || "Not Set yet"}</div>
           </div>
         </div>
       </div>
@@ -44,23 +44,23 @@ const PersonalInfoCard = ({ data = {}, onEditClick }) => {
       <div className="info-list-mobile">
         <div className="info-item">
           <div className="info-label">Full Name</div>
-          <div className="info-value">{`${data?.firstName || "Adaeze"} ${data?.lastName || "Nnamdi"}`.trim()}</div>
+          <div className="info-value">{`${data?.firstName || "Not Set yet"} ${data?.lastName || "Not Set yet"}`.trim()}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Email Address</div>
-          <div className="info-value">{data?.email || "adeaze.nnamdi@email.com"}</div>
+          <div className="info-value">{data?.email || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Phone Number</div>
-          <div className="info-value">{data?.phoneNumber || "+234 801 234 5678"}</div>
+          <div className="info-value">{data?.phoneNumber || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Date of Birth</div>
-          <div className="info-value">{data?.dateOfBirth || "1995-03-15"}</div>
+          <div className="info-value">{data?.dateOfBirth || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Location</div>
-          <div className="info-value">{data?.address || "Lagos, Nigeria"}</div>
+          <div className="info-value">{data?.address || "Not Set yet"}</div>
         </div>
       </div>
     </div>
