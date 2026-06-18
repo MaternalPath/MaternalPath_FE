@@ -9,22 +9,32 @@ const readRole = () => {
   return stored === "hospital" || stored === "mother" ? stored : DEFAULT_ROLE;
 };
 
+const readIsUpdated = () => localStorage.getItem("isUpdated") === "true";
+
 const RoleContext = createContext({
   role: DEFAULT_ROLE,
   token: null,
+  isUpdated: false,
   login: () => {},
   logout: () => {},
+  setIsUpdated: () => {},
 });
 
 export const RoleProvider = ({ children }) => {
   const [role, setRole] = useState(readRole);
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
+  const [isUpdated, setIsUpdatedState] = useState(readIsUpdated);
 
   const login = (newToken, newRole) => {
     localStorage.setItem(TOKEN_KEY, newToken);
     localStorage.setItem(ROLE_KEY, newRole);
     setToken(newToken);
     setRole(newRole);
+  };
+
+  const setIsUpdated = (value) => {
+    localStorage.setItem("isUpdated", String(value));
+    setIsUpdatedState(Boolean(value));
   };
 
   const logout = () => {
@@ -36,10 +46,11 @@ export const RoleProvider = ({ children }) => {
     localStorage.removeItem("name");
     setToken(null);
     setRole(DEFAULT_ROLE);
+    setIsUpdatedState(false);
   };
 
   return (
-    <RoleContext.Provider value={{ role, token, login, logout }}>
+    <RoleContext.Provider value={{ role, token, isUpdated, login, logout, setIsUpdated }}>
       {children}
     </RoleContext.Provider>
   );

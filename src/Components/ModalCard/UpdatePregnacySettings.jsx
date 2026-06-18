@@ -105,6 +105,8 @@ const REQUIRED_FIELDS = [
   "emergencyName",
   "emergencyContact",
   "bloodType",
+  "allergies",
+  "conditions",
 ];
 
 const UpdatePregnancyModal = ({
@@ -201,6 +203,18 @@ const UpdatePregnancyModal = ({
     if (field === 'bloodType') {
       if (!value) {
         error = 'Blood type is required';
+      }
+    }
+
+    if (field === 'allergies') {
+      if (!value || value.trim() === '') {
+        error = 'Allergies are required (enter "None" if none)';
+      }
+    }
+
+    if (field === 'conditions') {
+      if (!value || value.trim() === '') {
+        error = 'Existing health conditions are required (enter "None" if none)';
       }
     }
 
@@ -436,8 +450,13 @@ const UpdatePregnancyModal = ({
                 id="allergies"
                 value={formData.allergies}
                 onChange={(e) => handleChange("allergies", e.target.value)}
-                placeholder="e.g. Penicillin (leave blank if none)"
+                onBlur={(e) => handleBlur("allergies", e.target.value)}
+                placeholder="e.g. Penicillin or None"
+                className={errors.allergies ? "input-error" : ""}
               />
+              {errors.allergies && (
+                <span className="error-message">{errors.allergies}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -446,9 +465,14 @@ const UpdatePregnancyModal = ({
                 id="conditions"
                 value={formData.conditions}
                 onChange={(e) => handleChange("conditions", e.target.value)}
+                onBlur={(e) => handleBlur("conditions", e.target.value)}
                 rows="3"
-                placeholder="List any existing conditions"
+                placeholder="List any existing conditions or enter None"
+                className={errors.conditions ? "input-error" : ""}
               />
+              {errors.conditions && (
+                <span className="error-message">{errors.conditions}</span>
+              )}
             </div>
           </div>
 

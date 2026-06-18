@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import { useRole } from "../../../context/RoleContext";
 import "./Profile.css";
 import ProfileHeaderCard from "../../../Components/PatientDashBoardFolder/ProfileComponent/ProfileHeaderCard";
 import PersonalInfoCard from "../../../Components/PatientDashBoardFolder/ProfileComponent/PersonalInfoCard";
@@ -144,6 +145,7 @@ const toLocalPhone = (raw) => {
 };
 
 const Profile = () => {
+  const { setIsUpdated } = useRole();
   // Backend truth — drives the cards and the hide-if-filled check
   const [profileData, setProfileData] = useState(INITIAL_PROFILE);
   // In-modal edits this session — not shown on cards until save succeeds
@@ -267,6 +269,7 @@ const Profile = () => {
       }
 
       setDraft({});
+      setIsUpdated(true);
       localStorage.setItem("isUpdated", "true");
       closeModal();
       toast.success("Profile updated successfully");

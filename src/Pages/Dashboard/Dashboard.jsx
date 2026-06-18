@@ -16,11 +16,10 @@ const Dashboard = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const navigate = useNavigate();
-  const { role, logout } = useRole();
+  const { role, logout, isUpdated } = useRole();
   const navItems = getNavItems(role);
 
-  const isLocked =
-    role === "mother" && localStorage.getItem("isUpdated") !== "true";
+  const isLocked = role === "mother" && !isUpdated;
 
   const handleLogout = () => {
     logout();
@@ -28,7 +27,9 @@ const Dashboard = () => {
     navigate("/login");
   };
 
-  const isLinkLocked = (path) => isLocked && path !== PROFILE_PATH;
+  // navigation should remain available even when profile is incomplete;
+  // `isLocked` is used only to show the reminder banner until the profile is updated
+  const isLinkLocked = () => false;
 
   return (
     <div className="dashboard-layout">
@@ -53,17 +54,9 @@ const Dashboard = () => {
                 key={item.path}
                 to={item.path}
                 end={item.end}
-                onClick={(e) => {
-                  if (locked) {
-                    e.preventDefault();
-                    return;
-                  }
-                  closeMobileMenu();
-                }}
-                aria-disabled={locked}
-                tabIndex={locked ? -1 : undefined}
+                onClick={() => closeMobileMenu()}
                 className={({ isActive }) =>
-                  `mobile-drawer-link ${isActive ? "active" : ""} ${locked ? "disabled" : ""}`
+                  `mobile-drawer-link ${isActive ? "active" : ""}`
                 }
               >
                 {item.label}
@@ -83,7 +76,7 @@ const Dashboard = () => {
       </aside>
 
       <div className="dashboard-body">
-        <Sidebar isLocked={isLocked} />
+        <Sidebar isLocked={false} />
         <main className="dashboard-content">
           {isLocked && (
             <div className="profile-lock-banner" role="alert">

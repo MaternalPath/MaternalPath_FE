@@ -24,7 +24,7 @@ const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 const LoginPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { role: defaultRole, login } = useRole();
+  const { role: defaultRole, login, setIsUpdated } = useRole();
   const [userType, setUserType] = useState(defaultRole);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +129,7 @@ const LoginPage = () => {
     const response = await loginApi();
     if (response?.status === 200) {
       login(response?.data?.token, userType);
-      // login(response?.data?.token, userType, formData.rememberMe);
+
 
       const userId =
         response?.data?.id ||
@@ -156,10 +156,10 @@ const LoginPage = () => {
 
       if (userType === "mother") {
         const isUpdated = Boolean(response?.data?.isUpdated);
-        localStorage.setItem("isUpdated", String(isUpdated));
+        setIsUpdated(isUpdated);
         nav(isUpdated ? from : "/dashboard/profile", { replace: true });
       } else {
-        localStorage.removeItem("isUpdated");
+        setIsUpdated(false);
         nav(from === "/getStarted" ? "/dashboard" : from, { replace: true });
       }
     }
@@ -322,8 +322,7 @@ const LoginPage = () => {
             <div className="mp-bottom-links">
               <Link to="/signupUser">For Pregnant Mothers ›</Link>
               <Link to="/signupHospital">For Healthcare Professionals ›</Link>
-              <Link to="/signupUser">For Pregnant Mothers ›</Link>
-              <Link to="/signupHospital">For Healthcare Professionals ›</Link>
+
             </div>
           </div>
         </div>
