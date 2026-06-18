@@ -47,7 +47,7 @@ const FAQ = ({ activeQuestion, searchTerm = "" }) => {
               />
             </div>
 
-            {openId === itesm.id && <p className="faq-answer">{item.answer}</p>}
+            {openId === item.id && <p className="faq-answer">{item.answer}</p>}
           </div>
         ))
       ) : (
