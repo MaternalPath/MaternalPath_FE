@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
-import "./Css/CheckEmail.css";
-import logo from "../../assets/header.png";
+import "./Css/ForgotPassword.css";
 import backgroundImage from "../../assets/pana.png";
+import logo from "../../assets/header.png";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -19,6 +19,7 @@ const CheckEmail = () => {
 
   const [code, setCode] = useState(Array(CODE_LENGTH).fill(""));
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
+  const [isLoading, setIsLoading] = useState(false);
   const inputsRef = useRef([]);
 
   useEffect(() => {
@@ -81,31 +82,46 @@ const CheckEmail = () => {
       toast.error("Please enter a valid verification code.");
       return;
     }
-    await axios.post(`${baseURL}/${role}/verify-reset`, {
-      email,
-      otp: verificationCode,
-    });
-    navigate("/createNewPassword", {
-      state: { email, role, otp: verificationCode },
-    });
+
+    setIsLoading(true);
+    try {
+      await axios.post(`${baseURL}/${role}/verify-reset`, {
+        email,
+        otp: verificationCode,
+      });
+      toast.success("Code verified successfully!");
+      navigate("/createNewPassword", {
+        state: { email, role, otp: verificationCode },
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Invalid or expired code");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (secondsLeft > 0) return;
-    setSecondsLeft(RESEND_SECONDS);
-    setCode(Array(CODE_LENGTH).fill(""));
-    inputsRef.current[0]?.focus();
+    try {
+      await axios.post(`${baseURL}/${role}/forgot-password`, { email });
+      toast.success("Code resent to your email");
+      setSecondsLeft(RESEND_SECONDS);
+      setCode(Array(CODE_LENGTH).fill(""));
+      inputsRef.current[0]?.focus();
+    } catch (error) {
+      toast.error("Failed to resend code");
+    }
   };
 
   return (
-    <main className="auth-main-check">
-      <div className="auth-check-container">
-        <div className="auth-check-left">
-          <img src={logo} alt="MaternalPath" className="auth-check-logo" />
+    <main className="auth-main">
+      <div className="auth-container">
+        <div className="auth-left">
+          <img src={logo} alt="MaternalPath" className="auth-logo" />
           <img
             src={backgroundImage}
             alt="Secure Account Recovery"
-            className="auth-check-illustration"
+            className="auth-illustration"
           />
           <h3>Secure Account Recovery</h3>
           <p>
@@ -114,16 +130,16 @@ const CheckEmail = () => {
           </p>
         </div>
 
-        <div className="auth-check-right">
-          <div className="icon-check-circle">
+        <div className="auth-right">
+          <div className="icon-circle">
             <FiMail size={22} />
           </div>
           <h2>Check Your Email</h2>
-          <p className="auth-check-subtitle">
+          <p className="auth-subtitle">
             We've sent a verification code to your email address.
           </p>
-          <p className="auth-check-email-text">{email}</p>
-          <p className="auth-check-subtitle">
+          <p className="email-text">{email}</p>
+          <p className="auth-subtitle">
             Please check your inbox and input the code below to reset your
             password.
           </p>
@@ -140,6 +156,7 @@ const CheckEmail = () => {
                 value={digit}
                 onChange={(e) => handleChange(e, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
+                disabled={isLoading}
               />
             ))}
           </div>
@@ -157,11 +174,15 @@ const CheckEmail = () => {
             )}
           </p>
 
-          <button onClick={handleVerify} className="btn-primary-check">
-            Verify Code
+          <button
+            onClick={handleVerify}
+            className={`btn-primary ${isLoading ? "loading" : ""}`}
+            disabled={isLoading || code.join("").length !== CODE_LENGTH}
+          >
+            {isLoading ? "Verifying..." : "Verify Code"}
           </button>
 
-          <Link to="/login" className="back-link-check">
+          <Link to="/login" className="back-link">
             <FiArrowLeft size={14} /> Back to Login
           </Link>
         </div>

@@ -98,7 +98,7 @@ const Footer = () => {
         <aside className="footer-text-holder">
           <h2>Company</h2>
           <ul>
-            <li onClick={() => nav("/about")}>About Us</li>
+            <li onClick={() => nav("/terms")}>Terms of Service</li>
             <li onClick={() => nav("/privacySettings")}>Privacy Policy</li>
           </ul>
         </aside>

@@ -9,9 +9,9 @@ function UploadedBills() {
   const [search, setSearch] = useState("");
   const nav = useNavigate();
 
-  const handleUploadNewBill = () => {
-    nav("/dashboard/uploadNewBill");
-  };
+  // const handleUploadNewBill = () => {
+  //   nav("/dashboard/uploadNewBill");
+  // };
 
   return (
     <div className="page">
@@ -19,7 +19,7 @@ function UploadedBills() {
         <UploadedTop
           searchValue={search}
           onSearchChange={setSearch}
-          handleUploadNewBill={handleUploadNewBill}
+          // handleUploadNewBill={handleUploadNewBill}
         />
         <BillsOverview />
         <RecentActivity />

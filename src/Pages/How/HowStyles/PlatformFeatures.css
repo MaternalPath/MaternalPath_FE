@@ -121,21 +121,29 @@
   width: 92%;
   margin: 0 auto;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .PlatformFeatures-container {
     gap: 30px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .PlatformFeatures-container {
+    gap: 24px;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 768px) {
   .PlatformFeatures-container {
     gap: 30px;
+    justify-content: center;
   }
 }
 
@@ -155,6 +163,8 @@
   border: 1.05px solid #e5e5e5;
   border-radius: 16px;
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1200px) {
@@ -166,8 +176,9 @@
 
 @media (max-width: 1024px) {
   .FeaturesHolder {
-    width: calc(50% - 15px);
-    min-width: 320px;
+    width: calc(50% - 12px);
+    min-width: unset;
+    padding: 20px 24px;
   }
 }
 

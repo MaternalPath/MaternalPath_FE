@@ -49,7 +49,7 @@ const PasswordResetSuccess = () => {
 
           <button
             onClick={handleReturnToLogin}
-            className={`btn-primary ${isLoading ? "loading" : ""}`}
+            className={`button-primary ${isLoading ? "loading" : ""}`}
             disabled={isLoading}
           >
             {isLoading ? "Redirecting..." : "Return to Login"}

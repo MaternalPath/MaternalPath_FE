@@ -316,8 +316,8 @@ const LoginPage = () => {
             </div>
 
             <div className="mp-bottom-links">
-              <Link to="/mothers">For Pregnant Mothers ›</Link>
-              <Link to="/professionals">For Healthcare Professionals ›</Link>
+              <Link to="/signupUser">For Pregnant Mothers ›</Link>
+              <Link to="/signupHospital">For Healthcare Professionals ›</Link>
             </div>
           </div>
         </div>

@@ -6,13 +6,21 @@ import "./NotificationsHospital.css";
 
 const NotificationsHospital = () => {
   const [activeTab, setActiveTab] = useState("All Notifications");
+  const [refreshFeed, setRefreshFeed] = useState(0);
 
   return (
     <div className="notif-page">
       <div className="notif-page-content">
-        <NotificationsHeader activeTab={activeTab} onTabChange={setActiveTab} />
+        <NotificationsHeader
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          onMarkAllRead={() => setRefreshFeed((prev) => prev + 1)}
+        />
         <div className="notif-main-grid">
-          <NotificationsFeed />
+          <NotificationsFeed
+            activeTab={activeTab}
+            refreshTrigger={refreshFeed}
+          />
           <ActivityStatus />
         </div>
       </div>

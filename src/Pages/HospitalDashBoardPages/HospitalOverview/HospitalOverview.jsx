@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Styles/HospitalOverview.css";
 import { FileText, Clock, CheckCircle, XCircle } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { getHospitalDashboardStats } from "../../../api/hospital";
 import HospitalVerificationHistory from "./HospitalVerificationHistory";
 import PatientVerification from "./PatientVerification";
@@ -106,7 +105,6 @@ const HospitalOverview = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="hospital-overview">
         <div className="overview-header">
           <h1>Dashboard Overview</h1>
@@ -115,7 +113,7 @@ const HospitalOverview = () => {
 
         <div className="stat-cards-container">
           {statCards.map((card, index) => (
-            <div key={index} className="stats-card">
+            <div key={index} className="stat-card">
               <div className="stat-icon">{card.icon}</div>
               <div className="stat-number">{card.number}</div>
               <div className="stat-label">{card.label}</div>

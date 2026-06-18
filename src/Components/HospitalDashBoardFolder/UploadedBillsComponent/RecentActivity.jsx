@@ -1,13 +1,14 @@
-import React from "react";
-import { FiFileText, FiShield, FiLock, FiCheckCircle } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
+import {
+  FiFileText,
+  FiShield,
+  FiLock,
+  FiCheckCircle,
+  FiBell,
+} from "react-icons/fi";
 import "./Css/RecentActivity.css";
-
-const activities = [
-  { text: "New bill uploaded for Sarah Johnson", time: "2 hours ago" },
-  { text: "Bill BL-2024-001 verified and approved", time: "3 hours ago" },
-  { text: "Payment confirmed for Maria Garcia", time: "5 hours ago" },
-  { text: "Review request sent for Bill BL-2024-003", time: "1 day ago" },
-];
+import { toast } from "react-toastify";
+import { getRecentNotifications } from "../../../api/hospital";
 
 const securityItems = [
   { icon: <FiShield />, text: "Secure document upload" },
@@ -17,22 +18,68 @@ const securityItems = [
 ];
 
 const RecentActivity = () => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchRecentNotifications = async () => {
+    setLoading(true);
+    try {
+      const data = await getRecentNotifications();
+      const notifications = data?.data || data || [];
+      setActivities(notifications);
+    } catch (error) {
+      console.error("Recent notifications error:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to load recent activity",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentNotifications();
+  }, []);
+
   return (
     <div className="activity-security">
       <div className="panel">
         <h2 className="panel-title">Recent Activity</h2>
         <div className="panel-list">
-          {activities.map((item, index) => (
-            <div className="activity-item" key={index}>
+          {loading ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <div className="activity-item" key={index}>
+                <span className="activity-icon skeleton-icon" />
+                <div>
+                  <p className="activity-text skeleton-text" />
+                  <p className="activity-time skeleton-text short" />
+                </div>
+              </div>
+            ))
+          ) : activities.length === 0 ? (
+            <div className="activity-item">
               <span className="activity-icon">
-                <FiFileText />
+                <FiBell />
               </span>
               <div>
-                <p className="activity-text">{item.text}</p>
-                <p className="activity-time">{item.time}</p>
+                <p className="activity-text">No recent activity</p>
               </div>
             </div>
-          ))}
+          ) : (
+            activities.map((item, index) => (
+              <div className="activity-item" key={item.id || index}>
+                <span className="activity-icon">
+                  <FiFileText />
+                </span>
+                <div>
+                  <p className="activity-text">{item.message || item.text}</p>
+                  <p className="activity-time">
+                    {item.time || item.createdAt || item.timestamp}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
