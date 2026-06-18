@@ -13,6 +13,19 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const hasValue = (val) =>
   val !== undefined && val !== null && String(val).trim() !== "";
 
+const getAge = (value) => {
+  const dob = new Date(value);
+  if (Number.isNaN(dob.getTime())) return null;
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+  const dayDiff = today.getDate() - dob.getDate();
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age -= 1;
+  }
+  return age;
+};
+
 const validateField = (field, value) => {
   switch (field) {
     case "firstName":
@@ -24,6 +37,8 @@ const validateField = (field, value) => {
       if (!value) return "Date of birth is required";
       if (new Date(value) > new Date())
         return "Date of birth cannot be in the future";
+      if (getAge(value) < 18)
+        return "You must be at least 18 years old to use this app";
       return "";
     case "address":
       if (!hasValue(value)) return "Address is required";
@@ -82,6 +97,8 @@ const EditProfileModal = ({
   };
 
   const isValid = FIELDS.every((f) => !validateField(f, data?.[f]));
+  const maxDateForDob = new Date();
+  maxDateForDob.setFullYear(maxDateForDob.getFullYear() - 18);
 
   const handleNext = () => {
     const newErrors = {};
@@ -189,7 +206,7 @@ const EditProfileModal = ({
                   value={data?.dateOfBirth || ""}
                   onChange={handleChange}
                   onBlur={() => handleBlur("dateOfBirth")}
-                  max={new Date().toISOString().split("T")[0]}
+                  max={maxDateForDob.toISOString().split("T")[0]}
                   className={errors.dateOfBirth ? "input-error" : ""}
                 />
               </div>

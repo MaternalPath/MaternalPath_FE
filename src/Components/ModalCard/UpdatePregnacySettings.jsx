@@ -32,6 +32,30 @@ const fromState = (data) => ({
   conditions: data?.existingHealthConditions || "",
 });
 
+const getExpectedPregnancyWeek = (dueDate) => {
+  const selected = new Date(dueDate);
+  if (Number.isNaN(selected.getTime())) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  selected.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
+  const weeksRemaining = Math.ceil(diffDays / 7);
+  if (weeksRemaining < 0) return null;
+  return Math.max(1, 40 - weeksRemaining);
+};
+
+const getPregnancyWeekMismatchError = (dueDate, currentWeek) => {
+  if (!dueDate || currentWeek === "" || currentWeek === null) return "";
+  const expectedWeek = getExpectedPregnancyWeek(dueDate);
+  const numWeek = Number(currentWeek);
+  if (!Number.isFinite(numWeek) || expectedWeek === null) return "";
+  if (Math.abs(numWeek - expectedWeek) > 1) {
+    return `Current week does not match the selected due date. Expected around week ${expectedWeek}.`;
+  }
+  return "";
+};
+
 const validateField = (field, value) => {
   switch (field) {
     case "dueDate": {
@@ -113,19 +137,26 @@ const UpdatePregnancyModal = ({
       } else {
         const selectedDate = new Date(value);
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const maxDate = new Date();
         maxDate.setMonth(maxDate.getMonth() + 9);
-        
+        maxDate.setHours(0, 0, 0, 0);
+
         if (selectedDate < today) {
           error = 'Due date cannot be in the past';
         } else if (selectedDate > maxDate) {
           error = 'Due date cannot be more than 9 months from now';
         }
       }
+
+      if (!error) {
+        const mismatch = getPregnancyWeekMismatchError(value, formData.currentWeek);
+        if (mismatch) error = mismatch;
+      }
     }
 
     if (field === 'currentWeek') {
-      const numValue = parseInt(value);
+      const numValue = parseInt(value, 10);
       if (!value || value === '') {
         error = 'Current week is required';
       } else if (isNaN(numValue)) {
@@ -134,6 +165,11 @@ const UpdatePregnancyModal = ({
         error = 'Week must be at least 1';
       } else if (numValue > 42) {
         error = 'Week cannot exceed 42';
+      }
+
+      if (!error) {
+        const mismatch = getPregnancyWeekMismatchError(formData.dueDate, value);
+        if (mismatch) error = mismatch;
       }
     }
 
@@ -171,21 +207,62 @@ const UpdatePregnancyModal = ({
     return error;
   };
 
+  const getPregnancyFieldErrors = (form) => {
+    const nextErrors = {};
+    const dueDateError = validateField('dueDate', form.dueDate);
+    const currentWeekError = validateField('currentWeek', form.currentWeek);
+
+    if (dueDateError) nextErrors.dueDate = dueDateError;
+    if (currentWeekError) nextErrors.currentWeek = currentWeekError;
+
+    if (!dueDateError && !currentWeekError) {
+      const mismatch = getPregnancyWeekMismatchError(form.dueDate, form.currentWeek);
+      if (mismatch) {
+        nextErrors.dueDate = mismatch;
+        nextErrors.currentWeek = mismatch;
+      }
+    }
+
+    return nextErrors;
+  };
+
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
+    const nextFormData = { ...formData, [field]: value };
+
+    if (field === 'dueDate' || field === 'currentWeek') {
+      const pregnancyErrors = getPregnancyFieldErrors(nextFormData);
+      setErrors((prev) => ({
+        ...prev,
+        dueDate: pregnancyErrors.dueDate || "",
+        currentWeek: pregnancyErrors.currentWeek || "",
+      }));
+    } else if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+
+    setFormData(nextFormData);
   };
 
   const handlePhoneChange = (value) =>
     handleChange("emergencyContact", stripPhone(value));
 
   const handleBlur = (field, value) => {
-    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+    if (field === 'dueDate' || field === 'currentWeek') {
+      const nextFormData = { ...formData, [field]: value };
+      const pregnancyErrors = getPregnancyFieldErrors(nextFormData);
+      setErrors((prev) => ({
+        ...prev,
+        dueDate: pregnancyErrors.dueDate || "",
+        currentWeek: pregnancyErrors.currentWeek || "",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+    }
   };
 
-  const isValid = REQUIRED_FIELDS.every(
-    (f) => !validateField(f, formData[f]),
-  );
+  const isValid =
+    REQUIRED_FIELDS.every((f) => !validateField(f, formData[f])) &&
+    !getPregnancyWeekMismatchError(formData.dueDate, formData.currentWeek);
 
   const handleSubmit = (e) => {
     e.preventDefault();

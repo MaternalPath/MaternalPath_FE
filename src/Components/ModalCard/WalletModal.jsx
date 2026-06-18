@@ -22,6 +22,42 @@ const validateField = (field, value) => {
   return "";
 };
 
+const getWeeksUntilDueDate = (dueDate) => {
+  if (!dueDate) return null;
+  const selected = new Date(dueDate);
+  if (Number.isNaN(selected.getTime())) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  selected.setHours(0, 0, 0, 0);
+  const diffDays = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
+  return diffDays >= 0 ? Math.ceil(diffDays / 7) : null;
+};
+
+const getSavingsDateMismatchMessage = (
+  dueDate,
+  weeklyContribution,
+  savingsGoal,
+) => {
+  const weeksRemaining = getWeeksUntilDueDate(dueDate);
+  const weeklyAmount = parseFloat(weeklyContribution);
+  const goalAmount = parseFloat(savingsGoal);
+  if (
+    weeksRemaining === null ||
+    Number.isNaN(weeklyAmount) ||
+    Number.isNaN(goalAmount) ||
+    weeklyAmount <= 0 ||
+    goalAmount <= 0
+  ) {
+    return "";
+  }
+
+  const weeksToGoal = Math.ceil(goalAmount / weeklyAmount);
+  if (weeksToGoal > weeksRemaining) {
+    return `This weekly contribution would take ${weeksToGoal} weeks, but your due date is only ${weeksRemaining} weeks away. Please use the dates you entered earlier to keep your savings plan aligned with your due date.`;
+  }
+  return "";
+};
+
 const EmergencyWalletModal = ({
   isOpen,
   onClose,
@@ -91,6 +127,13 @@ const EmergencyWalletModal = ({
   const remaining = goalAmount - currentBalance;
   const weeksToGoal =
     weeklyAmount > 0 ? Math.ceil(remaining / weeklyAmount) : 0;
+  const dueDate = data?.estimatedDueDate || saved?.estimatedDueDate || "";
+  const dueDateWeeksRemaining = getWeeksUntilDueDate(dueDate);
+  const savingsDateMismatchMessage = getSavingsDateMismatchMessage(
+    dueDate,
+    formData.weeklyContribution,
+    formData.savingsGoal,
+  );
 
   return (
     <div className="modal-overlay">
@@ -171,6 +214,11 @@ const EmergencyWalletModal = ({
                 {weeksToGoal} weeks
               </span>
             </div>
+            {savingsDateMismatchMessage && (
+              <div className="form-group">
+                <span className="error-message">{savingsDateMismatchMessage}</span>
+              </div>
+            )}
           </div>
 
           <div className="dual-btn-container">
@@ -185,7 +233,7 @@ const EmergencyWalletModal = ({
             <button
               type="submit"
               className="submit-btn"
-              disabled={isSaving || !isValid}
+              disabled={isSaving || !isValid || !!savingsDateMismatchMessage}
             >
               {isSaving ? "Saving..." : "Submit"}
             </button>
