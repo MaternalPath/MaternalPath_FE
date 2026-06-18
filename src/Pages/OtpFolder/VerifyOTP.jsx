@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./VerifyOTP.css";
 import verifyIllustration from "/src/assets/IllustrationPanel.png";
+import mobileVerification from "/src/assets/mobileOtp.png";
 import {
   LuShield,
   LuLock,
@@ -21,9 +22,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
-
 const VerifyOTP = () => {
-
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   const { state } = useLocation();
@@ -261,12 +260,12 @@ const VerifyOTP = () => {
 
         <section className="verify-right">
           <img
-            src={"/src/assets/IllustrationPanel.png"}
+            src={verifyIllustration}
             alt="Verification"
             className="illustration"
           />
           <img
-            src={"/src/assets/mobileOtp.png"}
+            src={mobileVerification}
             alt="Verification"
             className="mobile-illustration"
           />

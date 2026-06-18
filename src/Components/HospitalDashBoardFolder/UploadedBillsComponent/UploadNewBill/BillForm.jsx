@@ -7,7 +7,7 @@ import {
   FiMenu,
   FiX,
 } from "react-icons/fi";
-import "./Css/BillForm.css";
+import "./Styles/BillForm.css";
 
 const BillForm = ({
   formData,
