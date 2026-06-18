@@ -2,35 +2,52 @@ import React, { useState } from 'react';
 import './ModalCard.css';
 import "./SelectModal.css"
 
-const SelectHospitalModal = ({ isOpen, onClose, onNext, onPrevious }) => {
+const SelectHospitalModal = ({ isOpen, onClose, onNext, onPrevious, data, updateFields }) => {
   // Local state to manage which hospital card is selected
-  const [selectedHospitalId, setSelectedHospitalId] = useState(3); // Defaulting to Goldencross based on the image
-
+  
   if (!isOpen) return null;
-
+  
   const hospitals = [
-    {
-      id: 1,
-      name: "Lagos General Hospital",
-      address: "Broad Street, Marina, Lagos",
-      phone: "+234 1 234 5678",
-      cost: "₦400,000"
-    },
-    {
-      id: 2,
-      name: "Augusta Memorial Hospital",
-      address: "Central Business District, Apapa Lagos",
-      phone: "+234 9 461 2345",
-      cost: "₦450,000"
-    },
-    {
-      id: 3,
-      name: "Goldencross Specialist Hospital",
-      address: "23 Rd Festac Town Lagos",
-      phone: "+234 2 241 0088",
-      cost: "₦380,000"
+      {
+          id: 1,
+          name: "Lagos General Hospital",
+          address: "Broad Street, Marina, Lagos",
+          phone: "+234 1 234 5678",
+          cost: "₦400,000"
+        },
+        {
+            id: 2,
+            name: "Augusta Memorial Hospital",
+            address: "Central Business District, Apapa Lagos",
+            phone: "+234 9 461 2345",
+            cost: "₦450,000"
+        },
+        {
+            id: 3,
+            name: "Goldencross Specialist Hospital",
+            address: "23 Rd Festac Town Lagos",
+            phone: "+234 2 241 0088",
+            cost: "₦380,000"
+        }
+    ];
+    
+    const [selectedHospitalId, setSelectedHospitalId] = useState(
+      data.preferredHospital ? 
+        hospitals.find(h => h.name === data.preferredHospital)?.id || 3 
+        : 3
+    );
+  const handleNext = () => {
+    const selectedHospital = hospitals.find(h => h.id === selectedHospitalId);
+    if (selectedHospital) {
+      updateFields({
+        preferredHospital: selectedHospital.name,
+        hospitalAddress: selectedHospital.address,
+        hospitalContact: selectedHospital.phone,
+        estimatedDeliveryCost: parseInt(selectedHospital.cost.replace(/[₦,]/g, '')) || 0
+      });
     }
-  ];
+    onNext();
+  };
 
   return (
     <div className="modal-overlay">
@@ -92,7 +109,7 @@ const SelectHospitalModal = ({ isOpen, onClose, onNext, onPrevious }) => {
         {/* Action Buttons Layer - Fixed */}
         <div className="dual-btn-container">
           <button type="button" className="previous-btn" onClick={onPrevious}>Previous</button>
-          <button type="button" className="submit-btn" onClick={onNext}>Next</button>
+          <button type="button" className="submit-btn" onClick={handleNext}>Next</button>
         </div>
 
       </div>

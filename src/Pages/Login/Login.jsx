@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   MdEmail,
   MdLock,
@@ -11,20 +11,18 @@ import {
 import { PiBaby } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { GiHospital } from "react-icons/gi";
-import loginImg from "/src/assets/Login.png";
+import login from "/src/assets/Login.png";
 import { CiHeart } from "react-icons/ci";
 import "./login.css";
 import Header2 from "../../Components/Header2/Header2";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRole } from "../../context/RoleContext";
-import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const LoginPage = () => {
   const nav = useNavigate();
-  const location = useLocation();
-  const { role: defaultRole, setRole, login } = useRole();
+  const { role: defaultRole, setRole } = useRole();
   const [userType, setUserType] = useState(defaultRole);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -89,6 +87,7 @@ const LoginPage = () => {
   };
 
   const loginApi = async () => {
+    console.log("loginApi started", { email: formData.email, userType });
     if (!baseURL) {
       toast.error("Login service is not configured");
       return null;
@@ -120,6 +119,7 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("handleSubmit called");
     e.preventDefault();
     setTouched({ email: true, password: true });
 
@@ -129,8 +129,7 @@ const LoginPage = () => {
 
     const response = await loginApi();
     if (response?.status === 200) {
-      login(response?.data?.token, userType);
-      // login(response?.data?.token, userType, formData.rememberMe);
+      localStorage.setItem("token", response?.data?.token);
 
       const userId =
         response?.data?.id ||
@@ -143,18 +142,17 @@ const LoginPage = () => {
 
       if (userId) {
         localStorage.setItem("userid", String(userId));
-        localStorage.setItem("userId", String(userId));
+      } else {
+        console.warn("Login response did not include a user id:", response?.data);
       }
-
-      const from = location.state?.from?.pathname || "/dashboard";
 
       if (userType === "mother") {
         const isUpdated = Boolean(response?.data?.isUpdated);
         localStorage.setItem("isUpdated", String(isUpdated));
-        nav(isUpdated ? from : "/dashboard/profile", { replace: true });
+        nav(isUpdated ? "/dashboard" : "/dashboard/profile");
       } else {
         localStorage.removeItem("isUpdated");
-        nav(from === "/getStarted" ? "/dashboard" : from, { replace: true });
+        nav("/dashboard");
       }
     }
   };
@@ -280,11 +278,16 @@ const LoginPage = () => {
 
               <button
                 type="submit"
-                className={`mp-login-btn ${isLoading ? "loading" : ""}`}
+                className="mp-login-btn"
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  "Signing in..."
+                  <>
+                    <span className="login-spinner" aria-hidden="true">
+                      ⏳
+                    </span>
+                    Signing in...
+                  </>
                 ) : (
                   <>
                     Log In <MdArrowForward />
@@ -316,8 +319,8 @@ const LoginPage = () => {
             </div>
 
             <div className="mp-bottom-links">
-              <Link to="/signupUser">For Pregnant Mothers ›</Link>
-              <Link to="/signupHospital">For Healthcare Professionals ›</Link>
+              <Link to="/mothers">For Pregnant Mothers ›</Link>
+              <Link to="/professionals">For Healthcare Professionals ›</Link>
             </div>
           </div>
         </div>
@@ -335,7 +338,7 @@ const LoginPage = () => {
             </p>
 
             <div className="mp-illustration">
-              <img src={loginImg} alt="Pregnant woman with phone" />
+              <img src={login} alt="Pregnant woman with phone" />
             </div>
 
             <div className="mp-feature-tags">
@@ -347,7 +350,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <AuthFooter />
     </>
   );
 };

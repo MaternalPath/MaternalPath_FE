@@ -2,27 +2,142 @@ import React, { useState } from 'react';
 import './ModalCard.css'; 
 import { IoPersonCircleOutline } from "react-icons/io5";
 
-const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData = {} }) => {
+const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, data, updateFields }) => {
   const [formData, setFormData] = useState({
-    dueDate: initialData.dueDate || "2026-09-18",
-    currentWeek: initialData.currentWeek || 24,
-    trimester: initialData.trimester || "Second Trimester",
-    emergencyName: initialData.emergencyName || "Chidi Nnamdi",
-    emergencyContact: initialData.emergencyContact || "08012345678",
-    bloodType: initialData.bloodType || "O+",
-    allergies: initialData.allergies || "None",
-    conditions: initialData.conditions || "No known allergies",
+    dueDate: data?.estimatedDueDate || "2026-09-18",
+    currentWeek: data?.currentPregnancyWeek || 24,
+    trimester: typeof data?.trimester === 'number' ? data.trimester : data?.trimester || 2,
+    emergencyName: data?.emergencyContactName || "Chidi Nnamdi",
+    emergencyContact: data?.emergencyContact || "08012345678",
+    bloodType: data?.bloodType || "O+",
+    allergies: data?.allergies || "None",
+    conditions: data?.existingHealthConditions || "No known allergies",
   });
+
+  const [errors, setErrors] = useState({});
 
   if (!isOpen) return null;
 
+  const validateField = (field, value) => {
+    let error = '';
+
+    if (field === 'dueDate') {
+      if (!value) {
+        error = 'Due date is required';
+      } else {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 9);
+        
+        if (selectedDate < today) {
+          error = 'Due date cannot be in the past';
+        } else if (selectedDate > maxDate) {
+          error = 'Due date cannot be more than 9 months from now';
+        }
+      }
+    }
+
+    if (field === 'currentWeek') {
+      const numValue = parseInt(value);
+      if (!value || value === '') {
+        error = 'Current week is required';
+      } else if (isNaN(numValue)) {
+        error = 'Please enter a valid number';
+      } else if (numValue < 1) {
+        error = 'Week must be at least 1';
+      } else if (numValue > 42) {
+        error = 'Week cannot exceed 42';
+      }
+    }
+
+    if (field === 'trimester') {
+      const trimesterValue = Number(value);
+      if (!value) {
+        error = 'Trimester is required';
+      } else if (![1, 2, 3].includes(trimesterValue)) {
+        error = 'Trimester must be 1, 2 or 3';
+      }
+    }
+
+    if (field === 'emergencyName') {
+      if (!value || value.trim() === '') {
+        error = 'Emergency contact name is required';
+      } else if (value.trim().length < 2) {
+        error = 'Name must be at least 2 characters';
+      }
+    }
+
+    if (field === 'emergencyContact') {
+      if (!value || value.trim() === '') {
+        error = 'Emergency contact number is required';
+      } else if (!/^[0-9]{10,15}$/.test(value.replace(/[\s\-()+]/g, ''))) {
+        error = 'Please enter a valid phone number (10-15 digits)';
+      }
+    }
+
+    if (field === 'bloodType') {
+      if (!value) {
+        error = 'Blood type is required';
+      }
+    }
+
+    return error;
+  };
+
   const handleChange = (field, value) => {
     setFormData(prev => ({...prev, [field]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({...prev, [field]: '' }));
+    }
+  };
+
+  const handleBlur = (field, value) => {
+    const error = validateField(field, value);
+    setErrors(prev => ({...prev, [field]: error }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onNext(formData); // pass data to next step
+    
+    // Validate all fields
+    const dueDateError = validateField('dueDate', formData.dueDate);
+    const weekError = validateField('currentWeek', formData.currentWeek);
+    const trimesterError = validateField('trimester', formData.trimester);
+    const nameError = validateField('emergencyName', formData.emergencyName);
+    const contactError = validateField('emergencyContact', formData.emergencyContact);
+    const bloodError = validateField('bloodType', formData.bloodType);
+    
+    const newErrors = {
+      dueDate: dueDateError,
+      currentWeek: weekError,
+      trimester: trimesterError,
+      emergencyName: nameError,
+      emergencyContact: contactError,
+      bloodType: bloodError,
+    };
+    
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    if (dueDateError || weekError || trimesterError || nameError || contactError || bloodError) {
+      return;
+    }
+    
+    // Map form data to match the parent state structure
+    updateFields({
+      estimatedDueDate: formData.dueDate,
+      currentPregnancyWeek: parseInt(formData.currentWeek, 10) || 0,
+      trimester: Number(formData.trimester),
+      emergencyContactName: formData.emergencyName,
+      emergencyContact: formData.emergencyContact,
+      bloodType: formData.bloodType,
+      allergies: formData.allergies,
+      existingHealthConditions: formData.conditions,
+    });
+    onNext();
   };
 
   return (
@@ -60,8 +175,11 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                   id="dueDate" 
                   value={formData.dueDate}
                   onChange={(e) => handleChange("dueDate", e.target.value)}
+                  onBlur={(e) => handleBlur("dueDate", e.target.value)}
+                  className={errors.dueDate ? 'input-error' : ''}
                 />
               </div>
+              {errors.dueDate && <span className="error-message">{errors.dueDate}</span>}
             </div>
 
             {/* Current Week - Editable */}
@@ -74,8 +192,11 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                 max="42"
                 value={formData.currentWeek}
                 onChange={(e) => handleChange("currentWeek", e.target.value)}
+                onBlur={(e) => handleBlur("currentWeek", e.target.value)}
+                className={errors.currentWeek ? 'input-error' : ''}
                 placeholder="e.g. 24"
               />
+              {errors.currentWeek && <span className="error-message">{errors.currentWeek}</span>}
             </div>
 
             {/* Current Trimester - Editable */}
@@ -85,11 +206,14 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                 id="trimester" 
                 value={formData.trimester}
                 onChange={(e) => handleChange("trimester", e.target.value)}
+                onBlur={(e) => handleBlur("trimester", e.target.value)}
+                className={errors.trimester ? 'input-error' : ''}
               >
-                <option value="First Trimester">First Trimester</option>
-                <option value="Second Trimester">Second Trimester</option>
-                <option value="Third Trimester">Third Trimester</option>
+                <option value={1}>First Trimester</option>
+                <option value={2}>Second Trimester</option>
+                <option value={3}>Third Trimester</option>
               </select>
+              {errors.trimester && <span className="error-message">{errors.trimester}</span>}
             </div>
 
             {/* Emergency Name - Editable */}
@@ -102,9 +226,12 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                   id="emergencyName" 
                   value={formData.emergencyName}
                   onChange={(e) => handleChange("emergencyName", e.target.value)}
+                  onBlur={(e) => handleBlur("emergencyName", e.target.value)}
+                  className={errors.emergencyName ? 'input-error' : ''}
                   placeholder="Enter emergency contact name"
                 />
               </div>
+              {errors.emergencyName && <span className="error-message">{errors.emergencyName}</span>}
             </div>
 
             {/* Emergency Contact - Editable */}
@@ -119,9 +246,12 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                   id="emergencyContact" 
                   value={formData.emergencyContact}
                   onChange={(e) => handleChange("emergencyContact", e.target.value)}
+                  onBlur={(e) => handleBlur("emergencyContact", e.target.value)}
+                  className={errors.emergencyContact ? 'input-error' : ''}
                   placeholder="08012345678"
                 />
               </div>
+              {errors.emergencyContact && <span className="error-message">{errors.emergencyContact}</span>}
             </div>
 
             {/* Blood Type - Editable */}
@@ -131,6 +261,8 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                 id="bloodType" 
                 value={formData.bloodType}
                 onChange={(e) => handleChange("bloodType", e.target.value)}
+                onBlur={(e) => handleBlur("bloodType", e.target.value)}
+                className={errors.bloodType ? 'input-error' : ''}
               >
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -141,6 +273,7 @@ const UpdatePregnancyModal = ({ isOpen, onClose, onNext, onPrevious, initialData
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
               </select>
+              {errors.bloodType && <span className="error-message">{errors.bloodType}</span>}
             </div>
 
             {/* Known Allergies - Editable */}

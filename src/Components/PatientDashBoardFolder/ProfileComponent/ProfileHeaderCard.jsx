@@ -3,7 +3,7 @@ import "./Css/ProfileHeaderCard.css";
 import { FiUser, FiEdit2 } from "react-icons/fi";
 import { TiEdit } from "react-icons/ti";
 
-const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
+const ProfileHeaderCard = ({ data, onEditClick}) => {
   return (
     <div className="settings-card profile-header-card">
       <div className="profile-content">
@@ -12,17 +12,17 @@ const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
             <FiUser size={32} />
           </div>
           <div className="profile-info">
-            <h2 className="profile-name">{data?.name || "Adaeze Nnamdi"}</h2>
+            <h2 className="profile-name">{data?.firstName || ""}</h2>
             <div className="profile-meta">
               <span>{data?.week || "Week 24"}</span>
               <span className="dot">•</span>
-              <span>{data?.trimester || "Second Trimester"}</span>
+              <span>{data?.trimester || "Not Set yet"}</span>
             </div>
             <div className="profile-details">
               <div className="detail-item">
                 <div className="detail-label">Estimated Due Date</div>
                 <div className="detail-value">
-                  {data?.dueDate || "September 18, 2026"}
+                  {data?.dueDate || "Not Set yet"}
                 </div>
               </div>
               <div className="detail-item">
@@ -42,23 +42,23 @@ const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
         <div className="avatar">
           <FiUser size={40} />
         </div>
-        <h2 className="profile-name">{data?.name || "Adaeze Nnamdi"}</h2>
+        <h2 className="profile-name">{data?.firstName || "Not Set yet"}</h2>
         <div className="profile-meta">
           <span>{data?.week || "Week 24"}</span>
           <span className="dot">•</span>
-          <span className="badge">{data?.trimester || "Second Trimester"}</span>
+          <span className="badge">{data?.trimester || "Not Set yet"}</span>
         </div>
         <div className="profile-details-mobile">
           <div className="detail-item">
             <div className="detail-label">Estimated Due Date</div>
             <div className="detail-value">
-              {data?.dueDate || "September 18, 2026"}
+              {data?.dueDate || "Not Set yet"}
             </div>
           </div>
           <div className="detail-item">
             <div className="detail-label">Preferred Hospital</div>
             <div className="detail-value">
-              {data?.hospital || "Lagos General Hospital"}
+              {data?.hospital || "Not Set yet"}
             </div>
           </div>
         </div>
