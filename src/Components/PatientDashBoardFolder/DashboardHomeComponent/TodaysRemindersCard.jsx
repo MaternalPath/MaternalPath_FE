@@ -4,13 +4,44 @@ import { FiCheckCircle, FiCalendar } from "react-icons/fi";
 
 const normalizeReminders = (reminder) => {
   if (!reminder) return [];
-  if (Array.isArray(reminder)) return reminder;
-  if (Array.isArray(reminder?.reminders)) return reminder.reminders;
+  if (reminder.data) return normalizeReminders(reminder.data);
 
-  const text = typeof reminder === "string" ? reminder : reminder?.reminder;
+  if (Array.isArray(reminder)) {
+    return reminder
+      .filter(Boolean)
+      .map((item) => {
+        if (typeof item === "string") return { title: item };
+        if (typeof item === "object") {
+          return {
+            title:
+              item.title || item.reminder || item.text ||
+              item.description ||
+              "Reminder",
+            subtitle:
+              item.subtitle || item.description || item.details || "",
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+
+  if (Array.isArray(reminder?.reminders)) {
+    return normalizeReminders(reminder.reminders);
+  }
+
+  const text =
+    typeof reminder === "string"
+      ? reminder
+      : reminder?.reminder || reminder?.title || reminder?.text;
   if (!text || text === "No reminder available.") return [];
 
-  return [{ title: text }];
+  return [
+    {
+      title: text,
+      subtitle: reminder?.subtitle || reminder?.description || "",
+    },
+  ];
 };
 
 const TodaysRemindersCard = ({ reminder }) => {
