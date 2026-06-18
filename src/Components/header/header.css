@@ -1,6 +1,6 @@
 .header-container {
   width: 100%;
-  height: 8vh;
+  height: 12vh;
   background-color: #f7f5f2;
   display: flex;
   justify-content: center;
@@ -10,6 +10,7 @@
   z-index: 999;
   font-family: var(--font-family);
   border-bottom: 3px solid #eef2f1;
+
 }
 
 @media (max-width: 768px) {
