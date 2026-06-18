@@ -104,6 +104,73 @@ const UpdatePregnancyModal = ({
 
   if (!isOpen) return null;
 
+  const validateField = (field, value) => {
+    let error = '';
+
+    if (field === 'dueDate') {
+      if (!value) {
+        error = 'Due date is required';
+      } else {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 9);
+        
+        if (selectedDate < today) {
+          error = 'Due date cannot be in the past';
+        } else if (selectedDate > maxDate) {
+          error = 'Due date cannot be more than 9 months from now';
+        }
+      }
+    }
+
+    if (field === 'currentWeek') {
+      const numValue = parseInt(value);
+      if (!value || value === '') {
+        error = 'Current week is required';
+      } else if (isNaN(numValue)) {
+        error = 'Please enter a valid number';
+      } else if (numValue < 1) {
+        error = 'Week must be at least 1';
+      } else if (numValue > 42) {
+        error = 'Week cannot exceed 42';
+      }
+    }
+
+    if (field === 'trimester') {
+      const trimesterValue = Number(value);
+      if (!value) {
+        error = 'Trimester is required';
+      } else if (![1, 2, 3].includes(trimesterValue)) {
+        error = 'Trimester must be 1, 2 or 3';
+      }
+    }
+
+    if (field === 'emergencyName') {
+      if (!value || value.trim() === '') {
+        error = 'Emergency contact name is required';
+      } else if (value.trim().length < 2) {
+        error = 'Name must be at least 2 characters';
+      }
+    }
+
+    if (field === 'emergencyContact') {
+      if (!value || value.trim() === '') {
+        error = 'Emergency contact number is required';
+      } else if (!/^[0-9]{10,15}$/.test(value.replace(/[\s\-()+]/g, ''))) {
+        error = 'Please enter a valid phone number (10-15 digits)';
+      }
+    }
+
+    if (field === 'bloodType') {
+      if (!value) {
+        error = 'Blood type is required';
+      }
+    }
+
+    return error;
+  };
+
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));

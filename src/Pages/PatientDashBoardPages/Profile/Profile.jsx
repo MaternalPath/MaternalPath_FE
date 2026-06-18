@@ -314,6 +314,7 @@ const Profile = () => {
           </p>
         </div>
 
+        {/* Dashboard Grid View cards reading values cleanly */}
         <div className="settings-grid">
           <ProfileHeaderCard
             data={displayData}
