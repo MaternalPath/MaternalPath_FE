@@ -1,7 +1,7 @@
 .notif-page {
   background-color: #f5f4ef;
   min-height: 100vh;
-  padding: 15px;
+  padding: 16px;
 }
 
 .notif-page-content {
@@ -20,7 +20,7 @@
 
 @media (min-width: 1024px) {
   .notif-page {
-    /* padding: 32px; */
+    padding: 32px;
   }
 
   .notif-main-grid {
