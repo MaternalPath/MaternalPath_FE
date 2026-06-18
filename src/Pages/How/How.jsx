@@ -52,6 +52,7 @@ import PlatformFeatures from "./PlatformFeatures";
 import Secure from "./Secure";
 import Confidence from "./Confidence";
 import Footer from "../../Components/Footer/Footer";
+// import imageImportBg from "https://i.postimg.cc/NjTpJYvn/prenant-woman.png";
 
 const HeroSection = () => {
   const nav = useNavigate();

@@ -17,27 +17,27 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
+}
 
-  h1 {
-    font-weight: 700;
-    font-style: Bold;
-    font-size: 68.3px;
-    line-height: 68.3px;
-    letter-spacing: 0px;
-    text-align: center;
-    color: #0c5e58;
-  }
+.FaqHome-holder h1 {
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 68.3px;
+  line-height: 68.3px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #0c5e58;
+}
 
-  p {
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 22.77px;
-    line-height: 31.87px;
-    letter-spacing: 0px;
-    text-align: center;
-    color: #242c3a;
-    width: 60%;
-  }
+.FaqHome-holder p {
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 22.77px;
+  line-height: 31.87px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #242c3a;
+  width: 60%;
 }
 
 .search-input-holder {
@@ -47,17 +47,31 @@
   border: 1.14px solid #d1d5dc;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #f7f5f2;
+  justify-content: flex-start;
+  background-color: #ffffff;
   color: #0a0a0a;
   margin-top: 15px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.search-input-holder:focus-within {
+  border-color: #267872;
+  box-shadow: 0 0 0 3px rgba(38, 120, 114, 0.1);
+}
+
+.search-icons {
+  font-size: 25px;
+  color: #6b6b6b;
+  margin-right: 12px;
 }
 
 .faqHome-input {
-  width: 90%;
+  flex: 1;
   height: 100%;
   border-radius: 15px;
-  padding: 10px;
+  padding: 0;
   border: none;
   outline: none;
   background-color: transparent;
@@ -68,10 +82,8 @@
   letter-spacing: 0px;
 }
 
-.search-icon {
-  font-size: 25px;
-  color: #6b6b6b;
-  margin-right: 12px;
+.faqHome-input::placeholder {
+  color: #9ca3af;
 }
 
 .faqHome-buttom {
@@ -81,51 +93,66 @@
   gap: 20px;
   justify-content: center;
   align-items: center;
+}
 
-  button {
-    width: 164px;
-    height: 54px;
-    border-radius: 11.38px;
-    border: none;
-    font-family: Arimo;
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 18.21px;
-    line-height: 27.32px;
-    letter-spacing: 0px;
-    text-align: center;
-    color: #3e4653;
-    background-color: #ffffff;
-  }
+.faqHome-buttom button {
+  width: 164px;
+  height: 54px;
+  border-radius: 11.38px;
+  border: none;
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 18.21px;
+  line-height: 27.32px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #3e4653;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 
-  .longerBtn {
-    width: 200px;
-  }
+.faqHome-buttom button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.faqHome-buttom button.active {
+  background-color: #267872;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(38, 120, 114, 0.3);
+}
+
+.faqHome-buttom button.active:hover {
+  background-color: #1e6059;
+  transform: translateY(-1px);
+}
+
+.faqHome-buttom .longerBtn {
+  width: 200px;
 }
 
 @media (max-width: 1024px) {
-  .FaqHome-holder {
-    h1 {
-      font-size: 52px;
-      line-height: 56px;
-    }
-    p {
-      font-size: 20px;
-      line-height: 28px;
-      width: 70%;
-    }
+  .FaqHome-holder h1 {
+    font-size: 52px;
+    line-height: 56px;
+  }
+  .FaqHome-holder p {
+    font-size: 20px;
+    line-height: 28px;
+    width: 70%;
   }
   .search-input-holder {
     width: 600px;
   }
-  .faqHome-buttom {
-    button {
-      width: 150px;
-      font-size: 16px;
-    }
-    .longerBtn {
-      width: 180px;
-    }
+  .faqHome-buttom button {
+    width: 150px;
+    font-size: 16px;
+  }
+  .faqHome-buttom .longerBtn {
+    width: 180px;
   }
 }
 
@@ -133,19 +160,21 @@
   .FaqHome-container {
     height: auto;
     min-height: 90vh;
+    padding: 60px 0;
   }
   .FaqHome-holder {
     width: 95%;
     gap: 30px;
-    h1 {
-      font-size: 42px;
-      line-height: 48px;
-    }
-    p {
-      font-size: 18px;
-      line-height: 26px;
-      width: 80%;
-    }
+    height: auto;
+  }
+  .FaqHome-holder h1 {
+    font-size: 42px;
+    line-height: 48px;
+  }
+  .FaqHome-holder p {
+    font-size: 18px;
+    line-height: 26px;
+    width: 80%;
   }
   .search-input-holder {
     width: 90%;
@@ -156,7 +185,7 @@
   .faqHome-input {
     font-size: 18px;
   }
-  .search-icons {
+  .search-icon {
     font-size: 22px;
   }
   .faqHome-buttom {
@@ -165,14 +194,14 @@
     flex-wrap: wrap;
     height: auto;
     margin-top: 15px;
-    button {
-      width: 145px;
-      height: 50px;
-      font-size: 15px;
-    }
-    .longerBtn {
-      width: 170px;
-    }
+  }
+  .faqHome-buttom button {
+    width: 145px;
+    height: 50px;
+    font-size: 15px;
+  }
+  .faqHome-buttom .longerBtn {
+    width: 170px;
   }
 }
 
@@ -185,15 +214,15 @@
     width: 100%;
     padding: 0 20px;
     gap: 35px;
-    h1 {
-      font-size: 32px;
-      line-height: 38px;
-    }
-    p {
-      font-size: 16px;
-      line-height: 24px;
-      width: 100%;
-    }
+  }
+  .FaqHome-holder h1 {
+    font-size: 32px;
+    line-height: 38px;
+  }
+  .FaqHome-holder p {
+    font-size: 16px;
+    line-height: 24px;
+    width: 100%;
   }
   .search-input-holder {
     width: 100%;
@@ -209,23 +238,21 @@
   }
   .search-icon {
     font-size: 20px;
-    margin-left: 10px;
   }
   .faqHome-buttom {
     width: 100%;
     padding: 0 20px;
     gap: 15px;
     margin-top: 20px;
-
-    button {
-      width: calc(50% - 15px);
-      min-width: 140px;
-      height: 50px;
-      font-size: 14px;
-    }
-    .longerBtn {
-      width: calc(50% - 15px);
-    }
+  }
+  .faqHome-buttom button {
+    width: calc(50% - 7.5px);
+    min-width: 140px;
+    height: 50px;
+    font-size: 14px;
+  }
+  .faqHome-buttom .longerBtn {
+    width: calc(50% - 7.5px);
   }
 }
 
@@ -233,14 +260,14 @@
   .FaqHome-holder {
     gap: 30px;
     padding: 0 16px;
-    h1 {
-      font-size: 28px;
-      line-height: 34px;
-    }
-    p {
-      font-size: 15px;
-      line-height: 22px;
-    }
+  }
+  .FaqHome-holder h1 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+  .FaqHome-holder p {
+    font-size: 15px;
+    line-height: 22px;
   }
   .search-input-holder {
     margin-top: 25px;
@@ -249,10 +276,10 @@
   .faqHome-buttom {
     gap: 12px;
     margin-top: 15px;
-    button {
-      height: 48px;
-      font-size: 13px;
-    }
+  }
+  .faqHome-buttom button {
+    height: 48px;
+    font-size: 13px;
   }
 }
 
@@ -260,14 +287,14 @@
   .FaqHome-holder {
     gap: 25px;
     padding: 0 14px;
-    h1 {
-      font-size: 24px;
-      line-height: 30px;
-    }
-    p {
-      font-size: 14px;
-      line-height: 22px;
-    }
+  }
+  .FaqHome-holder h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+  .FaqHome-holder p {
+    font-size: 14px;
+    line-height: 22px;
   }
   .search-input-holder {
     height: 50px;
@@ -279,14 +306,14 @@
   .faqHome-buttom {
     gap: 10px;
     margin-top: 12px;
-    button {
-      width: 100%;
-      min-width: auto;
-      height: 44px;
-      font-size: 13px;
-    }
-    .longerBtn {
-      width: 100%;
-    }
+  }
+  .faqHome-buttom button {
+    width: 100%;
+    min-width: auto;
+    height: 44px;
+    font-size: 13px;
+  }
+  .faqHome-buttom .longerBtn {
+    width: 100%;
   }
 }

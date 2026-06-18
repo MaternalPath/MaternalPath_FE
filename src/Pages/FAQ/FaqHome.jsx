@@ -12,6 +12,8 @@ const FaqHome = () => {
   const [activeQuestion, setActiveQuestion] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const isActive = (id) => activeQuestion === id;
+
   return (
     <>
       <Header />
@@ -26,8 +28,7 @@ const FaqHome = () => {
           </p>
 
           <div className="search-input-holder">
-            <FiSearch className="search-icons" />
-
+            <FiSearch className="search-icons" /> {/* fixed className */}
             <input
               type="text"
               className="faqHome-input"
@@ -40,28 +41,44 @@ const FaqHome = () => {
 
         <div className="faqHome-buttom">
           <button
-            style={{
-              backgroundColor: "#267872",
-              color: "#ffffff",
-            }}
-            onClick={() => setActiveQuestion(1)}
+            className={isActive(null) ? "active" : ""}
+            onClick={() => setActiveQuestion(null)}
           >
             All Questions
           </button>
 
-          <button onClick={() => setActiveQuestion(1)}>Getting Started</button>
+          <button
+            className={isActive(1) ? "active" : ""}
+            onClick={() => setActiveQuestion(1)}
+          >
+            Getting Started
+          </button>
 
-          <button className="longerBtn" onClick={() => setActiveQuestion(4)}>
+          <button
+            className={`longerBtn ${isActive(4) ? "active" : ""}`}
+            onClick={() => setActiveQuestion(4)}
+          >
             Savings & Payments
           </button>
 
-          <button className="longerBtn" onClick={() => setActiveQuestion(9)}>
+          <button
+            className={`longerBtn ${isActive(9) ? "active" : ""}`}
+            onClick={() => setActiveQuestion(9)}
+          >
             Pregnancy Tracking
           </button>
 
-          <button onClick={() => setActiveQuestion(12)}>Hospitals</button>
+          <button
+            className={isActive(12) ? "active" : ""}
+            onClick={() => setActiveQuestion(12)}
+          >
+            Hospitals
+          </button>
 
-          <button className="longerBtn" onClick={() => setActiveQuestion(16)}>
+          <button
+            className={`longerBtn ${isActive(16) ? "active" : ""}`}
+            onClick={() => setActiveQuestion(16)}
+          >
             Security & Privacy
           </button>
         </div>

@@ -49,7 +49,7 @@ const TeamSection = () => {
   ];
 
   return (
-    <section className="team-section">
+    <section className="team-section" id="teamSection">
       <div className="teamW-layout">
         <span className="section-label center">
         THE PEOPLE BEHIND THE PLATFORM

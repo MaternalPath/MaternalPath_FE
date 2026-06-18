@@ -1,17 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Styles/PatientVerification.css";
 import { FiSearch } from "react-icons/fi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoTimeOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
+import { FiBell } from "react-icons/fi";
 import { toast, ToastContainer } from "react-toastify";
 import { searchPatient } from "../../../api/hospital";
+import axios from "axios";
 
 const PatientVerification = () => {
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [patientData, setPatientData] = useState(null);
   const [error, setError] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [notifLoading, setNotifLoading] = useState(true);
+
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem("token");
+
+  const fetchRecentNotifications = async () => {
+    if (!token) return;
+
+    setNotifLoading(true);
+    try {
+      const response = await axios.get(`${baseURL}/notifications/recent`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = response.data?.data || response.data || [];
+      setNotifications(data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    } finally {
+      setNotifLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentNotifications();
+  }, []);
+
+  const getNotifIcon = (type) => {
+    const map = {
+      verification_alert: <IoMdCheckmarkCircleOutline />,
+      pending_review: <IoTimeOutline />,
+      bill_upload_update: <RiErrorWarningLine />,
+      system_notification: <FiBell />,
+      general: <FiBell />,
+    };
+    return map[type] || <FiBell />;
+  };
+
+  const getNotifStyleType = (type) => {
+    const map = {
+      verification_alert: "success",
+      pending_review: "warning",
+      bill_upload_update: "info",
+      system_notification: "info",
+      general: "info",
+    };
+    return map[type] || "info";
+  };
 
   const handleSearch = async () => {
     if (!searchInput.trim()) {
@@ -24,9 +75,6 @@ const PatientVerification = () => {
 
     try {
       const data = await searchPatient(searchInput.trim());
-
-      console.log("Search response:", data);
-
       const patient = data?.data || data;
 
       if (patient && Object.keys(patient).length > 0) {
@@ -51,8 +99,6 @@ const PatientVerification = () => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchInput(value);
-
-    // Clear error and patient data when input is cleared or changed
     if (error || patientData) {
       setError(null);
       setPatientData(null);
@@ -60,36 +106,9 @@ const PatientVerification = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
+    if (e.key === "Enter") handleSearch();
   };
 
-  const notifications = [
-    {
-      id: 1,
-      type: "success",
-      icon: <IoMdCheckmarkCircleOutline />,
-      title: "OTP verified for patient #MRP-2845",
-      time: "5 min ago",
-    },
-    {
-      id: 2,
-      type: "warning",
-      icon: <IoTimeOutline />,
-      title: "Authorization pending for ₦385,000",
-      time: "12 min ago",
-    },
-    {
-      id: 3,
-      type: "info",
-      icon: <RiErrorWarningLine />,
-      title: "New verification request received",
-      time: "1 hour ago",
-    },
-  ];
-
-  // Calculate progress percentage
   const walletBalance =
     patientData?.walletBalance || patientData?.wallet_balance || 0;
   const savingsGoal =
@@ -239,29 +258,45 @@ const PatientVerification = () => {
         </div>
 
         <div className="patient-verification-notifications-list">
-          {notifications.map((notification) => (
-            <div
-              key={notification.id}
-              className={`patient-verification-notification-item patient-verification-notification-${notification.type}`}
-            >
-              <div
-                className={`patient-verification-notification-icon patient-verification-icon-${notification.type}`}
-              >
-                {notification.icon}
-              </div>
-              <div className="patient-verification-notification-content">
-                <p className="patient-verification-notification-title">
-                  {notification.title}
-                </p>
-                <p className="patient-verification-notification-time">
-                  {notification.time}
-                </p>
-              </div>
-            </div>
-          ))}
+          {notifLoading ? (
+            <p className="patient-verification-notification-time">Loading...</p>
+          ) : notifications.length === 0 ? (
+            <p className="patient-verification-notification-time">
+              No recent notifications.
+            </p>
+          ) : (
+            notifications.map((notification) => {
+              const styleType = getNotifStyleType(notification.type);
+              return (
+                <div
+                  key={notification.id}
+                  className={`patient-verification-notification-item patient-verification-notification-${styleType}`}
+                >
+                  <div
+                    className={`patient-verification-notification-icon patient-verification-icon-${styleType}`}
+                  >
+                    {getNotifIcon(notification.type)}
+                  </div>
+                  <div className="patient-verification-notification-content">
+                    <p className="patient-verification-notification-title">
+                      {notification.message || notification.title}
+                    </p>
+                    <p className="patient-verification-notification-time">
+                      {notification.timestamp || notification.time}
+                    </p>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
 
-        <button className="patient-verification-view-all-button">
+        <button
+          className="patient-verification-view-all-button"
+          onClick={() =>
+            (window.location.href = "/dashboard/notificationsHospital")
+          }
+        >
           View All Notifications
         </button>
       </div>
