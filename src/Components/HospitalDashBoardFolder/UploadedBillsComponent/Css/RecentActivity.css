@@ -1,3 +1,36 @@
+.skeleton-icon {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #c8dbc0 25%, #dcebd5 50%, #c8dbc0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+.skeleton-text {
+  height: 12px;
+  border-radius: 4px;
+  width: 180px;
+  background: linear-gradient(90deg, #c8dbc0 25%, #dcebd5 50%, #c8dbc0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  margin-bottom: 6px;
+}
+
+.skeleton-text.short {
+  width: 80px;
+  margin-bottom: 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 .activity-security {
   display: flex;
   flex-direction: column;
