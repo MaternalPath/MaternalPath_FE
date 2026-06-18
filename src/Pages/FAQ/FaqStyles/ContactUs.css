@@ -40,8 +40,9 @@
 }
 
 .cards {
-  width: 303px;
-  height: 294px;
+  /* width: 303px; */
+  /* height: 294px; */
+  padding: 20px;
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -233,8 +234,8 @@
   }
 
   .cards {
-    width: 100%;
-    max-width: 320px;
+    /* width: 100%;
+    max-width: 320px; */
     height: auto;
     min-height: 260px;
     padding: 20px;

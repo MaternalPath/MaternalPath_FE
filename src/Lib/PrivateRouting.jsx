@@ -2,10 +2,8 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useRole } from "../context/RoleContext";
 
 const PrivateRouting = () => {
-  const { token, loading } = useRole();
+  const { token } = useRole();
   const location = useLocation();
-
-  if (loading) return null;
 
   return token ? (
     <Outlet />

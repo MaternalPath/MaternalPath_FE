@@ -136,6 +136,10 @@
   height: 44vh;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 1500px) {
+    height: 35vh;
+  }
 }
 
 .mp-cta-banner::before {

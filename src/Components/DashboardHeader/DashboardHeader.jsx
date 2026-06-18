@@ -19,14 +19,6 @@ const DashboardHeader = ({ onMenuClick }) => {
     navigate(targetRoute);
   };
 
-  const handleSettingsClick = () => {
-    const targetRoute =
-      role === "hospital"
-        ? "/dashboard/settingsHospital"
-        : "/dashboard/settings";
-    navigate(targetRoute);
-  };
-
   const handleProfileClick = () => {
     const targetRoute =
       //   role === "hospital"
@@ -41,7 +33,7 @@ const DashboardHeader = ({ onMenuClick }) => {
       <div className="sidebar-logo">
         <img
           src={logo}
-          onClick={()=>navigate("/")}
+          onClick={() => navigate("/")}
           alt="MaternalPath"
           className="sidebar-logo-image"
         />
@@ -55,14 +47,6 @@ const DashboardHeader = ({ onMenuClick }) => {
         >
           <FiBell size={21} />
           <span className="dashboard-header-bell-dot" />
-        </button>
-
-        <button
-          className="header-icon-btn"
-          aria-label="Settings"
-          onClick={handleSettingsClick}
-        >
-          <IoSettingsOutline size={21} />
         </button>
 
         <button

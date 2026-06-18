@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 
 const DEFAULT_ROLE = "mother";
 const ROLE_KEY = "role";
@@ -14,24 +14,11 @@ const RoleContext = createContext({
   token: null,
   login: () => {},
   logout: () => {},
-  loading: true,
 });
 
 export const RoleProvider = ({ children }) => {
   const [role, setRole] = useState(readRole);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem(TOKEN_KEY);
-    const storedRole = localStorage.getItem(ROLE_KEY);
-
-    if (storedToken) {
-      setToken(storedToken);
-      setRole(storedRole || DEFAULT_ROLE);
-    }
-    setLoading(false);
-  }, []);
+  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
 
   const login = (newToken, newRole) => {
     localStorage.setItem(TOKEN_KEY, newToken);
@@ -43,15 +30,20 @@ export const RoleProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(ROLE_KEY);
+    localStorage.removeItem("isUpdated");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userid");
+    localStorage.removeItem("name");
     setToken(null);
     setRole(DEFAULT_ROLE);
   };
 
   return (
-    <RoleContext.Provider value={{ role, token, login, logout, loading }}>
+    <RoleContext.Provider value={{ role, token, login, logout }}>
       {children}
     </RoleContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useRole = () => useContext(RoleContext);

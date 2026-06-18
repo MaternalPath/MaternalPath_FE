@@ -25,3 +25,15 @@ export const getVerificationRequests = async () => {
   console.log("Verification requests:", data);
   return data;
 };
+
+export const getRecentNotifications = async () => {
+  const { data } = await apiClient.get("/notifications/recent");
+  console.log("Recent notifications:", data);
+  return data;
+};
+
+export const getBillDashboardStats = async () => {
+  const { data } = await apiClient.get("/bill/dashboard");
+  console.log("Bill dashboard stats:", data);
+  return data;
+};

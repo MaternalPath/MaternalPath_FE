@@ -26,14 +26,14 @@
 /* 2. FORCE THE MODAL CONTAINER TO NEVER EXCEED THE VIEWPORT */
 .scrollable-modal {
   width: 100%;
-  max-width: 460px;     /* Limits width to a clean card size */
-  max-height: 85vh;     /* CRITICAL: Enforces that the modal can NEVER be taller than 85% of the screen */
+  max-width: 560px;
+  max-height: 85vh;
   background-color: #ffffff;
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 14px;
+  padding: 24px 28px;
   display: flex;
-  flex-direction: column; /* Stacks Header, Body, and Buttons vertically */
-  overflow: hidden;     /* CRITICAL: Stops the child items from stretching the card down */
+  flex-direction: column;
+  overflow: hidden;
   box-sizing: border-box;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
@@ -62,9 +62,9 @@
 .modal-container {
   background-color: #ffffff;
   width: 100%;
-  max-width: 440px;
-  border-radius: 24px;
-  padding: 32px 24px;
+  max-width: 560px;
+  border-radius: 14px;
+  padding: 24px 28px;
   box-sizing: border-box;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
@@ -79,7 +79,7 @@
 
 .modal-header h2 {
   color: var(--primary-dark);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0;
 }
@@ -103,37 +103,78 @@
 }
 
 .avatar-circle {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  background-color: var(--avatar-bg);
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
+  position: relative;
+  overflow: hidden; /* This is key - it clips the image to the circle */
+  background-color: #f0f2f2;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the circle properly */
+  border-radius: 50%;
+}
+
+.avatar-icon {
+  width: 60px;
+  height: 60px;
 }
 
 .edit-avatar-btn {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background-color: var(--primary-dark);
-  border: 2px solid #ffffff;
+  bottom: 0;
+  right: 0;
+  background: #2d9cdb;
+  border: 2px solid white;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  z-index: 2;
+}
+
+.edit-avatar-btn:hover {
+  transform: scale(1.1);
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: #4a5856;
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  text-align: left;
 }
 
 /* Form Styles */
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .form-group {
@@ -144,24 +185,42 @@
 
 .form-group label {
   color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.form-group input {
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #8a9696;
+}
+
+.form-group input,
+.form-group select {
   background-color: var(--input-bg);
   border: none;
-  border-radius: 14px;
-  padding: 16px 20px;
-  font-size: 16px;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
   color: var(--input-text);
   font-weight: 500;
   outline: none;
   width: 100%;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
-.form-group input:focus {
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a4a49' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.form-group input:focus,
+.form-group select:focus {
   box-shadow: 0 0 0 2px rgba(15, 76, 74, 0.2);
 }
 
@@ -170,17 +229,24 @@
   background-color: var(--primary-dark);
   color: #ffffff;
   border: none;
-  border-radius: 16px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 700;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 12px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.submit-btn:hover {
+.submit-btn:hover:not(:disabled) {
   opacity: 0.95;
+}
+
+.submit-btn:disabled {
+  background-color: #d1d5d5;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 /* Container for icon-embedded input wrappers */
@@ -192,7 +258,11 @@
 
 /* Adjust layout so text clears the left side icon position */
 .input-with-icon input {
-  padding-left: 48px !important; 
+  padding-left: 42px !important;
+}
+
+.input-with-icon .field-icon {
+  left: 14px;
 }
 
 /* absolute centering rule for input inline vectors */
@@ -206,9 +276,9 @@
 .form-group textarea {
   background-color: var(--input-bg);
   border: none;
-  border-radius: 14px;
-  padding: 16px 20px;
-  font-size: 16px;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
   color: var(--input-text);
   font-weight: 500;
   outline: none;
@@ -221,11 +291,11 @@
 /* Redefines layout sizing to let buttons split evenly */
 .dual-btn-container .submit-btn{
   flex: 1;
-  margin-top: 0; /* Clears prior singular margin offset rule */
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 16px;
+  margin-top: 0;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
   border: none;
 }
@@ -252,11 +322,11 @@
 /* Scroll area container rule */
 .modal-body {
   flex-grow: 1;
-  overflow-y: auto;  /* Turns on smooth inner scrolling */
-  padding-right: 6px; /* Space for the scrollbar gutter layout */
+  overflow-y: auto;
+  padding-right: 6px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
   margin-bottom: 16px;
 }
 
@@ -276,19 +346,27 @@
 
 /* Previous action styling configuration */
 .previous-btn {
-  background-color: #5b6271; 
+  background-color: #5b6271;
   color: #ffffff;
   flex: 1;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 16px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
   border: none;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 
-.previous-btn:hover {
+.previous-btn:hover:not(:disabled) {
   opacity: 0.95;
+}
+
+.previous-btn:disabled {
+  background-color: #d1d5d5;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 /* Card size custom override for wallet layout simplicity */
@@ -312,7 +390,7 @@
 /* Small top label description styling */
 .info-label {
   font-size: 14px;
-  color: #707d7c; /* Muted grey layout text */
+  color: #3a4847;
   font-weight: 500;
 }
 
@@ -387,13 +465,14 @@
 
 .summary-label {
   font-size: 14px;
-  color: #707d7c;
+  color: #3a4847;
   font-weight: 500;
 }
 
 .summary-value {
   font-size: 15px;
   font-weight: 700;
+  color: var(--primary-dark);
 }
 
 /* Dynamic Text Accent Rules matching layout indicators */
@@ -414,4 +493,28 @@
 
 .base-metric-row {
   margin-top: 2px;
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
+}
+
+.empty-step-note {
+  background-color: #edf5f4;
+  color: var(--primary-dark);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }

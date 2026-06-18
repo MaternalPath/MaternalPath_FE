@@ -2,7 +2,16 @@ import React from "react";
 import "./Css/EmergencyWalletCard.css";
 import { FiCreditCard, FiChevronRight } from "react-icons/fi";
 
+const formatNaira = (value) => {
+  const num = Number(value);
+  return Number.isFinite(num) ? `₦${num.toLocaleString()}` : "₦0";
+};
+
 const EmergencyWalletCard = ({ data }) => {
+  const balance = data?.currentBalance ?? 0;
+  const goal = data?.savingsGoal ?? 0;
+  const progress = Number(data?.savingsProgress) || 0;
+
   return (
     <div className="card card-wallet">
       <div className="card-header">
@@ -18,24 +27,22 @@ const EmergencyWalletCard = ({ data }) => {
       <div className="wallet-stats">
         <div className="stat-item">
           <div className="stat-label">Current Balance</div>
-          <div className="stat-value">
-            ₦{data.walletBalance.toLocaleString()}
-          </div>
+          <div className="stat-value">{formatNaira(balance)}</div>
         </div>
         <div className="stat-item">
           <div className="stat-label">Savings Goal</div>
-          <div className="stat-value">₦{data.savingsGoal.toLocaleString()}</div>
+          <div className="stat-value">{formatNaira(goal)}</div>
         </div>
       </div>
 
       <div className="wallet-progress-header">
         <span className="stat-label">Savings Progress</span>
-        <span className="percentage">{data.savingsProgress}% Complete</span>
+        <span className="percentage">{progress}% Complete</span>
       </div>
       <div className="progress-bar">
         <div
           className="progress-fill"
-          style={{ width: `${data.savingsProgress}%` }}
+          style={{ width: `${progress}%` }}
         ></div>
       </div>
     </div>

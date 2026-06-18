@@ -1,7 +1,7 @@
 import { GoShieldCheck } from "react-icons/go";
 import "./Css/HeroSection.css";
 import heroImg from "/src/assets/preg-about.png";
-import mobileImage from "../../assets/mobileAbout.png"
+import mobileImage from "../../assets/mobileAbout.png";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
@@ -39,7 +39,12 @@ const HeroSection = () => {
             </button>
             <button
               className="btn-outline-hero"
-              onClick={() => nav("/teamSection")}
+              onClick={() => {
+                document.getElementById("teamSection")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
             >
               Meet the Team
             </button>

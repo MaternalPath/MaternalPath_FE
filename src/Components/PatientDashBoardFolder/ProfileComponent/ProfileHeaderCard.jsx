@@ -1,28 +1,45 @@
-// import React from "react";
 import "./Css/ProfileHeaderCard.css";
-import { FiUser, FiEdit2 } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import { TiEdit } from "react-icons/ti";
 
-const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
+const formatTrimester = (value) => {
+  const num = Number(value);
+  if (num === 1) return "1st Trimester";
+  if (num === 2) return "2nd Trimester";
+  if (num === 3) return "3rd Trimester";
+  return "Not set yet";
+};
+
+const Avatar = ({ src, size = 32 }) => (
+  <div className="avatar">
+    {src ? (
+      <img src={src} alt="Profile" className="avatar-photo" />
+    ) : (
+      <FiUser size={size} />
+    )}
+  </div>
+);
+
+const ProfileHeaderCard = ({ data, onEditClick }) => {
+  const trimesterLabel = formatTrimester(data?.trimester);
+
   return (
     <div className="settings-card profile-header-card">
       <div className="profile-content">
         <div className="profile-left">
-          <div className="avatar">
-            <FiUser size={32} />
-          </div>
+          <Avatar src={data?.profilePicture} size={32} />
           <div className="profile-info">
-            <h2 className="profile-name">{data?.name || "Adaeze Nnamdi"}</h2>
+            <h2 className="profile-name">{data?.firstName || ""}</h2>
             <div className="profile-meta">
               <span>{data?.week || "Week 24"}</span>
               <span className="dot">•</span>
-              <span>{data?.trimester || "Second Trimester"}</span>
+              <span>{trimesterLabel}</span>
             </div>
             <div className="profile-details">
               <div className="detail-item">
                 <div className="detail-label">Estimated Due Date</div>
                 <div className="detail-value">
-                  {data?.dueDate || "September 18, 2026"}
+                  {data?.dueDate || "Not Set yet"}
                 </div>
               </div>
               <div className="detail-item">
@@ -32,33 +49,28 @@ const ProfileHeaderCard = ({ data = {}, onEditClick}) => {
               </div>
             </div>
           </div>
-          {/* <button className="btn-edit" onClick={onEditClick}>
-            <FiEdit2 size={14} /> Edit Profile
-          </button> */}
         </div>
       </div>
 
       <div className="profile-content-mobile">
-        <div className="avatar">
-          <FiUser size={40} />
-        </div>
-        <h2 className="profile-name">{data?.name || "Adaeze Nnamdi"}</h2>
+        <Avatar src={data?.profilePicture} size={40} />
+        <h2 className="profile-name">{data?.firstName || "Not Set yet"}</h2>
         <div className="profile-meta">
           <span>{data?.week || "Week 24"}</span>
           <span className="dot">•</span>
-          <span className="badge">{data?.trimester || "Second Trimester"}</span>
+          <span className="badge">{trimesterLabel}</span>
         </div>
         <div className="profile-details-mobile">
           <div className="detail-item">
             <div className="detail-label">Estimated Due Date</div>
             <div className="detail-value">
-              {data?.dueDate || "September 18, 2026"}
+              {data?.dueDate || "Not Set yet"}
             </div>
           </div>
           <div className="detail-item">
             <div className="detail-label">Preferred Hospital</div>
             <div className="detail-value">
-              {data?.hospital || "Lagos General Hospital"}
+              {data?.hospital || "Not Set yet"}
             </div>
           </div>
         </div>

@@ -16,16 +16,14 @@ const Dashboard = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const navigate = useNavigate();
-  const { role, setRole } = useRole();
+  const { role, logout } = useRole();
   const navItems = getNavItems(role);
 
   const isLocked =
     role === "mother" && localStorage.getItem("isUpdated") !== "true";
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("isUpdated");
-    setRole("mother");
+    logout();
     closeMobileMenu();
     navigate("/login");
   };

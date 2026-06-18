@@ -42,6 +42,7 @@ import UploadNewBill from "./Components/HospitalDashBoardFolder/UploadedBillsCom
 import PrivacySettings from "./Pages/PrivacySettingsLayout/PrivacySettings";
 import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
 import PrivateRouting from "./Lib/PrivateRouting";
+import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 
 const DashboardIndex = () => {
   const { role } = useRole();
@@ -54,6 +55,7 @@ const DashboardIndex = () => {
 
 const AppRoutes = () => (
   <Router>
+    <ScrollToTop />
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
@@ -80,6 +82,8 @@ const AppRoutes = () => (
 
       <Route path="/faq" element={<FaqHome />} />
 
+      <Route path="/uploadNewBill" element={<UploadNewBill />} />
+
       <Route element={<PrivateRouting />}>
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<DashboardIndex />} />
@@ -87,7 +91,7 @@ const AppRoutes = () => (
           <Route path="hospitalDashboard" element={<HospitalOverview />} />
           <Route path="verifyPatient" element={<VerifyPatient />} />
           <Route path="uploadedBills" element={<UploadedBills />} />
-          <Route path="uploadNewBill" element={<UploadNewBill />} />
+
           <Route path="verificationHistory" element={<VerificationHistory />} />
           <Route
             path="notificationsHospital"
@@ -104,7 +108,7 @@ const AppRoutes = () => (
           <Route path="profile" element={<Profile />} />
         </Route>
       </Route>
-      
+
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Router>

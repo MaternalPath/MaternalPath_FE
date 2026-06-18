@@ -1,4 +1,3 @@
-import React from "react";
 import "./landingpage.css";
 import Header from '../../Components/header/header'
 import HeroPage1 from "../../Components/HeroPage1/HeroPage1";

@@ -1,18 +1,65 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { FiActivity, FiDroplet, FiMoon, FiCalendar, FiCheck, FiChevronRight } from "react-icons/fi";
 import "./Css/CareSection.css";
 
-const CareSection = () => {
+const STATUS_TOKENS = ["current", "completed"];
+
+const fallbackTimeline = [
+  {
+    name: "First Trimester",
+    status: "Completed",
+    weeks: "Weeks 1-12",
+    tags: ["Initial prenatal visit", "First ultrasound", "Pregnancy confirmation"]
+  },
+  {
+    name: "Second Trimester",
+    status: "Current",
+    weeks: "Weeks 13-26",
+    tags: ["Anatomy scan", "Feel baby movements", "Glucose screening"]
+  },
+  {
+    name: "Third Trimester",
+    status: "",
+    weeks: "Weeks 27-40",
+    tags: ["Hospital tour", "Birth plan discussion", "Final preparations"]
+  }
+];
+
+const parseTrimesterEntry = (entry) => {
+  if (!Array.isArray(entry) || entry.length === 0) return null;
+
+  const [name, second, ...rest] = entry;
+  const isStatus = typeof second === "string" && STATUS_TOKENS.includes(second.toLowerCase());
+
+  const status = isStatus ? second : "";
+  const weeks = isStatus ? rest[0] || "" : second || "";
+  const tags = (isStatus ? rest.slice(1) : rest).filter(Boolean);
+
+  return { name, status, weeks, tags };
+};
+
+const CareSection = ({ timeline: timelineProp }) => {
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
+
+  const timeline = useMemo(() => {
+    const source =
+      Array.isArray(timelineProp?.perTrimester) && timelineProp.perTrimester.length > 0
+        ? timelineProp.perTrimester
+        : timelineProp?.firsttrim;
+
+    if (!Array.isArray(source) || source.length === 0) return fallbackTimeline;
+
+    const parsed = source.map(parseTrimesterEntry).filter(Boolean);
+    return parsed.length > 0 ? parsed : fallbackTimeline;
+  }, [timelineProp]);
+
   const reminders = [
     { icon: <FiActivity />, title: "Prenatal Vitamin", desc: "Daily • Morning", status: "Not Started" },
     { icon: <FiDroplet />, title: "Hydration Goal", desc: "8 glasses today", status: "" }
   ];
 
-  const timelineData = {
-    title: "First Trimester",
-    weeks: "Weeks 1-13",
-    tags: ["Embryo Formation", "Heartbeat Begins", "Organs Develop"]
-  };
+  const statusClass = (status) => (status ? status.toLowerCase() : "");
+  const activeMobile = timeline[activeMobileIdx] || timeline[0];
 
   return (
     <>
@@ -78,41 +125,22 @@ const CareSection = () => {
       <section className="timeline-card desktop-only">
         <h3 className="section-title">Pregnancy Timeline</h3>
         <div className="timeline-items">
-          <div className="timeline-item completed">
-            <div className="timeline-header">
-              <h4>First Trimester</h4>
-              <span className="badge completed">Completed</span>
+          {timeline.map((item, idx) => (
+            <div key={idx} className={`timeline-item ${statusClass(item.status)}`}>
+              <div className="timeline-header">
+                <h4>{item.name}</h4>
+                {item.status && (
+                  <span className={`badge ${statusClass(item.status)}`}>{item.status}</span>
+                )}
+              </div>
+              <p className="timeline-weeks">{item.weeks}</p>
+              <div className="timeline-tags">
+                {item.tags.map((tag, i) => (
+                  <span key={i} className="tag">{tag}</span>
+                ))}
+              </div>
             </div>
-            <p className="timeline-weeks">Weeks 1-12</p>
-            <div className="timeline-tags">
-              <span className="tag">Initial prenatal visit</span>
-              <span className="tag">First ultrasound</span>
-              <span className="tag">Pregnancy confirmation</span>
-            </div>
-          </div>
-          <div className="timeline-item current">
-            <div className="timeline-header">
-              <h4>Second Trimester</h4>
-              <span className="badge current">Current</span>
-            </div>
-            <p className="timeline-weeks">Weeks 13-26</p>
-            <div className="timeline-tags">
-              <span className="tag">Anatomy scan</span>
-              <span className="tag">Feel baby movements</span>
-              <span className="tag">Glucose screening</span>
-            </div>
-          </div>
-          <div className="timeline-item">
-            <div className="timeline-header">
-              <h4>Third Trimester</h4>
-            </div>
-            <p className="timeline-weeks">Weeks 27-40</p>
-            <div className="timeline-tags">
-              <span className="tag">Hospital tour</span>
-              <span className="tag">Birth plan discussion</span>
-              <span className="tag">Final preparations</span>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -120,22 +148,29 @@ const CareSection = () => {
         <h3 className="section-title">Pregnancy Timeline</h3>
         <div className="carousel-container">
           <div className="timeline-card-mobile">
-            <h4>{timelineData.title}</h4>
-            <p className="timeline-weeks">{timelineData.weeks}</p>
+            <h4>{activeMobile?.name}</h4>
+            <p className="timeline-weeks">{activeMobile?.weeks}</p>
             <div className="timeline-tags">
-              {timelineData.tags.map((tag, i) => (
+              {activeMobile?.tags.map((tag, i) => (
                 <span key={i} className="timeline-tag">{tag}</span>
               ))}
             </div>
           </div>
-          <button className="carousel-arrow">
+          <button
+            className="carousel-arrow"
+            onClick={() => setActiveMobileIdx((idx) => (idx + 1) % timeline.length)}
+          >
             <FiChevronRight />
           </button>
         </div>
         <div className="carousel-dots">
-          <span className="dot active"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
+          {timeline.map((_, i) => (
+            <span
+              key={i}
+              className={`dot ${i === activeMobileIdx ? "active" : ""}`}
+              onClick={() => setActiveMobileIdx(i)}
+            ></span>
+          ))}
         </div>
       </section>
     </>

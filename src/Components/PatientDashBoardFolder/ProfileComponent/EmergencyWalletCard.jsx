@@ -9,23 +9,20 @@ const EmergencyWalletCard = ({ data = {}, onEditClick }) => {
         <h3 className="card-title">
           <FiCreditCard size={18} /> Emergency Wallet Settings
         </h3>
-        {/* <button type="button" className="btn-primary" onClick={onEditClick}>
-          <FiEdit2 size={14} /> Edit Savings Goal
-        </button> */}
       </div>
 
       <div className="info-grid">
         <div className="info-item">
           <div className="info-label">Savings Goal Amount</div>
-          <div className="info-value">₦{data?.savingsGoalAmount || 400000}</div>
+          <div className="info-value">₦{data?.savingsGoalAmount || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Current Balance</div>
-          <div className="info-value">₦{data?.currentBalance || 285000}</div>
+          <div className="info-value">₦{data?.currentBalance || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Weekly Contribution</div>
-          <div className="info-value">₦{data?.weeklyContribution || 10000}</div>
+          <div className="info-value">₦{data?.weeklyContribution || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Linked Payment Method</div>
@@ -41,15 +38,15 @@ const EmergencyWalletCard = ({ data = {}, onEditClick }) => {
         <h3 className="card-title-mobile">Emergency Wallet Settings</h3>
         <div className="info-item">
           <div className="info-label">Savings Goal</div>
-          <div className="info-value">₦{data?.savingsGoalAmount || 400000}</div>
+          <div className="info-value">₦{data?.savingsGoalAmount ||"Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Current Balance</div>
-          <div className="info-value">₦{data?.currentBalance || 285000}</div>
+          <div className="info-value">₦{data?.currentBalance || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Weekly Contribution</div>
-          <div className="info-value">₦{data?.weeklyContribution || 7500}</div>
+          <div className="info-value">₦{data?.weeklyContribution ||"Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Linked Payment Method</div>

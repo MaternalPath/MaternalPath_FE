@@ -8,13 +8,11 @@ const PROFILE_PATH = "/dashboard/profile";
 
 const Sidebar = ({ isLocked = false }) => {
   const navigate = useNavigate();
-  const { role, setRole } = useRole();
+  const { role, logout } = useRole();
   const navItems = getNavItems(role);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("isUpdated");
-    setRole("mother");
+    logout();
     navigate("/login");
   };
 

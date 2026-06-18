@@ -1,25 +1,20 @@
 import React from "react";
 import "./Css/TodaysRemindersCard.css";
-import { FiCheckCircle, FiCalendar, FiHeart } from "react-icons/fi";
+import { FiCheckCircle, FiCalendar } from "react-icons/fi";
 
-const TodaysRemindersCard = () => {
-  const reminders = [
-    {
-      title: "Prenatal Vitamins",
-      subtitle: "Daily - Morning",
-      icon: <FiCalendar size={18} />,
-    },
-    {
-      title: "Hydration Goal",
-      subtitle: "8-10 glasses today",
-      icon: <FiHeart size={18} />,
-    },
-    {
-      title: "Gentle Exercise",
-      subtitle: "20-minute walk",
-      icon: <FiHeart size={18} />,
-    },
-  ];
+const normalizeReminders = (reminder) => {
+  if (!reminder) return [];
+  if (Array.isArray(reminder)) return reminder;
+  if (Array.isArray(reminder?.reminders)) return reminder.reminders;
+
+  const text = typeof reminder === "string" ? reminder : reminder?.reminder;
+  if (!text || text === "No reminder available.") return [];
+
+  return [{ title: text }];
+};
+
+const TodaysRemindersCard = ({ reminder }) => {
+  const items = normalizeReminders(reminder);
 
   return (
     <div className="card card-reminders">
@@ -30,12 +25,19 @@ const TodaysRemindersCard = () => {
         </div>
       </div>
       <div className="reminder-list">
-        {reminders.map((item, idx) => (
+        {items.length === 0 && (
+          <p className="reminder-empty">No reminders for today.</p>
+        )}
+        {items.map((item, idx) => (
           <div key={idx} className="reminder-item">
-            <div className="reminder-icon">{item.icon}</div>
+            <div className="reminder-icon">
+              <FiCalendar size={18} />
+            </div>
             <div className="reminder-content">
               <div className="reminder-title">{item.title}</div>
-              <div className="reminder-subtitle">{item.subtitle}</div>
+              {item.subtitle && (
+                <div className="reminder-subtitle">{item.subtitle}</div>
+              )}
             </div>
           </div>
         ))}

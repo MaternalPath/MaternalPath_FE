@@ -4,6 +4,17 @@
   border-radius: 16px;
 }
 
+.profile-header-card .avatar {
+  overflow: hidden;
+}
+
+.profile-header-card .avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .profile-header-card {
 .profile-content {
     display: none;

@@ -2,13 +2,36 @@ import React from "react";
 import "./Css/PregnancyHeroCard.css";
 import Baby from "../../../assets/baby.png";
 
+const TRIMESTER_NAMES = {
+  1: "First Trimester",
+  2: "Second Trimester",
+  3: "Third Trimester",
+};
+
+const formatDate = (iso) => {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+};
+
 const PregnancyHeroCard = ({ data }) => {
+  const trimesterName =
+    TRIMESTER_NAMES[Number(data?.trimester)] ?? "—";
+  const progressValue = parseFloat(data?.pregnancyProgress) || 0;
+
   return (
     <div className="card card-hero">
       <div className="hero-content">
         <div className="hero-left">
           <h2>
-            Week {data.week} <span className="trimester">{data.trimester}</span>
+            Week {data?.week ?? "—"}{" "}
+            <span className="trimester">{trimesterName}</span>
           </h2>
           <p className="subtitle">
             Your baby is growing beautifully this week.
@@ -17,15 +40,17 @@ const PregnancyHeroCard = ({ data }) => {
           <div className="stats-grid">
             <div className="stat-item">
               <div className="stat-label">Estimated Due Date</div>
-              <div className="stat-value">{data.dueDate}</div>
+              <div className="stat-value">{formatDate(data?.estimatedDueDate)}</div>
             </div>
             <div className="stat-item">
               <div className="stat-label">Days Until Due Date</div>
-              <div className="stat-value">{data.daysUntilDue} days</div>
+              <div className="stat-value">
+                {data?.daysUntilDueDate ?? "—"} days
+              </div>
             </div>
             <div className="stat-item">
               <div className="stat-label">Preferred Hospital</div>
-              <div className="stat-value">{data.hospital}</div>
+              <div className="stat-value">{data?.preferredHospital ?? "—"}</div>
             </div>
           </div>
 
@@ -34,12 +59,12 @@ const PregnancyHeroCard = ({ data }) => {
             <div className="progress-bar">
               <div
                 className="progress-fill"
-                style={{ width: `${data.pregnancyProgress}%` }}
+                style={{ width: `${progressValue}%` }}
               ></div>
             </div>
             <div className="progress-range">
-              <span>Week 1</span>
-              <span>Week 40</span>
+              <span>Week {data?.week ?? 1}</span>
+              <span>{progressValue}%</span>
             </div>
           </div>
         </div>

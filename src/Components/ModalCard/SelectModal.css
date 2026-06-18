@@ -6,13 +6,17 @@
 .hospital-search-input {
   background-color: var(--input-bg);
   border: none;
-  border-radius: 14px;
-  padding: 16px 20px;
-  font-size: 16px;
-  color: #7a8b8b;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--input-text);
   width: 100%;
   box-sizing: border-box;
   outline: none;
+}
+
+.hospital-search-input::placeholder {
+  color: #8a9696;
 }
 
 /* Custom internal padding configurations for hospital list view */
@@ -57,7 +61,7 @@
 .hospital-detail {
   margin: 2px 0;
   font-size: 13px;
-  color: #707d7c;
+  color: #3a4847;
   font-weight: 500;
 }
 
@@ -77,7 +81,7 @@
 
 .cost-label {
   font-size: 12px;
-  color: #707d7c;
+  color: #3a4847;
   font-weight: 500;
 }
 
@@ -105,4 +109,19 @@
 .hospital-card.active-hospital .check-circle {
   background-color: #10b981; /* Bright emerald green matching check asset */
   border-color: #10b981;
+}
+
+/* Empty-state copy when no hospitals match the search or list is empty */
+.hospital-empty-state {
+  text-align: center;
+  color: #3a4847;
+  font-size: 14px;
+  padding: 24px 16px;
+  margin: 0;
+}
+
+.submit-btn:disabled,
+.previous-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

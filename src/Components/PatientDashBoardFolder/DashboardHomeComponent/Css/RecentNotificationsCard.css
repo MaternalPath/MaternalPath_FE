@@ -42,6 +42,15 @@
       flex-direction: column;
       gap: 12px;
 
+      .notification-empty {
+        font-size: 14px;
+        color: #6b7280;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 16px;
+        margin: 0;
+      }
+
       .notification-item {
         display: flex;
         gap: 12px;
@@ -50,6 +59,8 @@
         padding: 16px;
 
         .notification-icon {
+          background: #dcfce7;
+          color: #10b981;
           width: 32px;
           height: 32px;
           border-radius: 8px;

@@ -1,36 +1,20 @@
 import React from "react";
 import "./Css/RecentNotificationsCard.css";
-import {
-  FiBell,
-  FiChevronRight,
-  FiHeart,
-  FiCreditCard,
-  FiCalendar,
-} from "react-icons/fi";
+import { FiBell, FiChevronRight, FiHeart } from "react-icons/fi";
 
-const RecentNotificationsCard = () => {
-  const notifications = [
-    {
-      title: "You are now in Week 24",
-      desc: "Your baby is growing beautifully",
-      time: "2 hours ago",
-      iconBg: "#E0ECFF",
-      iconColor: "#3B82F6",
-      titleColor: "#10B981",
-      icon: <FiHeart size={16} />,
-    },
-    {
-      title: "Savings milestone reached",
-      desc: "70% of your delivery goal",
-      time: "1 day ago",
-      iconBg: "#DCFCE7",
-      iconColor: "#10B981",
-      titleColor: "#10B981",
-      icon: <FiCreditCard size={16} />,
-    },
+const formatTime = (value) => {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+};
 
-  ];
-
+const RecentNotificationsCard = ({ notifications = [] }) => {
   return (
     <section className="card card-notifications">
       <div className="card-header">
@@ -43,23 +27,24 @@ const RecentNotificationsCard = () => {
         </a>
       </div>
       <div className="notification-list">
+        {notifications.length === 0 && (
+          <p className="notification-empty">No new notifications.</p>
+        )}
         {notifications.map((item, idx) => (
-          <div key={idx} className="notification-item">
-            <div
-              className="notification-icon"
-              style={{ background: item.iconBg, color: item.iconColor }}
-            >
-              {item.icon}
+          <div key={item.id ?? idx} className="notification-item">
+            <div className="notification-icon">
+              <FiHeart size={16} />
             </div>
             <div className="notification-content">
-              <div
-                className="notification-title"
-                style={{ color: item.titleColor }}
-              >
-                {item.title}
+              <div className="notification-title">
+                {item.title ?? item.message ?? "Notification"}
               </div>
-              <div className="notification-desc">{item.desc}</div>
-              <div className="notification-time">{item.time}</div>
+              {item.description && (
+                <div className="notification-desc">{item.description}</div>
+              )}
+              <div className="notification-time">
+                {formatTime(item.createdAt ?? item.time)}
+              </div>
             </div>
           </div>
         ))}

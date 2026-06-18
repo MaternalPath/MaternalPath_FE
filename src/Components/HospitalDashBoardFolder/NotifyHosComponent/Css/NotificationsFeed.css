@@ -10,7 +10,25 @@
   color: #1f3d2e;
   margin: 0 0 16px;
 }
+.notif-error {
+  text-align: center;
+  padding: 40px;
+  color: #991b1b;
+}
 
+.retry-btn {
+  margin-top: 12px;
+  padding: 8px 20px;
+  background-color: #1f6e5f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.retry-btn:hover {
+  background-color: #145b4e;
+}
 .notif-feed-list {
   display: flex;
   flex-direction: column;

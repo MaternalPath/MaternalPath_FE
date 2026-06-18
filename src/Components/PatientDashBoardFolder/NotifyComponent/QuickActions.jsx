@@ -1,11 +1,16 @@
-import React from 'react';
-import { FiHeart, FiCreditCard, FiChevronRight } from 'react-icons/fi';
-import './Css/QuickActions.css';
+import React from "react";
+import { FiHeart, FiCreditCard, FiChevronRight } from "react-icons/fi";
+import "./Css/QuickActions.css";
+import { Link } from "react-router-dom";
 
 const QuickActions = () => {
   const actions = [
-    { icon: <FiHeart size={18} />, title: 'View Pregnancy Tracker' },
-    { icon: <FiCreditCard size={18} />, title: 'Add to Emergency Wallet' }
+    {
+      icon: <FiHeart size={18} />,
+      title: "View Pregnancy Tracker",
+      path: "/dashboard/pregnancyTracker",
+    },
+    { icon: <FiCreditCard size={18} />, title: "Add to Emergency Wallet" },
   ];
 
   return (
@@ -13,11 +18,13 @@ const QuickActions = () => {
       <h3 className="section-title">Quick Actions</h3>
       <div className="grid-2">
         {actions.map((action, idx) => (
-          <button key={idx} className="action-btn">
-            {action.icon}
-            <span>{action.title}</span>
-            <FiChevronRight size={18} />
-          </button>
+          <Link to={action.path} key={idx} style={{textDecoration:"none"}}>
+            <button className="action-btn">
+              {action.icon}
+              <span>{action.title}</span>
+              <FiChevronRight size={18} />
+            </button>
+          </Link>
         ))}
       </div>
     </div>
