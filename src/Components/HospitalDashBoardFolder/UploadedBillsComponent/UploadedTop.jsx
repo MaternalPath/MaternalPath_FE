@@ -14,11 +14,6 @@ const UploadedTop = ({ searchValue, onSearchChange }) => {
             Manage maternal healthcare billing and uploaded delivery records.
           </p>
         </div>
-
-        <button className="uploads-btn" onClick={() => nav("/")}>
-          <FiUpload className="uploads-icon" />
-          Upload New Bill
-        </button>
       </div>
 
       <div className="search-wrapper">

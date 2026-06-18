@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BillForm from "./BillForm";
 import BillSidebar from "./BillSidebar";
-import "./Css/UploadNewBill.css";
+import "./Styles/UploadNewBill.css";
 
 const UploadNewBill = () => {
   const [formData, setFormData] = useState({
