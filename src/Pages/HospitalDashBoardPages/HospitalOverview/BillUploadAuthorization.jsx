@@ -28,7 +28,9 @@ const BillUploadAuthorization = () => {
     <div className="bill-upload-authorization-container">
       <div className="bill-upload-authorization-card">
         <div className="bill-upload-authorization-header">
-          <h2 className="bill-upload-authorization-title">Bill Upload & Authorization</h2>
+          <h2 className="bill-upload-authorization-title">
+            Bill Upload & Authorization
+          </h2>
           <p className="bill-upload-authorization-subtitle">
             Upload hospital bill and request fund authorization
           </p>
@@ -37,9 +39,13 @@ const BillUploadAuthorization = () => {
         <div className="bill-upload-authorization-form">
           <div className="bill-upload-authorization-form-row">
             <div className="bill-upload-authorization-form-section">
-              <label className="bill-upload-authorization-form-label">Bill Amount</label>
+              <label className="bill-upload-authorization-form-label">
+                Bill Amount
+              </label>
               <div className="bill-upload-authorization-input-wrapper">
-                <span className="bill-upload-authorization-currency-symbol">₦</span>
+                <span className="bill-upload-authorization-currency-symbol">
+                  ₦
+                </span>
                 <input
                   type="number"
                   value={billAmount}
@@ -51,7 +57,9 @@ const BillUploadAuthorization = () => {
             </div>
 
             <div className="bill-upload-authorization-form-section">
-              <label className="bill-upload-authorization-form-label">Upload Hospital Bill</label>
+              <label className="bill-upload-authorization-form-label">
+                Upload Hospital Bill
+              </label>
               <div className="bill-upload-authorization-file-upload-wrapper">
                 <input
                   type="file"
@@ -59,7 +67,10 @@ const BillUploadAuthorization = () => {
                   onChange={handleFileChange}
                   className="bill-upload-authorization-file-input"
                 />
-                <label htmlFor="bill-upload-authorization-file-input" className="bill-upload-authorization-file-upload-button">
+                <label
+                  htmlFor="bill-upload-authorization-file-input"
+                  className="bill-upload-authorization-file-upload-button"
+                >
                   <svg
                     className="bill-upload-authorization-upload-icon"
                     viewBox="0 0 24 24"
@@ -77,7 +88,9 @@ const BillUploadAuthorization = () => {
           </div>
 
           <div className="bill-upload-authorization-form-section">
-            <label className="bill-upload-authorization-form-label">Notes / Description</label>
+            <label className="bill-upload-authorization-form-label">
+              Notes / Description
+            </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -93,7 +106,10 @@ const BillUploadAuthorization = () => {
             >
               Request Authorization
             </button>
-            <button className="bill-upload-authorization-btn-secondary" onClick={handleCancel}>
+            <button
+              className="bill-upload-authorization-btn-secondary"
+              onClick={handleCancel}
+            >
               Cancel
             </button>
           </div>
@@ -108,7 +124,9 @@ const BillUploadAuthorization = () => {
                 </svg>
               </div>
               <div className="bill-upload-authorization-alert-content">
-                <h3 className="bill-upload-authorization-alert-title">Awaiting Patient Authorization</h3>
+                <h3 className="bill-upload-authorization-alert-title">
+                  Awaiting Patient Authorization
+                </h3>
                 <p className="bill-upload-authorization-alert-message">
                   OTP has been sent to patient's phone. Approval pending.
                 </p>
