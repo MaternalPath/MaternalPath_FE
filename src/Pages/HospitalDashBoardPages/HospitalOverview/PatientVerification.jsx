@@ -117,7 +117,7 @@ const PatientVerification = () => {
 
   return (
     <div className="patient-verification-container">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className="patient-verification-section">
         <div className="patient-verification-section-header">
           <h2 className="patient-verification-section-title">

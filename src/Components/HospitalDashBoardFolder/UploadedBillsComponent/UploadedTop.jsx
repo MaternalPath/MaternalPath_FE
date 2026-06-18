@@ -16,7 +16,7 @@ const UploadedTop = ({ searchValue, onSearchChange }) => {
         </div>
 
         <button className="uploads-btn" onClick={() => nav("/")}>
-          <FiUpload className="uploads-icon"/>
+          <FiUpload className="uploads-icon" />
           Upload New Bill
         </button>
       </div>
