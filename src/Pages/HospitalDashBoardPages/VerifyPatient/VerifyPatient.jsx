@@ -39,15 +39,52 @@ const VerifyPatient = () => {
     { icon: <BadgeCheck size={18} />, label: "Authorized Access" },
   ];
 
+  // ✅ FIXED: Map patient data correctly with hospitalName
   const mapPatient = (item) => ({
-    id: item.id,
+    id:
+      item.mother?.id ||
+      item.maternalId ||
+      item.patientId ||
+      item.patient_id ||
+      item.id,
+    navId:
+      item.mother?.id ||
+      item.maternalId ||
+      item.patientId ||
+      item.patient_id ||
+      item.id,
     name: item.patientName || item.patient_name || "Unknown Patient",
-    week: item.pregnancyWeek || item.pregnancy_stage || "Week 0",
-    dueDate: item.dueDate || item.expectedDueDate || "N/A",
-    hospital: item.preferredHospital || item.hospital || "Not specified",
-    balance: item.amountRequested || item.amount || "₦0",
-    goal: Math.round((item.walletBalance / item.deliveryGoal) * 100) || 0,
-    status: item.authorizationStatus || item.status || "Pending",
+    fullName:
+      item.patientName ||
+      `${item.mother?.firstName || ""} ${item.mother?.lastName || ""}`.trim() ||
+      "Unknown Patient",
+    email: item.mother?.email || item.email || "—",
+    phoneNumber: item.mother?.phoneNumber || item.phoneNumber || "—",
+    week: item.pregnancyWeek ? `Week ${item.pregnancyWeek}` : "Week 0",
+    dueDate: item.dueDate
+      ? new Date(item.dueDate).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "N/A",
+    // ✅ FIXED: Use hospitalName from API response
+    hospital:
+      item.hospitalName ||
+      item.preferredHospital ||
+      item.hospital ||
+      "Not specified",
+    balance: item.walletBalance
+      ? `₦${item.walletBalance.toLocaleString()}`
+      : "₦0",
+    goal:
+      item.goalPercentage ||
+      Math.round((item.walletBalance / (item.savingsGoal || 1)) * 100) ||
+      0,
+    status: item.status || "Pending",
+    readiness: item.readiness || "Just Started",
+    walletBalance: item.walletBalance || 0,
+    savingsGoal: item.savingsGoal || 0,
   });
 
   const fetchVerificationRequests = async () => {
@@ -69,6 +106,7 @@ const VerifyPatient = () => {
       );
 
       const data = response.data?.data || response.data || [];
+      console.log("API Response:", data); // Debug log
       setPatients(data.map(mapPatient));
     } catch (error) {
       console.error("Error fetching verification requests:", error);
@@ -163,14 +201,25 @@ const VerifyPatient = () => {
   }, []);
 
   const handleViewProfile = (id) => {
-    navigate(`/dashboard/patientDetails/${id}`);
+    if (!id) {
+      toast.error("Patient record not found.");
+      return;
+    }
+
+    const patient = patients.find(
+      (item) => item.navId === id || item.id === id,
+    );
+
+    navigate(`/dashboard/patientDetails/${id}`, {
+      state: { patient },
+    });
   };
 
   const PatientNameButton = ({ patient, mobile = false }) => (
     <button
       type="button"
       className={`patient-name-trigger${mobile ? " mobile" : ""}`}
-      onClick={() => handleViewProfile(patient.id)}
+      onClick={() => handleViewProfile(patient.navId)}
     >
       {patient.name}
     </button>
@@ -386,7 +435,7 @@ const VerifyPatient = () => {
           </>
         ) : patients.length > 0 ? (
           patients.map((patient) => (
-            <div className="patient-card" key={patient.id}>
+            <div className="patient-card" key={patient.navId || patient.id}>
               <div className="card-header">
                 <div className="card-user">
                   <img src={SearchIcon} alt="baby-icon" />
@@ -426,7 +475,7 @@ const VerifyPatient = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button onClick={() => handleViewProfile(patient.id)}>
+                <button onClick={() => handleViewProfile(patient.navId)}>
                   View Full Profile &gt;
                 </button>
                 <button className="more-btn">⋮</button>

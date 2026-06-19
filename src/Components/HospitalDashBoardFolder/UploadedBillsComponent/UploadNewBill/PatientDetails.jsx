@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./Styles/PatientDetails.css";
 
 export default function PatientDetails() {
   const navigate = useNavigate();
-  const { patientId: motherId } = useParams(); // 👈 reads :patientId from the URL, stores as motherId
+  const location = useLocation();
+  const { patientId: motherId } = useParams();
+  const selectedPatient = location.state?.patient || null;
 
   const [patient, setPatient] = useState(null);
   const [dashboard, setDashboard] = useState(null);
@@ -24,7 +26,9 @@ export default function PatientDetails() {
       return;
     }
 
-    if (!motherId) {
+    const effectiveMotherId = motherId;
+
+    if (!effectiveMotherId) {
       setError("No patient selected");
       setLoading(false);
       return;
@@ -34,22 +38,62 @@ export default function PatientDetails() {
     setError(null);
 
     try {
-      const [patientRes, dashboardRes] = await Promise.all([
-        axios.get(`${baseURL}/patients/${motherId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        axios.get(`${baseURL}/patient/dashboard`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { motherId },
-        }),
-      ]);
+      const normalizedSelectedPatient = selectedPatient
+        ? (() => {
+            const mother = selectedPatient.mother || {};
+            return {
+              fullName:
+                selectedPatient.fullName ||
+                selectedPatient.patientName ||
+                `${mother.firstName || ""} ${mother.lastName || ""}`.trim() ||
+                "—",
+              maternalId:
+                selectedPatient.navId ||
+                selectedPatient.id ||
+                selectedPatient.maternalId ||
+                mother.id ||
+                "—",
+              phoneNumber:
+                selectedPatient.phoneNumber || mother.phoneNumber || "—",
+              email: selectedPatient.email || mother.email || "—",
+              pregnancyWeek:
+                selectedPatient.week || selectedPatient.pregnancyWeek || "—",
+              expectedDeliveryDate:
+                selectedPatient.dueDate ||
+                selectedPatient.expectedDueDate ||
+                "—",
+              preferredHospital:
+                selectedPatient.hospital ||
+                selectedPatient.preferredHospital ||
+                "—",
+            };
+          })()
+        : null;
 
-      const patientData = patientRes.data?.data || patientRes.data || null;
-      const dashboardData =
-        dashboardRes.data?.data || dashboardRes.data || null;
+      if (normalizedSelectedPatient) {
+        setPatient(normalizedSelectedPatient);
+      } else {
+        const patientRes = await axios.get(
+          `${baseURL}/patients/${effectiveMotherId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        console.log("Patient API Response:", patientRes.data);
+        setPatient(patientRes.data?.data || patientRes.data || null);
+      }
 
-      setPatient(patientData);
-      setDashboard(dashboardData);
+      try {
+        const dashboardRes = await axios.get(`${baseURL}/patient/dashboard`, {
+          headers: { Authorization: `Bearer ${token}` },
+          // params: { motherId: effectiveMotherId },
+        });
+        console.log("Dashboard API Response:", dashboardRes.data);
+        setDashboard(dashboardRes.data?.data || dashboardRes.data || null);
+      } catch (dashboardErr) {
+        console.error("Error fetching patient dashboard:", dashboardErr);
+        setDashboard(null);
+      }
     } catch (err) {
       console.error("Error fetching patient details:", err);
       const msg =
@@ -62,20 +106,31 @@ export default function PatientDetails() {
   };
 
   useEffect(() => {
-    fetchPatientDetails();
+    if (motherId) {
+      fetchPatientDetails();
+    } else {
+      setError("No patient ID provided");
+      setLoading(false);
+    }
   }, [motherId]);
 
   const handleClose = () => navigate("/dashboard/verifyPatient");
+
   const handleUploadBill = () => {
-    navigate(`/dashboard/uploadNewBill?motherId=${motherId}`);
+    if (motherId) {
+      navigate(`/dashboard/uploadNewBill?motherId=${motherId}`);
+    } else {
+      toast.error("Patient ID not found. Please try again.");
+    }
   };
 
   if (loading) {
     return (
       <div className="patient-details-overlay">
         <div className="patient-details-modal">
-          <div style={{ padding: "60px", textAlign: "center" }}>
-            Loading patient details...
+          <div className="patient-details-loading">
+            <div className="loading-spinner"></div>
+            <p>Loading patient details...</p>
           </div>
         </div>
       </div>
@@ -86,9 +141,7 @@ export default function PatientDetails() {
     return (
       <div className="patient-details-overlay">
         <div className="patient-details-modal">
-          <div
-            style={{ padding: "60px", textAlign: "center", color: "#dc2626" }}
-          >
+          <div className="patient-details-error">
             <p>{error}</p>
             <button className="btn btn-secondary" onClick={handleClose}>
               Close
@@ -240,6 +293,7 @@ export default function PatientDetails() {
             </div>
           </div>
 
+          {/* Pregnancy Summary Section */}
           <div className="pregnancy-summary-section">
             <h3 className="section-title">Pregnancy Summary</h3>
             <div className="pregnancy-summary-grid">
@@ -262,6 +316,7 @@ export default function PatientDetails() {
             </div>
           </div>
 
+          {/* Recent Bills Section */}
           <div className="recent-bills-section">
             <h3 className="section-title">Recent Bills</h3>
             <table className="bills-table">

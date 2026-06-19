@@ -1,18 +1,21 @@
-.loading-state,
-.error-state,
-.not-found-state {
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
+  min-height: 400px;
+  gap: 20px;
 }
 
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e5e7eb;
   border-top-color: #0f766e;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
 }
 
 @keyframes spin {
@@ -21,6 +24,67 @@
   }
 }
 
+.loading-text {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.loading-subtext {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: -4px 0 0 0;
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 400px;
+  gap: 12px;
+}
+
+.error-icon {
+  font-size: 48px;
+  color: #dc2626;
+  margin-bottom: 4px;
+}
+
+.error-state p {
+  color: #dc2626;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Not Found State */
+.not-found-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 400px;
+  gap: 12px;
+}
+
+.not-found-icon {
+  font-size: 48px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.not-found-state p {
+  color: #6b7280;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Buttons */
 .retry-btn,
 .back-btn {
   padding: 8px 20px;
@@ -29,6 +93,7 @@
   font-weight: 600;
   cursor: pointer;
   margin: 8px;
+  transition: all 0.3s ease;
 }
 
 .retry-btn {
@@ -39,6 +104,7 @@
 
 .retry-btn:hover {
   background-color: #0d5d63;
+  transform: translateY(-1px);
 }
 
 .back-btn {
@@ -57,6 +123,7 @@
   padding: 20px;
 }
 
+/* Modal Overlay */
 .patient-details-overlay {
   position: fixed;
   top: 0;
@@ -68,6 +135,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 20px;
 }
 
 .patient-details-modal {
@@ -78,6 +146,36 @@
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading inside modal */
+.patient-details-modal .loading-state {
+  padding: 100px 20px;
+  min-height: 500px;
+}
+
+.patient-details-modal .loading-spinner {
+  width: 64px;
+  height: 64px;
+  border-width: 5px;
+}
+
+.patient-details-modal .loading-text {
+  font-size: 20px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.patient-details-modal .loading-subtext {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+/* Error/Not Found inside modal */
+.patient-details-modal .error-state,
+.patient-details-modal .not-found-state {
+  padding: 100px 20px;
+  min-height: 500px;
 }
 
 /* Header */
@@ -109,14 +207,17 @@
   color: #999999;
   cursor: pointer;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .patient-details-close:hover {
+  background-color: #f3f4f6;
   color: #333333;
 }
 
@@ -215,11 +316,10 @@
   font-weight: 500;
 }
 
-
+/* Wallet Summary Card */
 .wallet-summary-card {
-  /* background: linear-gradient(135deg, #1a4d4d 0%, #2d6b6b 100%); */
+  background: linear-gradient(135deg, #1a4d4d 0%, #2d6b6b 100%);
   border-radius: 12px;
-  background-color: #eaf2e7;
   padding: 24px;
   color: #ffffff;
   display: flex;
@@ -246,6 +346,21 @@
   border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
+}
+
+.wallet-badge.approved {
+  background-color: #10b981;
+  color: white;
+}
+
+.wallet-badge.pending {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.wallet-badge.rejected {
+  background-color: #ef4444;
+  color: white;
 }
 
 .wallet-items {
@@ -298,10 +413,10 @@
 }
 
 .progress-fill {
-  width: 71%;
   height: 100%;
   background: linear-gradient(90deg, #c9b896 0%, #d4c4a8 100%);
   border-radius: 4px;
+  transition: width 0.6s ease;
 }
 
 /* Pregnancy Summary Section */
@@ -412,6 +527,16 @@
 .status-badge.approved {
   background-color: #e8f5e9;
   color: #2e7d32;
+}
+
+.status-badge.pending {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.status-badge.rejected {
+  background-color: #ffebee;
+  color: #c62828;
 }
 
 /* Footer */
