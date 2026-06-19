@@ -72,12 +72,12 @@ export const hospitalNavItems = [
     icon:   <TbFileDescription size={20} />
   },
   {
-    path: "/dashboard/notificationsHospital ",
+    path: "/dashboard/notificationsHospital",
     label: "Notifications Hospital ",
     icon:   <IoNotificationsOutline size={20} />
   },
   {
-    path: "/dashboard/settingsHospital ",
+    path: "/dashboard/settingsHospital",
     label: "Settings",
     icon:   <IoSettingsOutline size={20} />
   },
