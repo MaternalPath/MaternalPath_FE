@@ -61,14 +61,13 @@ const Footer = () => {
           <h2>Platform</h2>
           <ul>
             <li onClick={() => nav("/how")}>How It Works</li>
-            {/* <li>Features</li>
-            <li>Pricing</li> */}
             <li onClick={() => nav("/about")}>About Us</li>
             <li onClick={() => nav("/faq")}>FAQ</li>
+            <li>Pricing</li>
           </ul>
         </aside>
 
-        {/* <aside className="footer-text-holder">
+        <aside className="footer-text-holder">
           <h2>Resources</h2>
           <ul>
             <li>Pregnancy Guide</li>
@@ -76,10 +75,11 @@ const Footer = () => {
             <li>Financial Planning</li>
             <li>Blog</li>
           </ul>
-        </aside> */}
+        </aside>
         <aside className="footer-text-holder">
           <h2>Company</h2>
           <ul>
+            <li>Features</li>
             <li>Contact</li>
             <li onClick={() => nav("/privacySettings")}>Privacy Policy</li>
             <li onClick={() => nav("/terms")}>Terms of Service</li>

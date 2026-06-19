@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from "axios";
+import { toast } from "react-toastify";
 import "./Styles/PatientDetails.css";
 
 export default function PatientDetails() {
   const navigate = useNavigate();
-  const { patientId } = useParams();
+  const { patientId: motherId } = useParams(); // 👈 reads :patientId from the URL, stores as motherId
 
   const [patient, setPatient] = useState(null);
+  const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,93 +17,45 @@ export default function PatientDetails() {
   const token = localStorage.getItem("token");
 
   const fetchPatientDetails = async () => {
-    if (!patientId) {
-      setError("No patient ID provided.");
+    if (!token) {
+      toast.error("Authentication token not found.");
       setLoading(false);
+      setError("Authentication required");
       return;
     }
 
-    if (!token) {
-      toast.error("Authentication token not found.");
-      setError("Authentication required.");
+    if (!motherId) {
+      setError("No patient selected");
       setLoading(false);
       return;
     }
 
     setLoading(true);
     setError(null);
+
     try {
-      const response = await axios.get(
-        `${baseURL}/hospital/verification-requests/${patientId}`,
-        {
+      const [patientRes, dashboardRes] = await Promise.all([
+        axios.get(`${baseURL}/patients/${motherId}`, {
           headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+        }),
+        axios.get(`${baseURL}/patient/dashboard`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { motherId },
+        }),
+      ]);
 
-      const raw = response.data?.data || response.data;
+      const patientData = patientRes.data?.data || patientRes.data || null;
+      const dashboardData =
+        dashboardRes.data?.data || dashboardRes.data || null;
 
-      if (!raw || Object.keys(raw).length === 0) {
-        setError("No patient data found.");
-        setLoading(false);
-        return;
-      }
-
-      // Calculate financial values
-      const savingsGoal =
-        raw.deliverySavingsGoal ||
-        raw.delivery_savings_goal ||
-        raw.savingsGoal ||
-        0;
-      const currentSavings =
-        raw.walletBalance || raw.wallet_balance || raw.currentSavings || 0;
-      const remaining = Math.max(savingsGoal - currentSavings, 0);
-      const progress =
-        savingsGoal > 0
-          ? Math.min(Math.round((currentSavings / savingsGoal) * 100), 100)
-          : 0;
-
-      // Get full name and initials
-      const fullName =
-        raw.patientName || raw.patient_name || raw.name || "Unknown Patient";
-      const initials = fullName
-        .split(" ")
-        .slice(0, 2)
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase();
-
-      // Map API response to component format
-      const mappedPatient = {
-        name: fullName,
-        initials,
-        patientId: raw.patientId || raw.patient_id || raw.id || "—",
-        phone: raw.phoneNumber || raw.phone_number || raw.phone || "—",
-        email: raw.email || raw.emailAddress || "—",
-        pregnancyWeek:
-          raw.pregnancyStage || raw.pregnancy_stage || raw.pregnancyWeek || "—",
-        dueDate: raw.dueDate || raw.due_date || raw.expectedDueDate || "—",
-        hospital:
-          raw.preferredHospital ||
-          raw.preferred_hospital ||
-          raw.hospital ||
-          "—",
-        status: raw.authorizationStatus || raw.status || "Pending",
-        savingsGoal,
-        currentSavings,
-        remaining,
-        progress,
-        lastVerification:
-          raw.lastVerification || raw.last_verification || raw.updatedAt || "—",
-        bills: raw.bills || raw.recentBills || [],
-      };
-
-      setPatient(mappedPatient);
-    } catch (error) {
-      console.error("Error fetching patient details:", error);
-      const errorMessage =
-        error?.response?.data?.message || "Failed to load patient details.";
-      setError(errorMessage);
-      toast.error(errorMessage);
+      setPatient(patientData);
+      setDashboard(dashboardData);
+    } catch (err) {
+      console.error("Error fetching patient details:", err);
+      const msg =
+        err.response?.data?.message || "Failed to load patient details";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -110,162 +63,35 @@ export default function PatientDetails() {
 
   useEffect(() => {
     fetchPatientDetails();
-  }, [patientId]);
+  }, [motherId]);
 
   const handleClose = () => navigate("/dashboard/verifyPatient");
-  const handleUploadBill = () => console.log("Upload new bill");
+  const handleUploadBill = () => {
+    navigate(`/dashboard/uploadNewBill?motherId=${motherId}`);
+  };
 
-  // Loading skeleton
   if (loading) {
     return (
       <div className="patient-details-overlay">
         <div className="patient-details-modal">
-          <div className="patient-details-header">
-            <div>
-              <div
-                className="skeleton-text"
-                style={{ width: "180px", height: "22px" }}
-              />
-              <div
-                className="skeleton-text"
-                style={{ width: "260px", height: "14px", marginTop: "8px" }}
-              />
-            </div>
-            <button className="patient-details-close" onClick={handleClose}>
-              ✕
-            </button>
-          </div>
-          <div className="patient-details-content">
-            <div className="patient-details-grid">
-              <div className="patient-info-card">
-                <div className="patient-header-row">
-                  <div
-                    className="skeleton-avatar"
-                    style={{
-                      width: "48px",
-                      height: "48px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                  <div>
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "140px", height: "18px" }}
-                    />
-                    <div
-                      className="skeleton-text"
-                      style={{
-                        width: "100px",
-                        height: "13px",
-                        marginTop: "4px",
-                      }}
-                    />
-                  </div>
-                </div>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <div className="detail-row" key={i}>
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "120px", height: "13px" }}
-                    />
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "160px", height: "13px" }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="wallet-summary-card">
-                <div
-                  className="skeleton-text"
-                  style={{ width: "120px", height: "18px" }}
-                />
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div className="wallet-item" key={i}>
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "100px", height: "13px" }}
-                    />
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "80px", height: "13px" }}
-                    />
-                  </div>
-                ))}
-                <div
-                  className="skeleton-text"
-                  style={{ width: "100%", height: "8px", marginTop: "12px" }}
-                />
-              </div>
-            </div>
-            <div className="pregnancy-summary-section">
-              <div
-                className="skeleton-text"
-                style={{ width: "160px", height: "18px" }}
-              />
-              <div className="pregnancy-summary-grid">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div className="summary-card" key={i}>
-                    <div
-                      className="skeleton-text"
-                      style={{ width: "80px", height: "11px" }}
-                    />
-                    <div
-                      className="skeleton-text"
-                      style={{
-                        width: "120px",
-                        height: "16px",
-                        marginTop: "4px",
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="patient-details-footer">
-            <button className="btn btn-secondary" onClick={handleClose}>
-              Close
-            </button>
-            <button className="btn btn-primary" disabled>
-              ⬆ Upload New Bill
-            </button>
+          <div style={{ padding: "60px", textAlign: "center" }}>
+            Loading patient details...
           </div>
         </div>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="patient-details-overlay">
         <div className="patient-details-modal">
-          <div className="patient-details-header">
-            <div>
-              <h1 className="patient-details-title">Patient Details</h1>
-              <p className="patient-details-subtitle">
-                Review patient information before uploading a new bill.
-              </p>
-            </div>
-            <button className="patient-details-close" onClick={handleClose}>
-              ✕
-            </button>
-          </div>
-          <div className="patient-details-content">
-            <div className="error-state">
-              <p>{error}</p>
-              <button onClick={fetchPatientDetails} className="retry-btn">
-                Retry
-              </button>
-            </div>
-          </div>
-          <div className="patient-details-footer">
+          <div
+            style={{ padding: "60px", textAlign: "center", color: "#dc2626" }}
+          >
+            <p>{error}</p>
             <button className="btn btn-secondary" onClick={handleClose}>
               Close
-            </button>
-            <button className="btn btn-primary" onClick={handleUploadBill}>
-              ⬆ Upload New Bill
             </button>
           </div>
         </div>
@@ -273,51 +99,57 @@ export default function PatientDetails() {
     );
   }
 
-  if (!patient) {
-    return (
-      <div className="patient-details-overlay">
-        <div className="patient-details-modal">
-          <div className="patient-details-header">
-            <div>
-              <h1 className="patient-details-title">Patient Details</h1>
-              <p className="patient-details-subtitle">
-                Review patient information before uploading a new bill.
-              </p>
-            </div>
-            <button className="patient-details-close" onClick={handleClose}>
-              ✕
-            </button>
-          </div>
-          <div className="patient-details-content">
-            <div className="not-found-state">
-              <p>Patient not found</p>
-            </div>
-          </div>
-          <div className="patient-details-footer">
-            <button className="btn btn-secondary" onClick={handleClose}>
-              Close
-            </button>
-            <button className="btn btn-primary" onClick={handleUploadBill}>
-              ⬆ Upload New Bill
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const fullName = patient?.fullName || "—";
+  const initials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+  const patientId = patient?.maternalId || "—";
+  const phone = patient?.phoneNumber || "—";
+  const email = patient?.email || "—";
+  const pregnancyWeek = patient?.pregnancyWeek
+    ? `Week ${patient.pregnancyWeek}`
+    : dashboard?.pregnancy?.currentWeek
+      ? `Week ${dashboard.pregnancy.currentWeek}`
+      : "—";
+  const dueDate =
+    patient?.expectedDeliveryDate ||
+    dashboard?.pregnancy?.expectedDelivery ||
+    "—";
+  const hospital =
+    patient?.preferredHospital ||
+    dashboard?.pregnancy?.preferredHospital ||
+    "—";
 
-  const p = patient;
-  const savingsGoal = p.savingsGoal || 0;
-  const currentSavings = p.currentSavings || 0;
-  const remaining = p.remaining ?? Math.max(savingsGoal - currentSavings, 0);
-  const progress =
-    p.progress ??
-    Math.min(Math.round((currentSavings / savingsGoal) * 100), 100);
+  const status = dashboard?.pregnancy?.lastVerification?.status || "Pending";
+  const lastVerification = dashboard?.pregnancy?.lastVerification?.verifiedAt
+    ? new Date(
+        dashboard.pregnancy.lastVerification.verifiedAt,
+      ).toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      })
+    : "—";
+
+  const savingsGoal = dashboard?.wallet?.savingsGoal || 0;
+  const currentSavings = dashboard?.wallet?.currentSavings || 0;
+  const remaining =
+    dashboard?.wallet?.remainingAmount ??
+    Math.max(savingsGoal - currentSavings, 0);
+  const progress = dashboard?.wallet?.savingsProgress
+    ? parseFloat(dashboard.wallet.savingsProgress)
+    : savingsGoal
+      ? Math.min(Math.round((currentSavings / savingsGoal) * 100), 100)
+      : 0;
+
+  const bills = dashboard?.recentBills || [];
 
   return (
     <div className="patient-details-overlay">
       <div className="patient-details-modal">
-        {/* Header */}
         <div className="patient-details-header">
           <div>
             <h1 className="patient-details-title">Patient Details</h1>
@@ -330,50 +162,46 @@ export default function PatientDetails() {
           </button>
         </div>
 
-        {/* Main Content */}
         <div className="patient-details-content">
-          {/* Two Column Section */}
           <div className="patient-details-grid">
-            {/* Patient Info Card */}
             <div className="patient-info-card">
               <div className="patient-header-row">
-                <div className="patient-avatar">{p.initials}</div>
+                <div className="patient-avatar">{initials}</div>
                 <div>
-                  <h2 className="patient-name">{p.name}</h2>
-                  <p className="patient-id">ID: {p.patientId}</p>
+                  <h2 className="patient-name">{fullName}</h2>
+                  <p className="patient-id">ID: {patientId}</p>
                 </div>
               </div>
 
               <div className="patient-details-list">
                 <div className="detail-row">
                   <span className="detail-label">Phone Number</span>
-                  <span className="detail-value">{p.phone}</span>
+                  <span className="detail-value">{phone}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Email Address</span>
-                  <span className="detail-value">{p.email}</span>
+                  <span className="detail-value">{email}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Pregnancy Week</span>
-                  <span className="detail-value">{p.pregnancyWeek}</span>
+                  <span className="detail-value">{pregnancyWeek}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Expected Delivery Date</span>
-                  <span className="detail-value">{p.dueDate}</span>
+                  <span className="detail-value">{dueDate}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Preferred Hospital</span>
-                  <span className="detail-value">{p.hospital}</span>
+                  <span className="detail-value">{hospital}</span>
                 </div>
               </div>
             </div>
 
-            {/* Wallet Summary Card */}
             <div className="wallet-summary-card">
               <div className="wallet-header">
                 <h3 className="wallet-title">Wallet Summary</h3>
-                <span className={`wallet-badge ${p.status?.toLowerCase()}`}>
-                  {p.status}
+                <span className={`wallet-badge ${status?.toLowerCase()}`}>
+                  {status}
                 </span>
               </div>
 
@@ -412,30 +240,28 @@ export default function PatientDetails() {
             </div>
           </div>
 
-          {/* Pregnancy Summary Section */}
           <div className="pregnancy-summary-section">
             <h3 className="section-title">Pregnancy Summary</h3>
             <div className="pregnancy-summary-grid">
               <div className="summary-card">
                 <p className="summary-label">CURRENT WEEK</p>
-                <p className="summary-value">{p.pregnancyWeek}</p>
+                <p className="summary-value">{pregnancyWeek}</p>
               </div>
               <div className="summary-card">
                 <p className="summary-label">EXPECTED DELIVERY</p>
-                <p className="summary-value">{p.dueDate}</p>
+                <p className="summary-value">{dueDate}</p>
               </div>
               <div className="summary-card">
                 <p className="summary-label">ASSIGNED HOSPITAL</p>
-                <p className="summary-value">{p.hospital}</p>
+                <p className="summary-value">{hospital}</p>
               </div>
               <div className="summary-card">
                 <p className="summary-label">LAST VERIFICATION</p>
-                <p className="summary-value">{p.lastVerification}</p>
+                <p className="summary-value">{lastVerification}</p>
               </div>
             </div>
           </div>
 
-          {/* Recent Bills Section */}
           <div className="recent-bills-section">
             <h3 className="section-title">Recent Bills</h3>
             <table className="bills-table">
@@ -447,10 +273,12 @@ export default function PatientDetails() {
                 </tr>
               </thead>
               <tbody>
-                {p.bills && p.bills.length > 0 ? (
-                  p.bills.map((bill, idx) => (
+                {bills && bills.length > 0 ? (
+                  bills.map((bill, idx) => (
                     <tr key={idx}>
-                      <td>{bill.type || bill.billType || "—"}</td>
+                      <td>
+                        {bill.category || bill.type || bill.billType || "—"}
+                      </td>
                       <td>
                         {bill.amount
                           ? `₦${Number(bill.amount).toLocaleString()}`
@@ -484,7 +312,6 @@ export default function PatientDetails() {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="patient-details-footer">
           <button className="btn btn-secondary" onClick={handleClose}>
             Close
