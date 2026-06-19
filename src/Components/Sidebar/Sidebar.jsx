@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
-import LogoutModal from "../LogoutModal/LogoutModal";
+import LogoutModal from "../../Auth/LogoutModal/LogoutModal";
 import "./Sidebar.css";
 
 const PROFILE_PATH = "/dashboard/profile";
