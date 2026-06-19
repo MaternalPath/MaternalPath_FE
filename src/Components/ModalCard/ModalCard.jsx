@@ -96,7 +96,8 @@ const EditProfileModal = ({
     });
   };
 
-  const isValid = FIELDS.every((f) => !validateField(f, data?.[f]));
+  const hasImage = data?.imageFile instanceof File || hasValue(data?.profilePicture);
+  const isValid = hasImage && FIELDS.every((f) => !validateField(f, data?.[f]));
   const maxDateForDob = new Date();
   maxDateForDob.setFullYear(maxDateForDob.getFullYear() - 18);
 
@@ -107,6 +108,13 @@ const EditProfileModal = ({
       if (err) newErrors[f] = err;
     });
     setErrors(newErrors);
+
+    if (!hasImage) {
+      setImageError("Please upload a profile picture to continue");
+      if (Object.keys(newErrors).length > 0) return;
+      return;
+    }
+
     if (Object.keys(newErrors).length > 0) return;
     onNext();
   };

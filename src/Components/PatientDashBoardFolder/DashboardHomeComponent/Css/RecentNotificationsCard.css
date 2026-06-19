@@ -89,6 +89,8 @@
           }
 
           .notification-time {
+            display: flex;
+            justify-content: space-between;
             font-size: 12px;
             color: #9ca3af;
           }

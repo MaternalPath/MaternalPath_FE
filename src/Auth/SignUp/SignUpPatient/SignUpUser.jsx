@@ -96,13 +96,25 @@ const SignUp = () => {
 
   const catchPhoneNum = (e) => {
     setShowText(false);
-    const newPhoneNum = e.target.value;
+    const newPhoneNum = e.target.value.replace(/\D/g, "").slice(0, 11);
     setFormData({ ...formData, phoneNumber: newPhoneNum });
-    if (newPhoneNum.trim() === "") {
+    if (newPhoneNum === "") {
       setErrMsg({
         err: true,
         name: "phoneNumber",
         msg: "Your phone number is required",
+      });
+    } else if (newPhoneNum.startsWith("0")) {
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Remove the leading 0 — enter only the last 10 digits",
+      });
+    } else if (newPhoneNum.length !== 10) {
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Phone number must be exactly 10 digits",
       });
     } else {
       setErrMsg({ err: false, name: "", msg: "" });
@@ -184,6 +196,22 @@ const SignUp = () => {
         err: true,
         name: "phoneNumber",
         msg: "Your phone number is required",
+      });
+      return false;
+    }
+    if (formData.phoneNumber.startsWith("0")) {
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Remove the leading 0 — enter only the last 10 digits",
+      });
+      return false;
+    }
+    if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      setErrMsg({
+        err: true,
+        name: "phoneNumber",
+        msg: "Phone number must be exactly 10 digits",
       });
       return false;
     }
@@ -314,16 +342,24 @@ const SignUp = () => {
 
             <div className="form-group">
               <label htmlFor="phoneNumber">Phone Number</label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                placeholder="812 345 6789"
-                value={formData.phoneNumber}
-                onChange={catchPhoneNum}
-                onBlur={catchPhoneNum}
-                onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
-              />
+              <div className="phone-input-wrapper">
+                <span className="phone-input-prefix">+234</span>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="8123456789"
+                  maxLength={10}
+                  value={formData.phoneNumber}
+                  onChange={catchPhoneNum}
+                  onBlur={catchPhoneNum}
+                  onFocus={() => setErrMsg({ err: false, name: "", msg: "" })}
+                />
+              </div>
+              <small style={{ color: "#6b7280", fontSize: "12px" }}>
+                Enter 10 digits without the leading 0 (e.g. 8123456789)
+              </small>
               <span style={{ color: "var(--error-color)", fontSize: "12px" }}>
                 {errMsg.msg && errMsg.name === "phoneNumber" ? errMsg.msg : ""}
               </span>

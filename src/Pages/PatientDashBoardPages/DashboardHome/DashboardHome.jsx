@@ -8,38 +8,17 @@ import WeeklyFocusSection from "../../../Components/PatientDashBoardFolder/Dashb
 import RecentNotificationsCard from "../../../Components/PatientDashBoardFolder/DashboardHomeComponent/RecentNotificationsCard";
 import QuickActions from "../../../Components/PatientDashBoardFolder/NotifyComponent/QuickActions";
 import DashboardSkeleton from "../../../Components/PatientDashBoardFolder/DashboardHomeComponent/DashboardSkeleton";
-import {
-  getPregnancyOverview,
-  getWallet,
-  getTodaysReminder,
-  getRecentNotifications,
-} from "../../../api/mothers";
-
-const settledValue = (result) =>
-  result?.status === "fulfilled" ? result.value : null;
+import { getDashboardOverview } from "../../../api/mothers";
 
 const DashboardHome = () => {
   const [loading, setLoading] = useState(true);
-  const [overview, setOverview] = useState(null);
-  const [wallet, setWallet] = useState(null);
-  const [reminder, setReminder] = useState(null);
-  const [notifications, setNotifications] = useState([]);
+  const [dashboardData, setDashboardData] = useState({});
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const [overviewRes, walletRes, reminderRes, notificationsRes] =
-          await Promise.allSettled([
-            getPregnancyOverview(),
-            getWallet(),
-            getTodaysReminder(),
-            getRecentNotifications(),
-          ]);
-
-        setOverview(settledValue(overviewRes)?.info ?? null);
-        setWallet(settledValue(walletRes)?.info ?? null);
-        setReminder(settledValue(reminderRes));
-        setNotifications(settledValue(notificationsRes)?.data ?? []);
+        const res = await getDashboardOverview();
+        setDashboardData(res);
       } catch (err) {
         console.error("Dashboard load failed:", err);
       } finally {
@@ -64,11 +43,11 @@ const DashboardHome = () => {
     <main className="dashboard">
       <section className="dashboard-container">
         <WelcomeHeader />
-        <PregnancyHeroCard data={overview} />
-        <EmergencyWalletCard data={wallet} />
-        <TodaysRemindersCard reminder={reminder} />
+        <PregnancyHeroCard dashboardData={dashboardData.info} />
+        <EmergencyWalletCard dashboardData={dashboardData.data} />
+        <TodaysRemindersCard dashboardData={dashboardData.reminder} />
         <WeeklyFocusSection />
-        <RecentNotificationsCard notifications={notifications} />
+        <RecentNotificationsCard dashboardData={dashboardData.theWeeksFocus} />
         <QuickActions />
       </section>
     </main>

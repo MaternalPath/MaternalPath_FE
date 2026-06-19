@@ -7,6 +7,7 @@ import SavingsAlerts from "../../../Components/PatientDashBoardFolder/NotifyComp
 import HealthReminders from "../../../Components/PatientDashBoardFolder/NotifyComponent/HealthReminders";
 import QuickActions from "../../../Components/PatientDashBoardFolder/NotifyComponent/QuickActions";
 import "./Notifications.css";
+import { getMotherNotifications } from "../../../api/mothers";
 
 const Notifications = () => {
   const [activeFilter, setActiveFilter] = useState("All Notifications");
@@ -18,6 +19,10 @@ const Notifications = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(()=>{
+    getMotherNotifications()
+  },[])
 
   return (
     <div className="notifications-page">

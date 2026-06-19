@@ -215,6 +215,16 @@
   color: var(--success-accent);
 }
 
+.savings-insights-card .insight-box.track.negative {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.savings-insights-card .insight-box.track.negative .insight-label,
+.savings-insights-card .insight-box.track.negative .insight-text {
+  color: #991b1b;
+}
+
 .savings-insights-card .insight-label {
   color: var(--text-tint);
   font-size: 12px;
@@ -290,6 +300,16 @@
 .savings-insights-card.mobile-carousel .insight-slide.track {
   background: var(--success-bg);
   border: 1px solid var(--success-accent);
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.track.negative {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.savings-insights-card.mobile-carousel .insight-slide.track.negative .insight-label,
+.savings-insights-card.mobile-carousel .insight-slide.track.negative .insight-text {
+  color: #991b1b;
 }
 
 .savings-insights-card.mobile-carousel .insight-content-full .insight-label {

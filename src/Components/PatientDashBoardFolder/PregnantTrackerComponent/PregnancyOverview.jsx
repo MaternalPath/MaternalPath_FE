@@ -90,10 +90,7 @@ const PregnancyOverview = ({ overview }) => {
                 <span className="label">Days Until Due Date</span>
                 <span className="value">{data.daysRemaining} days</span>
               </div>
-              <div className="stat">
-                <span className="label">Baby Size Comparison</span>
-                <span className="value">{data.babySize}</span>
-              </div>
+             
               <div className="stat">
                 <span className="label">Pregnancy Progress</span>
                 <span className="value">{data.progress}% Complete</span>

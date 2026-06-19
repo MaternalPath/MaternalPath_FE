@@ -14,7 +14,7 @@ const formatTime = (value) => {
   });
 };
 
-const RecentNotificationsCard = ({ notifications = [] }) => {
+const RecentNotificationsCard = ({ dashboardData: notifications = [] }) => {
   return (
     <section className="card card-notifications">
       <div className="card-header">
@@ -43,7 +43,8 @@ const RecentNotificationsCard = ({ notifications = [] }) => {
                 <div className="notification-desc">{item.description}</div>
               )}
               <div className="notification-time">
-                {formatTime(item.createdAt ?? item.time)}
+                {formatTime(item.time)}
+                <p>{item.type}</p>
               </div>
             </div>
           </div>
