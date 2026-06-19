@@ -20,17 +20,17 @@ const formatDate = (iso) => {
       });
 };
 
-const PregnancyHeroCard = ({ data }) => {
+const PregnancyHeroCard = ({ dashboardData }) => {
   const trimesterName =
-    TRIMESTER_NAMES[Number(data?.trimester)] ?? "—";
-  const progressValue = parseFloat(data?.pregnancyProgress) || 0;
+    TRIMESTER_NAMES[Number(dashboardData?.trimester)] ?? "—";
+  const progressValue = parseFloat(dashboardData?.pregnancyProgress) || 0;
 
   return (
     <div className="card card-hero">
       <div className="hero-content">
         <div className="hero-left">
           <h2>
-            Week {data?.week ?? "—"}{" "}
+            Week {dashboardData?.week ?? "—"}{" "}
             <span className="trimester">{trimesterName}</span>
           </h2>
           <p className="subtitle">
@@ -40,17 +40,21 @@ const PregnancyHeroCard = ({ data }) => {
           <div className="stats-grid">
             <div className="stat-item">
               <div className="stat-label">Estimated Due Date</div>
-              <div className="stat-value">{formatDate(data?.estimatedDueDate)}</div>
+              <div className="stat-value">
+                {formatDate(dashboardData?.estimatedDueDate)}
+              </div>
             </div>
             <div className="stat-item">
               <div className="stat-label">Days Until Due Date</div>
               <div className="stat-value">
-                {data?.daysUntilDueDate ?? "—"} days
+                {dashboardData?.daysUntilDueDate ?? "—"} days
               </div>
             </div>
             <div className="stat-item">
               <div className="stat-label">Preferred Hospital</div>
-              <div className="stat-value">{data?.preferredHospital ?? "—"}</div>
+              <div className="stat-value">
+                {dashboardData?.preferredHospital ?? "—"}
+              </div>
             </div>
           </div>
 
@@ -63,7 +67,7 @@ const PregnancyHeroCard = ({ data }) => {
               ></div>
             </div>
             <div className="progress-range">
-              <span>Week {data?.week ?? 1}</span>
+              <span>Week {dashboardData?.week ?? 1}</span>
               <span>{progressValue}%</span>
             </div>
           </div>

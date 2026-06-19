@@ -4,7 +4,24 @@ import "./Css/HospitalReadiness.css";
 
 const HospitalReadiness = ({ data }) => {
   const formatCurrency = (num) => `₦${Number(num).toLocaleString()}`;
-  const coverage = Math.round((data.currentBalance / data.savingsGoal) * 100);
+  const coverage = data.savingsGoal
+    ? Math.round((data.currentBalance / data.savingsGoal) * 100)
+    : Number(data.savingsProgress) || 0;
+
+  const toTitleCase = (str) =>
+    String(str || "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(" ");
+
+  const preparednessLabel = toTitleCase(data.preparedness) || "—";
+  const preparednessKey = String(data.preparedness || "").toLowerCase();
+  const badgeClass = preparednessKey.includes("high")
+    ? "high"
+    : preparednessKey.includes("moderate")
+      ? "moderate"
+      : "low";
 
   return (
     <section className="hospital-readiness-card">
@@ -12,11 +29,11 @@ const HospitalReadiness = ({ data }) => {
         <BsHospital />
         <h3>Hospital Readiness</h3>
       </div>
-      
+
       <div className="readiness-stats">
         <div className="stat-item">
           <span className="stat-label">Preferred Hospital</span>
-          <span className="stat-value">Lagos General Hospital</span>
+          <span className="stat-value">{data.preferredHospital || "—"}</span>
         </div>
         <div className="stat-item">
           <span className="stat-label">Estimated Delivery Cost</span>
@@ -28,7 +45,7 @@ const HospitalReadiness = ({ data }) => {
         </div>
         <div className="stat-item">
           <span className="stat-label">Eligibility Status</span>
-          <span className="status-badge moderate">Moderate Preparedness</span>
+          <span className={`status-badge ${badgeClass}`}>{preparednessLabel}</span>
         </div>
       </div>
 

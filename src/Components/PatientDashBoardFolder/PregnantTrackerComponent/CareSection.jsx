@@ -25,6 +25,80 @@ const fallbackTimeline = [
   }
 ];
 
+const REMINDER_ICONS = {
+  vitamin: <FiActivity />,
+  prenatal: <FiActivity />,
+  activity: <FiActivity />,
+  exercise: <FiActivity />,
+  water: <FiDroplet />,
+  hydration: <FiDroplet />,
+  sleep: <FiMoon />,
+  rest: <FiMoon />,
+  appointment: <FiCalendar />,
+  checkup: <FiCalendar />,
+  hospital: <FiCalendar />,
+};
+
+const pickReminderIcon = (title = "") => {
+  const lower = String(title).toLowerCase();
+  for (const key of Object.keys(REMINDER_ICONS)) {
+    if (lower.includes(key)) return REMINDER_ICONS[key];
+  }
+  return <FiActivity />;
+};
+
+const normalizeWeeklyCare = (resp) => {
+  if (!resp) return [];
+  if (resp.data) return normalizeWeeklyCare(resp.data);
+  if (resp.tip) return normalizeWeeklyCare(resp.tip);
+
+  if (Array.isArray(resp)) {
+    return resp
+      .filter(Boolean)
+      .map((item) => {
+        if (typeof item === "string") {
+          return { title: item, desc: "", time: "" };
+        }
+        if (typeof item === "object") {
+          const title =
+            item.title || item.name || item.reminder ||
+            item.message || item.text || "Reminder";
+          return {
+            title,
+            desc:
+              item.desc || item.description || item.details ||
+              item.subtitle || "",
+            time:
+              item.time || item.when || item.schedule ||
+              item.frequency ||
+              (item.week ? `Week ${item.week}` : ""),
+            icon: pickReminderIcon(title),
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+
+  if (typeof resp === "object") {
+    const desc =
+      resp.message || resp.description || resp.details || resp.text || "";
+    const title = resp.title || resp.name || resp.reminder ||
+      (resp.week ? "This Week's Tip" : desc);
+    if (title) {
+      return [{
+        title,
+        desc: title === desc ? "" : desc,
+        time: resp.time || resp.when ||
+          (resp.week ? `Week ${resp.week}` : ""),
+        icon: pickReminderIcon(title + " " + desc),
+      }];
+    }
+  }
+
+  return [];
+};
+
 const parseTrimesterEntry = (entry) => {
   if (!Array.isArray(entry) || entry.length === 0) return null;
 
@@ -38,7 +112,7 @@ const parseTrimesterEntry = (entry) => {
   return { name, status, weeks, tags };
 };
 
-const CareSection = ({ timeline: timelineProp }) => {
+const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
   const [activeMobileIdx, setActiveMobileIdx] = useState(0);
 
   const timeline = useMemo(() => {
@@ -53,10 +127,24 @@ const CareSection = ({ timeline: timelineProp }) => {
     return parsed.length > 0 ? parsed : fallbackTimeline;
   }, [timelineProp]);
 
-  const reminders = [
-    { icon: <FiActivity />, title: "Prenatal Vitamin", desc: "Daily • Morning", status: "Not Started" },
-    { icon: <FiDroplet />, title: "Hydration Goal", desc: "8 glasses today", status: "" }
+  const baseReminders = [
+    { icon: <FiActivity />, title: "Prenatal Vitamin", desc: "Take daily supplement", time: "Morning" },
+    { icon: <FiDroplet />, title: "Hydration Goal", desc: "8 glasses today", time: "Throughout day" },
+    { icon: <FiMoon />, title: "Rest & Sleep", desc: "7-9 hours nightly", time: "Evening" },
+    { icon: <FiCalendar />, title: "Hospital Checkup", desc: "Upcoming appointment", time: "" },
   ];
+
+  const careReminders = useMemo(
+    () => [...baseReminders, ...normalizeWeeklyCare(weeklyCare)],
+    [weeklyCare],
+  );
+
+  const mobileReminders = careReminders.map((item) => ({
+    icon: item.icon || <FiActivity />,
+    title: item.title,
+    desc: item.desc || item.time || "",
+    status: "Not Started",
+  }));
 
   const statusClass = (status) => (status ? status.toLowerCase() : "");
   const activeMobile = timeline[activeMobileIdx] || timeline[0];
@@ -66,45 +154,23 @@ const CareSection = ({ timeline: timelineProp }) => {
       <section className="reminders-card desktop-only">
         <h3 className="section-title">Weekly Care Reminders</h3>
         <div className="reminders-grid">
-          <div className="reminder-item">
-            <div className="reminder-icon"><FiActivity /></div>
-            <div className="reminder-content">
-              <h4>Prenatal Vitamin</h4>
-              <p>Take daily supplement</p>
-              <span className="reminder-time">Morning</span>
+          {careReminders.map((item, i) => (
+            <div key={i} className="reminder-item">
+              <div className="reminder-icon">{item.icon || <FiActivity />}</div>
+              <div className="reminder-content">
+                <h4>{item.title}</h4>
+                {item.desc && <p>{item.desc}</p>}
+                {item.time && <span className="reminder-time">{item.time}</span>}
+              </div>
             </div>
-          </div>
-          <div className="reminder-item">
-            <div className="reminder-icon"><FiDroplet /></div>
-            <div className="reminder-content">
-              <h4>Hydration Goal</h4>
-              <p>8 glasses today</p>
-              <span className="reminder-time">Throughout day</span>
-            </div>
-          </div>
-          <div className="reminder-item">
-            <div className="reminder-icon"><FiMoon /></div>
-            <div className="reminder-content">
-              <h4>Rest & Sleep</h4>
-              <p>7-9 hours nightly</p>
-              <span className="reminder-time">Evening</span>
-            </div>
-          </div>
-          <div className="reminder-item">
-            <div className="reminder-icon"><FiCalendar /></div>
-            <div className="reminder-content">
-              <h4>Hospital Checkup</h4>
-              <p>Upcoming appointment</p>
-              <span className="reminder-time">May 20, 2026</span>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       <section className="mobile-section mobile-only">
         <h3 className="section-title">Weekly Care Reminders</h3>
         <div className="reminders-carousel">
-          {reminders.map((item, i) => (
+          {mobileReminders.map((item, i) => (
             <div key={i} className="reminder-card">
               <div className="reminder-header">
                 <h4>{item.title}</h4>
@@ -116,7 +182,7 @@ const CareSection = ({ timeline: timelineProp }) => {
               <div className="reminder-progress">
                 <div className="progress-line"></div>
               </div>
-              <span className="reminder-status">Not Started</span>
+              <span className="reminder-status">{item.status}</span>
             </div>
           ))}
         </div>

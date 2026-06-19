@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EmergencyWallet.css";
 import WalletHeader from "../../../Components/PatientDashBoardFolder/EmergencyComponent/EmergencyWallet/WalletHeader";
@@ -8,73 +8,129 @@ import TransactionHistory from "../../../Components/PatientDashBoardFolder/Emerg
 import QuickActions from "../../../Components/PatientDashBoardFolder/EmergencyComponent/EmergencyWallet/QuickActions";
 import HospitalReadiness from "../../../Components/PatientDashBoardFolder/EmergencyComponent/EmergencyWallet/HospitalReadiness";
 import ReminderCards from "../../../Components/PatientDashBoardFolder/EmergencyComponent/EmergencyWallet/ReminderCards";
+import EmergencyWalletSkeleton from "../../../Components/PatientDashBoardFolder/EmergencyComponent/EmergencyWallet/EmergencyWalletSkeleton";
+import { getEmergencyWalletInfo } from "../../../api/mothers";
+
+const MONTH_ORDER = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+const formatDueDate = (iso) => {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+const parseNumberFromString = (str) => {
+  if (str === null || str === undefined) return 0;
+  const match = String(str).match(/[\d.]+/);
+  return match ? Number(match[0]) : 0;
+};
+
+const buildMonthlyData = (monthlySavings) => {
+  if (!monthlySavings || typeof monthlySavings !== "object") return [];
+  const now = new Date();
+  const currentMonth = now.toLocaleString("en-US", { month: "long" });
+  const currentIdx = Math.max(0, MONTH_ORDER.indexOf(currentMonth));
+
+  const months = MONTH_ORDER.map((month, idx) => {
+    const amount = Number(monthlySavings[month]) || 0;
+    let status = "pending";
+    if (idx < currentIdx) status = amount > 0 ? "done" : "pending";
+    else if (idx === currentIdx) status = "active";
+    return { month, amount, status };
+  });
+
+  // Show a 6-month window: 3 prior, current, and next 2 (clamped).
+  const start = Math.max(0, currentIdx - 3);
+  const end = Math.min(MONTH_ORDER.length, start + 6);
+  return months.slice(start, end);
+};
+
+const buildTransactions = (history) => {
+  if (!Array.isArray(history)) return [];
+  return history.map((item) => ({
+    date: item.date || item.createdAt || "—",
+    type: item.type || "Contribution",
+    desc: item.description || item.desc || "",
+    amount: Number(item.amount) || 0,
+    status: item.status || "Completed",
+  }));
+};
 
 const EmergencyWallet = () => {
   const navigate = useNavigate();
+  const [walletResp, setWalletResp] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const walletData = {
-    currentBalance: 285000,
-    savingsGoal: 400000,
-    remainingAmount: 115000,
-    estimatedDueDate: "September 18, 2026",
-    daysUntilDue: 128,
-    monthlyDeposit: 60000,
-    lastDeposit: "May 14, 2026",
-    nextScheduled: "June 1, 2026",
-    weeklyContribution: 10000,
-    weeksRemaining: 19,
-  };
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await getEmergencyWalletInfo();
+        if (!cancelled) setWalletResp(resp);
+      } catch (err) {
+        console.error("Failed to load emergency wallet:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  const monthlyData = [
-    { month: "January", amount: 50000, status: "done" },
-    { month: "February", amount: 45000, status: "done" },
-    { month: "March", amount: 50000, status: "done" },
-    { month: "April", amount: 55000, status: "done" },
-    { month: "May", amount: 75000, status: "active" },
-    { month: "June", amount: 40000, status: "pending", isTarget: true },
-  ];
+  const walletData = useMemo(() => {
+    const info = walletResp?.info || {};
+    const insights = walletResp?.data || {};
+    return {
+      currentBalance: Number(info.currentBalance) || 0,
+      savingsGoal: Number(info.savingsGoal) || 0,
+      remainingAmount: Number(info.remainingAmountNeeded) || 0,
+      estimatedDueDate: formatDueDate(info.estimatedDueDate),
+      daysUntilDue: Number(info.daysUntilDueDate) || 0,
+      savingsProgress: Number(info.savingsProgress) || 0,
+      preferredHospital: info.preferredHospital || "—",
+      preparedness: info.preparedness || "",
+      weeksRemaining: parseNumberFromString(
+        insights["Weeks Remaining until Due Date"],
+      ),
+      weeklyContribution: parseNumberFromString(
+        insights["Current weekly contribution"],
+      ),
+      weeklyRecommendationText:
+        insights["WeeklyContributionRecommendation"] || "",
+      onTrackText: insights["On Track"] || "",
+    };
+  }, [walletResp]);
 
-  const transactions = [
-    {
-      date: "May 12, 2026",
-      type: "Contribution",
-      desc: "Monthly savings deposit",
-      amount: 25000,
-      status: "Completed",
-    },
-    {
-      date: "May 05, 2026",
-      type: "Contribution",
-      desc: "Weekly savings deposit",
-      amount: 10000,
-      status: "Completed",
-    },
-    {
-      date: "April 28, 2026",
-      type: "Contribution",
-      desc: "Monthly savings deposit",
-      amount: 30000,
-      status: "Completed",
-    },
-    {
-      date: "April 20, 2026",
-      type: "Contribution",
-      desc: "Weekly savings deposit",
-      amount: 10000,
-      status: "Completed",
-    },
-    {
-      date: "April 12, 2026",
-      type: "Contribution",
-      desc: "Family contribution",
-      amount: 15000,
-      status: "Completed",
-    },
-  ];
+  const monthlyData = useMemo(
+    () => buildMonthlyData(walletResp?.monthlySavings),
+    [walletResp],
+  );
+
+  const transactions = useMemo(
+    () => buildTransactions(walletResp?.history),
+    [walletResp],
+  );
 
   const handleAddFunds = () => {
     navigate("/dashboard/addFunds");
   };
+
+  if (loading) {
+    return (
+      <main className="emergency-wallet-page">
+        <EmergencyWalletSkeleton />
+      </main>
+    );
+  }
 
   return (
     <main className="emergency-wallet-page">

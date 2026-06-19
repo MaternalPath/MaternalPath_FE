@@ -14,11 +14,18 @@ const normalizeReminders = (reminder) => {
         if (typeof item === "object") {
           return {
             title:
-              item.title || item.reminder || item.text ||
+              item.title ||
+              item.reminder ||
+              item.text ||
+              item.message ||
               item.description ||
               "Reminder",
             subtitle:
-              item.subtitle || item.description || item.details || "",
+              item.subtitle ||
+              item.description ||
+              item.details ||
+              item.time ||
+              "",
           };
         }
         return null;
@@ -44,7 +51,7 @@ const normalizeReminders = (reminder) => {
   ];
 };
 
-const TodaysRemindersCard = ({ reminder }) => {
+const TodaysRemindersCard = ({ dashboardData: reminder }) => {
   const items = normalizeReminders(reminder);
 
   return (

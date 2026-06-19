@@ -118,8 +118,10 @@ const normalizeProfileData = (raw) => {
     profilePicture: normalizeImageUrl(
       raw.profilePicture || raw.image || raw.photo,
     ),
-    emergencyContact:
+    phoneNumber: toLocalPhone(raw.phoneNumber || ""),
+    emergencyContact: toLocalPhone(
       raw.emergencyContactNumber || raw.emergencyContact || "",
+    ),
     trimester: normalizeTrimester(raw.trimester),
     hospitalId: raw.hospitalId || raw.preferredHospitalId || "",
     preferredHospital:
@@ -145,7 +147,7 @@ const toLocalPhone = (raw) => {
 };
 
 const Profile = () => {
-  const { setIsUpdated } = useRole();
+  const { setIsUpdated, setProfilePicture } = useRole();
   // Backend truth — drives the cards and the hide-if-filled check
   const [profileData, setProfileData] = useState(INITIAL_PROFILE);
   // In-modal edits this session — not shown on cards until save succeeds
@@ -172,10 +174,14 @@ const Profile = () => {
 
         const flat = flattenResponse(profileResp);
         if (Object.keys(flat).length > 0) {
+          const normalized = normalizeProfileData(flat);
           setProfileData((prev) => ({
             ...prev,
-            ...normalizeProfileData(flat),
+            ...normalized,
           }));
+          if (normalized.profilePicture) {
+            setProfilePicture(normalized.profilePicture);
+          }
         }
         setHospitals(normalizeHospitals(hospitalsResp));
       } catch (error) {
@@ -259,13 +265,20 @@ const Profile = () => {
       const response = await updateMotherProfile(userId, payload);
       const flat = flattenResponse(response);
       if (Object.keys(flat).length > 0) {
+        const normalized = normalizeProfileData({ ...merged, ...flat });
         setProfileData((prev) => ({
           ...prev,
-          ...normalizeProfileData({ ...merged, ...flat }),
+          ...normalized,
         }));
+        if (normalized.profilePicture) {
+          setProfilePicture(normalized.profilePicture);
+        }
       } else {
         // Fall back: trust the merged values we just sent
         setProfileData((prev) => ({ ...prev, ...merged, imageFile: null }));
+        if (merged.profilePicture) {
+          setProfilePicture(merged.profilePicture);
+        }
       }
 
       setDraft({});
@@ -317,7 +330,6 @@ const Profile = () => {
           </p>
         </div>
 
-        {/* Dashboard Grid View cards reading values cleanly */}
         <div className="settings-grid">
           <ProfileHeaderCard
             data={displayData}

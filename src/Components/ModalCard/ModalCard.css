@@ -309,6 +309,47 @@
   pointer-events: none;
 }
 
+/* Phone-number prefix wrapper (e.g. +234) */
+.input-with-prefix {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid var(--input-border, #d4d4d4);
+  border-radius: 8px;
+  background: var(--input-bg, #ffffff);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.input-with-prefix:focus-within {
+  border-color: var(--primary-color, #0f766e);
+}
+
+.input-with-prefix .input-prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: #f3f4f6;
+  color: #525252;
+  font-size: 14px;
+  font-weight: 500;
+  border-right: 1px solid var(--input-border, #d4d4d4);
+  user-select: none;
+}
+
+.input-with-prefix input {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding-left: 12px !important;
+  flex: 1;
+}
+
+.input-with-prefix input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Textarea variant matching standard fields */
 .form-group textarea {
   background-color: var(--input-bg);

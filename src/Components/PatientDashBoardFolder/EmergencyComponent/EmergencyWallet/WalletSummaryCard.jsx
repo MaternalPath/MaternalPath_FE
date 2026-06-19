@@ -4,8 +4,17 @@ import "./Css/WalletSummaryCard.css";
 
 const WalletSummaryCard = ({ data, onAddFunds }) => {
   const formatCurrency = (num) => `₦${Number(num).toLocaleString()}`;
-  const progressPercent = Math.round((data.currentBalance / data.savingsGoal) * 100);
+  const progressPercent = data.savingsGoal
+    ? Math.round((data.currentBalance / data.savingsGoal) * 100)
+    : Number(data.savingsProgress) || 0;
+  const toTitleCase = (str) =>
+    String(str || "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(" ");
   const getReadinessStatus = () => {
+    if (data.preparedness) return toTitleCase(data.preparedness);
     if (progressPercent >= 80) return "Highly Prepared";
     if (progressPercent >= 50) return "Moderate Preparedness";
     return "Needs Attention";
@@ -55,8 +64,8 @@ const WalletSummaryCard = ({ data, onAddFunds }) => {
           <div className="mobile-only">
             <div className="mobile-stats">
               <div className="mobile-stat">
-                <span className="mobile-label">Monthly Deposit</span>
-                <span className="mobile-value">{formatCurrency(data.monthlyDeposit)}</span>
+                <span className="mobile-label">Current Balance</span>
+                <span className="mobile-value">{formatCurrency(data.currentBalance)}</span>
               </div>
               <div className="mobile-stat">
                 <span className="mobile-label">Savings Goal</span>
@@ -68,12 +77,12 @@ const WalletSummaryCard = ({ data, onAddFunds }) => {
             </button>
             <div className="mobile-footer-stats">
               <div className="footer-stat">
-                <span className="label">Last Deposit</span>
-                <span className="value">{data.lastDeposit}</span>
+                <span className="label">Remaining</span>
+                <span className="value">{formatCurrency(data.remainingAmount)}</span>
               </div>
               <div className="footer-stat">
-                <span className="label">Next Scheduled</span>
-                <span className="value">{data.nextScheduled}</span>
+                <span className="label">Due In</span>
+                <span className="value">{data.daysUntilDue} days</span>
               </div>
             </div>
           </div>

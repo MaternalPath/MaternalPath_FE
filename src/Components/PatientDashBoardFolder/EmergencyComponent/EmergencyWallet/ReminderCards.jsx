@@ -4,7 +4,14 @@ import "./Css/ReminderCards.css";
 
 const ReminderCards = ({ data }) => {
   const formatCurrency = (num) => `₦${Number(num).toLocaleString()}`;
-  const progressPercent = Math.round((data.currentBalance / data.savingsGoal) * 100);
+  const progressPercent = data.savingsGoal
+    ? Math.round((data.currentBalance / data.savingsGoal) * 100)
+    : Number(data.savingsProgress) || 0;
+
+  const savingsReminderText =
+    Number(data.weeklyContribution) > 0
+      ? `Your weekly contribution of ${formatCurrency(data.weeklyContribution)} keeps you on track.`
+      : "Set up a weekly contribution to stay on track for your delivery savings.";
 
   return (
     <div className="reminder-cards-grid">
@@ -14,7 +21,7 @@ const ReminderCards = ({ data }) => {
         </div>
         <div className="card-content">
           <h4>Savings Reminder</h4>
-          <p>Your weekly contribution of {formatCurrency(data.weeklyContribution)} is due in 2 days.</p>
+          <p>{savingsReminderText}</p>
         </div>
       </div>
 

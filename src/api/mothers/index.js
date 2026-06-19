@@ -20,6 +20,17 @@ export const getMotherProfile = async () => {
     throw error.response.data.message || "Error getting Profile";
   }
 };
+
+export const getDashboardOverview = async () => {
+  try {
+    const response = await apiClient.get("/dashboard");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response.data.message || "Error getting Profile";
+  }
+};
+
 export const getMotherHospital = async () => {
   try {
     const response = await apiClient.get("/mother/getHospitals");
@@ -47,42 +58,62 @@ export const updateMotherProfile = async (id, profileData) => {
   }
 };
 
-export const getRecentNotifications = async () => {
-  try {
-    const { data } = await apiClient.get("/notice");
-    return data;
-  } catch (error) {
-    console.error("Error loading notifications:", error);
-    throw error;
-  }
-};
-
-export const getPregnancyOverview = async () => {
-  try {
-    const { data } = await apiClient.get("/pregnancyOverview");
-    return data;
-  } catch (error) {
-    console.error("Error loading pregnancy overview:", error);
-    throw error;
-  }
-};
-
-export const getWallet = async () => {
-  try {
-    const { data } = await apiClient.get("/wallet");
-    return data;
-  } catch (error) {
-    console.error("Error loading wallet:", error);
-    throw error;
-  }
-};
-
 export const getTodaysReminder = async () => {
   try {
-    const { data } = await apiClient.get("/todaysReminder");
+    const { data } = await apiClient.get("/mothers/notifications");
     return data;
   } catch (error) {
     console.error("Error loading today's reminder:", error);
+    throw error;
+  }
+};
+
+export const getPregnancyTracker = async () => {
+  try {
+    const { data } = await apiClient.get("/tracker/pregnancyTracker");
+    return data;
+  } catch (error) {
+    console.error("Error loading weekly care reminder:", error);
+    throw error;
+  }
+};
+
+export const getEmergencyWalletInfo = async () => {
+  try {
+    const { data } = await apiClient.get("/emergencyWallet");
+    return data;
+  } catch (error) {
+    console.error("Error loading weekly care reminder:", error);
+    throw error;
+  }
+};
+
+export const getWeeklyGuidance = async () => {
+  try {
+    const { data } = await apiClient.get("/guide/weekly");
+    return data;
+  } catch (error) {
+    console.error("Error loading weekly guidance:", error);
+    throw error;
+  }
+};
+
+export const fundWallet = async (payload) => {
+  try {
+    const { data } = await apiClient.post("/payment/balance", payload);
+    return data;
+  } catch (error) {
+    console.error("Error funding wallet:", error);
+    throw error.response?.data?.message || "Error funding wallet";
+  }
+};
+
+export const getMotherNotifications = async () => {
+  try {
+    const { data } = await apiClient.get("/mothers/notifications");
+    return data;
+  } catch (error) {
+    console.error("Error loading weekly care reminder:", error);
     throw error;
   }
 };

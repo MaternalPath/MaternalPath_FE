@@ -5,7 +5,7 @@ import {
   FiAlertCircle,
   FiFileText,
 } from "react-icons/fi";
-import "./Css/BillSidebar.css";
+import "./Styles/BillSidebar.css";
 
 const BillSidebar = ({ formData, uploadProgress }) => {
   const workflowSteps = [

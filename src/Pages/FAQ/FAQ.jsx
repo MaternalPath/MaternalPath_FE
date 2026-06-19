@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./FaqStyles/FAQ.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { frequentAskquestion } from "./Data";
 
 const FAQ = ({ activeQuestion, searchTerm = "" }) => {
   const [openId, setOpenId] = useState(null);
+  const sectionRef = useRef(null);
 
   const handleToggle = (id) => {
     setOpenId(openId === id ? null : id);
@@ -31,8 +32,19 @@ const FAQ = ({ activeQuestion, searchTerm = "" }) => {
       item.answer.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  useEffect(() => {
+    if (searchTerm.trim() === "") return;
+    const target =
+      filteredQuestions.length > 0
+        ? document.getElementById(`faq-${filteredQuestions[0].id}`)
+        : sectionRef.current;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [searchTerm, filteredQuestions.length]);
+
   return (
-    <section className="Faq-container">
+    <section className="Faq-container" ref={sectionRef}>
       {filteredQuestions.length > 0 ? (
         filteredQuestions.map((item) => (
           <div className="Faqholder" key={item.id} id={`faq-${item.id}`}>

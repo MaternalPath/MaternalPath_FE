@@ -4,7 +4,7 @@ import { BsBank } from "react-icons/bs";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import "../AddFundCom/Css/FundWalletForm.css";
 
-const FundWalletForm = ({ amount, setAmount, paymentMethod, setPaymentMethod, walletData, onSubmit }) => {
+const FundWalletForm = ({ amount, setAmount, paymentMethod, setPaymentMethod, walletData, onSubmit, isSubmitting = false }) => {
   const quickAmounts = [5000, 10000, 20000, 50000];
   const progressPercent = Math.round((walletData.currentBalance / walletData.savingsGoal) * 100);
 
@@ -100,8 +100,12 @@ const FundWalletForm = ({ amount, setAmount, paymentMethod, setPaymentMethod, wa
           </p>
         </div>
 
-        <button type="submit" className="continue-btn">
-          Continue to Payment <HiOutlineArrowRight />
+        <button type="submit" className="continue-btn" disabled={isSubmitting}>
+          {isSubmitting ? "Processing…" : (
+            <>
+              Continue to Payment <HiOutlineArrowRight />
+            </>
+          )}
         </button>
         <p className="redirect-text">You will be redirected to KoraPay secure payment gateway</p>
       </form>

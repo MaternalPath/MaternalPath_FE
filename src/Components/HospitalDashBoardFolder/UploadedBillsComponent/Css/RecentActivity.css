@@ -56,6 +56,12 @@
   gap: 12px;
 }
 
+.panel-lists {
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+}
+
 .activity-item {
   display: flex;
   align-items: flex-start;
@@ -91,6 +97,15 @@
   background-color: #ffffff;
   border-radius: 8px;
   padding: 14px;
+}
+
+.security-items {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* background-color: #ffffff; */
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .security-icon {

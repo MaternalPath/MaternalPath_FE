@@ -61,9 +61,19 @@
         font-weight: 500;
         width: fit-content;
 
+        &.high {
+          background: #dcfce7;
+          color: #166534;
+        }
+
         &.moderate {
           background: #fef3c7;
           color: #92400e;
+        }
+
+        &.low {
+          background: #fee2e2;
+          color: #991b1b;
         }
       }
     }

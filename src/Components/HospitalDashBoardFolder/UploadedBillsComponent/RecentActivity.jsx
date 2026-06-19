@@ -85,9 +85,9 @@ const RecentActivity = () => {
 
       <div className="panel">
         <h2 className="panel-title">Security &amp; Compliance</h2>
-        <div className="panel-list">
+        <div className="panel-lists">
           {securityItems.map((item, index) => (
-            <div className="security-item" key={index}>
+            <div className="security-items" key={index}>
               <span className="security-icon">{item.icon}</span>
               <p className="security-text">{item.text}</p>
             </div>

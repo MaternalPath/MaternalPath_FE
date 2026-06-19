@@ -10,7 +10,11 @@ const QuickActions = () => {
       title: "View Pregnancy Tracker",
       path: "/dashboard/pregnancyTracker",
     },
-    { icon: <FiCreditCard size={18} />, title: "Add to Emergency Wallet" },
+    {
+      icon: <FiCreditCard size={18} />,
+      title: "Add to Emergency Wallet",
+      path: "/dashboard/emergencyWallet",
+    },
   ];
 
   return (

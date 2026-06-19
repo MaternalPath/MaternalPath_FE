@@ -9,7 +9,7 @@ import { useRole } from "../../context/RoleContext";
 
 const DashboardHeader = ({ onMenuClick }) => {
   const navigate = useNavigate();
-  const { role } = useRole();
+  const { role, profilePicture } = useRole();
 
   const handleNotificationsClick = () => {
     const targetRoute =
@@ -55,7 +55,15 @@ const DashboardHeader = ({ onMenuClick }) => {
           onClick={handleProfileClick}
           type="button"
         >
-          <MdOutlinePeopleOutline size={21} />
+          {profilePicture ? (
+            <img
+              src={profilePicture}
+              alt="Profile"
+              className="dashboard-header-avatar-img"
+            />
+          ) : (
+            <MdOutlinePeopleOutline size={21} />
+          )}
         </button>
       </div>
 

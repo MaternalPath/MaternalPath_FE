@@ -9,6 +9,7 @@ import {
 import { toast } from "react-toastify";
 import { getBillDashboardStats } from "../../../api/hospital";
 import "./Css/BillsOverviwe.css";
+import axios from "axios";
 
 const BillsOverview = () => {
   const [stats, setStats] = useState({
@@ -17,8 +18,13 @@ const BillsOverview = () => {
     totalPendingBills: 0,
     totalDeliveryCost: 0,
   });
+  const [billsData, setBillsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [billsLoading, setBillsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem("token");
 
   const fetchBillStats = async () => {
     setLoading(true);
@@ -48,16 +54,107 @@ const BillsOverview = () => {
     }
   };
 
+  const fetchUploadedBills = async () => {
+    if (!token) {
+      toast.error("Authentication token not found.");
+      setBillsLoading(false);
+      return;
+    }
+
+    setBillsLoading(true);
+    try {
+      const response = await axios.get(`${baseURL}/bill/uploaded-bills`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let records = [];
+      if (response?.data?.data && Array.isArray(response.data.data)) {
+        records = response.data.data;
+      } else if (response?.data && Array.isArray(response.data)) {
+        records = response.data;
+      } else if (Array.isArray(response)) {
+        records = response;
+      } else {
+        records = [];
+      }
+
+      console.log("Processed records:", records);
+
+      const formattedBills = records.map((bill, index) => ({
+        id: bill.billId || bill.id || bill._id || `BL-${Date.now()}-${index}`,
+        patient:
+          bill.patientName ||
+          bill.patient ||
+          bill.patient_name ||
+          "Unknown Patient",
+        type: bill.deliveryType || bill.type || bill.delivery_type || "N/A",
+        amount: bill.billAmount || bill.amount || 0,
+        date:
+          bill.uploadDate ||
+          bill.date ||
+          bill.upload_date ||
+          bill.createdAt ||
+          new Date().toISOString().split("T")[0],
+        verification:
+          bill.verificationStatus ||
+          bill.verification ||
+          bill.status ||
+          "Pending",
+        payment:
+          bill.paymentStatus || bill.payment || bill.payment_status || "Unpaid",
+      }));
+
+      setBillsData(formattedBills);
+    } catch (err) {
+      console.error("Error fetching uploaded bills:", err);
+
+      if (err.response) {
+        console.error("Error response:", err.response.data);
+        console.error("Error status:", err.response.status);
+        const msg =
+          err.response.data?.message || "Failed to load uploaded bills";
+        toast.error(msg);
+      } else if (err.request) {
+        console.error("No response received:", err.request);
+        toast.error("No response from server. Please check your connection.");
+      } else {
+        console.error("Error setting up request:", err.message);
+        toast.error("Failed to fetch uploaded bills");
+      }
+
+      setBillsData([]);
+    } finally {
+      setBillsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchBillStats();
+    fetchUploadedBills();
   }, []);
 
   const formatCurrency = (amount) => {
+    const numAmount = typeof amount === "string" ? parseFloat(amount) : amount;
+    if (isNaN(numAmount)) return "₦0.00";
+
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 2,
-    }).format(amount);
+    }).format(numAmount);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString;
+      return date.toISOString().split("T")[0];
+    } catch {
+      return dateString;
+    }
   };
 
   const statsData = [
@@ -88,40 +185,27 @@ const BillsOverview = () => {
     },
   ];
 
-  const billsData = [
-    {
-      id: "BL-2024-001",
-      patient: "Sarah Johnson",
-      type: "C-Section",
-      amount: "₦700,100",
-      date: "2024-05-20",
-      verification: "Verified",
-      payment: "Paid",
-    },
-    {
-      id: "BL-2024-002",
-      patient: "Maria Garcia",
-      type: "Natural Birth",
-      amount: "₦320,500",
-      date: "2024-05-21",
-      verification: "Pending",
-      payment: "Unpaid",
-    },
-    {
-      id: "BL-2024-003",
-      patient: "Emily Chen",
-      type: "C-Section",
-      amount: "₦750,000",
-      date: "2024-05-22",
-      verification: "Requires Review",
-      payment: "Unpaid",
-    },
-  ];
-
   const getStatusClass = (status) => {
-    if (status === "Verified" || status === "Paid") return "badge badge-green";
-    if (status === "Pending") return "badge badge-orange";
-    if (status === "Requires Review" || status === "Unpaid")
+    if (!status) return "badge";
+    const normalized = status.toLowerCase();
+    if (
+      normalized === "verified" ||
+      normalized === "paid" ||
+      normalized === "approved"
+    )
+      return "badge badge-green";
+    if (
+      normalized === "pending" ||
+      normalized === "in progress" ||
+      normalized === "processing"
+    )
+      return "badge badge-orange";
+    if (
+      normalized === "requires review" ||
+      normalized === "unpaid" ||
+      normalized === "rejected" ||
+      normalized === "failed"
+    )
       return "badge badge-red";
     return "badge";
   };
@@ -163,70 +247,86 @@ const BillsOverview = () => {
           <h2>Bill Records</h2>
         </div>
 
-        <table className="records-table">
-          <thead>
-            <tr>
-              <th>Bill ID</th>
-              <th>Patient Name</th>
-              <th>Delivery Type</th>
-              <th>Bill Amount</th>
-              <th>Upload Date</th>
-              <th>Verification Status</th>
-              <th>Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {billsData.map((bill) => (
-              <tr key={bill.id}>
-                <td className="bill-id">{bill.id}</td>
-                <td className="bold-text">{bill.patient}</td>
-                <td>{bill.type}</td>
-                <td>{bill.amount}</td>
-                <td>{bill.date}</td>
-                <td>
-                  <span className={getStatusClass(bill.verification)}>
-                    {bill.verification}
-                  </span>
-                </td>
-                <td>
-                  <span className={getStatusClass(bill.payment)}>
-                    {bill.payment}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {billsLoading ? (
+          <div className="loading-state">
+            <p>Loading bill records...</p>
+          </div>
+        ) : billsData.length === 0 ? (
+          <div className="empty-state">
+            <FiFileText size={48} />
+            <p>No bill records found</p>
+            <span>Upload bills to see them here</span>
+          </div>
+        ) : (
+          <>
+            <table className="records-table">
+              <thead>
+                <tr>
+                  <th>Bill ID</th>
+                  <th>Patient Name</th>
+                  <th>Delivery Type</th>
+                  <th>Bill Amount</th>
+                  <th>Upload Date</th>
+                  <th>Verification Status</th>
+                  <th>Payment Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {billsData.map((bill) => (
+                  <tr key={bill.id}>
+                    <td className="bill-id">{bill.id}</td>
+                    <td className="bold-text">{bill.patient}</td>
+                    <td>{bill.type}</td>
+                    <td>{formatCurrency(bill.amount)}</td>
+                    <td>{formatDate(bill.date)}</td>
+                    <td>
+                      <span className={getStatusClass(bill.verification)}>
+                        {bill.verification}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={getStatusClass(bill.payment)}>
+                        {bill.payment}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-        <div className="records-cards">
-          {billsData.map((bill) => (
-            <div className="record-card" key={bill.id}>
-              <div className="record-card-top">
-                <span className="bill-id">{bill.id}</span>
-                <span className="more">
-                  <FiMoreVertical />
-                </span>
-              </div>
-              <h3 className="bold-text">{bill.patient}</h3>
-              <p className="record-meta">
-                {bill.type} • {bill.date}
-              </p>
+            <div className="records-cards">
+              {billsData.map((bill) => (
+                <div className="record-card" key={bill.id}>
+                  <div className="record-card-top">
+                    <span className="bill-id">{bill.id}</span>
+                    <span className="more">
+                      <FiMoreVertical />
+                    </span>
+                  </div>
+                  <h3 className="bold-text">{bill.patient}</h3>
+                  <p className="record-meta">
+                    {bill.type} • {formatDate(bill.date)}
+                  </p>
 
-              <p className="amount-label">AMOUNT</p>
-              <div className="amount-row">
-                <span className="amount-value">{bill.amount}</span>
-                <div className="amount-badges">
-                  <span className={getStatusClass(bill.verification)}>
-                    {bill.verification}
-                  </span>
-                  <span className={getStatusClass(bill.payment)}>
-                    {bill.payment}
-                  </span>
+                  <p className="amount-label">AMOUNT</p>
+                  <div className="amount-row">
+                    <span className="amount-value">
+                      {formatCurrency(bill.amount)}
+                    </span>
+                    <div className="amount-badges">
+                      <span className={getStatusClass(bill.verification)}>
+                        {bill.verification}
+                      </span>
+                      <span className={getStatusClass(bill.payment)}>
+                        {bill.payment}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
