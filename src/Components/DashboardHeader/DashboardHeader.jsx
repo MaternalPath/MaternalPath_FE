@@ -25,7 +25,7 @@ const DashboardHeader = ({ onMenuClick }) => {
       //     ? "/dashboard/settingsHospital"
       //     : "/dashboard/profile";
       // navigate(targetRoute);
-      navigate("/dashboard/profile");
+      navigate("/dashboard/settingsHospital");
   };
 
   return (
