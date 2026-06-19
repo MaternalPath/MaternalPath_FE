@@ -192,7 +192,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px 16px;
-  max-width: 400px;
+  max-width: 480px;
   margin-bottom: 24px;
 }
 
@@ -206,6 +206,37 @@
   flex: 1;
   font-size: 14px;
   color: var(--text-primary);
+}
+
+.search-trigger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  background: var(--primary-teal);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.search-trigger-btn:hover:not(:disabled) {
+  background: #0d3d3d;
+}
+
+.search-trigger-btn:active:not(:disabled) {
+  background: #082a2a;
+}
+
+.search-trigger-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Desktop Table */
@@ -613,6 +644,7 @@
 
   .search-bar {
     max-width: 100%;
+    flex-wrap: wrap;
   }
 
   .patient-table {
@@ -626,5 +658,9 @@
 
   .mobile-only {
     display: flex;
+  }
+
+  .search-trigger-btn {
+    width: 100%;
   }
 }

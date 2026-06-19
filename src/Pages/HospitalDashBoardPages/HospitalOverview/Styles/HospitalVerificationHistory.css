@@ -1,39 +1,64 @@
+.hospital-verification-history-loading,
+.hospital-verification-history-empty {
+  padding: 32px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.hospital-verification-history-error {
+  padding: 32px;
+  text-align: center;
+  color: #dc2626;
+}
+
+.hospital-verification-history-error .retry-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: #1f6e5f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .hospital-verification-history-container {
   width: 100%;
   padding: 20px;
-  /* background-color: #f5f5f5; */
-  min-height: 90vh;
+  background-color: #f7f5f2;
+  min-height: 100vh;
+  min-height: max-content;
   display: flex;
 }
 
 .hospital-verification-history-card {
-  width: 100%;
-  max-width: 650px;
+  width: 65%;
+  background-color: #eaf2e7;
+  border: 1px solid#D4D4D4;
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  background-color: #eaf2e7;
-  border: 1px solid #d4d4d4;
 }
 
-.hospital-history-header {
+.hospital-verification-history-header {
   margin-bottom: 28px;
 }
 
-.hospital-history-title {
+.hospital-verification-history-title {
   margin: 0;
   margin-bottom: 8px;
-  color: #171717;
   font-weight: 400;
   font-style: Regular;
   font-size: 18.98px;
   line-height: 29.52px;
   letter-spacing: 0px;
+  color: #171717;
 }
 
-.hospital-history-subtitle {
-  color: #525252;
+.hospital-verification-history-subtitle {
   margin: 0;
+  color: #525252;
+  font-family: Arimo;
   font-weight: 400;
   font-style: Regular;
   font-size: 14.76px;
@@ -41,64 +66,59 @@
   letter-spacing: 0px;
 }
 
-.hospital-table-wrapper {
+.hospital-verification-history-table-wrapper {
   width: 100%;
   overflow-x: auto;
   border: 1px solid #d4d4d4;
-  border-radius: 10px;
+  border-radius: 10.54px;
 }
 
-.hospital-verification-table {
+.hospital-verification-history-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: transparent;
   border: 1px solid #d0e8e4;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 671px;
-  height: 366px;
 }
 
-.hospital-verification-table thead {
+.hospital-verification-history-table thead {
   background-color: #fafafa;
-  width: 671px;
-  height: 59px;
-  border-bottom-width: 1.05px #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
 }
 
-.hospital-verification-table th {
-  padding: 16px 25px;
+.hospital-verification-history-table th {
+  padding: 16px 20px;
   text-align: left;
+  color: #525252;
+  font-family: Arimo;
   font-weight: 700;
   font-style: Bold;
   font-size: 12.65px;
   line-height: 16.87px;
   letter-spacing: 0px;
-  color: #525252;
-  width: 100%;
 }
 
-.hospital-verification-table tbody tr {
+.hospital-verification-history-table tbody tr {
   border-bottom: 1px solid #f0f0f0;
   transition: background-color 0.2s ease;
-  /* max-width: 671px; */
 }
 
-.hospital-verification-table tbody tr:last-child {
+.hospital-verification-history-table tbody tr:last-child {
   border-bottom: none;
 }
 
-.hospital-verification-table td {
-  padding: 18px 10px;
+.hospital-verification-history-table td {
+  padding: 18px 20px;
   font-weight: 400;
   font-style: Regular;
-  font-size: 14px;
+  font-size: 14.76px;
   line-height: 21.08px;
   letter-spacing: 0px;
   color: #171717;
-  border-bottom: 1px solid #e5e5e5;
 }
 
-.hospital-status-badge {
+.hospital-verification-history-status-badge {
   display: inline-block;
   padding: 6px 14px;
   border-radius: 20px;
@@ -108,36 +128,55 @@
   min-width: 80px;
 }
 
-.hospital-status-approved {
-  background-color: #c8f0e4;
-  color: #00796b;
-  border: 1px solid #a8e6d9;
+.hospital-verification-history-status-approved {
+  background-color: #dcfce7;
+  color: #016630;
+  border: 1px solid #7bf1a8;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12.65px;
+  line-height: 16.87px;
+  letter-spacing: 0px;
 }
 
-.hospital-status-pending {
-  background-color: #fff5e1;
-  color: #e65100;
-  border: 1px solid #ffe0b2;
+.hospital-verification-history-status-pending {
+  background-color: #fef3c6;
+  color: #973c00;
+  border: 1px solid #ffd230;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12.65px;
+  line-height: 16.87px;
+  letter-spacing: 0px;
 }
 
-.hospital-status-declined {
-  background-color: #fce4ec;
-  color: #c2185b;
-  border: 1px solid #f8bbd0;
+.hospital-verification-history-status-declined {
+  background-color: #ffe2e2;
+  color: #9f0712;
+  border: 1px solid #ffa2a2;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12.65px;
+  line-height: 16.87px;
+  letter-spacing: 0px;
 }
+
+/* ==================== */
+/* RESPONSIVE DESIGN */
+/* ==================== */
 
 @media (max-width: 768px) {
   .hospital-verification-history-card {
     padding: 20px;
   }
 
-  .hospital-verification-table th,
-  .hospital-verification-table td {
+  .hospital-verification-history-table th,
+  .hospital-verification-history-table td {
     padding: 12px 10px;
     font-size: 12px;
   }
 
-  .hospital-history-title {
+  .hospital-verification-history-title {
     font-size: 20px;
   }
 }
@@ -151,23 +190,23 @@
     padding: 16px;
   }
 
-  .hospital-verification-table th,
-  .hospital-verification-table td {
+  .hospital-verification-history-table th,
+  .hospital-verification-history-table td {
     padding: 10px 8px;
     font-size: 11px;
   }
 
-  .hospital-status-badge {
+  .hospital-verification-history-status-badge {
     padding: 4px 10px;
     font-size: 11px;
     min-width: 70px;
   }
 
-  .hospital-history-title {
+  .hospital-verification-history-title {
     font-size: 18px;
   }
 
-  .hospital-history-subtitle {
+  .hospital-verification-history-subtitle {
     font-size: 12px;
   }
 }

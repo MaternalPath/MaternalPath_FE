@@ -13,7 +13,7 @@ export const getHospitalDashboardStats = async () => {
 };
 
 export const searchPatient = async (searchTerm) => {
-  const { data } = await apiClient.get("/hospital/search-patient", {
+  const { data } = await apiClient.get("/hospital/search", {
     params: { search: searchTerm },
   });
   console.log("Search patient response:", data);
