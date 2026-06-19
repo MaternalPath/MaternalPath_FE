@@ -1,6 +1,7 @@
 .emergency-wallet-page {
   min-height: 100vh;
-  background: var(--bg-shade);
+  /* background: var(--bg-shade); */
+background-color: #f7f5f2;
   padding: 15px;
   font-family: var(--font-family);
   margin: 0 auto;
