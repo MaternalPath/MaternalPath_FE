@@ -1,11 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   FiUser,
   FiFileText,
   FiUploadCloud,
   FiSearch,
-  FiMenu,
-  FiX,
+  FiAlignLeft,
 } from "react-icons/fi";
 import "./Styles/BillForm.css";
 
@@ -16,6 +15,17 @@ const BillForm = ({
   setUploadProgress,
 }) => {
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!formData.file) {
+      const mockFile = new File([""], "ANC_Invoice_Smith_9982.pdf", {
+        type: "application/pdf",
+      });
+      Object.defineProperty(mockFile, "size", { value: 1.4 * 1024 * 1024 });
+      onChange("file", mockFile);
+      setUploadProgress(75);
+    }
+  }, []);
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -45,6 +55,11 @@ const BillForm = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const formatFileSize = (bytes) => {
+    if (!bytes) return "0 MB";
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
   return (
     <div className="bill-form">
       <div className="form-card">
@@ -59,7 +74,7 @@ const BillForm = ({
               <input
                 type="text"
                 placeholder="Start typing name..."
-                value={formData.fullName}
+                value={formData.fullName || "Chidinma Okonkwo"}
                 onChange={(e) => onChange("fullName", e.target.value)}
               />
               <FiSearch className="icon-right" />
@@ -70,7 +85,8 @@ const BillForm = ({
             <label>Maternal ID</label>
             <input
               type="text"
-              value={formData.maternalId}
+              placeholder="MP-2024-6890"
+              value={formData.maternalId || "MP-2024-6890"}
               onChange={(e) => onChange("maternalId", e.target.value)}
             />
           </div>
@@ -79,7 +95,8 @@ const BillForm = ({
             <label>Phone Number</label>
             <input
               type="text"
-              value={formData.phoneNumber}
+              placeholder="+234 80 000 0000"
+              value={formData.phoneNumber || "+234 80 000 0000"}
               onChange={(e) => onChange("phoneNumber", e.target.value)}
             />
           </div>
@@ -88,8 +105,8 @@ const BillForm = ({
             <label>Expected Delivery Date (EDD)</label>
             <input
               type="text"
-              placeholder="mm/dd/yyyy"
-              value={formData.edd}
+              placeholder="10/12/2025"
+              value={formData.edd || "10/12/2025"}
               onChange={(e) => onChange("edd", e.target.value)}
             />
           </div>
@@ -101,12 +118,13 @@ const BillForm = ({
           <FiFileText /> Bill Details
         </h3>
 
-        <div className="form-grid">
-          <div className="form-group">
+        <div className="bill-details-grid">
+          <div className="form-group full-width">
             <label>Reference Number</label>
             <input
               type="text"
-              value={formData.referenceNumber}
+              placeholder="INV-2024-001"
+              value={formData.referenceNumber || "INV-2024-001"}
               onChange={(e) => onChange("referenceNumber", e.target.value)}
             />
           </div>
@@ -199,10 +217,12 @@ const BillForm = ({
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
-              <span className="file-size">1.4 MB</span>
+              <span className="file-size">
+                {formatFileSize(formData.file.size)}
+              </span>
             </div>
             <div className="file-status">
-              <span>Uploading... {uploadProgress}%</span>
+              <span>uploading... {uploadProgress}%</span>
               <button onClick={cancelUpload} className="cancel-btn">
                 Cancel
               </button>
@@ -213,9 +233,10 @@ const BillForm = ({
 
       <div className="form-card">
         <h3 className="card-title">
-          <FiMenu /> Additional Notes
+          <FiAlignLeft /> Additional Notes
         </h3>
         <textarea
+          className="notes-textarea"
           placeholder="Add any clinical context or special billing instructions here..."
           value={formData.notes}
           onChange={(e) => onChange("notes", e.target.value)}
@@ -224,8 +245,12 @@ const BillForm = ({
       </div>
 
       <div className="form-actions">
-        <button className="btn-outline">Cancel Upload</button>
-        <button className="btn-primary">Submit for Verification</button>
+        <button className="btn-outline" type="button">
+          Cancel Upload
+        </button>
+        <button className="btn-primary" type="button">
+          Submit for Verification
+        </button>
       </div>
     </div>
   );

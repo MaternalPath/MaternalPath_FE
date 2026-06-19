@@ -21,6 +21,7 @@ const VerifyPatient = () => {
   const [patients, setPatients] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
   const [activityLoading, setActivityLoading] = useState(true);
 
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -37,6 +38,17 @@ const VerifyPatient = () => {
     { icon: <Lock size={18} />, label: "Encrypted Verification" },
     { icon: <BadgeCheck size={18} />, label: "Authorized Access" },
   ];
+
+  const mapPatient = (item) => ({
+    id: item.id,
+    name: item.patientName || item.patient_name || "Unknown Patient",
+    week: item.pregnancyWeek || item.pregnancy_stage || "Week 0",
+    dueDate: item.dueDate || item.expectedDueDate || "N/A",
+    hospital: item.preferredHospital || item.hospital || "Not specified",
+    balance: item.amountRequested || item.amount || "₦0",
+    goal: Math.round((item.walletBalance / item.deliveryGoal) * 100) || 0,
+    status: item.authorizationStatus || item.status || "Pending",
+  });
 
   const fetchVerificationRequests = async () => {
     if (!token) {
@@ -57,19 +69,7 @@ const VerifyPatient = () => {
       );
 
       const data = response.data?.data || response.data || [];
-
-      const mappedPatients = data.map((item) => ({
-        id: item.id,
-        name: item.patientName || item.patient_name || "Unknown Patient",
-        week: item.pregnancyWeek || item.pregnancy_stage || "Week 0",
-        dueDate: item.dueDate || item.expectedDueDate || "N/A",
-        hospital: item.preferredHospital || item.hospital || "Not specified",
-        balance: item.amountRequested || item.amount || "₦0",
-        goal: Math.round((item.walletBalance / item.deliveryGoal) * 100) || 0,
-        status: item.authorizationStatus || item.status || "Pending",
-      }));
-
-      setPatients(mappedPatients);
+      setPatients(data.map(mapPatient));
     } catch (error) {
       console.error("Error fetching verification requests:", error);
       toast.error(
@@ -79,6 +79,50 @@ const VerifyPatient = () => {
       setPatients([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = async () => {
+    const query = searchTerm.trim();
+
+    if (!query) {
+      fetchVerificationRequests();
+      return;
+    }
+
+    if (!token) {
+      toast.error("Authentication token not found.");
+      return;
+    }
+
+    setSearching(true);
+    try {
+      const response = await axios.get(`${baseURL}/hospital/search`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { search: query },
+      });
+
+      const data = response.data?.data || response.data;
+      const results = Array.isArray(data) ? data : data ? [data] : [];
+
+      if (results.length === 0) {
+        setPatients([]);
+        toast.info("No patient found matching that search.");
+      } else {
+        setPatients(results.map(mapPatient));
+      }
+    } catch (error) {
+      console.error("Error searching patient:", error);
+      toast.error(error?.response?.data?.message || "Failed to search patient");
+      setPatients([]);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
     }
   };
 
@@ -117,13 +161,6 @@ const VerifyPatient = () => {
     fetchVerificationRequests();
     fetchRecentNotifications();
   }, []);
-
-  const filteredPatients = patients.filter(
-    (patient) =>
-      patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.hospital.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.id.toString().includes(searchTerm),
-  );
 
   const handleViewProfile = (id) => {
     navigate(`/dashboard/patientDetails/${id}`);
@@ -252,6 +289,8 @@ const VerifyPatient = () => {
     </div>
   );
 
+  const isLoadingList = loading || searching;
+
   return (
     <main className="verify-fund-page">
       <section className="page-headers">
@@ -268,10 +307,19 @@ const VerifyPatient = () => {
         <Search size={15} />
         <input
           type="text"
-          placeholder="Search by patient name, ID, or hospital..."
+          placeholder="Search by Patient ID or Phone Number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
         />
+        <button
+          type="button"
+          className="search-trigger-btn"
+          onClick={handleSearch}
+          disabled={searching}
+        >
+          {searching ? "Searching..." : "Search"}
+        </button>
       </div>
 
       <div className="patient-table">
@@ -284,15 +332,15 @@ const VerifyPatient = () => {
           <span>GOAL</span>
           <span>STATUS</span>
         </div>
-        {loading ? (
+        {isLoadingList ? (
           <>
             <SkeletonRow />
             <SkeletonRow />
             <SkeletonRow />
             <SkeletonRow />
           </>
-        ) : filteredPatients.length > 0 ? (
-          filteredPatients.map((patient) => (
+        ) : patients.length > 0 ? (
+          patients.map((patient) => (
             <div className="table-row" key={patient.id}>
               <div className="patient-info">
                 <div className="avatar">
@@ -330,14 +378,14 @@ const VerifyPatient = () => {
             {patients.filter((p) => p.status === "Pending").length} Pending
           </span>
         </div>
-        {loading ? (
+        {isLoadingList ? (
           <>
             <SkeletonCard />
             <SkeletonCard />
             <SkeletonCard />
           </>
-        ) : filteredPatients.length > 0 ? (
-          filteredPatients.map((patient) => (
+        ) : patients.length > 0 ? (
+          patients.map((patient) => (
             <div className="patient-card" key={patient.id}>
               <div className="card-header">
                 <div className="card-user">

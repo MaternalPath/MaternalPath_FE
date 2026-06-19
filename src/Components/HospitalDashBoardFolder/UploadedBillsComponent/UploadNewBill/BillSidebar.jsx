@@ -1,9 +1,10 @@
 import React from "react";
 import {
   FiCheckCircle,
-  FiClock,
   FiAlertCircle,
+  FiClock,
   FiFileText,
+  FiCheck,
 } from "react-icons/fi";
 import "./Styles/BillSidebar.css";
 
@@ -36,15 +37,28 @@ const BillSidebar = ({ formData, uploadProgress }) => {
   ];
 
   const validationItems = [
-    { label: "Patient ID matched", status: "valid", icon: FiCheckCircle },
+    {
+      label: "Patient ID matched",
+      status: "valid",
+      icon: FiCheckCircle,
+    },
     {
       label: "File upload progress",
-      status: uploadProgress > 0 ? "progress" : "pending",
+      status:
+        uploadProgress > 0 && uploadProgress < 100 ? "progress" : "pending",
       icon: FiAlertCircle,
       value: `${uploadProgress}%`,
     },
-    { label: "Billing Verification", status: "pending", icon: FiClock },
-    { label: "Required fields complete", status: "pending", icon: FiClock },
+    {
+      label: "Billing Verification",
+      status: "pending",
+      icon: FiClock,
+    },
+    {
+      label: "Required fields complete",
+      status: "pending",
+      icon: FiClock,
+    },
   ];
 
   const showSummary = formData.file && uploadProgress >= 75;
@@ -59,7 +73,7 @@ const BillSidebar = ({ formData, uploadProgress }) => {
               <div className="step-indicator">
                 {step.status === "active" ? (
                   <div className="step-circle active">
-                    <FiCheckCircle />
+                    <FiCheck />
                   </div>
                 ) : (
                   <div className="step-circle"></div>
@@ -125,11 +139,6 @@ const BillSidebar = ({ formData, uploadProgress }) => {
           <div className="summary-status">Status: Pending Submission</div>
         </div>
       )}
-
-      <div className="sidebar-actions mobile-only">
-        <button className="btn-primary full">Submit for Verification</button>
-        <button className="btn-outline full">Cancel Upload</button>
-      </div>
     </div>
   );
 };

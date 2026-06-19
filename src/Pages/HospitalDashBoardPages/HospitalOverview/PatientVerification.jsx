@@ -6,8 +6,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { FiBell } from "react-icons/fi";
 import { toast, ToastContainer } from "react-toastify";
-import { searchPatient } from "../../../api/hospital";
-import axios from "axios";
+import { searchPatient, getRecentNotifications } from "../../../api/hospital";
 
 const PatientVerification = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -17,20 +16,13 @@ const PatientVerification = () => {
   const [notifications, setNotifications] = useState([]);
   const [notifLoading, setNotifLoading] = useState(true);
 
-  const baseURL = import.meta.env.VITE_BASE_URL;
-  const token = localStorage.getItem("token");
-
+  // Fetch recent notifications
   const fetchRecentNotifications = async () => {
-    if (!token) return;
-
     setNotifLoading(true);
     try {
-      const response = await axios.get(`${baseURL}/notifications/recent`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = response.data?.data || response.data || [];
-      setNotifications(data);
+      const data = await getRecentNotifications();
+      const notificationsList = data?.data || data || [];
+      setNotifications(notificationsList);
     } catch (err) {
       console.error("Error fetching notifications:", err);
     } finally {
@@ -117,7 +109,7 @@ const PatientVerification = () => {
 
   return (
     <div className="patient-verification-container">
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <div className="patient-verification-section">
         <div className="patient-verification-section-header">
           <h2 className="patient-verification-section-title">
@@ -132,7 +124,7 @@ const PatientVerification = () => {
           <input
             type="text"
             className="patient-verification-search-input"
-            placeholder="Enter Patient ID or Phone Number"
+            placeholder="Enter Patient ID or Phone Number (e.g., MP-2024-889 or 08012345678)"
             value={searchInput}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
