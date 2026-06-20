@@ -16,6 +16,7 @@
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
+  margin-left: 260px; /* offset for fixed sidebar */
 }
 
 /* Profile Lock Banner */
@@ -142,8 +143,8 @@
 
 .mobile-drawer-link.active {
   background: #eff6ff;
-  color: #0F766E;
-  border-left-color: #0F766E;
+  color: #0f766e;
+  border-left-color: #0f766e;
   font-weight: 600;
 }
 
@@ -187,6 +188,7 @@
 
   .dashboard-content {
     padding: 2rem;
+    margin-left: 260px; /* keep offset on desktop */
   }
 }
 
@@ -194,13 +196,15 @@
 @media (max-width: 1023px) {
   .dashboard-content {
     padding: 1.25rem;
+    margin-left: 0; /* sidebar hides below 1024px */
   }
 }
 
 /* Mobile adjustments */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .dashboard-content {
     padding: 1rem;
+    margin-left: 0; /* sidebar is display: none */
   }
 
   .profile-lock-banner {
