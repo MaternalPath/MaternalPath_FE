@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { FiX, FiLogOut, FiAlertCircle } from "react-icons/fi";
 import DashboardHeader from "../../Components/DashboardHeader/DashboardHeader";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
+import LogoutModal from "../../Auth/LogoutModal/LogoutModal"; // add this
 import logo from "../../assets/header.png";
 
 import "./Dashboard.css";
@@ -13,18 +14,19 @@ const PROFILE_PATH = "/dashboard/profile";
 
 const Dashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // add this
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const navigate = useNavigate();
   const { role, logout, isUpdated } = useRole();
   const navItems = getNavItems(role);
 
   const isLocked = role === "mother" && !isUpdated;
 
-  const handleLogout = () => {
+  const handleConfirmLogout = () => {
+    // rename from handleLogout
     logout();
     closeMobileMenu();
-    navigate("/login");
+    setShowLogoutModal(false);
   };
 
   // navigation should remain available even when profile is incomplete;
@@ -47,27 +49,29 @@ const Dashboard = () => {
         </div>
 
         <nav className="mobile-drawer-nav">
-          {navItems.map((item) => {
-            const locked = isLinkLocked(item.path);
-            return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.end}
-                onClick={() => closeMobileMenu()}
-                className={({ isActive }) =>
-                  `mobile-drawer-link ${isActive ? "active" : ""}`
-                }
-              >
-                {item.label}
-              </NavLink>
-            );
-          })}
+          <div className="mobile-drawer-links">
+            {navItems.map((item) => {
+              const locked = isLinkLocked(item.path);
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.end}
+                  onClick={() => closeMobileMenu()}
+                  className={({ isActive }) =>
+                    `mobile-drawer-link ${isActive ? "active" : ""}`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              );
+            })}
+          </div>
 
           <button
             type="button"
             className="mobile-drawer-logout"
-            onClick={handleLogout}
+            onClick={() => setShowLogoutModal(true)}
           >
             <FiLogOut size={18} />
             <span>Logout</span>
@@ -90,6 +94,13 @@ const Dashboard = () => {
           <Outlet />
         </main>
       </div>
+
+      {/* Add modal here - same as Sidebar */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onLogout={handleConfirmLogout}
+      />
     </div>
   );
 };

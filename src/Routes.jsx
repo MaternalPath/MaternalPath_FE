@@ -13,6 +13,7 @@ import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
 import VerifyHosOTP from "./Pages/OtpFolder/OtpHospital/VerifyHosOTP";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import DashboardIndex from "./Pages/Dashboard/DashboardIndex ";
 import PregnancyTracker from "./Pages/PatientDashBoardPages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/PatientDashBoardPages/EmergencyWallet/EmergencyWallet";
 import AddFunds from "./Components/PatientDashBoardFolder/EmergencyComponent/AddFundCom/AddFunds";
@@ -45,15 +46,6 @@ import PrivateRouting from "./Lib/PrivateRouting";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 import PatientDetails from "./Components/HospitalDashBoardFolder/UploadedBillsComponent/UploadNewBill/PatientDetails";
 
-const DashboardIndex = () => {
-  const { role } = useRole();
-  return role === "hospital" ? (
-    <Navigate to="/dashboard/hospitalOverview" replace />
-  ) : (
-    <DashboardHome />
-  );
-};
-
 const AppRoutes = () => (
   <Router>
     <ScrollToTop />
@@ -73,16 +65,13 @@ const AppRoutes = () => (
         path="/hospitalForgotPassword"
         element={<HospitalForgotPassword />}
       />
-
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
       <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
       <Route path="/terms" element={<TermsLayout />} />
       <Route path="/privacySettings" element={<PrivacySettings />} />
       <Route path="/fundsSuccess" element={<FundsSuccess />} />
-
       <Route path="/faq" element={<FaqHome />} />
-
       <Route path="/uploadNewBill" element={<UploadNewBill />} />
 
       <Route element={<PrivateRouting />}>
@@ -96,7 +85,6 @@ const AppRoutes = () => (
             element={<PatientDetails />}
           />
           <Route path="uploadedBills" element={<UploadedBills />} />
-
           <Route path="verificationHistory" element={<VerificationHistory />} />
           <Route
             path="notificationsHospital"
@@ -104,7 +92,6 @@ const AppRoutes = () => (
           />
           <Route path="settingsHospital" element={<SettingsHospital />} />
           <Route path="settings" element={<Settings />} />
-
           <Route path="pregnancyTracker" element={<PregnancyTracker />} />
           <Route path="emergencyWallet" element={<EmergencyWallet />} />
           <Route path="addFunds" element={<AddFunds />} />

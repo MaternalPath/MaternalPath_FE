@@ -8,7 +8,7 @@ const PrivateRouting = () => {
   return token ? (
     <Outlet />
   ) : (
-    <Navigate to="/getStarted" state={{ from: location }} replace />
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };
 

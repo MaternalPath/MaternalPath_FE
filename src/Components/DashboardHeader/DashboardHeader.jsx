@@ -21,11 +21,11 @@ const DashboardHeader = ({ onMenuClick }) => {
 
   const handleProfileClick = () => {
     const targetRoute =
-      //   role === "hospital"
-      //     ? "/dashboard/settingsHospital"
-      //     : "/dashboard/profile";
-      // navigate(targetRoute);
-      navigate("/dashboard/settingsHospital");
+        role === "hospital"
+          ? "/dashboard/settingsHospital"
+          : "/dashboard/profile";
+      navigate(targetRoute);
+      // navigate("/dashboard/settingsHospital");
   };
 
   return (
