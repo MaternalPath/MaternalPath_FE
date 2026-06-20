@@ -136,8 +136,8 @@ const EmergencyWalletModal = ({
   );
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
+    <div className="modals-overlay">
+      <div className="modals-container">
         <div className="modal-header">
           <h2>Edit Savings Goal</h2>
           <button className="close-btn" onClick={onClose} aria-label="Close">

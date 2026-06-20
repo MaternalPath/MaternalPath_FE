@@ -120,8 +120,8 @@ const EditProfileModal = ({
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container scrollable-modal">
+    <div className="modals-overlay">
+      <div className="modals-container scrollable-modal">
         <div className="modal-header">
           <h2>Edit Profile</h2>
           <button className="close-btn" onClick={onClose} aria-label="Close">
