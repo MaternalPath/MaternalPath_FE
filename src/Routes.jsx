@@ -39,7 +39,7 @@ import Settings from "./Pages/Settings/Settings";
 import HospitalForgotPassword from "./Pages/ForgotPassword/HospitalForgotPassword";
 import TeamSection from "./Components/AboutComponent/TeamSection";
 import TermsLayout from "./Pages/TermsLayout/TermsLayout";
-import UploadNewBill from "./Components/HospitalDashBoardFolder/UploadedBillsComponent/UploadNewBill/UploadNewBill";
+import UploadNewBill from "./Pages/HospitalDashBoardPages/VerifyPatient/UploadNewBill/UploadNewBill";
 import PrivacySettings from "./Pages/PrivacySettingsLayout/PrivacySettings";
 import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
 import PrivateRouting from "./Lib/PrivateRouting";

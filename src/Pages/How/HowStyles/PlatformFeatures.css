@@ -136,7 +136,7 @@
 @media (max-width: 1024px) {
   .PlatformFeatures-container {
     gap: 24px;
-    justify-content: space-between;
+    justify-content: center;
   }
 }
 
@@ -154,7 +154,7 @@
 }
 
 .FeaturesHolder {
-  width: 594px;
+  width: 590px;
   max-width: 100%;
   height: auto;
   min-height: 394px;
@@ -169,14 +169,14 @@
 
 @media (max-width: 1200px) {
   .FeaturesHolder {
-    width: 550px;
+    width: 456px;
     padding: 20px 25px;
   }
 }
 
 @media (max-width: 1024px) {
   .FeaturesHolder {
-    width: calc(50% - 12px);
+    width: 437px;
     min-width: unset;
     padding: 20px 24px;
   }

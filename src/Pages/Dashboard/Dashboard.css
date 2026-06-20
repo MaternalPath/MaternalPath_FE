@@ -143,6 +143,12 @@
   font-weight: 600;
 }
 
+.mobile-drawer-link.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .mobile-drawer-logout {
   display: flex;
   align-items: center;
@@ -188,7 +194,7 @@
 @media (max-width: 1023px) {
   .dashboard-content {
     padding: 1.25rem;
-    margin-left: 0; 
+    margin-left: 0;
   }
 }
 
