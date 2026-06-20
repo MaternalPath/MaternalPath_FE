@@ -3,7 +3,14 @@ import { createPortal } from 'react-dom';
 import { FiLogOut, FiX } from 'react-icons/fi';
 import './LogoutModal.css';
 
-export default function LogoutModal({ isOpen, onClose, onLogout }) {
+export default function LogoutModal({ 
+  isOpen, 
+  onClose, 
+  onLogout,
+  title = "Log out of your account?",
+  description = "You’ll be returned to the login screen. You can always log back in.", // new
+  confirmText = "Log Out"
+}) {
   useEffect(() => {
     if (!isOpen) return;
 
@@ -40,11 +47,11 @@ export default function LogoutModal({ isOpen, onClose, onLogout }) {
         </div>
 
         <h2 id="logout-modal-title" className="logout-modal-title">
-          Log out of your account?
+          {title}
         </h2>
 
         <p className="logout-modal-text">
-          You’ll be returned to the login screen. You can always log back in.
+          {description}
         </p>
 
         <div className="logout-modal-actions">
@@ -52,7 +59,7 @@ export default function LogoutModal({ isOpen, onClose, onLogout }) {
             Cancel
           </button>
           <button className="btn-logout" onClick={onLogout}>
-            Log Out
+            {confirmText}
           </button>
         </div>
       </div>

@@ -36,11 +36,8 @@ const LoginPage = () => {
     rememberMe: false,
   });
 
-  // Redirect once token exists - let DashboardIndex handle routing
   useEffect(() => {
     if (token) {
-      // Always reset to /dashboard on login
-      // DashboardIndex will handle role-based redirect from there
       nav("/dashboard", { replace: true });
     }
   }, [token, nav]);
@@ -161,7 +158,6 @@ const LoginPage = () => {
       const isUpdated = Boolean(response?.data?.isUpdated);
       setIsUpdated(isUpdated);
       login(response?.data?.token, userType); // set context data only
-      // DO NOT navigate here - useEffect handles it
     }
   };
 
