@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   MdEmail,
@@ -24,8 +24,8 @@ const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 const LoginPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { role: defaultRole, login, setIsUpdated } = useRole();
-  const [userType, setUserType] = useState(defaultRole);
+  const { login, setIsUpdated, token } = useRole(); // removed role: defaultRole
+  const [userType, setUserType] = useState("mother"); // hardcoded, not defaultRole
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -35,6 +35,15 @@ const LoginPage = () => {
     password: "",
     rememberMe: false,
   });
+
+  // Redirect once token exists - let DashboardIndex handle routing
+  useEffect(() => {
+    if (token) {
+      // Always reset to /dashboard on login
+      // DashboardIndex will handle role-based redirect from there
+      nav("/dashboard", { replace: true });
+    }
+  }, [token, nav]);
 
   const validateField = (name, value) => {
     let error = "";
@@ -110,7 +119,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error("Login API error:", error);
       toast.error(
-        error?.response?.data?.message || error.message || "Login failed"
+        error?.response?.data?.message || error.message || "Login failed",
       );
       return null;
     } finally {
@@ -128,9 +137,6 @@ const LoginPage = () => {
 
     const response = await loginApi();
     if (response?.status === 200) {
-      login(response?.data?.token, userType);
-
-
       const userId =
         response?.data?.id ||
         response?.data?.userId ||
@@ -152,16 +158,10 @@ const LoginPage = () => {
         "";
       if (name) localStorage.setItem("name", name);
 
-      const from = location.state?.from?.pathname || "/dashboard";
-
-      if (userType === "mother") {
-        const isUpdated = Boolean(response?.data?.isUpdated);
-        setIsUpdated(isUpdated);
-        nav(isUpdated ? from : "/dashboard/profile", { replace: true });
-      } else {
-        setIsUpdated(false);
-        nav(from === "/getStarted" ? "/dashboard" : from, { replace: true });
-      }
+      const isUpdated = Boolean(response?.data?.isUpdated);
+      setIsUpdated(isUpdated);
+      login(response?.data?.token, userType); // set context data only
+      // DO NOT navigate here - useEffect handles it
     }
   };
 
@@ -322,7 +322,6 @@ const LoginPage = () => {
             <div className="mp-bottom-links">
               <Link to="/signupUser">For Pregnant Mothers ›</Link>
               <Link to="/signupHospital">For Healthcare Professionals ›</Link>
-
             </div>
           </div>
         </div>

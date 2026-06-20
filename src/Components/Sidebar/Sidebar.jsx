@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom"; // removed useNavigate
 import { FiLogOut } from "react-icons/fi";
 import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
@@ -9,15 +9,13 @@ import "./Sidebar.css";
 const PROFILE_PATH = "/dashboard/profile";
 
 const Sidebar = ({ isLocked = false }) => {
-  const navigate = useNavigate();
-  const { role, logout } = useRole();
+  const { role, logout } = useRole(); // removed navigate
   const navItems = getNavItems(role);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleConfirmLogout = () => {
-    logout();
+    logout(); // PrivateRouting will redirect to /login automatically
     setShowLogoutModal(false);
-    navigate("/login");
   };
 
   return (
