@@ -7,7 +7,7 @@ import logo from "/src/assets/header.png";
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../context/RoleContext";
 
-const DashboardHeader = ({ onMenuClick }) => {
+const DashboardHeader = ({ onMenuClick, onLogoutClick }) => {
   const navigate = useNavigate();
   const { role, profilePicture } = useRole();
 
@@ -21,11 +21,10 @@ const DashboardHeader = ({ onMenuClick }) => {
 
   const handleProfileClick = () => {
     const targetRoute =
-        role === "hospital"
-          ? "/dashboard/settingsHospital"
-          : "/dashboard/profile";
-      navigate(targetRoute);
-      // navigate("/dashboard/settingsHospital");
+      role === "hospital"
+        ? "/dashboard/settingsHospital"
+        : "/dashboard/profile";
+    navigate(targetRoute);
   };
 
   return (
@@ -33,9 +32,11 @@ const DashboardHeader = ({ onMenuClick }) => {
       <div className="sidebar-logo">
         <img
           src={logo}
-          onClick={() => navigate("/")}
+          onClick={onLogoutClick}
           alt="MaternalPath"
           className="sidebar-logo-image"
+          style={{ cursor: "pointer" }}
+          title="Exit to homepage"
         />
       </div>
 

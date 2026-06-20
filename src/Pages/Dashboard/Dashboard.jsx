@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { FiX, FiLogOut, FiAlertCircle } from "react-icons/fi";
 import DashboardHeader from "../../Components/DashboardHeader/DashboardHeader";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
-import LogoutModal from "../../Auth/LogoutModal/LogoutModal"; // add this
+import LogoutModal from "../../Auth/LogoutModal/LogoutModal";
 import logo from "../../assets/header.png";
 
 import "./Dashboard.css";
@@ -14,28 +14,44 @@ const PROFILE_PATH = "/dashboard/profile";
 
 const Dashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false); // add this
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutMode, setLogoutMode] = useState("login");
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const navigate = useNavigate();
 
   const { role, logout, isUpdated } = useRole();
   const navItems = getNavItems(role);
 
   const isLocked = role === "mother" && !isUpdated;
 
-  const handleConfirmLogout = () => {
-    // rename from handleLogout
-    logout();
-    closeMobileMenu();
-    setShowLogoutModal(false);
+  const handleLogoLogout = () => {
+    setLogoutMode("landing");
+    setShowLogoutModal(true);
   };
 
-  // navigation should remain available even when profile is incomplete;
-  // `isLocked` is used only to show the reminder banner until the profile is updated
+  const handleSidebarLogout = () => {
+    setLogoutMode("login");
+    setShowLogoutModal(true);
+  };
+
+  const handleConfirmLogout = () => {
+    logout();
+    setShowLogoutModal(false);
+    closeMobileMenu();
+
+    if (logoutMode === "landing") {
+      window.location.href = "/";
+    }
+  };
+
   const isLinkLocked = () => false;
 
   return (
     <div className="dashboard-layout">
-      <DashboardHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
+      <DashboardHeader
+        onMenuClick={() => setIsMobileMenuOpen(true)}
+        onLogoutClick={handleLogoLogout}
+      />
 
       {isMobileMenuOpen && (
         <div className="mobile-drawer-backdrop" onClick={closeMobileMenu}></div>
@@ -71,7 +87,7 @@ const Dashboard = () => {
           <button
             type="button"
             className="mobile-drawer-logout"
-            onClick={() => setShowLogoutModal(true)}
+            onClick={handleSidebarLogout}
           >
             <FiLogOut size={18} />
             <span>Logout</span>
@@ -80,7 +96,7 @@ const Dashboard = () => {
       </aside>
 
       <div className="dashboard-body">
-        <Sidebar isLocked={false} />
+        <Sidebar isLocked={false} onLogoutClick={handleSidebarLogout} />
         <main className="dashboard-content">
           {isLocked && (
             <div className="profile-lock-banner" role="alert">
@@ -95,11 +111,21 @@ const Dashboard = () => {
         </main>
       </div>
 
-      {/* Add modal here - same as Sidebar */}
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
         onLogout={handleConfirmLogout}
+        title={
+          logoutMode === "landing"
+            ? "Leave dashboard?"
+            : "Log out of your account?"
+        }
+        description={
+          logoutMode === "landing"
+            ? "You’ll be logged out and returned to the homepage."
+            : "You’ll be returned to the login screen. You can always log back in."
+        }
+        confirmText={logoutMode === "landing" ? "Go to Homepage" : "Log Out"}
       />
     </div>
   );
