@@ -44,7 +44,7 @@ import PrivacySettings from "./Pages/PrivacySettingsLayout/PrivacySettings";
 import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
 import PrivateRouting from "./Lib/PrivateRouting";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
-import PatientDetails from "./Components/HospitalDashBoardFolder/UploadedBillsComponent/UploadNewBill/PatientDetails";
+import PatientDetails from "./Pages/HospitalDashBoardPages/VerifyPatient/PatientDetails";
 
 const AppRoutes = () => (
   <Router>
