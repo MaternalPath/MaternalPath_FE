@@ -368,10 +368,16 @@ export default function PatientDetails() {
         </div>
 
         <div className="patient-details-footer">
-          <button className="btnDetails btnDetails-secondary" onClick={handleClose}>
+          <button
+            className="btnDetails btnDetails-secondary"
+            onClick={handleClose}
+          >
             Close
           </button>
-          <button className="btnDetails btnDetails-primary" onClick={handleUploadBill}>
+          <button
+            className="btnDetails btnDetails-primary"
+            onClick={handleUploadBill}
+          >
             ⬆ Upload New Bill
           </button>
         </div>
