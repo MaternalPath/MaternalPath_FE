@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import "./VerifyPatient.css";
+import "./Styles/VerifyPatient.css";
 import BabyIcon from "../../../assets/babyhead.png";
 import SearchIcon from "../../../assets/searchIcon.png";
 import { useNavigate } from "react-router-dom";
