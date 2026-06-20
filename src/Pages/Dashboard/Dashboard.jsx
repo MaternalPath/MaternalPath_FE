@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FiX, FiLogOut, FiAlertCircle } from "react-icons/fi";
 import DashboardHeader from "../../Components/DashboardHeader/DashboardHeader";
 import Sidebar from "../../Components/Sidebar/Sidebar";
@@ -7,7 +7,6 @@ import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
 import LogoutModal from "../../Auth/LogoutModal/LogoutModal";
 import logo from "../../assets/header.png";
-
 import "./Dashboard.css";
 
 const PROFILE_PATH = "/dashboard/profile";
@@ -18,6 +17,7 @@ const Dashboard = () => {
   const [logoutMode, setLogoutMode] = useState("login");
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { role, logout, isUpdated } = useRole();
   const navItems = getNavItems(role);
@@ -44,7 +44,7 @@ const Dashboard = () => {
     }
   };
 
-  const isLinkLocked = () => false;
+  const isLinkLocked = (path) => isLocked && path !== PROFILE_PATH;
 
   return (
     <div className="dashboard-layout">
@@ -73,9 +73,18 @@ const Dashboard = () => {
                   key={item.path}
                   to={item.path}
                   end={item.end}
-                  onClick={() => closeMobileMenu()}
+                  onClick={(e) => {
+                    if (locked) {
+                      e.preventDefault();
+                      return;
+                    }
+                    closeMobileMenu();
+                  }}
+                  aria-disabled={locked}
+                  tabIndex={locked ? -1 : undefined}
+                  title={locked ? "Complete your profile to unlock" : undefined}
                   className={({ isActive }) =>
-                    `mobile-drawer-link ${isActive ? "active" : ""}`
+                    `mobile-drawer-link ${isActive ? "active" : ""} ${locked ? "disabled" : ""}`
                   }
                 >
                   {item.label}
@@ -96,7 +105,7 @@ const Dashboard = () => {
       </aside>
 
       <div className="dashboard-body">
-        <Sidebar isLocked={false} onLogoutClick={handleSidebarLogout} />
+        <Sidebar isLocked={isLocked} onLogoutClick={handleSidebarLogout} />
         <main className="dashboard-content">
           {isLocked && (
             <div className="profile-lock-banner" role="alert">
