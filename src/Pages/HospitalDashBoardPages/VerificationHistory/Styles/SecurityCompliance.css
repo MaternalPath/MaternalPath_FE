@@ -1,6 +1,4 @@
 .security-compliance-container {
-  background-color: #e5f4f2;
-  padding: 48px 20px;
   min-height: 50vh;
   display: flex;
   align-items: center;
@@ -11,7 +9,7 @@
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
-  background-color: #eaf2e7;
+  background-color: #e9f7e6;
   min-height: 257px;
   width: 1000;
   border-radius: 12px;

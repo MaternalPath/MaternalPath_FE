@@ -176,7 +176,7 @@ const CheckEmail = () => {
 
           <button
             onClick={handleVerify}
-            className={`btn-primary ${isLoading ? "loading" : ""}`}
+            className={`btn-check-primary ${isLoading ? "loading" : ""}`}
             disabled={isLoading || code.join("").length !== CODE_LENGTH}
           >
             {isLoading ? "Verifying..." : "Verify Code"}

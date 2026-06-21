@@ -15,26 +15,28 @@
 .hospital-verification-history-error .retry-btn {
   margin-top: 12px;
   padding: 8px 16px;
-  background-color: #1f6e5f;
+  background-color: #0c5e58;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hospital-verification-history-error .retry-btn:hover {
+  background-color: #00796b;
 }
 
 .hospital-verification-history-container {
   width: 100%;
-  padding: 20px;
-  background-color: #f7f5f2;
-  min-height: 100vh;
-  min-height: max-content;
-  display: flex;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .hospital-verification-history-card {
-  width: 65%;
+  width: 100%;
   background-color: #eaf2e7;
-  border: 1px solid#D4D4D4;
+  border: 1px solid #d4d4d4;
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -48,38 +50,30 @@
   margin: 0;
   margin-bottom: 8px;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 18.98px;
-  line-height: 29.52px;
-  letter-spacing: 0px;
+  font-size: 19px;
+  line-height: 30px;
   color: #171717;
 }
 
 .hospital-verification-history-subtitle {
   margin: 0;
   color: #525252;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
 }
 
 .hospital-verification-history-table-wrapper {
   width: 100%;
   overflow-x: auto;
   border: 1px solid #d4d4d4;
-  border-radius: 10.54px;
+  border-radius: 10px;
 }
 
 .hospital-verification-history-table {
   width: 100%;
   border-collapse: collapse;
   background-color: transparent;
-  border: 1px solid #d0e8e4;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .hospital-verification-history-table thead {
@@ -91,12 +85,10 @@
   padding: 16px 20px;
   text-align: left;
   color: #525252;
-  font-family: Arimo;
   font-weight: 700;
-  font-style: Bold;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
+  white-space: nowrap;
 }
 
 .hospital-verification-history-table tbody tr {
@@ -108,13 +100,15 @@
   border-bottom: none;
 }
 
+.hospital-verification-history-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .hospital-verification-history-table td {
   padding: 18px 20px;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
   color: #171717;
 }
 
@@ -122,48 +116,37 @@
   display: inline-block;
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17px;
   text-align: center;
   min-width: 80px;
+  white-space: nowrap;
 }
 
 .hospital-verification-history-status-approved {
   background-color: #dcfce7;
   color: #016630;
   border: 1px solid #7bf1a8;
-  font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
 }
 
 .hospital-verification-history-status-pending {
   background-color: #fef3c6;
   color: #973c00;
   border: 1px solid #ffd230;
-  font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
 }
 
 .hospital-verification-history-status-declined {
   background-color: #ffe2e2;
   color: #9f0712;
   border: 1px solid #ffa2a2;
-  font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
 }
 
-/* ==================== */
-/* RESPONSIVE DESIGN */
-/* ==================== */
+@media (max-width: 1024px) {
+  .hospital-verification-history-card {
+    padding: 24px;
+  }
+}
 
 @media (max-width: 768px) {
   .hospital-verification-history-card {
@@ -173,27 +156,27 @@
   .hospital-verification-history-table th,
   .hospital-verification-history-table td {
     padding: 12px 10px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .hospital-verification-history-title {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 
 @media (max-width: 480px) {
   .hospital-verification-history-container {
-    padding: 10px;
+    padding: 0;
+    margin-top: 1rem;
   }
-
   .hospital-verification-history-card {
-    padding: 16px;
+    padding: 12px;
   }
 
   .hospital-verification-history-table th,
   .hospital-verification-history-table td {
     padding: 10px 8px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .hospital-verification-history-status-badge {
@@ -203,10 +186,10 @@
   }
 
   .hospital-verification-history-title {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .hospital-verification-history-subtitle {
-    font-size: 12px;
+    font-size: 13px;
   }
 }

@@ -62,9 +62,8 @@
   /* gap: 8px; */
 }
 
-.activity-item {
+.activitys-item {
   display: flex;
-  align-items: flex-start;
   gap: 12px;
   background-color: #ffffff;
   border-left: 4px solid #1f3d2e;
@@ -72,12 +71,12 @@
   padding: 12px 14px;
 }
 
-.activity-icon {
+.activitys-icon {
   font-size: 16px;
   color: #1f3d2e;
 }
 
-.activity-text {
+.activitys-text {
   font-size: 14px;
   font-weight: 500;
   color: #1f3d2e;

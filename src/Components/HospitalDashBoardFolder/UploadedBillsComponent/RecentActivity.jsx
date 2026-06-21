@@ -57,12 +57,12 @@ const RecentActivity = () => {
               </div>
             ))
           ) : activities.length === 0 ? (
-            <div className="activity-item">
-              <span className="activity-icon">
+            <div className="activitys-item">
+              <span className="activitys-icon">
                 <FiBell />
               </span>
               <div>
-                <p className="activity-text">No recent activity</p>
+                <p className="activitys-text">No recent activity</p>
               </div>
             </div>
           ) : (

@@ -78,7 +78,6 @@ const RecentActivity = () => {
   }, []);
 
   return (
-    <div className="recent-activity-container">
       <div className="recent-activity-wrapper">
         <div className="recent-activity-top-section">
           <div className="recent-activity-timeline-section">
@@ -149,7 +148,6 @@ const RecentActivity = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

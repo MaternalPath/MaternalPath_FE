@@ -20,14 +20,15 @@
   margin: 0;
 }
 
-.recent-activity-container {
+/* .recents-activity-container {
   background-color: #f5f4ef;
   padding: 16px;
-}
+} */
 
 .recent-activity-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin-top: 22px;
+  margin-bottom: 22px;
 }
 
 .recent-activity-top-section {
