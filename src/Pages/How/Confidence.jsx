@@ -17,7 +17,7 @@ const Confidence = () => {
         </button>
         <button className="confidence-btn2">Learn More</button>
       </section>
-      <div className="confidence-notice">
+      <div className="confidences-notice">
         <strong style={{marginRight: "5px"}}>Important: </strong> This platform provides educational wellness support and does
         not replace professional medical advice. Always consult your healthcare
         provider for medical decisions.

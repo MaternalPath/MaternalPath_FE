@@ -20,7 +20,7 @@
 }
 
 .header-wrapper {
-  width: 92%;
+  width: 92.5%;
   height: 100%;
 }
 
@@ -150,6 +150,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
+  padding-right: 10px;
 }
 
 @media (max-width: 1200px) {

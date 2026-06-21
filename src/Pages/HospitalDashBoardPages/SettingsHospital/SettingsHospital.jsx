@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SettingsStyles/SettingsHospital.css";
 import SecuritySettings from "./SecuritySettings";
 import NotificationPreferences from "./NotificationPreferences";
@@ -9,18 +9,89 @@ import { RiUser3Line } from "react-icons/ri";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { IoCallOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const SettingsHospital = () => {
   const [formData, setFormData] = useState({
-    hospitalName: "St. Mary's Hospital",
-    adminFullName: "Dr. Emily Carter",
-    deliveryAmount: "300,000.00",
-    phoneNumber: "+1 (555) 123-4567",
-    hospitalAddress:
-      "123 Healthcare Drive, Medical District, City, State 12345",
+    hospitalName: "",
+    deliveryAmount: "",
+    phoneNumber: "",
+    hospitalAddress: "",
   });
 
+  const [logoUrl, setLogoUrl] = useState(null);
+  const [originalData, setOriginalData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  const serverOrigin = baseURL?.replace(/\/api\/v\d+\/?$/, "");
+  const token = localStorage.getItem("token");
+
+  const fetchHospitalProfile = async () => {
+    if (!token) {
+      toast.error("Authentication token not found.");
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${baseURL}/hospital/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("Full API response:", response);
+      const profile = response.data?.data || response.data || {};
+      console.log("Profile data:", profile);
+
+      const mapped = {
+        hospitalName: profile.hospitalName || "",
+        deliveryAmount:
+          profile.deliveryFee !== undefined && profile.deliveryFee !== null
+            ? Number(profile.deliveryFee).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })
+            : "",
+        phoneNumber: profile.phoneNumber || "",
+        hospitalAddress: profile.address || "",
+      };
+
+      setFormData(mapped);
+      setOriginalData(mapped);
+
+      if (profile.hospitalLogo) {
+        console.log("Logo path from API:", profile.hospitalLogo);
+
+        if (
+          profile.hospitalLogo.startsWith("http://") ||
+          profile.hospitalLogo.startsWith("https://")
+        ) {
+          setLogoUrl(profile.hospitalLogo);
+          console.log("Logo is full URL:", profile.hospitalLogo);
+        } else {
+          const fullLogoUrl = `${serverOrigin}${profile.hospitalLogo}`;
+          setLogoUrl(fullLogoUrl);
+          console.log("Full logo URL:", fullLogoUrl);
+        }
+      } else {
+        setLogoUrl(null);
+        console.log("No logo found");
+      }
+    } catch (error) {
+      console.error("Error fetching hospital profile:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to load hospital profile",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHospitalProfile();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,13 +103,11 @@ const SettingsHospital = () => {
 
   const handleUploadLogo = (e) => {
     console.log("[v0] Logo upload triggered");
-    // Handle logo upload logic here
   };
 
   const handleSaveChanges = () => {
     setIsSaving(true);
     console.log("[v0] Saving changes:", formData);
-    // Simulate save action
     setTimeout(() => {
       setIsSaving(false);
       console.log("[v0] Changes saved successfully");
@@ -47,19 +116,14 @@ const SettingsHospital = () => {
 
   const handleResetSettings = () => {
     console.log("[v0] Resetting settings");
-    // Reset logic would go here
-    setFormData({
-      hospitalName: "St. Mary's Hospital",
-      adminFullName: "Dr. Emily Carter",
-      deliveryAmount: "300,000.00",
-      phoneNumber: "+1 (555) 123-4567",
-      hospitalAddress:
-        "123 Healthcare Drive, Medical District, City, State 12345",
-    });
+    if (originalData) {
+      setFormData(originalData);
+    }
   };
 
   return (
     <>
+      <ToastContainer />
       <div className="hospital-settings-container">
         <div className="hospital-settings-header">
           <div className="hospital-settings-title-section">
@@ -114,7 +178,15 @@ const SettingsHospital = () => {
 
             <div className="hospital-logo-upload-section">
               <div className="hospital-logo-icon-container">
-                <PiBuildingOffice className="hospital-logo-icon" />
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt="Hospital logo"
+                    className="hospital-logo-image"
+                  />
+                ) : (
+                  <PiBuildingOffice className="hospital-logo-icon" />
+                )}
               </div>
               <div className="hospital-logo-info">
                 <h3 className="hospital-logo-title">Hospital Logo</h3>
@@ -131,82 +203,75 @@ const SettingsHospital = () => {
               </div>
             </div>
 
-            <div className="hospital-form-grid">
-              <div className="hospital-form-group">
-                <label className="hospital-form-label">Hospital Name</label>
-                <div className="hospital-input-wrapper">
-                  <PiBuildingOffice className="hospital-input-icon" />
-                  <input
-                    type="text"
-                    name="hospitalName"
-                    value={formData.hospitalName}
-                    onChange={handleInputChange}
-                    className="hospital-form-input"
-                    placeholder="St. Mary's Hospital"
-                  />
-                </div>
+            {isLoading ? (
+              <div className="hospital-settings-loading">
+                Loading hospital profile...
               </div>
+            ) : (
+              <div className="hospital-form-grid">
+                <div className="hospital-form-group">
+                  <label className="hospital-form-label">Hospital Name</label>
+                  <div className="hospital-input-wrapper">
+                    <PiBuildingOffice className="hospital-input-icon" />
+                    <input
+                      type="text"
+                      name="hospitalName"
+                      value={formData.hospitalName}
+                      onChange={handleInputChange}
+                      className="hospital-form-input"
+                      placeholder="St. Mary's Hospital"
+                    />
+                  </div>
+                </div>
 
-              <div className="hospital-form-group">
-                <label className="hospital-form-label">Admin Full Name</label>
-                <div className="hospital-input-wrapper">
-                  <RiUser3Line className="hospital-input-icon" />
-                  <input
-                    type="text"
-                    name="adminFullName"
-                    value={formData.adminFullName}
-                    onChange={handleInputChange}
-                    className="hospital-form-input"
-                    placeholder="Dr. Emily Carter"
-                  />
+                <div className="hospital-form-group">
+                  <label className="hospital-form-label">Delivery Amount</label>
+                  <div className="hospital-input-wrapper">
+                    <span className="hospital-currency-symbol">₦</span>
+                    <input
+                      type="text"
+                      name="deliveryAmount"
+                      value={formData.deliveryAmount}
+                      onChange={handleInputChange}
+                      className="hospital-form-input"
+                      placeholder="300,000.00"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="hospital-form-group">
-                <label className="hospital-form-label">Delivery Amount</label>
-                <div className="hospital-input-wrapper">
-                  <span className="hospital-currency-symbol">₦</span>
-                  <input
-                    type="text"
-                    name="deliveryAmount"
-                    value={formData.deliveryAmount}
-                    onChange={handleInputChange}
-                    className="hospital-form-input"
-                    placeholder="300,000.00"
-                  />
+                <div className="hospital-form-group">
+                  <label className="hospital-form-label">Phone Number</label>
+                  <div className="hospital-input-wrapper">
+                    <IoCallOutline className="hospital-input-icon" />
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      className="hospital-form-input"
+                      placeholder="+1 (555) 123-4567"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="hospital-form-group">
-                <label className="hospital-form-label">Phone Number</label>
-                <div className="hospital-input-wrapper">
-                  <IoCallOutline className="hospital-input-icon" />
-                  <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    className="hospital-form-input"
-                    placeholder="+1 (555) 123-4567"
-                  />
+                <div className="hospital-form-group hospital-form-group-full">
+                  <label className="hospital-form-label">
+                    Hospital Address
+                  </label>
+                  <div className="hospital-input-wrapper">
+                    <GrLocation className="hospital-inputAddress-icon" />
+                    <textarea
+                      type="text"
+                      name="hospitalAddress"
+                      value={formData.hospitalAddress}
+                      onChange={handleInputChange}
+                      className="hospital-form-input-Address"
+                      placeholder="123 Healthcare Drive, Medical District, City, State 12345"
+                    />
+                  </div>
                 </div>
               </div>
-
-              <div className="hospital-form-group hospital-form-group-full">
-                <label className="hospital-form-label">Hospital Address</label>
-                <div className="hospital-input-wrapper">
-                  <GrLocation className="hospital-inputAddress-icon" />
-                  <textarea
-                    type="text"
-                    name="hospitalAddress"
-                    value={formData.hospitalAddress}
-                    onChange={handleInputChange}
-                    className="hospital-form-input-Address"
-                    placeholder="123 Healthcare Drive, Medical District, City, State 12345"
-                  />
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

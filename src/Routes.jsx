@@ -43,6 +43,7 @@ import UploadNewBill from "./Pages/HospitalDashBoardPages/VerifyPatient/UploadNe
 import PrivacySettings from "./Pages/PrivacySettingsLayout/PrivacySettings";
 import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
 import PrivateRouting from "./Lib/PrivateRouting";
+import PublicRoute from "./Lib/PublicRoute";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 import PatientDetails from "./Pages/HospitalDashBoardPages/VerifyPatient/PatientDetails";
 
@@ -50,11 +51,19 @@ const AppRoutes = () => (
   <Router>
     <ScrollToTop />
     <Routes>
-      <Route path="/" element={<LandingPage />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/how" element={<How />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/teamSection" element={<TeamSection />} />
+        <Route path="/terms" element={<TermsLayout />} />
+        <Route path="/privacySettings" element={<PrivacySettings />} />
+        <Route path="/fundsSuccess" element={<FundsSuccess />} />
+        <Route path="/faq" element={<FaqHome />} />
+        <Route path="/uploadNewBill" element={<UploadNewBill />} />
+      </Route>
+
       <Route path="/login" element={<Login />} />
-      <Route path="/how" element={<How />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/teamSection" element={<TeamSection />} />
       <Route path="/signupUser" element={<Signup />} />
       <Route path="/signupHospital" element={<SignUpAdmin />} />
       <Route path="/getStarted" element={<GetStarted />} />
@@ -68,11 +77,6 @@ const AppRoutes = () => (
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
       <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
-      <Route path="/terms" element={<TermsLayout />} />
-      <Route path="/privacySettings" element={<PrivacySettings />} />
-      <Route path="/fundsSuccess" element={<FundsSuccess />} />
-      <Route path="/faq" element={<FaqHome />} />
-      <Route path="/uploadNewBill" element={<UploadNewBill />} />
 
       <Route element={<PrivateRouting />}>
         <Route path="/dashboard" element={<Dashboard />}>

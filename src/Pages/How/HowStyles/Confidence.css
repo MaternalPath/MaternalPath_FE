@@ -247,11 +247,11 @@
   box-shadow: 0px 4px 12px rgba(63, 145, 139, 0.3);
 }
 
-.confidence-notice {
-  width: 92%;
+.confidences-notice {
+  width: 91%;
   margin: 0 auto;
   padding: 25px;
-  font-size: 15px;
+  font-size: 14.5px;
   border: 1.05px solid #c1d6bd;
   border-radius: 14.76px;
   display: flex;
@@ -260,23 +260,37 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  .confidence-notice {
+@media (max-width: 1200px) {
+  .confidences-notice {
     padding: 15px;
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
-@media (max-width: 576px) {
-  .confidence-notice {
-    padding: 12px;
+@media (max-width: 1024px) {
+  .confidences-notice {
+    padding: 15px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .confidences-notice {
+    padding: 15px;
     font-size: 12px;
   }
 }
 
-@media (max-width: 375px) {
-  .confidence-notice {
-    padding: 10px;
+@media (max-width: 576px) {
+  .confidences-notice {
+    padding: 12px;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 375px) {
+  .confidences-notice {
+    padding: 10px;
+    font-size: 10px;
   }
 }

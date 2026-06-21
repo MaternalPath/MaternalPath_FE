@@ -13,9 +13,10 @@
 
 .dashboard-content {
   flex: 1;
-  padding: 1.5rem;
+  padding: 2rem;
   overflow-y: auto;
   margin-left: 260px;
+  transition: margin-left 0.3s ease;
 }
 
 .profile-lock-banner {
@@ -179,38 +180,42 @@
   flex-shrink: 0;
 }
 
-@media (min-width: 1024px) {
-  .mobile-drawer,
-  .mobile-drawer-backdrop {
-    display: none;
-  }
-
-  .dashboard-content {
-    padding: 2rem;
-    margin-left: 260px;
-  }
-}
-
-@media (max-width: 1023px) {
-  .dashboard-content {
-    padding: 1.25rem;
-    margin-left: 0;
-  }
-}
-
 @media (max-width: 768px) {
   .dashboard-content {
-    padding: 1rem;
+    padding: 1.25rem;
     margin-left: 0;
   }
 
   .profile-lock-banner {
     font-size: 0.8125rem;
     padding: 0.75rem 1rem;
+    line-height: 1.4;
   }
 
   .mobile-drawer {
-    width: 85%;
-    max-width: 320px;
+    width: min(85%, 320px);
+  }
+
+  .mobile-drawer-link {
+    padding: 1rem 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-content {
+    padding: 0.75rem;
+  }
+
+  .profile-lock-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-drawer,
+  .mobile-drawer-backdrop {
+    display: none;
   }
 }

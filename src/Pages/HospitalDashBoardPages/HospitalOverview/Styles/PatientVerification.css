@@ -1,14 +1,15 @@
 .patient-verification-container {
   display: flex;
   gap: 30px;
-  /* padding: 20px; */
-  min-height: 100vh;
-  min-height: max-content;
+  padding: 15px;
+  align-items: flex-start;
+  box-sizing: border-box;
+  /* background-color: #0f766e; */
 }
 
 .patient-verification-section {
-  width: 65%;
-  height: 100%;
+  flex: 1 1 65%;
+  min-width: 0;
   background-color: #eaf2e7;
   border: 1px solid #d4d4d4;
   border-radius: 12px;
@@ -82,15 +83,11 @@
 }
 
 .patient-verification-notifications-section {
-  width: 35%;
+  flex: 1 1 35%;
+  min-width: 0;
   background-color: #eaf2e7;
-  padding-top: 26px;
-  padding-right: 26px;
-  padding-bottom: 26px;
-  padding-left: 26px;
+  padding: 26px;
   border-radius: 14px;
-  border-width: 1.05px;
-  height: 100%;
   border: 1px solid #d4d4d4;
 }
 
@@ -100,23 +97,17 @@
 
 .patient-verification-section-title {
   margin: 0 0 8px 0;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 18.98px;
-  line-height: 29.52px;
-  letter-spacing: 0px;
+  font-size: 19px;
+  line-height: 30px;
   color: #171717;
 }
 
 .patient-verification-section-subtitle {
   margin: 0;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
   color: #525252;
 }
 
@@ -131,20 +122,16 @@
   padding: 12px 16px;
   border: 1px solid #d4d4d4;
   border-radius: 8px;
-  background-color: transparent;
+  background-color: #ffffff;
   transition: all 0.3s ease;
   font-family: inherit;
-  color: #0a0a0a80;
+  color: #171717;
+  font-size: 15px;
 }
 
 .patient-verification-search-input::placeholder {
-  color: #0a0a0a80;
-  font-family: Arimo;
-  font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 100%;
-  letter-spacing: 0px;
+  color: #737373;
+  font-size: 15px;
 }
 
 .patient-verification-search-input:focus {
@@ -165,12 +152,9 @@
   align-items: center;
   gap: 8px;
   white-space: nowrap;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
   text-align: center;
 }
 
@@ -218,22 +202,17 @@
 .patient-verification-patient-name {
   color: #171717;
   margin: 0 0 4px 0;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 18.98px;
-  line-height: 28.46px;
-  letter-spacing: 0px;
+  font-size: 19px;
+  line-height: 28px;
 }
 
 .patient-verification-patient-id {
   color: #525252;
   margin: 0;
   font-weight: 400;
-  font-style: Regular;
   font-size: 14px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  line-height: 21px;
 }
 
 .patient-verification-eligibility-badge {
@@ -243,12 +222,9 @@
   border-radius: 20px;
   white-space: nowrap;
   border: 1px solid #7bf1a8;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
 }
 
 .patient-verification-patient-info-grid {
@@ -267,22 +243,17 @@
   text-transform: uppercase;
   margin-bottom: 6px;
   color: #737373;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
 }
 
 .patient-verification-info-value {
   color: #171717;
   margin: 0;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
 }
 
 .patient-verification-readiness-section {
@@ -293,12 +264,9 @@
 .patient-verification-readiness-label {
   display: block;
   margin-bottom: 12px;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
   color: #737373;
 }
 
@@ -316,17 +284,15 @@
   height: 100%;
   background-color: #0f766e;
   border-radius: 4px;
+  transition: width 0.3s ease;
 }
 
 .patient-verification-progress-text {
   margin: 0;
   color: #525252;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
 }
 
 .patient-verification-notifications-list {
@@ -387,21 +353,15 @@
 .patient-verification-notification-title {
   margin: 0 0 4px 0;
   color: #171717;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
 }
 
 .patient-verification-notification-time {
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 12.65px;
-  line-height: 16.87px;
-  letter-spacing: 0px;
+  font-size: 13px;
+  line-height: 17px;
   margin: 0;
   color: #737373;
 }
@@ -416,12 +376,9 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
-  font-family: Arimo;
   font-weight: 400;
-  font-style: Regular;
-  font-size: 14.76px;
-  line-height: 21.08px;
-  letter-spacing: 0px;
+  font-size: 15px;
+  line-height: 21px;
   text-align: center;
 }
 
@@ -438,11 +395,22 @@
 @media (max-width: 1024px) {
   .patient-verification-container {
     gap: 24px;
+    padding: 16px;
+    flex-direction: column;
   }
 
   .patient-verification-patient-info-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .patient-verification-section {
+    width: 100%;
+    padding: 17px;
+  }
+
+  .patient-verification-notifications-section {
+    width: 100%;
   }
 }
 
@@ -455,7 +423,7 @@
 
   .patient-verification-section,
   .patient-verification-notifications-section {
-    width: 100%;
+    flex: 1 1 100%;
     padding: 16px;
   }
 
@@ -483,12 +451,13 @@
 
 @media (max-width: 480px) {
   .patient-verification-container {
-    padding: 12px;
+    padding: 0px;
   }
 
   .patient-verification-section,
   .patient-verification-notifications-section {
     padding: 12px;
+    width: 100%;
   }
 
   .patient-verification-section-title {
@@ -497,7 +466,7 @@
 
   .patient-verification-search-input,
   .patient-verification-search-button {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .patient-verification-patient-name {

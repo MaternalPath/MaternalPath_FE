@@ -177,7 +177,7 @@ const VerificationHistory = () => {
 
   return (
     <div className="verification-history-container">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <header className="header-section">
         <div className="header-content">
           <h1>Verification History</h1>
@@ -221,7 +221,7 @@ const VerificationHistory = () => {
           <FiSearch size={16} className="filter-icon" />
           <input
             type="text"
-            placeholder="Search by Patient ID or Phone Number"
+            placeholder="Enter Patient ID or Phone Number"
             value={searchPatientInput}
             onChange={(e) => setSearchPatientInput(e.target.value)}
             onKeyDown={handleSearchKeyDown}

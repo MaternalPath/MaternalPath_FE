@@ -13,12 +13,6 @@
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
-  .sidebar-navi {
-    display: none;
-  }
-}
-
 .sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -51,7 +45,7 @@
 .sidebar-link.disabled {
   opacity: 0.45;
   cursor: not-allowed;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .sidebar-link.disabled:hover {
@@ -62,6 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .sidebar-logout {
@@ -85,4 +80,10 @@
 .sidebar-logout:hover {
   background: rgba(210, 13, 13, 0.976);
   color: #fff;
+}
+
+@media (max-width: 768px) {
+  .sidebar-navi {
+    display: none;
+  }
 }
