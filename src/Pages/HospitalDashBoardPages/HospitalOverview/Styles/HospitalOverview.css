@@ -35,8 +35,8 @@
   margin-bottom: 32px;
 }
 
-.stat-card {
-  background-color: #eaf2e7;
+.stat-cards {
+  background-color: #e9f7e6;
   border: 1px solid #d4d4d4;
   border-radius: 14px;
   padding: 24px;
@@ -90,7 +90,7 @@
     gap: 10px;
   }
 
-  .stat-card {
+  .stat-cards {
     padding: 16px;
   }
 

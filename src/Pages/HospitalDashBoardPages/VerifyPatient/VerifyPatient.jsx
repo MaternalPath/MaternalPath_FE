@@ -39,7 +39,6 @@ const VerifyPatient = () => {
     { icon: <BadgeCheck size={18} />, label: "Authorized Access" },
   ];
 
-  // ✅ FIXED: Map patient data correctly with hospitalName
   const mapPatient = (item) => ({
     id:
       item.mother?.id ||

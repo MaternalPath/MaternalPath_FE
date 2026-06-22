@@ -83,7 +83,7 @@ const RecentActivity = () => {
         </div>
       </div>
 
-      <div className="panel">
+      <div className="panel-sec">
         <h2 className="panel-title">Security &amp; Compliance</h2>
         <div className="panel-lists">
           {securityItems.map((item, index) => (
