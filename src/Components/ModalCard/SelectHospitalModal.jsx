@@ -25,7 +25,7 @@ const SelectHospitalModal = ({
       setSelectedId(data?.hospitalId || "");
       setQuery("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [isOpen]);
 
   const filtered = useMemo(() => {

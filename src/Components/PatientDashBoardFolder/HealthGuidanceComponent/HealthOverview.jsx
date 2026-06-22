@@ -12,23 +12,20 @@ const HealthOverview = ({ data }) => {
     data?.wellnessStatus ||
     data?.status ||
     "You and your baby are doing well. Continue following your personalized care plan.";
-
   return (
     <section className="week-overview-card">
       <div className="overview-grid">
         <div className="overview-left">
           <div className="week-header">
-            <h2>Week {week}</h2>
+            <h2>Week {data.metrix.week}</h2>
             <span className="trimester">{trimester}</span>
           </div>
-          <p className="week-desc">Focus on {focus.toLowerCase()} this week.</p>
-
           <div className="wellness-status">
             <div className="status-title">
               <FiHeart />
               <span>Wellness Status</span>
             </div>
-            <p>{wellnessStatus}</p>
+            <p>{data?.wellnessStatus}</p>
           </div>
 
           <div className="focus-row">
