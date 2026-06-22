@@ -4,6 +4,7 @@
   border: solid 1px var(--secondary-tint);
   padding: 28px 32px;
   max-width: 100%;
+
 }
 
 .wallet-summary-card .summary-main {
@@ -11,7 +12,14 @@
   grid-template-columns: 1fr auto;
   gap: 32px;
   align-items: start;
+  /* background-color: red; */
+  background-color: #c5e3dc;
+ 
 }
+
+/* .summary-main{
+  background-color: white;
+} */
 
 .wallet-summary-card .balance-section h2 {
   color: var(--text-hue);
@@ -23,7 +31,8 @@
 }
 
 .wallet-summary-card .balance-section .label {
-  color: var(--text-tint);
+  /* color: var(--text-tint); */
+
   font-size: 13px;
   margin: 0 0 0 12px;
   display: inline-block;
