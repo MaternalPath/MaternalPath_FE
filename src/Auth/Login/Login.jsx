@@ -297,17 +297,17 @@ const LoginPage = () => {
                 <Link to="/getStarted">Create Account</Link>
               </p>
 
-              <div className="mp-divider">
+              {/* <div className="mp-divider">
                 <span>or continue with</span>
-              </div>
+              </div> */}
 
-              <button
+              {/* <button
                 type="button"
                 className="mp-google-btn"
                 onClick={handleGoogleLogin}
               >
                 <FcGoogle /> Google
-              </button>
+              </button> */}
             </form>
 
             <div className="mp-security-note">
