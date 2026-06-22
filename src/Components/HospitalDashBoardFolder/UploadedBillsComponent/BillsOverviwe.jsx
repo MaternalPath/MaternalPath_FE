@@ -84,20 +84,32 @@ const BillsOverview = () => {
 
       const formattedBills = records.map((bill, index) => ({
         id: bill.billId || bill.id || bill._id || `BL-${Date.now()}-${index}`,
+        // FIX: Added fullName as the primary field since API returns it
         patient:
+          bill.fullName ||
           bill.patientName ||
           bill.patient ||
           bill.patient_name ||
           "Unknown Patient",
-        type: bill.deliveryType || bill.type || bill.delivery_type || "N/A",
+        // FIX: Added category as fallback for delivery type
+        type:
+          bill.category ||
+          bill.deliveryType ||
+          bill.type ||
+          bill.delivery_type ||
+          "N/A",
         amount: bill.billAmount || bill.amount || 0,
+        // FIX: Added billingDate as fallback for date
         date:
+          bill.billingDate ||
           bill.uploadDate ||
           bill.date ||
           bill.upload_date ||
           bill.createdAt ||
           new Date().toISOString().split("T")[0],
+        // FIX: Added verificationWorkFlow as fallback
         verification:
+          bill.verificationWorkFlow ||
           bill.verificationStatus ||
           bill.verification ||
           bill.status ||
