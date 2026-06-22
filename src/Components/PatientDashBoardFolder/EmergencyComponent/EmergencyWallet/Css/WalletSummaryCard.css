@@ -31,7 +31,7 @@
 }
 
 .wallet-summary-card .balance-section .label {
-  /* color: var(--text-tint); */
+  color: var(--text-tint);
 
   font-size: 13px;
   margin: 0 0 0 12px;
@@ -166,7 +166,7 @@
     padding: 20px;
   }
 
-  .wallet-summary-card .summary-main {
+  .wallet-summary-card . {
     grid-template-columns: 1fr;
   }
 

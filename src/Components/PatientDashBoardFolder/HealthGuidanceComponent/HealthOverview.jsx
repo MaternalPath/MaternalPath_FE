@@ -18,7 +18,7 @@ const HealthOverview = ({ data }) => {
         <div className="overview-left">
           <div className="week-header">
             <h2>Week {data.metrix.week}</h2>
-            <span className="trimester">{trimester}</span>
+            <span className="trimester">{data.metrix.trimester}</span>
           </div>
           <div className="wellness-status">
             <div className="status-title">
