@@ -12,15 +12,26 @@ import {
 const PregnancyTracker = () => {
   const [loading, setLoading] = useState(true);
   const [weeklyCare, setWeeklyCare] = useState(null);
+  const [overview, setOverview] = useState(null);
+  const [trimesterInfo, setTrimesterInfo] = useState(null);
 
   useEffect(() => {
+    const settledValue = (r) => (r?.status === "fulfilled" ? r.value : null);
+
     const loadTracker = async () => {
       try {
-        const [] =
-          await Promise.allSettled([
-            getPregnancyTracker(),
-            getTrimesterInformation(),
-          ]);
+        const [trackerRes, trimesterRes] = await Promise.allSettled([
+          getPregnancyTracker(),
+          getTrimesterInformation(),
+        ]);
+
+        const tracker = settledValue(trackerRes);
+        const trimester = settledValue(trimesterRes);
+
+        // tracker may already have the shape { info: {...}, weeklyCare: [...] }
+        setOverview(tracker?.info || tracker || null);
+        setWeeklyCare(tracker?.weeklyCare || tracker?.data || tracker || null);
+        setTrimesterInfo(trimester || null);
       } catch (err) {
         console.error("Pregnancy tracker load failed:", err);
       } finally {
@@ -42,8 +53,8 @@ const PregnancyTracker = () => {
         <PregnancyTrackerSkeleton />
       ) : (
         <>
-          <PregnancyOverview />
-          <CareSection weeklyCare={weeklyCare} />
+          <PregnancyOverview overview={{ info: overview }} />
+          <CareSection weeklyCare={weeklyCare} timeline={trimesterInfo} />
           <ActionsSection />
         </>
       )}

@@ -56,6 +56,15 @@ const getPregnancyWeekMismatchError = (dueDate, currentWeek) => {
   return "";
 };
 
+const weekToTrimester = (week) => {
+  const n = Number(week);
+  if (!Number.isFinite(n)) return null;
+  if (n >= 1 && n <= 13) return 1;
+  if (n >= 14 && n <= 27) return 2;
+  if (n >= 28) return 3;
+  return null;
+};
+
 const validateField = (field, value) => {
   switch (field) {
     case "dueDate": {
@@ -184,6 +193,16 @@ const UpdatePregnancyModal = ({
       }
     }
 
+    // cross-field: ensure trimester matches the entered week when both present
+    if (field === 'trimester' || field === 'currentWeek') {
+      const week = field === 'currentWeek' ? Number(value) : Number(formData.currentWeek);
+      const tri = field === 'trimester' ? Number(value) : Number(formData.trimester);
+      const expected = weekToTrimester(week);
+      if (expected !== null && tri && Number.isFinite(tri) && expected !== tri) {
+        error = `Selected trimester does not match week ${week}. Expected trimester ${expected}.`;
+      }
+    }
+
     if (field === 'emergencyName') {
       if (!value || value.trim() === '') {
         error = 'Emergency contact name is required';
@@ -276,7 +295,13 @@ const UpdatePregnancyModal = ({
 
   const isValid =
     REQUIRED_FIELDS.every((f) => !validateField(f, formData[f])) &&
-    !getPregnancyWeekMismatchError(formData.dueDate, formData.currentWeek);
+    !getPregnancyWeekMismatchError(formData.dueDate, formData.currentWeek) &&
+    (() => {
+      const expected = weekToTrimester(formData.currentWeek);
+      if (expected === null) return true;
+      if (!formData.trimester) return true;
+      return Number(formData.trimester) === expected;
+    })();
 
   const handleSubmit = (e) => {
     e.preventDefault();

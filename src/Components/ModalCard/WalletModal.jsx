@@ -124,6 +124,11 @@ const EmergencyWalletModal = ({
     parseFloat(formData.weeklyContribution) ||
     Number(saved?.weeklyContribution) ||
     0;
+  const hospitalCost = Number(saved?.estimatedDeliveryCost) || 0;
+  const hospitalMismatchMessage =
+    goalAmount > 0 && hospitalCost > 0 && goalAmount < hospitalCost
+      ? `Savings goal must be at least the hospital's estimated cost (₦${hospitalCost.toLocaleString()}).`
+      : "";
   const remaining = goalAmount - currentBalance;
   const weeksToGoal =
     weeklyAmount > 0 ? Math.ceil(remaining / weeklyAmount) : 0;
@@ -219,6 +224,11 @@ const EmergencyWalletModal = ({
                 <span className="error-message">{savingsDateMismatchMessage}</span>
               </div>
             )}
+            {hospitalMismatchMessage && (
+              <div className="form-group">
+                <span className="error-message">{hospitalMismatchMessage}</span>
+              </div>
+            )}
           </div>
 
           <div className="dual-btn-container">
@@ -233,7 +243,9 @@ const EmergencyWalletModal = ({
             <button
               type="submit"
               className="submit-btn"
-              disabled={isSaving || !isValid || !!savingsDateMismatchMessage}
+              disabled={
+                isSaving || !isValid || !!savingsDateMismatchMessage || !!hospitalMismatchMessage
+              }
             >
               {isSaving ? "Saving..." : "Submit"}
             </button>
