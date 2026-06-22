@@ -1,7 +1,31 @@
-import React from 'react';
-import { FiAlertCircle, FiCalendar } from 'react-icons/fi';import './Css/PriorityAlert.css';
+import { FiAlertCircle, FiCalendar } from "react-icons/fi";
+import "./Css/PriorityAlert.css";
 
-const PriorityAlert = ({ isMobile }) => {
+const formatTime = (value) => {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+};
+
+const PriorityAlert = ({ isMobile, data = [] }) => {
+  const items = Array.isArray(data) ? data : [];
+  const priorityItem =
+    items.find((item) => {
+      const t = String(item?.type || "").toLowerCase();
+      const title = String(item?.title || item?.message || "").toLowerCase();
+      return (
+        t.includes("priority") ||
+        t.includes("urgent") ||
+        title.includes("urgent")
+      );
+    }) || items[0];
+
   return (
     <div className="card">
       {!isMobile && <h3 className="section-title">Priority Alerts</h3>}
@@ -10,16 +34,23 @@ const PriorityAlert = ({ isMobile }) => {
           <FiAlertCircle size={24} />
         </div>
         <div className="alert-content">
-          <h4>Due Date in 128 Days</h4>
+          <h4>
+            {priorityItem?.title ||
+              priorityItem?.message ||
+              "No priority alerts"}
+          </h4>
           <p>
-            {isMobile 
-              ? "Your estimated delivery date is September 18, 2026. Continue your prenatal care and savings progress."
-              : "Continue your weekly savings to reach your delivery goal."
-            }
+            {priorityItem?.description || "No priority alerts from backend."}
           </p>
+          {priorityItem?.time && !isMobile && (
+            <p>{formatTime(priorityItem.time)}</p>
+          )}
           {isMobile && (
             <button className="timeline-link">
-              <FiCalendar size={14} /> View Pregnancy Timeline
+              <FiCalendar size={14} />
+              {priorityItem?.time
+                ? formatTime(priorityItem.time)
+                : "View Pregnancy Timeline"}
             </button>
           )}
         </div>

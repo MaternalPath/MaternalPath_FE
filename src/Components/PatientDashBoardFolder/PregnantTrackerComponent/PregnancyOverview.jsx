@@ -1,15 +1,12 @@
-import React from "react";
 import { FiActivity, FiHeart, FiChevronRight } from "react-icons/fi";
 import "./Css/PregnancyOverview.css";
 import babyIllustration from "../../../assets/baby.png";
 
-const TRIMESTER_NAMES = {
+const TRIMESTER_LABELS = {
   1: "First Trimester",
   2: "Second Trimester",
   3: "Third Trimester",
 };
-
-const TOTAL_WEEKS = 40;
 
 const formatDate = (iso) => {
   if (!iso) return "";
@@ -23,49 +20,105 @@ const formatDate = (iso) => {
       });
 };
 
-const DEFAULT_SYMPTOMS = [
-  "Mild back discomfort",
-  "Increased energy levels",
-  "Occasional leg cramps",
-  "Improved sleep quality",
-];
+const pickTrimesterRows = (overview) => {
+  const candidates = [
+    overview?.thirdtrim,
+    overview?.firsttrim,
+    overview?.secondtrim,
+  ];
 
-const DEFAULT_NUTRITION = [
-  "Iron-rich foods: Spinach, beans, lean meat",
-  "Calcium sources: Milk, yogurt, cheese",
-  "Whole grains: Brown rice, oats, millet",
-  "Hydrate with 8-10 glasses of water daily",
-];
+  for (const entry of candidates) {
+    if (Array.isArray(entry) && entry.length > 0) return entry;
+  }
 
-const DEFAULT_MOBILE_SYMPTOMS = [
-  "Increased energy levels typical for second trimester",
-  "Mild backaches as baby grows",
-  "Baby movements becoming more noticeable",
-  "Skin may develop pregnancy glow",
-];
+  return [];
+};
+
+const parseStringifiedArray = (value) => {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value !== "string" || !value.trim()) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+};
+
+const parseWeekRange = (value) => {
+  if (typeof value !== "string") return null;
+  const m = value.match(/(\d+)\s*-\s*(\d+)/i);
+  if (!m) return null;
+  return { from: Number(m[1]), to: Number(m[2]) };
+};
+
+const parseTipDescription = (description) => {
+  if (Array.isArray(description)) return description;
+  if (typeof description !== "string" || !description.trim()) return [];
+  try {
+    const parsed = JSON.parse(description);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
 const PregnancyOverview = ({ overview }) => {
-  const info = overview?.info ?? {};
-  const week = info.week ?? 24;
-  const progressValue = parseFloat(info.pregnancyProgress);
+  const metrix = overview?.metrix || overview?.info || {};
+  const perTrimesterItem = Array.isArray(overview?.perTrimester)
+    ? overview.perTrimester[0]
+    : null;
+  const trimesterRows = pickTrimesterRows(overview);
+  const currentTrimester =
+    trimesterRows.find(
+      (row) =>
+        Array.isArray(row) && String(row[1] || "").toLowerCase() === "current",
+    ) ||
+    trimesterRows[trimesterRows.length - 1] ||
+    [];
+
+  const trimesterFromApi = currentTrimester[0];
+  const weeksRangeFromApi = currentTrimester[2] || "";
+  const parsedRange = parseWeekRange(weeksRangeFromApi);
+  const tipWeek = parseFloat(overview?.tip?.week);
+  const weekValue = parseFloat(metrix?.week);
+  const week = Number.isFinite(weekValue)
+    ? weekValue
+    : Number.isFinite(tipWeek)
+      ? tipWeek
+      : parsedRange?.from;
+
+  const progressValue = parseFloat(metrix?.pregnancyProgress);
+  const totalWeeks = parsedRange?.to;
   const progress = Number.isFinite(progressValue)
     ? progressValue
-    : Math.min(100, Math.round((week / TOTAL_WEEKS) * 100));
+    : Number.isFinite(week) && Number.isFinite(totalWeeks) && totalWeeks > 0
+      ? Math.min(100, Math.round((week / totalWeeks) * 100))
+      : null;
+
+  const tipItems = parseTipDescription(overview?.tip?.description);
+  const tipDetails = tipItems.map((item) => item?.detail).filter(Boolean);
+
+  const whatToExpect = parseStringifiedArray(perTrimesterItem?.whatToExpect);
+  const nutritionGuidance = parseStringifiedArray(
+    perTrimesterItem?.nutritionGuidance,
+  );
 
   const data = {
     week,
-    totalWeeks: TOTAL_WEEKS,
+    totalWeeks,
     progress,
-    trimester: TRIMESTER_NAMES[Number(info.trimester)] ?? "—",
-    dueDate: formatDate(info.estimatedDueDate) || "—",
-    daysRemaining: info.daysUntilDueDate ?? "—",
-    babySize: info.babySize ?? "Size of a cantaloupe",
-    preferredHospital: info.preferredHospital ?? "—",
+    trimester:
+      trimesterFromApi ||
+      TRIMESTER_LABELS[String(metrix?.trimester || "")] ||
+      "",
+    dueDate: formatDate(metrix?.estimatedDueDate),
+    daysRemaining: metrix?.daysUntilDueDate,
   };
 
-  const symptoms = info.symptoms ?? DEFAULT_SYMPTOMS;
-  const nutrition = info.nutrition ?? DEFAULT_NUTRITION;
-  const mobileSymptoms = info.mobileSymptoms ?? DEFAULT_MOBILE_SYMPTOMS;
+  const symptoms = whatToExpect;
+  const nutrition = nutritionGuidance;
+  const mobileSymptoms = tipDetails.length > 0 ? tipDetails : whatToExpect;
 
   return (
     <>
@@ -73,52 +126,81 @@ const PregnancyOverview = ({ overview }) => {
         <div className="overview-content">
           <div className="overview-info">
             <div className="week-title">
-              <h2>Week {data.week}</h2>
+              <h2>Week {data.week ?? "—"}</h2>
               <span className="trimester">{data.trimester}</span>
             </div>
             <p className="week-desc desktop-only"></p>
             <p className="week-desc mobile-only">
-              {data.progress}% complete • {data.totalWeeks} weeks total
+              {Number.isFinite(data.progress)
+                ? `${data.progress}% complete`
+                : ""}
+              {Number.isFinite(data.progress) &&
+              Number.isFinite(data.totalWeeks)
+                ? " • "
+                : ""}
+              {Number.isFinite(data.totalWeeks)
+                ? `${data.totalWeeks} weeks total`
+                : ""}
             </p>
 
             <div className="stats-grid desktop-only">
               <div className="stat">
                 <span className="label">Estimated Due Date</span>
-                <span className="value">{data.dueDate}</span>
+                <span className="value">{data.dueDate || "—"}</span>
               </div>
               <div className="stat">
                 <span className="label">Days Until Due Date</span>
-                <span className="value">{data.daysRemaining} days</span>
+                <span className="value">
+                  {data.daysRemaining !== undefined &&
+                  data.daysRemaining !== null
+                    ? `${data.daysRemaining} days`
+                    : "—"}
+                </span>
               </div>
-             
+
               <div className="stat">
                 <span className="label">Pregnancy Progress</span>
-                <span className="value">{data.progress}% Complete</span>
+                <span className="value">
+                  {Number.isFinite(data.progress)
+                    ? `${data.progress}% Complete`
+                    : "—"}
+                </span>
               </div>
             </div>
 
             <div className="progress-section">
-              <span className="progress-label desktop-only">Journey Timeline</span>
+              <span className="progress-label desktop-only">
+                Journey Timeline
+              </span>
               <div className="progress-bar">
                 <div
                   className="progress-fill"
-                  style={{ width: `${data.progress}%` }}
+                  style={{
+                    width: `${Number.isFinite(data.progress) ? data.progress : 0}%`,
+                  }}
                 />
               </div>
               <div className="progress-markers desktop-only">
-                <span>Week {data.week}</span>
-                <span>{data.progress}%</span>
+                <span>Week {data.week ?? "—"}</span>
+                <span>
+                  {Number.isFinite(data.progress) ? `${data.progress}%` : "—"}
+                </span>
               </div>
             </div>
 
             <div className="mobile-stats mobile-only">
               <div className="mobile-stat">
                 <span className="label">Estimated Due Date</span>
-                <span className="value">{data.dueDate}</span>
+                <span className="value">{data.dueDate || "—"}</span>
               </div>
               <div className="mobile-stat">
                 <span className="label">Days Remaining</span>
-                <span className="value">{data.daysRemaining} days</span>
+                <span className="value">
+                  {data.daysRemaining !== undefined &&
+                  data.daysRemaining !== null
+                    ? `${data.daysRemaining} days`
+                    : "—"}
+                </span>
               </div>
             </div>
           </div>
@@ -137,7 +219,10 @@ const PregnancyOverview = ({ overview }) => {
           </div>
           <p className="card-sub">Common symptoms and body changes</p>
           <ul className="card-list">
-            {symptoms.map((item, i) => <li key={i}>{item}</li>)}
+            {symptoms.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+            {symptoms.length === 0 && <li>No data from backend.</li>}
           </ul>
         </div>
 
@@ -148,7 +233,10 @@ const PregnancyOverview = ({ overview }) => {
           </div>
           <p className="card-sub">Recommended foods and hydration</p>
           <ul className="card-list">
-            {nutrition.map((item, i) => <li key={i}>{item}</li>)}
+            {nutrition.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+            {nutrition.length === 0 && <li>No data from backend.</li>}
           </ul>
         </div>
       </div>
@@ -164,7 +252,10 @@ const PregnancyOverview = ({ overview }) => {
               <h4>Physical Changes</h4>
             </div>
             <ul className="carousel-list">
-              {mobileSymptoms.map((item, i) => <li key={i}>{item}</li>)}
+              {mobileSymptoms.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+              {mobileSymptoms.length === 0 && <li>No data from backend.</li>}
             </ul>
           </div>
           <button className="carousel-arrow">

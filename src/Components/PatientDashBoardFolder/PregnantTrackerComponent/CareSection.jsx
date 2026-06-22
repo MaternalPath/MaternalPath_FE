@@ -1,29 +1,15 @@
-import React, { useMemo, useState } from "react";
-import { FiActivity, FiDroplet, FiMoon, FiCalendar, FiCheck, FiChevronRight } from "react-icons/fi";
+import { useMemo, useState } from "react";
+import {
+  FiActivity,
+  FiDroplet,
+  FiMoon,
+  FiCalendar,
+  FiCheck,
+  FiChevronRight,
+} from "react-icons/fi";
 import "./Css/CareSection.css";
 
 const STATUS_TOKENS = ["current", "completed"];
-
-const fallbackTimeline = [
-  {
-    name: "First Trimester",
-    status: "Completed",
-    weeks: "Weeks 1-12",
-    tags: ["Initial prenatal visit", "First ultrasound", "Pregnancy confirmation"]
-  },
-  {
-    name: "Second Trimester",
-    status: "Current",
-    weeks: "Weeks 13-26",
-    tags: ["Anatomy scan", "Feel baby movements", "Glucose screening"]
-  },
-  {
-    name: "Third Trimester",
-    status: "",
-    weeks: "Weeks 27-40",
-    tags: ["Hospital tour", "Birth plan discussion", "Final preparations"]
-  }
-];
 
 const REMINDER_ICONS = {
   vitamin: <FiActivity />,
@@ -61,15 +47,24 @@ const normalizeWeeklyCare = (resp) => {
         }
         if (typeof item === "object") {
           const title =
-            item.title || item.name || item.reminder ||
-            item.message || item.text || "Reminder";
+            item.title ||
+            item.name ||
+            item.reminder ||
+            item.message ||
+            item.text ||
+            "Reminder";
           return {
             title,
             desc:
-              item.desc || item.description || item.details ||
-              item.subtitle || "",
+              item.desc ||
+              item.description ||
+              item.details ||
+              item.subtitle ||
+              "",
             time:
-              item.time || item.when || item.schedule ||
+              item.time ||
+              item.when ||
+              item.schedule ||
               item.frequency ||
               (item.week ? `Week ${item.week}` : ""),
             icon: pickReminderIcon(title),
@@ -81,18 +76,42 @@ const normalizeWeeklyCare = (resp) => {
   }
 
   if (typeof resp === "object") {
+    if (resp.description) {
+      try {
+        const parsed = JSON.parse(resp.description);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(Boolean).map((item) => {
+            const title = item?.category || "Reminder";
+            return {
+              title,
+              desc: item?.detail || "",
+              time: item?.time || "",
+              icon: pickReminderIcon(title),
+            };
+          });
+        }
+      } catch {
+        // Fall through to non-JSON mapping when description is plain text.
+      }
+    }
+
     const desc =
       resp.message || resp.description || resp.details || resp.text || "";
-    const title = resp.title || resp.name || resp.reminder ||
+    const title =
+      resp.title ||
+      resp.name ||
+      resp.reminder ||
       (resp.week ? "This Week's Tip" : desc);
     if (title) {
-      return [{
-        title,
-        desc: title === desc ? "" : desc,
-        time: resp.time || resp.when ||
-          (resp.week ? `Week ${resp.week}` : ""),
-        icon: pickReminderIcon(title + " " + desc),
-      }];
+      return [
+        {
+          title,
+          desc: title === desc ? "" : desc,
+          time:
+            resp.time || resp.when || (resp.week ? `Week ${resp.week}` : ""),
+          icon: pickReminderIcon(title + " " + desc),
+        },
+      ];
     }
   }
 
@@ -103,7 +122,8 @@ const parseTrimesterEntry = (entry) => {
   if (!Array.isArray(entry) || entry.length === 0) return null;
 
   const [name, second, ...rest] = entry;
-  const isStatus = typeof second === "string" && STATUS_TOKENS.includes(second.toLowerCase());
+  const isStatus =
+    typeof second === "string" && STATUS_TOKENS.includes(second.toLowerCase());
 
   const status = isStatus ? second : "";
   const weeks = isStatus ? rest[0] || "" : second || "";
@@ -117,25 +137,19 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
 
   const timeline = useMemo(() => {
     const source =
-      Array.isArray(timelineProp?.perTrimester) && timelineProp.perTrimester.length > 0
-        ? timelineProp.perTrimester
+      Array.isArray(timelineProp?.thirdtrim) &&
+      timelineProp.thirdtrim.length > 0
+        ? timelineProp.thirdtrim
         : timelineProp?.firsttrim;
 
-    if (!Array.isArray(source) || source.length === 0) return fallbackTimeline;
+    if (!Array.isArray(source) || source.length === 0) return [];
 
     const parsed = source.map(parseTrimesterEntry).filter(Boolean);
-    return parsed.length > 0 ? parsed : fallbackTimeline;
+    return parsed;
   }, [timelineProp]);
 
-  const baseReminders = [
-    { icon: <FiActivity />, title: "Prenatal Vitamin", desc: "Take daily supplement", time: "Morning" },
-    { icon: <FiDroplet />, title: "Hydration Goal", desc: "8 glasses today", time: "Throughout day" },
-    { icon: <FiMoon />, title: "Rest & Sleep", desc: "7-9 hours nightly", time: "Evening" },
-    { icon: <FiCalendar />, title: "Hospital Checkup", desc: "Upcoming appointment", time: "" },
-  ];
-
   const careReminders = useMemo(
-    () => [...baseReminders, ...normalizeWeeklyCare(weeklyCare)],
+    () => normalizeWeeklyCare(weeklyCare),
     [weeklyCare],
   );
 
@@ -143,7 +157,7 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
     icon: item.icon || <FiActivity />,
     title: item.title,
     desc: item.desc || item.time || "",
-    status: "Not Started",
+    status: item.status || "",
   }));
 
   const statusClass = (status) => (status ? status.toLowerCase() : "");
@@ -154,13 +168,16 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
       <section className="reminders-card desktop-only">
         <h3 className="section-title">Weekly Care Reminders</h3>
         <div className="reminders-grid">
+          {careReminders.length === 0 && <p>No reminders from backend.</p>}
           {careReminders.map((item, i) => (
             <div key={i} className="reminder-item">
               <div className="reminder-icon">{item.icon || <FiActivity />}</div>
               <div className="reminder-content">
                 <h4>{item.title}</h4>
                 {item.desc && <p>{item.desc}</p>}
-                {item.time && <span className="reminder-time">{item.time}</span>}
+                {item.time && (
+                  <span className="reminder-time">{item.time}</span>
+                )}
               </div>
             </div>
           ))}
@@ -170,6 +187,7 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
       <section className="mobile-section mobile-only">
         <h3 className="section-title">Weekly Care Reminders</h3>
         <div className="reminders-carousel">
+          {mobileReminders.length === 0 && <p>No reminders from backend.</p>}
           {mobileReminders.map((item, i) => (
             <div key={i} className="reminder-card">
               <div className="reminder-header">
@@ -182,7 +200,9 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
               <div className="reminder-progress">
                 <div className="progress-line"></div>
               </div>
-              <span className="reminder-status">{item.status}</span>
+              {item.status && (
+                <span className="reminder-status">{item.status}</span>
+              )}
             </div>
           ))}
         </div>
@@ -191,18 +211,26 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
       <section className="timeline-card desktop-only">
         <h3 className="section-title">Pregnancy Timeline</h3>
         <div className="timeline-items">
+          {timeline.length === 0 && <p>No timeline from backend.</p>}
           {timeline.map((item, idx) => (
-            <div key={idx} className={`timeline-item ${statusClass(item.status)}`}>
+            <div
+              key={idx}
+              className={`timeline-item ${statusClass(item.status)}`}
+            >
               <div className="timeline-header">
                 <h4>{item.name}</h4>
                 {item.status && (
-                  <span className={`badge ${statusClass(item.status)}`}>{item.status}</span>
+                  <span className={`badge ${statusClass(item.status)}`}>
+                    {item.status}
+                  </span>
                 )}
               </div>
               <p className="timeline-weeks">{item.weeks}</p>
               <div className="timeline-tags">
                 {item.tags.map((tag, i) => (
-                  <span key={i} className="tag">{tag}</span>
+                  <span key={i} className="tag">
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>
@@ -212,32 +240,42 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
 
       <section className="mobile-section mobile-only">
         <h3 className="section-title">Pregnancy Timeline</h3>
-        <div className="carousel-container">
-          <div className="timeline-card-mobile">
-            <h4>{activeMobile?.name}</h4>
-            <p className="timeline-weeks">{activeMobile?.weeks}</p>
-            <div className="timeline-tags">
-              {activeMobile?.tags.map((tag, i) => (
-                <span key={i} className="timeline-tag">{tag}</span>
+        {timeline.length === 0 ? (
+          <p>No timeline from backend.</p>
+        ) : (
+          <>
+            <div className="carousel-container">
+              <div className="timeline-card-mobile">
+                <h4>{activeMobile?.name}</h4>
+                <p className="timeline-weeks">{activeMobile?.weeks}</p>
+                <div className="timeline-tags">
+                  {activeMobile?.tags.map((tag, i) => (
+                    <span key={i} className="timeline-tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <button
+                className="carousel-arrow"
+                onClick={() =>
+                  setActiveMobileIdx((idx) => (idx + 1) % timeline.length)
+                }
+              >
+                <FiChevronRight />
+              </button>
+            </div>
+            <div className="carousel-dots">
+              {timeline.map((_, i) => (
+                <span
+                  key={i}
+                  className={`dot ${i === activeMobileIdx ? "active" : ""}`}
+                  onClick={() => setActiveMobileIdx(i)}
+                ></span>
               ))}
             </div>
-          </div>
-          <button
-            className="carousel-arrow"
-            onClick={() => setActiveMobileIdx((idx) => (idx + 1) % timeline.length)}
-          >
-            <FiChevronRight />
-          </button>
-        </div>
-        <div className="carousel-dots">
-          {timeline.map((_, i) => (
-            <span
-              key={i}
-              className={`dot ${i === activeMobileIdx ? "active" : ""}`}
-              onClick={() => setActiveMobileIdx(i)}
-            ></span>
-          ))}
-        </div>
+          </>
+        )}
       </section>
     </>
   );

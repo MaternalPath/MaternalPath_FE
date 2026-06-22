@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./PregnancyTracker.css";
 import PregnancyOverview from "../../../Components/PatientDashBoardFolder/PregnantTrackerComponent/PregnancyOverview";
 import CareSection from "../../../Components/PatientDashBoardFolder/PregnantTrackerComponent/CareSection";
@@ -13,7 +13,6 @@ const PregnancyTracker = () => {
   const [loading, setLoading] = useState(true);
   const [weeklyCare, setWeeklyCare] = useState(null);
   const [overview, setOverview] = useState(null);
-  const [trimesterInfo, setTrimesterInfo] = useState(null);
 
   useEffect(() => {
     const settledValue = (r) => (r?.status === "fulfilled" ? r.value : null);
@@ -28,10 +27,23 @@ const PregnancyTracker = () => {
         const tracker = settledValue(trackerRes);
         const trimester = settledValue(trimesterRes);
 
-        // tracker may already have the shape { info: {...}, weeklyCare: [...] }
-        setOverview(tracker?.info || tracker || null);
-        setWeeklyCare(tracker?.weeklyCare || tracker?.data || tracker || null);
-        setTrimesterInfo(trimester || null);
+        const combinedOverview = {
+          ...(trimester &&
+          typeof trimester === "object" &&
+          !Array.isArray(trimester)
+            ? trimester
+            : {}),
+          ...(tracker && typeof tracker === "object" && !Array.isArray(tracker)
+            ? tracker
+            : {}),
+          metrix: tracker?.metrix || trimester?.metrix || null,
+          perTrimester: tracker?.perTrimester || trimester?.perTrimester || [],
+          thirdtrim: tracker?.thirdtrim || trimester?.thirdtrim || [],
+          tip: tracker?.tip || trimester?.tip || null,
+        };
+
+        setOverview(combinedOverview);
+        setWeeklyCare(combinedOverview?.tip || null);
       } catch (err) {
         console.error("Pregnancy tracker load failed:", err);
       } finally {
@@ -53,8 +65,8 @@ const PregnancyTracker = () => {
         <PregnancyTrackerSkeleton />
       ) : (
         <>
-          <PregnancyOverview overview={{ info: overview }} />
-          <CareSection weeklyCare={weeklyCare} timeline={trimesterInfo} />
+          <PregnancyOverview overview={overview} />
+          <CareSection weeklyCare={weeklyCare} timeline={overview} />
           <ActionsSection />
         </>
       )}

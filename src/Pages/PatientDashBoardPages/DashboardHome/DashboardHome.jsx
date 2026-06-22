@@ -43,11 +43,11 @@ const DashboardHome = () => {
     <main className="dashboard">
       <section className="dashboard-container">
         <WelcomeHeader />
-        <PregnancyHeroCard dashboardData={dashboardData.info} />
-        <EmergencyWalletCard dashboardData={dashboardData.data} />
-        <TodaysRemindersCard dashboardData={dashboardData.reminder} />
-        <WeeklyFocusSection />
-        <RecentNotificationsCard dashboardData={dashboardData.theWeeksFocus} />
+        <PregnancyHeroCard dashboardData={dashboardData?.info} />
+        <EmergencyWalletCard dashboardData={dashboardData?.data} />
+        <TodaysRemindersCard dashboardData={dashboardData?.reminder} />
+        <WeeklyFocusSection dashboardData={dashboardData?.theWeeksFocus} />
+        <RecentNotificationsCard dashboardData={dashboardData?.theWeeksFocus} />
         <QuickActions />
       </section>
     </main>
