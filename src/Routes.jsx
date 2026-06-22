@@ -60,7 +60,6 @@ const AppRoutes = () => (
         <Route path="/privacySettings" element={<PrivacySettings />} />
         <Route path="/fundsSuccess" element={<FundsSuccess />} />
         <Route path="/faq" element={<FaqHome />} />
-        <Route path="/uploadNewBill" element={<UploadNewBill />} />
       </Route>
 
       <Route path="/login" element={<Login />} />
@@ -88,6 +87,8 @@ const AppRoutes = () => (
             path="patientDetails/:patientId"
             element={<PatientDetails />}
           />
+          {/* ✅ FIXED: UploadNewBill route moved inside dashboard */}
+          <Route path="uploadNewBill" element={<UploadNewBill />} />
           <Route path="uploadedBills" element={<UploadedBills />} />
           <Route path="verificationHistory" element={<VerificationHistory />} />
           <Route

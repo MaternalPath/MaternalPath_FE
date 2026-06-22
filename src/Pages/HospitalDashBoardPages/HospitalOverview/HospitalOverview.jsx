@@ -89,7 +89,7 @@ const HospitalOverview = () => {
           </div>
           <div className="stat-cards-container">
             {statCards.map((card, index) => (
-              <div key={index} className="stat-card">
+              <div key={index} className="stat-cards">
                 <div className="stat-icon">{card.icon}</div>
                 <div className="stat-number">...</div>
                 <div className="stat-label">{card.label}</div>
@@ -113,7 +113,7 @@ const HospitalOverview = () => {
 
         <div className="stat-cards-container">
           {statCards.map((card, index) => (
-            <div key={index} className="stat-card">
+            <div key={index} className="stat-cards">
               <div className="stat-icon">{card.icon}</div>
               <div className="stat-number">{card.number}</div>
               <div className="stat-label">{card.label}</div>

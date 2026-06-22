@@ -38,7 +38,13 @@
 }
 
 .panel {
-  background-color: #eef3ec;
+  background-color: #e9f7e6;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.panel-sec {
+  background-color: #e9f7e6;
   border-radius: 16px;
   padding: 16px;
 }
@@ -59,6 +65,7 @@
 .panel-lists {
   display: flex;
   flex-direction: column;
+  width: 350px;
   /* gap: 8px; */
 }
 
@@ -126,4 +133,8 @@
   .panel {
     flex: 1;
   }
+
+  /* .panel-sec {
+    flex: 1;
+  } */
 }

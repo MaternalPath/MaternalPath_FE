@@ -10,7 +10,7 @@
 .patient-verification-section {
   flex: 1 1 65%;
   min-width: 0;
-  background-color: #eaf2e7;
+  background-color: #e9f7e6;
   border: 1px solid #d4d4d4;
   border-radius: 12px;
   padding: 24px;
@@ -85,7 +85,7 @@
 .patient-verification-notifications-section {
   flex: 1 1 35%;
   min-width: 0;
-  background-color: #eaf2e7;
+  background-color: #e9f7e6;
   padding: 26px;
   border-radius: 14px;
   border: 1px solid #d4d4d4;

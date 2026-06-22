@@ -7,6 +7,7 @@ import "./Styles/PatientDetails.css";
 export default function PatientDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  
   const { patientId: motherId } = useParams();
   const selectedPatient = location.state?.patient || null;
 
@@ -38,6 +39,7 @@ export default function PatientDetails() {
     setError(null);
 
     try {
+      // Normalize selected patient data from navigation state
       const normalizedSelectedPatient = selectedPatient
         ? (() => {
             const mother = selectedPatient.mother || {};
@@ -66,11 +68,20 @@ export default function PatientDetails() {
                 selectedPatient.hospital ||
                 selectedPatient.preferredHospital ||
                 "—",
+              savingsGoal: selectedPatient.savingsGoal || 0,
+              walletBalance: selectedPatient.walletBalance || 0,
+              status: selectedPatient.status || "Pending",
+              verifiedAt: selectedPatient.verifiedAt || null,
+              readiness: selectedPatient.readiness || "Not Assessed",
+              recentBills: selectedPatient.recentBills || [],
             };
           })()
         : null;
 
+      let patientData = null;
+
       if (normalizedSelectedPatient) {
+        patientData = normalizedSelectedPatient;
         setPatient(normalizedSelectedPatient);
       } else {
         const patientRes = await axios.get(
@@ -80,20 +91,42 @@ export default function PatientDetails() {
           },
         );
         console.log("Patient API Response:", patientRes.data);
-        setPatient(patientRes.data?.data || patientRes.data || null);
+        patientData = patientRes.data?.data || patientRes.data || {};
+        setPatient(patientData);
       }
 
-      try {
-        const dashboardRes = await axios.get(`${baseURL}/patient/dashboard`, {
-          headers: { Authorization: `Bearer ${token}` },
-          // params: { motherId: effectiveMotherId },
-        });
-        console.log("Dashboard API Response:", dashboardRes.data);
-        setDashboard(dashboardRes.data?.data || dashboardRes.data || null);
-      } catch (dashboardErr) {
-        console.error("Error fetching patient dashboard:", dashboardErr);
-        setDashboard(null);
-      }
+      // ✅ Build dashboard data from patient data (since hospital users can't access /patient/dashboard)
+      const savingsGoal =
+        patientData.savingsGoal || patientData.deliverySavingsGoal || 0;
+      const currentSavings = patientData.walletBalance || 0;
+      const progress =
+        savingsGoal > 0
+          ? Math.min(Math.round((currentSavings / savingsGoal) * 100), 100)
+          : 0;
+
+      const dashboardData = {
+        wallet: {
+          savingsGoal: savingsGoal,
+          currentSavings: currentSavings,
+          remainingAmount: Math.max(savingsGoal - currentSavings, 0),
+          savingsProgress: `${progress}%`,
+        },
+        pregnancy: {
+          currentWeek: patientData.pregnancyWeek || 0,
+          expectedDelivery:
+            patientData.expectedDeliveryDate || patientData.dueDate || "—",
+          preferredHospital:
+            patientData.preferredHospital || patientData.hospital || "—",
+          lastVerification: {
+            status: patientData.status || "Pending",
+            verifiedAt: patientData.verifiedAt || null,
+            readiness: patientData.readiness || "Not Assessed",
+          },
+        },
+        recentBills: patientData.recentBills || [],
+      };
+
+      setDashboard(dashboardData);
     } catch (err) {
       console.error("Error fetching patient details:", err);
       const msg =
@@ -121,6 +154,28 @@ export default function PatientDetails() {
       navigate(`/dashboard/uploadNewBill?motherId=${motherId}`);
     } else {
       toast.error("Patient ID not found. Please try again.");
+    }
+  };
+
+  // Helper function to format pregnancy week
+  const formatPregnancyWeek = (weekValue) => {
+    if (!weekValue) return "—";
+    const weekStr = weekValue.toString();
+    if (weekStr.includes("Week")) return weekStr;
+    return `Week ${weekStr}`;
+  };
+
+  // Helper function to format date
+  const formatDate = (dateValue) => {
+    if (!dateValue) return "—";
+    try {
+      return new Date(dateValue).toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      });
+    } catch {
+      return dateValue;
     }
   };
 
@@ -162,31 +217,34 @@ export default function PatientDetails() {
   const patientId = patient?.maternalId || "—";
   const phone = patient?.phoneNumber || "—";
   const email = patient?.email || "—";
-  const pregnancyWeek = patient?.pregnancyWeek
-    ? `Week ${patient.pregnancyWeek}`
-    : dashboard?.pregnancy?.currentWeek
-      ? `Week ${dashboard.pregnancy.currentWeek}`
-      : "—";
-  const dueDate =
-    patient?.expectedDeliveryDate ||
-    dashboard?.pregnancy?.expectedDelivery ||
-    "—";
+
+  const pregnancyWeek = formatPregnancyWeek(
+    patient?.pregnancyWeek || dashboard?.pregnancy?.currentWeek,
+  );
+
+  const dueDate = formatDate(
+    patient?.expectedDeliveryDate || dashboard?.pregnancy?.expectedDelivery,
+  );
+
   const hospital =
     patient?.preferredHospital ||
     dashboard?.pregnancy?.preferredHospital ||
     "—";
 
-  const status = dashboard?.pregnancy?.lastVerification?.status || "Pending";
-  const lastVerification = dashboard?.pregnancy?.lastVerification?.verifiedAt
-    ? new Date(
-        dashboard.pregnancy.lastVerification.verifiedAt,
-      ).toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      })
+  // Get last verification data
+  const lastVerificationStatus =
+    dashboard?.pregnancy?.lastVerification?.status ||
+    patient?.status ||
+    "Pending";
+  const lastVerificationDate =
+    dashboard?.pregnancy?.lastVerification?.verifiedAt ||
+    patient?.verifiedAt ||
+    null;
+  const lastVerificationFormatted = lastVerificationDate
+    ? formatDate(lastVerificationDate)
     : "—";
 
+  // Get wallet data
   const savingsGoal = dashboard?.wallet?.savingsGoal || 0;
   const currentSavings = dashboard?.wallet?.currentSavings || 0;
   const remaining =
@@ -199,6 +257,11 @@ export default function PatientDetails() {
       : 0;
 
   const bills = dashboard?.recentBills || [];
+
+  // Determine if patient is verified
+  const isVerified =
+    lastVerificationStatus?.toLowerCase() === "approved" ||
+    lastVerificationDate !== null;
 
   return (
     <div className="patient-details-overlay">
@@ -217,6 +280,7 @@ export default function PatientDetails() {
 
         <div className="patient-details-content">
           <div className="patient-details-grid">
+            {/* Patient Info Card */}
             <div className="patient-info-card">
               <div className="patient-header-row">
                 <div className="patient-avatar">{initials}</div>
@@ -250,11 +314,14 @@ export default function PatientDetails() {
               </div>
             </div>
 
+            {/* Wallet Summary Card */}
             <div className="wallet-summary-card">
               <div className="wallet-header">
                 <h3 className="wallet-title">Wallet Summary</h3>
-                <span className={`wallet-badge ${status?.toLowerCase()}`}>
-                  {status}
+                <span
+                  className={`wallet-badge ${lastVerificationStatus?.toLowerCase()}`}
+                >
+                  {lastVerificationStatus}
                 </span>
               </div>
 
@@ -311,7 +378,16 @@ export default function PatientDetails() {
               </div>
               <div className="summary-card">
                 <p className="summary-label">LAST VERIFICATION</p>
-                <p className="summary-value">{lastVerification}</p>
+                {isVerified ? (
+                  <div>
+                    <p className="summary-value">{lastVerificationFormatted}</p>
+                    <p className="summary-status approved">
+                      {lastVerificationStatus}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="summary-value not-verified">—</p>
+                )}
               </div>
             </div>
           </div>

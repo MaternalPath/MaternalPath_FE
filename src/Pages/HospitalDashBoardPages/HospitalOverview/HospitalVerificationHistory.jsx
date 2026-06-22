@@ -30,7 +30,23 @@ const HospitalVerificationHistory = () => {
         },
       );
 
-      const data = response.data?.data || response.data || [];
+      console.log("Verification histories response:", response.data);
+
+      let data = response.data?.data || response.data || [];
+
+      if (!Array.isArray(data)) {
+        if (data.records && Array.isArray(data.records)) {
+          data = data.records;
+        } else if (data.histories && Array.isArray(data.histories)) {
+          data = data.histories;
+        } else if (data.verifications && Array.isArray(data.verifications)) {
+          data = data.verifications;
+        } else {
+          console.warn("Unexpected response format:", data);
+          data = [];
+        }
+      }
+
       setVerificationData(data);
     } catch (err) {
       console.error("Error fetching verification histories:", err);
@@ -38,6 +54,8 @@ const HospitalVerificationHistory = () => {
         err.response?.data?.message || "Failed to load verification history";
       setError(msg);
       toast.error(msg);
+      // ✅ Set empty array on error to prevent map error
+      setVerificationData([]);
     } finally {
       setLoading(false);
     }
@@ -76,6 +94,9 @@ const HospitalVerificationHistory = () => {
     return `₦${Number(amount).toLocaleString()}`;
   };
 
+  // ✅ Safety check: ensure verificationData is always an array
+  const safeData = Array.isArray(verificationData) ? verificationData : [];
+
   return (
     <div className="hospital-verification-history-container">
       <div className="hospital-verification-history-card">
@@ -103,7 +124,7 @@ const HospitalVerificationHistory = () => {
                 Retry
               </button>
             </div>
-          ) : verificationData.length === 0 ? (
+          ) : safeData.length === 0 ? (
             <div className="hospital-verification-history-empty">
               No verification history found.
             </div>
@@ -119,7 +140,7 @@ const HospitalVerificationHistory = () => {
                 </tr>
               </thead>
               <tbody>
-                {verificationData.map((record, index) => (
+                {safeData.map((record, index) => (
                   <tr key={record.id || index}>
                     <td>{record.patientName || "—"}</td>
                     <td>{formatDate(record.date)}</td>
