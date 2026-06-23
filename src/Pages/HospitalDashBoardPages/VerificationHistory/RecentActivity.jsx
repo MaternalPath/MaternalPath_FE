@@ -41,6 +41,28 @@ const insights = [
   },
 ];
 
+// ===== SKELETON COMPONENT =====
+const TimelineSkeleton = () => {
+  return (
+    <div className="recent-activity-timeline">
+      {[1, 2, 3, 4, 5].map((item) => (
+        <div key={item} className="recent-activity-timeline-item skeleton">
+          <div className="recent-activity-timeline-icon-wrapper">
+            <div className="recent-activity-timeline-icon skeleton-icon"></div>
+            {item !== 5 && (
+              <span className="recent-activity-timeline-line skeleton-line"></span>
+            )}
+          </div>
+          <div className="recent-activity-timeline-content">
+            <div className="skeleton-text skeleton-text-title"></div>
+            <div className="skeleton-text skeleton-text-subtitle"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const RecentActivity = () => {
   const [timelineEvents, setTimelineEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,76 +100,79 @@ const RecentActivity = () => {
   }, []);
 
   return (
-      <div className="recent-activity-wrapper">
-        <div className="recent-activity-top-section">
-          <div className="recent-activity-timeline-section">
-            <h2 className="recent-activity-section-title">
-              Recent Activity Timeline
-            </h2>
+    <div className="recent-activity-wrapper">
+      <div className="recent-activity-top-section">
+        <div className="recent-activity-timeline-section">
+          <h2 className="recent-activity-section-title">
+            Recent Activity Timeline
+          </h2>
 
-            {loading ? (
-              <p className="recent-activity-timeline-timestamp">Loading...</p>
-            ) : timelineEvents.length === 0 ? (
-              <div className="recent-activity-empty">
-                <FiInbox className="recent-activity-empty-icon" />
-                <p className="recent-activity-empty-text">
-                  No recent activity to display.
-                </p>
-              </div>
-            ) : (
-              <div className="recent-activity-timeline">
-                {timelineEvents.map((event, index) => (
-                  <div key={event.id} className="recent-activity-timeline-item">
-                    <div className="recent-activity-timeline-icon-wrapper">
-                      <div className="recent-activity-timeline-icon">
-                        <FiActivity />
-                      </div>
-                      {index !== timelineEvents.length - 1 && (
-                        <span className="recent-activity-timeline-line"></span>
-                      )}
-                    </div>
-                    <div className="recent-activity-timeline-content">
-                      <p className="recent-activity-timeline-message">
-                        {event.message}
-                      </p>
-                      <p className="recent-activity-timeline-timestamp">
-                        {event.timestamp}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="recent-activity-insights-section">
-            <div className="recent-activity-insights-header">
-              <h2 className="recent-activity-section-title">
-                Insights &amp; Reports
-              </h2>
-              <FiBarChart2 className="recent-activity-insights-header-icon" />
+          {loading ? (
+            <TimelineSkeleton />
+          ) : timelineEvents.length === 0 ? (
+            <div className="recent-activity-empty">
+              <FiInbox className="recent-activity-empty-icon" />
+              <p className="recent-activity-empty-text">
+                No recent activity to display.
+              </p>
             </div>
-            <div className="recent-activity-insights-grid">
-              {insights.map((insight) => (
-                <div key={insight.id} className="recent-activity-insight-card">
-                  <div className="recent-activity-insight-icon">
-                    {insight.icon}
+          ) : (
+            <div className="recent-activity-timeline">
+              {timelineEvents.map((event, index) => (
+                <div
+                  key={event.id || index}
+                  className="recent-activity-timeline-item"
+                >
+                  <div className="recent-activity-timeline-icon-wrapper">
+                    <div className="recent-activity-timeline-icon">
+                      <FiActivity />
+                    </div>
+                    {index !== timelineEvents.length - 1 && (
+                      <span className="recent-activity-timeline-line"></span>
+                    )}
                   </div>
-                  <div className="recent-activity-insight-content">
-                    <p className="recent-activity-insight-label">
-                      <span className="label-full">{insight.label}</span>
-                      <span className="label-short">{insight.shortLabel}</span>
+                  <div className="recent-activity-timeline-content">
+                    <p className="recent-activity-timeline-message">
+                      {event.message}
                     </p>
-                    <p className="recent-activity-insight-value">
-                      {insight.value}
+                    <p className="recent-activity-timeline-timestamp">
+                      {event.timestamp}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
+          )}
+        </div>
+
+        <div className="recent-activity-insights-section">
+          <div className="recent-activity-insights-header">
+            <h2 className="recent-activity-section-title">
+              Insights &amp; Reports
+            </h2>
+            <FiBarChart2 className="recent-activity-insights-header-icon" />
+          </div>
+          <div className="recent-activity-insights-grid">
+            {insights.map((insight) => (
+              <div key={insight.id} className="recent-activity-insight-card">
+                <div className="recent-activity-insight-icon">
+                  {insight.icon}
+                </div>
+                <div className="recent-activity-insight-content">
+                  <p className="recent-activity-insight-label">
+                    <span className="label-full">{insight.label}</span>
+                    <span className="label-short">{insight.shortLabel}</span>
+                  </p>
+                  <p className="recent-activity-insight-value">
+                    {insight.value}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

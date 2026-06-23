@@ -10,6 +10,7 @@
   color: #1f3d2e;
   margin: 0 0 16px;
 }
+
 .notif-error {
   text-align: center;
   padding: 40px;
@@ -29,6 +30,7 @@
 .retry-btn:hover {
   background-color: #145b4e;
 }
+
 .notif-feed-list {
   display: flex;
   flex-direction: column;
@@ -150,6 +152,77 @@
   font-size: 14px;
   color: #1f3d2e;
   padding: 0;
+}
+
+@keyframes notif-shimmer {
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
+}
+
+.notif-skeleton-icon,
+.notif-skeleton-line {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #eceae4 25%, #dedad1 50%, #eceae4 75%);
+  background-size: 500px 100%;
+  animation: notif-shimmer 1.4s ease-in-out infinite;
+}
+
+.notif-skeleton-card {
+  pointer-events: none;
+}
+
+.notif-skeleton-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.notif-skeleton-title {
+  height: 14px;
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.notif-skeleton-desc {
+  height: 12px;
+  width: 85%;
+  margin-bottom: 8px;
+}
+
+.notif-skeleton-desc.short {
+  width: 60%;
+}
+
+.notif-skeleton-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.notif-skeleton-time {
+  height: 11px;
+  width: 80px;
+}
+
+.notif-skeleton-badge {
+  height: 20px;
+  width: 90px;
+  border-radius: 9999px;
+}
+
+.notif-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: #9ca3af;
+  font-size: 14px;
 }
 
 @media (min-width: 768px) {

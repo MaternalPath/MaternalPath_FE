@@ -1,4 +1,3 @@
-/* Loading and empty states */
 .loading-state,
 .empty-state {
   display: flex;
@@ -27,7 +26,6 @@
   margin-top: 0.25rem;
 }
 
-/* Refresh button */
 .refresh-btn {
   display: flex;
   align-items: center;
@@ -69,7 +67,6 @@
   }
 }
 
-/* Error state */
 .error-state {
   display: flex;
   flex-direction: column;
@@ -102,7 +99,6 @@
   background: #2563eb;
 }
 
-/* Records header with refresh button */
 .records-header {
   display: flex;
   justify-content: space-between;
@@ -110,7 +106,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Bill Filters */
 .bill-filters {
   display: flex;
   flex-wrap: wrap;
@@ -244,62 +239,6 @@
   border-color: #9ca3af;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .bill-filters {
-    flex-direction: column;
-    padding: 14px 16px;
-  }
-
-  .bill-search {
-    width: 100%;
-    min-width: auto;
-  }
-
-  .bill-filter-group {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .bill-filter-select {
-    flex: 1;
-    min-width: 120px;
-  }
-
-  .bill-search-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .bill-clear-btn {
-    padding: 8px 14px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .bill-filters {
-    padding: 12px;
-  }
-
-  .bill-filter-group {
-    flex-direction: column;
-  }
-
-  .bill-filter-select {
-    width: 100%;
-  }
-
-  .bill-search {
-    padding: 4px 8px;
-  }
-
-  .bill-search-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-}
-
 .overview {
   display: flex;
   flex-direction: column;
@@ -358,10 +297,6 @@
   margin: 0;
 }
 
-/* .stat-value.strike {
-  text-decoration: line-through;
-} */
-
 .stat-label {
   font-size: 12px;
   color: #6b7280;
@@ -373,13 +308,6 @@
   background-color: #e9f7e6;
   border-radius: 16px;
   padding: 16px;
-}
-
-.records-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
 }
 
 .records-header h2 {
@@ -523,6 +451,61 @@
   }
 }
 
+@media (max-width: 768px) {
+  .bill-filters {
+    flex-direction: column;
+    padding: 14px 16px;
+  }
+
+  .bill-search {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .bill-filter-group {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .bill-filter-select {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .bill-search-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .bill-clear-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bill-filters {
+    padding: 12px;
+  }
+
+  .bill-filter-group {
+    flex-direction: column;
+  }
+
+  .bill-filter-select {
+    width: 100%;
+  }
+
+  .bill-search {
+    padding: 4px 8px;
+  }
+
+  .bill-search-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
 .error-state {
   display: flex;
   flex-direction: column;
@@ -552,4 +535,95 @@
 
 .retry-btn:hover {
   background-color: #145b4e;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.skeleton-record {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-record .skeleton-text {
+  display: inline-block;
+  height: 14px;
+  border-radius: 4px;
+  width: 80%;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-record .skeleton-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-record .skeleton-badge {
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-table .skeleton-text {
+  display: inline-block;
+  height: 12px;
+  border-radius: 4px;
+  width: 70%;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-table .skeleton-badge {
+  display: inline-block;
+  width: 50px;
+  height: 16px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-table .skeleton-row td {
+  padding: 12px;
+}
+
+@media (max-width: 767px) {
+  .skeleton-record .skeleton-text {
+    height: 12px;
+    width: 70%;
+  }
+
+  .skeleton-record .skeleton-badge {
+    width: 50px;
+    height: 16px;
+  }
 }

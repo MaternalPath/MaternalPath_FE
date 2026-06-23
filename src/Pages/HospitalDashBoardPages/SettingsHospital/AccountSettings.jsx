@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import "./SettingsStyles/AccountSettings.css";
-import { Shield, Lock, Check, Zap } from "lucide-react";
+import { Shield, Lock, Check, Zap, Eye, EyeOff } from "lucide-react";
 import { FiLogOut } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { IoWarning } from "react-icons/io5";
 
 const AccountSettings = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     approvalAuthLevel: "",
     walletThreshold: "$5,000",
     readinessFrequency: "",
   });
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const baseURL = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem("token");
 
   const privacyFeatures = [
     {
@@ -69,16 +82,100 @@ const AccountSettings = () => {
     }));
   };
 
-  const handleLogOut = () => {
-    console.log("[v0] Log out clicked");
+  const handleDeleteAccount = async () => {
+    if (!deletePassword.trim()) {
+      toast.error("Please enter your password to confirm account deletion");
+      return;
+    }
+
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await axios.delete(`${baseURL}/hospital/delete-account`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        data: {
+          password: deletePassword,
+        },
+      });
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      setShowDeleteModal(false);
+      setDeletePassword("");
+
+      toast.success("Account deleted successfully");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (error) {
+      console.error("Error deleting account:", error);
+
+      if (error.response) {
+        const status = error.response.status;
+        const message =
+          error.response.data?.message || "Failed to delete account";
+
+        if (status === 401) {
+          toast.error("Invalid password or session expired. Please try again.");
+        } else if (status === 400) {
+          toast.error(message);
+        } else if (status === 403) {
+          toast.error("You don't have permission to delete this account");
+        } else if (status === 500) {
+          toast.error("Server error. Please try again later.");
+        } else {
+          toast.error(message);
+        }
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  const handleDeleteAccount = () => {
-    console.log("[v0] Delete account clicked");
+  const openDeleteModal = () => {
+    setShowDeleteModal(true);
+    setDeletePassword("");
+    setShowPassword(false);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeletePassword("");
+    setShowPassword(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
     <div className="account-settings-container">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        style={{ zIndex: 99999 }}
+      />
+
       <div className="account-settings-content">
         <div className="settings-top-section">
           <div className="settings-card verification-section">
@@ -94,7 +191,6 @@ const AccountSettings = () => {
                 value={formData.approvalAuthLevel}
                 onChange={handleInputChange}
                 className="verification-form-input"
-                // placeholder="Select authorization level"
               />
             </div>
 
@@ -122,7 +218,6 @@ const AccountSettings = () => {
                 value={formData.readinessFrequency}
                 onChange={handleInputChange}
                 className="verification-form-input"
-                // placeholder="Select frequency"
               />
             </div>
           </div>
@@ -173,16 +268,13 @@ const AccountSettings = () => {
           </p>
 
           <div className="management-buttons">
-            <button
-              className="management-btn management-btn-logout"
-              onClick={handleLogOut}
-            >
+            <button className="management-btn management-btn-logout">
               <FiLogOut size={18} />
               Log Out
             </button>
             <button
               className="management-btn management-btn-delete"
-              onClick={handleDeleteAccount}
+              onClick={openDeleteModal}
             >
               <RiDeleteBinLine size={18} />
               Delete Account
@@ -190,6 +282,80 @@ const AccountSettings = () => {
           </div>
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={closeDeleteModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Delete Account</h2>
+              <button className="modal-close-btn" onClick={closeDeleteModal}>
+                ×
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="modal-warning-icon">
+                <IoWarning />
+              </div>
+              <p className="modal-warning-text">
+                Are you sure you want to delete your account? This action is
+                <strong> permanent</strong> and cannot be undone. All your data
+                will be permanently removed.
+              </p>
+
+              <div className="modal-form-group">
+                <label className="modal-form-label">
+                  Enter your password to confirm
+                </label>
+                <div className="modal-password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="modal-form-input"
+                    placeholder="Enter your password"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleDeleteAccount();
+                      }
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    className="modal-password-toggle"
+                    onClick={togglePasswordVisibility}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={20} color="#6b7280" />
+                    ) : (
+                      <Eye size={20} color="#6b7280" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                className="modal-btn modal-btn-secondary"
+                onClick={closeDeleteModal}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                className="modal-btn modal-btn-danger"
+                onClick={handleDeleteAccount}
+                disabled={isDeleting || !deletePassword.trim()}
+              >
+                {isDeleting ? "Deleting..." : "Yes, Delete Account"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const NotificationsHospital = () => {
   const [refreshFeed, setRefreshFeed] = useState(0);
 
   return (
-    <div className="notif-page">
+    <div className="notifys-page">
       <div className="notif-page-content">
         <NotificationsHeader
           activeTab={activeTab}
