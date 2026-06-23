@@ -19,13 +19,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRole } from "../../context/RoleContext";
 import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
+
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const LoginPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { login, setIsUpdated, token } = useRole(); // removed role: defaultRole
-  const [userType, setUserType] = useState("mother"); // hardcoded, not defaultRole
+  const { login, setIsUpdated, token } = useRole();
+  const [userType, setUserType] = useState("mother");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -110,13 +111,19 @@ const LoginPage = () => {
         password: formData.password,
       });
       if (response?.status === 200) {
-        toast.success(response?.data?.message || "Login successful!");
+        const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
+        toast.success(
+          response?.data?.message ||
+            `${userDisplayName} login successful! Welcome back.`,
+        );
         return response;
       }
     } catch (error) {
       console.error("Login API error:", error);
+      const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
       toast.error(
-        error?.response?.data?.message || error.message || "Login failed",
+        error?.response?.data?.message ||
+          `${userDisplayName} login failed. Please try again.`,
       );
       return null;
     } finally {
@@ -157,7 +164,13 @@ const LoginPage = () => {
 
       const isUpdated = Boolean(response?.data?.isUpdated);
       setIsUpdated(isUpdated);
-      login(response?.data?.token, userType); // set context data only
+      login(response?.data?.token, userType);
+
+      if (userType === "hospital") {
+        toast.success("🏥 Welcome to the Hospital Dashboard!");
+      } else {
+        toast.success("👶 Welcome to your Pregnancy Dashboard!");
+      }
     }
   };
 
@@ -257,16 +270,6 @@ const LoginPage = () => {
               </div>
 
               <div className="mp-form-options">
-                {/* <label className="mp-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={formData.rememberMe}
-                    onChange={(e) =>
-                      handleChange("rememberMe", e.target.checked)
-                    }
-                  />
-                  Remember me
-                </label> */}
                 {userType === "mother" ? (
                   <Link to="/forgotPassword" state={{ role: userType }}>
                     Forgot Password?
@@ -296,18 +299,6 @@ const LoginPage = () => {
                 Don't have an account?{" "}
                 <Link to="/getStarted">Create Account</Link>
               </p>
-
-              {/* <div className="mp-divider">
-                <span>or continue with</span>
-              </div> */}
-
-              {/* <button
-                type="button"
-                className="mp-google-btn"
-                onClick={handleGoogleLogin}
-              >
-                <FcGoogle /> Google
-              </button> */}
             </form>
 
             <div className="mp-security-note">
