@@ -5,7 +5,7 @@
   width: 260px;
   height: calc(100vh - 64px);
   background-color: #0c5e58;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 10;
@@ -17,6 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
 }
 
 .sidebar-link {
@@ -59,8 +60,16 @@
   flex-shrink: 0;
 }
 
-.sidebar-logout {
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logout {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -80,6 +89,34 @@
 .sidebar-logout:hover {
   background: rgba(210, 13, 13, 0.976);
   color: #fff;
+}
+
+.sidebar-bottom .secure-platform-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.sidebar-bottom .secure-platform-badge .secure-title {
+  color: #ccfbf1;
+  font-size: 13px;
+}
+
+.sidebar-bottom .secure-platform-badge .secure-description {
+  color: #99d6d0;
+  font-size: 11px;
+}
+
+.sidebar-bottom .secure-platform-badge .secure-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-bottom .secure-platform-badge .secure-icon {
+  color: #ccfbf1;
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {

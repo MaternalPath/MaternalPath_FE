@@ -257,7 +257,7 @@ const LoginPage = () => {
               </div>
 
               <div className="mp-form-options">
-                <label className="mp-checkbox">
+                {/* <label className="mp-checkbox">
                   <input
                     type="checkbox"
                     checked={formData.rememberMe}
@@ -266,7 +266,7 @@ const LoginPage = () => {
                     }
                   />
                   Remember me
-                </label>
+                </label> */}
                 {userType === "mother" ? (
                   <Link to="/forgotPassword" state={{ role: userType }}>
                     Forgot Password?

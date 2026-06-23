@@ -43,9 +43,6 @@ const UploadedNewBill = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const token = localStorage.getItem("token");
 
-  // ========================
-  // FORM STATE
-  // ========================
   const [formData, setFormData] = useState({
     fullName: "",
     maternalId: motherId || "",
@@ -65,28 +62,16 @@ const UploadedNewBill = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // ========================
-  // BILL SUMMARY STATE
-  // ========================
   const [billId, setBillId] = useState(null);
   const [billSummary, setBillSummary] = useState(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
 
-  // ========================
-  // WORKFLOW STATE (from upload response only — read-only display here)
-  // ========================
   const [currentStage, setCurrentStage] = useState(null);
   const [nextStage, setNextStage] = useState(null);
 
-  // ========================
-  // SYSTEM VALIDATION STATE (Stage 1 checks)
-  // ========================
   const [validationResults, setValidationResults] = useState({});
   const [validatingType, setValidatingType] = useState(null);
 
-  // ========================
-  // FETCH PATIENT IDENTIFICATION -> GET /api/v1/patients/{motherId}
-  // ========================
   const fetchPatientDetails = async () => {
     if (!token) {
       toast.error("Authentication token not found.");
@@ -148,9 +133,6 @@ const UploadedNewBill = () => {
     return kb > 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb.toFixed(0)} KB`;
   };
 
-  // ========================
-  // RUN A SINGLE SYSTEM VALIDATION (Stage 1)
-  // ========================
   const runValidation = async (id, validationType) => {
     if (!token || !id) return;
 
@@ -185,9 +167,6 @@ const UploadedNewBill = () => {
     }
   };
 
-  // ========================
-  // FETCH BILL SUMMARY
-  // ========================
   const fetchBillSummary = async (id) => {
     if (!token || !id) return;
 
@@ -209,9 +188,6 @@ const UploadedNewBill = () => {
     }
   };
 
-  // ========================
-  // UPLOAD BILL (Stage 1) -> POST /api/v1/bill/upload
-  // ========================
   const handleUpload = async () => {
     if (!token) {
       toast.error("Authentication token not found.");
@@ -303,9 +279,6 @@ const UploadedNewBill = () => {
     })}`;
   };
 
-  // ========================
-  // VALIDATION DISPLAY HELPERS
-  // ========================
   const getValidationDisplay = (key) => {
     const result = validationResults[key];
 
@@ -351,9 +324,6 @@ const UploadedNewBill = () => {
     };
   };
 
-  // ========================
-  // WORKFLOW STEP STATE HELPER (read-only display)
-  // ========================
   const getStepState = (stageKey) => {
     if (!currentStage) {
       return "upcoming";
@@ -384,7 +354,6 @@ const UploadedNewBill = () => {
 
         <div className="uploaded-new-bill-container">
           <div className="uploaded-new-bill-main">
-            {/* Patient Identification Section -> GET /api/v1/patients/{motherId} */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -447,7 +416,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* Bill Details Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -521,7 +489,6 @@ const UploadedNewBill = () => {
               </div>
             </div>
 
-            {/* Document Upload Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -572,7 +539,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* Additional Notes Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -587,7 +553,6 @@ const UploadedNewBill = () => {
               ></textarea>
             </div>
 
-            {/* Action Buttons */}
             <div className="uploaded-new-bill-action-buttons">
               <button
                 className="uploaded-new-bill-btn-cancel"
@@ -606,9 +571,7 @@ const UploadedNewBill = () => {
             </div>
           </div>
 
-          {/* Right Sidebar */}
           <div className="uploaded-new-bill-sidebar">
-            {/* Verification Workflow - read-only progress display only */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">
                 Verification Workflow
@@ -651,7 +614,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* System Validation (Stage 1 checks only) */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">
                 System Validation
@@ -683,7 +645,6 @@ const UploadedNewBill = () => {
               </div>
             </div>
 
-            {/* Bill Summary */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">Bill Summary</h3>
               {!billId ? (

@@ -11,6 +11,7 @@ import { LuDownload } from "react-icons/lu";
 import { TbFileDescription } from "react-icons/tb";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa"; // ✅ Import for View All Patient
 
 export const motherNavItems = [
   {
@@ -46,9 +47,6 @@ export const motherNavItems = [
   },
 ];
 
-
-
-
 export const hospitalNavItems = [
   {
     path: "/dashboard/hospitalOverview",
@@ -59,27 +57,32 @@ export const hospitalNavItems = [
   {
     path: "/dashboard/verifyPatient",
     label: "Verify Patient Funds",
-    icon:   <BiSearch size={25} />
+    icon: <BiSearch size={25} />,
   },
   {
     path: "/dashboard/uploadedBills",
     label: "Uploaded Bills",
-    icon:  <LuDownload size={20} />
+    icon: <LuDownload size={20} />,
   },
   {
     path: "/dashboard/verificationHistory",
     label: "Verification History",
-    icon:   <TbFileDescription size={20} />
+    icon: <TbFileDescription size={20} />,
+  },
+  {
+    path: "/dashboard/viewAllPatient",
+    label: "View All Patient",
+    icon: <FaUsers size={20} />,
   },
   {
     path: "/dashboard/notificationsHospital",
-    label: "Notifications Hospital ",
-    icon:   <IoNotificationsOutline size={20} />
+    label: "Notifications Hospital",
+    icon: <IoNotificationsOutline size={20} />,
   },
   {
     path: "/dashboard/settingsHospital",
     label: "Settings",
-    icon:   <IoSettingsOutline size={20} />
+    icon: <IoSettingsOutline size={20} />,
   },
 ];
 
