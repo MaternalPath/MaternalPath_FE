@@ -411,7 +411,7 @@
   }
 
   .recent-activity-timeline-section {
-    padding: 16px;
+    padding: 20px;
     border-radius: 12px;
   }
 
@@ -451,6 +451,7 @@
 
   .recent-activity-insight-card {
     padding: 12px;
+    gap: 15px;
   }
 
   .recent-activity-insight-value {

@@ -129,8 +129,6 @@ const Viewallpatient = () => {
 
   return (
     <div className="viewallpatient-container">
-      <ToastContainer />
-
       <div className="viewallpatient-header-section">
         <h1 className="viewallpatient-title">All Patients</h1>
         <div className="viewallpatient-search-section">
