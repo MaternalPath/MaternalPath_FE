@@ -113,7 +113,7 @@ const PregnancyOverview = ({ overview }) => {
       TRIMESTER_LABELS[String(metrix?.trimester || "")] ||
       "",
     dueDate: formatDate(metrix?.estimatedDueDate),
-    daysRemaining: metrix?.daysUntilDueDate,
+    daysRemaining: metrix?.daysUntilDelivery,
   };
 
   const symptoms = whatToExpect;

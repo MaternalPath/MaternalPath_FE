@@ -176,7 +176,7 @@ const EditProfileModal = ({
                 onChange={handleChange}
                 onBlur={() => handleBlur("firstName")}
                 placeholder="Enter first name"
-                className={errors.firstName ? "input-error" : ""}
+                className={errors.firstName ? "input-error" : ""} disabled
               />
               {errors.firstName && (
                 <span className="error-message">{errors.firstName}</span>
@@ -192,7 +192,7 @@ const EditProfileModal = ({
                 onChange={handleChange}
                 onBlur={() => handleBlur("lastName")}
                 placeholder="Enter last name"
-                className={errors.lastName ? "input-error" : ""}
+                className={errors.lastName ? "input-error" : ""}disabled
               />
               {errors.lastName && (
                 <span className="error-message">{errors.lastName}</span>
