@@ -65,7 +65,8 @@ const weekToTrimester = (week) => {
   return null;
 };
 
-const validateField = (field, value) => {
+// 🆕 FIXED: Single validateField function with all validations
+const validateField = (field, value, formData = {}) => {
   switch (field) {
     case "dueDate": {
       if (!value) return "Due date is required";
@@ -102,6 +103,16 @@ const validateField = (field, value) => {
     case "bloodType":
       if (!value) return "Blood type is required";
       return "";
+    // 🆕 ADDED: Allergies validation
+    case "allergies":
+      if (!value || value.trim() === "")
+        return "Allergies are required (enter 'None' if none)";
+      return "";
+    // 🆕 ADDED: Conditions validation
+    case "conditions":
+      if (!value || value.trim() === "")
+        return "Existing health conditions are required (enter 'None' if none)";
+      return "";
     default:
       return "";
   }
@@ -117,6 +128,31 @@ const REQUIRED_FIELDS = [
   "allergies",
   "conditions",
 ];
+
+const calculateWeekAndTrimesterFromDueDate = (dueDate) => {
+  if (!dueDate) return { week: "", trimester: "" };
+
+  const selected = new Date(dueDate);
+  if (Number.isNaN(selected.getTime())) return { week: "", trimester: "" };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  selected.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
+  const weeksRemaining = Math.ceil(diffDays / 7);
+  let currentWeek = 40 - weeksRemaining;
+
+  if (currentWeek < 1) currentWeek = 1;
+  if (currentWeek > 42) currentWeek = 42;
+
+  let trimester = "";
+  if (currentWeek >= 1 && currentWeek <= 13) trimester = 1;
+  else if (currentWeek >= 14 && currentWeek <= 27) trimester = 2;
+  else if (currentWeek >= 28) trimester = 3;
+
+  return { week: currentWeek, trimester };
+};
 
 const UpdatePregnancyModal = ({
   isOpen,
@@ -134,122 +170,23 @@ const UpdatePregnancyModal = ({
       setFormData(fromState(data));
       setErrors({});
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const validateField = (field, value) => {
-    let error = '';
-
-    if (field === 'dueDate') {
-      if (!value) {
-        error = 'Due date is required';
-      } else {
-        const selectedDate = new Date(value);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const maxDate = new Date();
-        maxDate.setMonth(maxDate.getMonth() + 9);
-        maxDate.setHours(0, 0, 0, 0);
-
-        if (selectedDate < today) {
-          error = 'Due date cannot be in the past';
-        } else if (selectedDate > maxDate) {
-          error = 'Due date cannot be more than 9 months from now';
-        }
-      }
-
-      if (!error) {
-        const mismatch = getPregnancyWeekMismatchError(value, formData.currentWeek);
-        if (mismatch) error = mismatch;
-      }
-    }
-
-    if (field === 'currentWeek') {
-      const numValue = parseInt(value, 10);
-      if (!value || value === '') {
-        error = 'Current week is required';
-      } else if (isNaN(numValue)) {
-        error = 'Please enter a valid number';
-      } else if (numValue < 1) {
-        error = 'Week must be at least 1';
-      } else if (numValue > 42) {
-        error = 'Week cannot exceed 42';
-      }
-
-      if (!error) {
-        const mismatch = getPregnancyWeekMismatchError(formData.dueDate, value);
-        if (mismatch) error = mismatch;
-      }
-    }
-
-    if (field === 'trimester') {
-      const trimesterValue = Number(value);
-      if (!value) {
-        error = 'Trimester is required';
-      } else if (![1, 2, 3].includes(trimesterValue)) {
-        error = 'Trimester must be 1, 2 or 3';
-      }
-    }
-
-    // cross-field: ensure trimester matches the entered week when both present
-    if (field === 'trimester' || field === 'currentWeek') {
-      const week = field === 'currentWeek' ? Number(value) : Number(formData.currentWeek);
-      const tri = field === 'trimester' ? Number(value) : Number(formData.trimester);
-      const expected = weekToTrimester(week);
-      if (expected !== null && tri && Number.isFinite(tri) && expected !== tri) {
-        error = `Selected trimester does not match week ${week}. Expected trimester ${expected}.`;
-      }
-    }
-
-    if (field === 'emergencyName') {
-      if (!value || value.trim() === '') {
-        error = 'Emergency contact name is required';
-      } else if (value.trim().length < 2) {
-        error = 'Name must be at least 2 characters';
-      }
-    }
-
-    if (field === 'emergencyContact') {
-      if (!value || value.trim() === '') {
-        error = 'Emergency contact number is required';
-      } else if (!/^[0-9]{10,15}$/.test(value.replace(/[\s\-()+]/g, ''))) {
-        error = 'Please enter a valid phone number (10-15 digits)';
-      }
-    }
-
-    if (field === 'bloodType') {
-      if (!value) {
-        error = 'Blood type is required';
-      }
-    }
-
-    if (field === 'allergies') {
-      if (!value || value.trim() === '') {
-        error = 'Allergies are required (enter "None" if none)';
-      }
-    }
-
-    if (field === 'conditions') {
-      if (!value || value.trim() === '') {
-        error = 'Existing health conditions are required (enter "None" if none)';
-      }
-    }
-
-    return error;
-  };
-
   const getPregnancyFieldErrors = (form) => {
     const nextErrors = {};
-    const dueDateError = validateField('dueDate', form.dueDate);
-    const currentWeekError = validateField('currentWeek', form.currentWeek);
+    const dueDateError = validateField("dueDate", form.dueDate);
+    const currentWeekError = validateField("currentWeek", form.currentWeek);
 
     if (dueDateError) nextErrors.dueDate = dueDateError;
     if (currentWeekError) nextErrors.currentWeek = currentWeekError;
 
     if (!dueDateError && !currentWeekError) {
-      const mismatch = getPregnancyWeekMismatchError(form.dueDate, form.currentWeek);
+      const mismatch = getPregnancyWeekMismatchError(
+        form.dueDate,
+        form.currentWeek,
+      );
       if (mismatch) {
         nextErrors.dueDate = mismatch;
         nextErrors.currentWeek = mismatch;
@@ -262,15 +199,31 @@ const UpdatePregnancyModal = ({
   const handleChange = (field, value) => {
     const nextFormData = { ...formData, [field]: value };
 
-    if (field === 'dueDate' || field === 'currentWeek') {
+    if (field === "dueDate") {
+      const { week, trimester } = calculateWeekAndTrimesterFromDueDate(value);
+      nextFormData.currentWeek = week;
+      nextFormData.trimester = trimester;
+
+      setErrors((prev) => ({
+        ...prev,
+        currentWeek: "",
+        trimester: "",
+        dueDate: "",
+      }));
+    }
+
+    // ✅ FIXED: Validate the field on change
+    if (field === "dueDate" || field === "currentWeek") {
       const pregnancyErrors = getPregnancyFieldErrors(nextFormData);
       setErrors((prev) => ({
         ...prev,
         dueDate: pregnancyErrors.dueDate || "",
         currentWeek: pregnancyErrors.currentWeek || "",
       }));
-    } else if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
+    } else {
+      // ✅ FIXED: Validate other fields on change
+      const error = validateField(field, value, nextFormData);
+      setErrors((prev) => ({ ...prev, [field]: error || "" }));
     }
 
     setFormData(nextFormData);
@@ -280,7 +233,7 @@ const UpdatePregnancyModal = ({
     handleChange("emergencyContact", stripPhone(value));
 
   const handleBlur = (field, value) => {
-    if (field === 'dueDate' || field === 'currentWeek') {
+    if (field === "dueDate" || field === "currentWeek") {
       const nextFormData = { ...formData, [field]: value };
       const pregnancyErrors = getPregnancyFieldErrors(nextFormData);
       setErrors((prev) => ({
@@ -289,12 +242,18 @@ const UpdatePregnancyModal = ({
         currentWeek: pregnancyErrors.currentWeek || "",
       }));
     } else {
-      setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+      // ✅ FIXED: Validate on blur
+      const error = validateField(field, value, formData);
+      setErrors((prev) => ({ ...prev, [field]: error || "" }));
     }
   };
 
+  // ✅ FIXED: Proper validation check for all fields
   const isValid =
-    REQUIRED_FIELDS.every((f) => !validateField(f, formData[f])) &&
+    REQUIRED_FIELDS.every((field) => {
+      const error = validateField(field, formData[field], formData);
+      return !error;
+    }) &&
     !getPregnancyWeekMismatchError(formData.dueDate, formData.currentWeek) &&
     (() => {
       const expected = weekToTrimester(formData.currentWeek);
@@ -305,13 +264,36 @@ const UpdatePregnancyModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // ✅ FIXED: Validate all fields on submit
     const newErrors = {};
     REQUIRED_FIELDS.forEach((f) => {
-      const err = validateField(f, formData[f]);
+      const err = validateField(f, formData[f], formData);
       if (err) newErrors[f] = err;
     });
+
+    // ✅ FIXED: Also check cross-field validation
+    const mismatch = getPregnancyWeekMismatchError(
+      formData.dueDate,
+      formData.currentWeek,
+    );
+    if (mismatch) {
+      newErrors.dueDate = mismatch;
+      newErrors.currentWeek = mismatch;
+    }
+
     setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
+
+    if (Object.keys(newErrors).length > 0) {
+      // ✅ FIXED: Scroll to first error
+      const firstErrorField = Object.keys(newErrors)[0];
+      const element = document.getElementById(firstErrorField);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.focus();
+      }
+      return;
+    }
 
     const payload = {
       estimatedDueDate: formData.dueDate,
@@ -336,7 +318,14 @@ const UpdatePregnancyModal = ({
         <div className="modal-header">
           <h2>Update Pregnancy Information</h2>
           <button className="close-btn" onClick={onClose} aria-label="Close">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -348,7 +337,15 @@ const UpdatePregnancyModal = ({
             <div className="form-group">
               <label htmlFor="dueDate">Estimated Due Date</label>
               <div className="input-with-icon">
-                <svg className="field-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a0abaa" strokeWidth="2">
+                <svg
+                  className="field-icon"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#a0abaa"
+                  strokeWidth="2"
+                >
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                   <line x1="16" y1="2" x2="16" y2="6" />
                   <line x1="8" y1="2" x2="8" y2="6" />
@@ -368,6 +365,7 @@ const UpdatePregnancyModal = ({
               )}
             </div>
 
+            {/* 🔒 CURRENT WEEK - NOT CLICKABLE */}
             <div className="form-group">
               <label htmlFor="currentWeek">Current Week</label>
               <input
@@ -376,26 +374,40 @@ const UpdatePregnancyModal = ({
                 min="1"
                 max="42"
                 value={formData.currentWeek}
-                onChange={(e) => handleChange("currentWeek", e.target.value)}
-                onBlur={(e) => handleBlur("currentWeek", e.target.value)}
-                placeholder="e.g. 24"
+                disabled // ← Makes field completely non-interactable
+                placeholder="Auto-calculated from due date"
                 className={errors.currentWeek ? "input-error" : ""}
+                style={{
+                  backgroundColor: "#f5f5f5",
+                  cursor: "not-allowed",
+                  pointerEvents: "none", // ← Prevents any click events
+                  opacity: 0.7,
+                }}
               />
               {errors.currentWeek && (
                 <span className="error-message">{errors.currentWeek}</span>
               )}
+              <small style={{ color: "#888", fontSize: "12px" }}>
+                Auto-calculated based on due date
+              </small>
             </div>
 
+            {/* 🔒 TRIMESTER - NOT CLICKABLE */}
             <div className="form-group">
               <label htmlFor="trimester">Current Trimester</label>
               <select
                 id="trimester"
                 value={formData.trimester}
-                onChange={(e) => handleChange("trimester", e.target.value)}
-                onBlur={(e) => handleBlur("trimester", e.target.value)}
+                disabled // ← Makes select completely non-interactable
                 className={errors.trimester ? "input-error" : ""}
+                style={{
+                  backgroundColor: "#f5f5f5",
+                  cursor: "not-allowed",
+                  pointerEvents: "none",
+                  opacity: 0.7,
+                }}
               >
-                <option value="">Select trimester</option>
+                <option value="">Auto-calculated</option>
                 <option value={1}>First Trimester</option>
                 <option value={2}>Second Trimester</option>
                 <option value={3}>Third Trimester</option>
@@ -403,17 +415,26 @@ const UpdatePregnancyModal = ({
               {errors.trimester && (
                 <span className="error-message">{errors.trimester}</span>
               )}
+              <small style={{ color: "#888", fontSize: "12px" }}>
+                Auto-calculated based on current week
+              </small>
             </div>
 
             <div className="form-group">
               <label htmlFor="emergencyName">Emergency Contact Name</label>
               <div className="input-with-icon">
-                <IoPersonCircleOutline className="field-icon" size={18} color="#a0abaa" />
+                <IoPersonCircleOutline
+                  className="field-icon"
+                  size={18}
+                  color="#a0abaa"
+                />
                 <input
                   type="text"
                   id="emergencyName"
                   value={formData.emergencyName}
-                  onChange={(e) => handleChange("emergencyName", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("emergencyName", e.target.value)
+                  }
                   onBlur={(e) => handleBlur("emergencyName", e.target.value)}
                   placeholder="Full name"
                   className={errors.emergencyName ? "input-error" : ""}

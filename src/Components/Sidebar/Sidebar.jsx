@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { useRole } from "../../context/RoleContext";
 import { getNavItems } from "../../config/navItems";
+import SecurePlatformBadge from "./SecurePlatformBadge/SecurePlatformBadge";
 import "./Sidebar.css";
 
 const PROFILE_PATH = "/dashboard/profile";
@@ -37,12 +38,20 @@ const Sidebar = ({ isLocked = false, onLogoutClick }) => {
         })}
       </nav>
 
-      <button type="button" className="sidebar-logout" onClick={onLogoutClick}>
-        <span className="sidebar-icon">
-          <FiLogOut size={18} />
-        </span>
-        <span className="sidebar-label">Logout</span>
-      </button>
+      <div className="sidebar-bottom">
+        <SecurePlatformBadge />
+
+        <button
+          type="button"
+          className="sidebar-logout"
+          onClick={onLogoutClick}
+        >
+          <span className="sidebar-icon">
+            <FiLogOut size={18} />
+          </span>
+          <span className="sidebar-label">Logout</span>
+        </button>
+      </div>
     </aside>
   );
 };

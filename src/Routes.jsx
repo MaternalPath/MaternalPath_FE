@@ -46,6 +46,7 @@ import PrivateRouting from "./Lib/PrivateRouting";
 import PublicRoute from "./Lib/PublicRoute";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 import PatientDetails from "./Pages/HospitalDashBoardPages/VerifyPatient/PatientDetails";
+import ViewAllPatient from "./Pages/HospitalDashBoardPages/ViewAllPatient/ViewAllPatient";
 
 const AppRoutes = () => (
   <Router>
@@ -91,6 +92,7 @@ const AppRoutes = () => (
           <Route path="uploadNewBill" element={<UploadNewBill />} />
           <Route path="uploadedBills" element={<UploadedBills />} />
           <Route path="verificationHistory" element={<VerificationHistory />} />
+          <Route path="viewAllPatient" element={<ViewAllPatient />} />
           <Route
             path="notificationsHospital"
             element={<NotificationsHospital />}
