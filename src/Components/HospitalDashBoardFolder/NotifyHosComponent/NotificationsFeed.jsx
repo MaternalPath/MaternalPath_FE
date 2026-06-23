@@ -19,6 +19,21 @@ const TAB_TYPE_MAP = {
   "Security Alerts": "system_notification",
 };
 
+const SkeletonCard = () => (
+  <div className="notif-card notif-skeleton-card">
+    <div className="notif-skeleton-icon" />
+    <div className="notif-card-content">
+      <div className="notif-skeleton-line notif-skeleton-title" />
+      <div className="notif-skeleton-line notif-skeleton-desc" />
+      <div className="notif-skeleton-line notif-skeleton-desc short" />
+      <div className="notif-skeleton-footer">
+        <div className="notif-skeleton-line notif-skeleton-time" />
+        <div className="notif-skeleton-line notif-skeleton-badge" />
+      </div>
+    </div>
+  </div>
+);
+
 const NotificationsFeed = ({ refreshTrigger, activeTab }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,7 +120,6 @@ const NotificationsFeed = ({ refreshTrigger, activeTab }) => {
       toast.error("Authentication token not found.");
       return;
     }
-
     setActionId(id);
     try {
       await axios.patch(
@@ -113,13 +127,11 @@ const NotificationsFeed = ({ refreshTrigger, activeTab }) => {
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
-
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
       );
       toast.success("Marked as read");
     } catch (err) {
-      console.error("Error marking as read:", err);
       toast.error(err.response?.data?.message || "Failed to mark as read");
     } finally {
       setActionId(null);
@@ -131,17 +143,14 @@ const NotificationsFeed = ({ refreshTrigger, activeTab }) => {
       toast.error("Authentication token not found.");
       return;
     }
-
     setActionId(id);
     try {
       await axios.delete(`${baseURL}/notifications/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setNotifications((prev) => prev.filter((n) => n.id !== id));
       toast.success("Notification deleted");
     } catch (err) {
-      console.error("Error deleting notification:", err);
       toast.error(
         err.response?.data?.message || "Failed to delete notification",
       );
@@ -150,34 +159,21 @@ const NotificationsFeed = ({ refreshTrigger, activeTab }) => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="notif-feed">
-        <h2 className="notif-feed-title">{activeTab}</h2>
-        <div className="notif-loading">Loading notifications...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="notif-feed">
-        <h2 className="notif-feed-title">{activeTab}</h2>
-        <div className="notif-error">
-          <p>{error}</p>
-          <button onClick={fetchNotifications} className="retry-btn">
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="notif-feed">
-      <h2 className="notif-feed-title">{activeTab}</h2>{" "}
+      <h2 className="notif-feed-title">{activeTab}</h2>
+
       <div className="notif-feed-list">
-        {notifications.length > 0 ? (
+        {loading ? (
+          Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
+        ) : error ? (
+          <div className="notif-error">
+            <p>{error}</p>
+            <button onClick={fetchNotifications} className="retry-btn">
+              Retry
+            </button>
+          </div>
+        ) : notifications.length > 0 ? (
           notifications.map((item) => (
             <div
               key={item.id}

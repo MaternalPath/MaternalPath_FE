@@ -11,6 +11,81 @@ import { getBillDashboardStats } from "../../../api/hospital";
 import "./Css/BillsOverviwe.css";
 import axios from "axios";
 
+// ===== BILL RECORDS SKELETON =====
+const BillRecordsSkeleton = () => {
+  return (
+    <div className="records-section">
+      <div className="records-header">
+        <h2>Bill Records</h2>
+      </div>
+
+      {/* Mobile Cards Skeleton - Same structure as your cards */}
+      <div className="records-cards">
+        {[1, 2, 3, 4].map((item) => (
+          <div key={item} className="record-card skeleton-record">
+            <div className="record-card-top">
+              <span className="bill-id skeleton-text"></span>
+              <span className="more skeleton-icon"></span>
+            </div>
+            <h3 className="bold-text skeleton-text"></h3>
+            <p className="record-meta skeleton-text"></p>
+            <p className="amount-label skeleton-text"></p>
+            <div className="amount-row">
+              <span className="amount-value skeleton-text"></span>
+              <div className="amount-badges">
+                <span className="badge skeleton-badge"></span>
+                <span className="badge skeleton-badge"></span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table Skeleton - Same structure as your table */}
+      <table className="records-table skeleton-table">
+        <thead>
+          <tr>
+            <th>Bill ID</th>
+            <th>Patient Name</th>
+            <th>Delivery Type</th>
+            <th>Bill Amount</th>
+            <th>Upload Date</th>
+            <th>Verification Status</th>
+            <th>Payment Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[1, 2, 3, 4, 5].map((item) => (
+            <tr key={item}>
+              <td>
+                <span className="skeleton-text"></span>
+              </td>
+              <td>
+                <span className="skeleton-text"></span>
+              </td>
+              <td>
+                <span className="skeleton-text"></span>
+              </td>
+              <td>
+                <span className="skeleton-text"></span>
+              </td>
+              <td>
+                <span className="skeleton-text"></span>
+              </td>
+              <td>
+                <span className="skeleton-badge"></span>
+              </td>
+              <td>
+                <span className="skeleton-badge"></span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 const BillsOverview = () => {
   const [stats, setStats] = useState({
     totalUploadedBills: 0,
@@ -80,18 +155,14 @@ const BillsOverview = () => {
         records = [];
       }
 
-      console.log("Processed records:", records);
-
       const formattedBills = records.map((bill, index) => ({
         id: bill.billId || bill.id || bill._id || `BL-${Date.now()}-${index}`,
-        // FIX: Added fullName as the primary field since API returns it
         patient:
           bill.fullName ||
           bill.patientName ||
           bill.patient ||
           bill.patient_name ||
           "Unknown Patient",
-        // FIX: Added category as fallback for delivery type
         type:
           bill.category ||
           bill.deliveryType ||
@@ -99,7 +170,6 @@ const BillsOverview = () => {
           bill.delivery_type ||
           "N/A",
         amount: bill.billAmount || bill.amount || 0,
-        // FIX: Added billingDate as fallback for date
         date:
           bill.billingDate ||
           bill.uploadDate ||
@@ -107,7 +177,6 @@ const BillsOverview = () => {
           bill.upload_date ||
           bill.createdAt ||
           new Date().toISOString().split("T")[0],
-        // FIX: Added verificationWorkFlow as fallback
         verification:
           bill.verificationWorkFlow ||
           bill.verificationStatus ||
@@ -237,6 +306,7 @@ const BillsOverview = () => {
 
   return (
     <div className="overview">
+      {/* Stats Section - Unchanged */}
       <div className="stats-grid">
         {statsData.map((stat, index) => (
           <div className="stat-card" key={index}>
@@ -254,92 +324,94 @@ const BillsOverview = () => {
         ))}
       </div>
 
-      <div className="records-section">
-        <div className="records-header">
-          <h2>Bill Records</h2>
-        </div>
-
-        {billsLoading ? (
-          <div className="loading-state">
-            <p>Loading bill records...</p>
+      {/* Bill Records Section - Skeleton when loading */}
+      {billsLoading ? (
+        <BillRecordsSkeleton />
+      ) : billsData.length === 0 ? (
+        <div className="records-section">
+          <div className="records-header">
+            <h2>Bill Records</h2>
           </div>
-        ) : billsData.length === 0 ? (
           <div className="empty-state">
             <FiFileText size={48} />
             <p>No bill records found</p>
             <span>Upload bills to see them here</span>
           </div>
-        ) : (
-          <>
-            <table className="records-table">
-              <thead>
-                <tr>
-                  <th>Bill ID</th>
-                  <th>Patient Name</th>
-                  <th>Delivery Type</th>
-                  <th>Bill Amount</th>
-                  <th>Upload Date</th>
-                  <th>Verification Status</th>
-                  <th>Payment Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {billsData.map((bill) => (
-                  <tr key={bill.id}>
-                    <td className="bill-id">{bill.id}</td>
-                    <td className="bold-text">{bill.patient}</td>
-                    <td>{bill.type}</td>
-                    <td>{formatCurrency(bill.amount)}</td>
-                    <td>{formatDate(bill.date)}</td>
-                    <td>
-                      <span className={getStatusClass(bill.verification)}>
-                        {bill.verification}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={getStatusClass(bill.payment)}>
-                        {bill.payment}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        </div>
+      ) : (
+        <div className="records-section">
+          <div className="records-header">
+            <h2>Bill Records</h2>
+          </div>
 
-            <div className="records-cards">
+          <table className="records-table">
+            <thead>
+              <tr>
+                <th>Bill ID</th>
+                <th>Patient Name</th>
+                <th>Delivery Type</th>
+                <th>Bill Amount</th>
+                <th>Upload Date</th>
+                <th>Verification Status</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody>
               {billsData.map((bill) => (
-                <div className="record-card" key={bill.id}>
-                  <div className="record-card-top">
-                    <span className="bill-id">{bill.id}</span>
-                    <span className="more">
-                      <FiMoreVertical />
+                <tr key={bill.id}>
+                  <td className="bill-id">{bill.id}</td>
+                  <td className="bold-text">{bill.patient}</td>
+                  <td>{bill.type}</td>
+                  <td>{formatCurrency(bill.amount)}</td>
+                  <td>{formatDate(bill.date)}</td>
+                  <td>
+                    <span className={getStatusClass(bill.verification)}>
+                      {bill.verification}
                     </span>
-                  </div>
-                  <h3 className="bold-text">{bill.patient}</h3>
-                  <p className="record-meta">
-                    {bill.type} • {formatDate(bill.date)}
-                  </p>
+                  </td>
+                  <td>
+                    <span className={getStatusClass(bill.payment)}>
+                      {bill.payment}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-                  <p className="amount-label">AMOUNT</p>
-                  <div className="amount-row">
-                    <span className="amount-value">
-                      {formatCurrency(bill.amount)}
+          <div className="records-cards">
+            {billsData.map((bill) => (
+              <div className="record-card" key={bill.id}>
+                <div className="record-card-top">
+                  <span className="bill-id">{bill.id}</span>
+                  <span className="more">
+                    <FiMoreVertical />
+                  </span>
+                </div>
+                <h3 className="bold-text">{bill.patient}</h3>
+                <p className="record-meta">
+                  {bill.type} • {formatDate(bill.date)}
+                </p>
+
+                <p className="amount-label">AMOUNT</p>
+                <div className="amount-row">
+                  <span className="amount-value">
+                    {formatCurrency(bill.amount)}
+                  </span>
+                  <div className="amount-badges">
+                    <span className={getStatusClass(bill.verification)}>
+                      {bill.verification}
                     </span>
-                    <div className="amount-badges">
-                      <span className={getStatusClass(bill.verification)}>
-                        {bill.verification}
-                      </span>
-                      <span className={getStatusClass(bill.payment)}>
-                        {bill.payment}
-                      </span>
-                    </div>
+                    <span className={getStatusClass(bill.payment)}>
+                      {bill.payment}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

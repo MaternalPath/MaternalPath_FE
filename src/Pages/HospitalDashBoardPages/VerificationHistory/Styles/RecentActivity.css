@@ -20,11 +20,6 @@
   margin: 0;
 }
 
-/* .recents-activity-container {
-  background-color: #f5f4ef;
-  padding: 16px;
-} */
-
 .recent-activity-wrapper {
   max-width: 100%;
   margin-top: 22px;
@@ -177,10 +172,74 @@
   display: inline;
 }
 
-/* ---------- Desktop styles ---------- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-icon,
+.recent-activity-timeline-item.skeleton .skeleton-line,
+.recent-activity-timeline-item.skeleton .skeleton-text {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-icon {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-line {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  min-height: 24px;
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-text {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  height: 14px;
+  margin: 4px 0;
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-text-title {
+  height: 16px;
+  width: 75%;
+  margin-bottom: 8px;
+}
+
+.recent-activity-timeline-item.skeleton .skeleton-text-subtitle {
+  height: 12px;
+  width: 45%;
+}
+
 @media (min-width: 1024px) {
-  .recent-activity-container {
-    padding: 32px;
+  .recent-activity-wrapper {
+    margin-top: 32px;
+    margin-bottom: 32px;
   }
 
   .recent-activity-top-section {
@@ -285,5 +344,235 @@
 
   .label-short {
     display: none;
+  }
+
+  .recent-activity-timeline-item.skeleton {
+    background: #f4f3ee;
+    border-left: 4px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-title {
+    width: 60%;
+    height: 16px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-subtitle {
+    width: 35%;
+    height: 12px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .recent-activity-timeline-section {
+    padding: 24px;
+  }
+
+  .recent-activity-insights-section {
+    padding: 24px;
+  }
+
+  .recent-activity-section-title {
+    font-size: 20px;
+  }
+
+  .recent-activity-insights-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .recent-activity-insight-card {
+    padding: 16px;
+  }
+
+  .recent-activity-insight-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .recent-activity-wrapper {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .recent-activity-timeline-section {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .recent-activity-insights-section {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .recent-activity-section-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .recent-activity-timeline-item {
+    gap: 12px;
+  }
+
+  .recent-activity-timeline-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    font-size: 12px;
+  }
+
+  .recent-activity-timeline-message {
+    font-size: 13px;
+  }
+
+  .recent-activity-timeline-timestamp {
+    font-size: 11px;
+  }
+
+  .recent-activity-insights-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .recent-activity-insight-card {
+    padding: 12px;
+  }
+
+  .recent-activity-insight-value {
+    font-size: 18px;
+  }
+
+  .recent-activity-insight-label {
+    font-size: 10px;
+  }
+
+  .recent-activity-timeline-item.skeleton {
+    display: flex;
+    gap: 12px;
+    padding: 4px 0;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-title {
+    width: 70%;
+    height: 14px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-subtitle {
+    width: 40%;
+    height: 11px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-line {
+    min-height: 20px;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+@media (max-width: 479px) {
+  .recent-activity-wrapper {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .recent-activity-timeline-section {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .recent-activity-insights-section {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .recent-activity-section-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .recent-activity-timeline-item {
+    gap: 10px;
+  }
+
+  .recent-activity-timeline-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    font-size: 11px;
+  }
+
+  .recent-activity-timeline-message {
+    font-size: 12px;
+  }
+
+  .recent-activity-timeline-timestamp {
+    font-size: 10px;
+  }
+
+  .recent-activity-insights-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .recent-activity-insight-card {
+    padding: 10px;
+  }
+
+  .recent-activity-insight-value {
+    font-size: 16px;
+  }
+
+  .recent-activity-insight-label {
+    font-size: 9px;
+  }
+
+  .recent-activity-empty-icon {
+    font-size: 28px;
+  }
+
+  .recent-activity-empty-text {
+    font-size: 13px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-title {
+    width: 75%;
+    height: 12px;
+  }
+
+  .recent-activity-timeline-item.skeleton .skeleton-text-subtitle {
+    width: 45%;
+    height: 10px;
   }
 }

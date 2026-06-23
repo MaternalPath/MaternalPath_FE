@@ -1,0 +1,368 @@
+.viewallpatient-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #e8f5f3;
+  padding: 24px;
+}
+
+.viewallpatient-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.viewallpatient-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a6b6b;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.viewallpatient-search-section {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  max-width: 600px;
+  margin-left: auto;
+}
+
+.viewallpatient-search-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #333;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.viewallpatient-search-input::placeholder {
+  color: #999;
+}
+
+.viewallpatient-search-input:focus {
+  outline: none;
+  border-color: #1a6b6b;
+  box-shadow: 0 0 0 3px rgba(26, 107, 107, 0.1);
+}
+
+.viewallpatient-search-btn {
+  padding: 12px 24px;
+  background-color: #1a6b6b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  white-space: nowrap;
+}
+
+.viewallpatient-search-btn:hover {
+  background-color: #145555;
+  transform: translateY(-1px);
+}
+
+.viewallpatient-search-btn:active {
+  transform: translateY(0);
+}
+
+.viewallpatient-search-icon {
+  font-size: 16px;
+}
+
+/* Table Section */
+.viewallpatient-table-wrapper {
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.viewallpatient-patients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.viewallpatient-table-header {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.viewallpatient-table-header th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: none;
+  letter-spacing: 0.3px;
+}
+
+.viewallpatient-table-row {
+  border-bottom: 1px solid #e8e8e8;
+  transition: background-color 0.1s;
+}
+
+.viewallpatient-table-row:hover {
+  background-color: #f9fafa;
+}
+
+.viewallpatient-table-row.viewallpatient-even {
+  background-color: #ffffff;
+}
+
+.viewallpatient-table-row.viewallpatient-odd {
+  background-color: #fafbfb;
+}
+
+.viewallpatient-table-row td {
+  padding: 14px 20px;
+  font-size: 14px;
+  color: #333;
+  vertical-align: middle;
+}
+
+.viewallpatient-col-patient-id {
+  width: 20%;
+  font-weight: 500;
+  color: #1a6b6b;
+}
+
+.viewallpatient-col-full-name {
+  width: 20%;
+}
+
+.viewallpatient-col-date-of-birth {
+  width: 15%;
+}
+
+.viewallpatient-col-phone-number {
+  width: 18%;
+}
+
+.viewallpatient-col-trimester {
+  width: 13%;
+}
+
+.viewallpatient-col-status {
+  width: 14%;
+}
+
+.viewallpatient-loading,
+.viewallpatient-empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.viewallpatient-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.viewallpatient-badge-verified {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.viewallpatient-badge-unverified {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.viewallpatient-pagination-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.viewallpatient-pagination-btn {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.viewallpatient-pagination-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+  border-color: #999;
+}
+
+.viewallpatient-pagination-btn:disabled {
+  color: #ccc;
+  border-color: #e5e5e5;
+  cursor: not-allowed;
+}
+
+.viewallpatient-prev-btn {
+  margin-right: 12px;
+}
+
+.viewallpatient-next-btn {
+  margin-left: 12px;
+}
+
+.viewallpatient-page-numbers {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.viewallpatient-page-number {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 36px;
+  text-align: center;
+}
+
+.viewallpatient-page-number:hover {
+  background-color: #f5f5f5;
+  border-color: #999;
+}
+
+.viewallpatient-page-number.viewallpatient-active {
+  background-color: #5a7f7f;
+  color: #ffffff;
+  border-color: #5a7f7f;
+}
+
+.viewallpatient-pagination-ellipsis {
+  padding: 6px 8px;
+  color: #999;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .viewallpatient-container {
+    padding: 20px;
+  }
+
+  .viewallpatient-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 30px;
+  }
+
+  .viewallpatient-search-section {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .viewallpatient-search-input {
+    font-size: 13px;
+  }
+
+  .viewallpatient-search-btn {
+    padding: 11px 20px;
+    font-size: 13px;
+  }
+
+  .viewallpatient-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .viewallpatient-patients-table {
+    min-width: 700px;
+  }
+
+  .viewallpatient-table-header th,
+  .viewallpatient-table-row td {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .viewallpatient-pagination-section {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .viewallpatient-page-numbers {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .viewallpatient-prev-btn {
+    order: 1;
+    margin-right: 0;
+  }
+
+  .viewallpatient-next-btn {
+    order: 2;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .viewallpatient-container {
+    padding: 16px;
+  }
+
+  .viewallpatient-title {
+    font-size: 24px;
+  }
+
+  .viewallpatient-col-patient-id,
+  .viewallpatient-col-full-name,
+  .viewallpatient-col-date-of-birth,
+  .viewallpatient-col-phone-number,
+  .viewallpatient-col-trimester,
+  .viewallpatient-col-status {
+    width: auto;
+  }
+}
+
+@keyframes vap-shimmer {
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
+}
+
+.vap-skeleton {
+  display: block;
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e8eded 25%, #d4e0e0 50%, #e8eded 75%);
+  background-size: 600px 100%;
+  animation: vap-shimmer 1.4s ease-in-out infinite;
+}
