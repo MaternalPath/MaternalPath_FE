@@ -3,7 +3,7 @@ import "./ModalCard.css";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
 const PHONE_REGEX = /^[1-9]\d{9}$/;
-const BLOOD_TYPES = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const BLOOD_TYPES = ["A+", "A-", "B+", "AB+", "AB-", "O+", "O-"];
 
 const hasValue = (val) =>
   val !== undefined && val !== null && String(val).trim() !== "";
@@ -14,6 +14,13 @@ const toLocalPhone = (raw) => {
   if (digits.startsWith("234")) return digits.slice(3);
   if (digits.startsWith("0")) return digits.slice(1);
   return digits;
+};
+
+// Parse date string as local time to avoid UTC offset bug
+const toLocalDate = (dateStr) => {
+  if (!dateStr) return null;
+  const [y, m, d] = dateStr.split("-").map(Number);
+  return new Date(y, m - 1, d); // local timezone, not UTC
 };
 
 const fromState = (data) => ({
@@ -32,17 +39,26 @@ const fromState = (data) => ({
   conditions: data?.existingHealthConditions || "",
 });
 
+// 🆕 FIXED: Calculate from LMP = Due date - 280 days. Uses Math.floor
 const getExpectedPregnancyWeek = (dueDate) => {
-  const selected = new Date(dueDate);
-  if (Number.isNaN(selected.getTime())) return null;
+  const due = toLocalDate(dueDate);
+  if (!due || Number.isNaN(due.getTime())) return null;
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  selected.setHours(0, 0, 0, 0);
+  due.setHours(0, 0, 0, 0);
 
-  const diffDays = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
-  const weeksRemaining = Math.ceil(diffDays / 7);
-  if (weeksRemaining < 0) return null;
-  return Math.max(1, 40 - weeksRemaining);
+  // LMP = Due date - 40 weeks = 280 days
+  const lmp = new Date(due);
+  lmp.setDate(lmp.getDate() - 280);
+
+  const diffDays = Math.floor((today - lmp) / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) return 1; // not pregnant yet
+  if (diffDays > 294) return 42; // past 42 weeks
+
+  const currentWeek = Math.floor(diffDays / 7) + 1; // day 0-6 = week 1
+  return Math.max(1, Math.min(42, currentWeek));
 };
 
 const getPregnancyWeekMismatchError = (dueDate, currentWeek) => {
@@ -65,12 +81,11 @@ const weekToTrimester = (week) => {
   return null;
 };
 
-// 🆕 FIXED: Single validateField function with all validations
 const validateField = (field, value, formData = {}) => {
   switch (field) {
     case "dueDate": {
       if (!value) return "Due date is required";
-      const selected = new Date(value);
+      const selected = toLocalDate(value);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const max = new Date();
@@ -103,12 +118,10 @@ const validateField = (field, value, formData = {}) => {
     case "bloodType":
       if (!value) return "Blood type is required";
       return "";
-    // 🆕 ADDED: Allergies validation
     case "allergies":
       if (!value || value.trim() === "")
         return "Allergies are required (enter 'None' if none)";
       return "";
-    // 🆕 ADDED: Conditions validation
     case "conditions":
       if (!value || value.trim() === "")
         return "Existing health conditions are required (enter 'None' if none)";
@@ -129,29 +142,34 @@ const REQUIRED_FIELDS = [
   "conditions",
 ];
 
+// 🆕 FIXED: LMP-based calculation + returns days too
 const calculateWeekAndTrimesterFromDueDate = (dueDate) => {
   if (!dueDate) return { week: "", trimester: "" };
 
-  const selected = new Date(dueDate);
-  if (Number.isNaN(selected.getTime())) return { week: "", trimester: "" };
+  const due = toLocalDate(dueDate);
+  if (!due || Number.isNaN(due.getTime())) return { week: "", trimester: "" };
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  selected.setHours(0, 0, 0, 0);
+  due.setHours(0, 0, 0, 0);
 
-  const diffDays = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
-  const weeksRemaining = Math.ceil(diffDays / 7);
-  let currentWeek = 40 - weeksRemaining;
+  const lmp = new Date(due);
+  lmp.setDate(lmp.getDate() - 280);
 
-  if (currentWeek < 1) currentWeek = 1;
-  if (currentWeek > 42) currentWeek = 42;
+  const diffDays = Math.floor((today - lmp) / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) return { week: 1, trimester: 1 };
+  if (diffDays > 294) return { week: 42, trimester: 3 };
+
+  const currentWeek = Math.floor(diffDays / 7) + 1;
+  const days = diffDays % 7;
 
   let trimester = "";
-  if (currentWeek >= 1 && currentWeek <= 13) trimester = 1;
-  else if (currentWeek >= 14 && currentWeek <= 27) trimester = 2;
-  else if (currentWeek >= 28) trimester = 3;
+  if (currentWeek <= 13) trimester = 1;
+  else if (currentWeek <= 27) trimester = 2;
+  else trimester = 3;
 
-  return { week: currentWeek, trimester };
+  return { week: currentWeek, trimester, days };
 };
 
 const UpdatePregnancyModal = ({
@@ -212,7 +230,6 @@ const UpdatePregnancyModal = ({
       }));
     }
 
-    // ✅ FIXED: Validate the field on change
     if (field === "dueDate" || field === "currentWeek") {
       const pregnancyErrors = getPregnancyFieldErrors(nextFormData);
       setErrors((prev) => ({
@@ -221,7 +238,6 @@ const UpdatePregnancyModal = ({
         currentWeek: pregnancyErrors.currentWeek || "",
       }));
     } else {
-      // ✅ FIXED: Validate other fields on change
       const error = validateField(field, value, nextFormData);
       setErrors((prev) => ({ ...prev, [field]: error || "" }));
     }
@@ -242,13 +258,11 @@ const UpdatePregnancyModal = ({
         currentWeek: pregnancyErrors.currentWeek || "",
       }));
     } else {
-      // ✅ FIXED: Validate on blur
       const error = validateField(field, value, formData);
       setErrors((prev) => ({ ...prev, [field]: error || "" }));
     }
   };
 
-  // ✅ FIXED: Proper validation check for all fields
   const isValid =
     REQUIRED_FIELDS.every((field) => {
       const error = validateField(field, formData[field], formData);
@@ -265,14 +279,12 @@ const UpdatePregnancyModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ FIXED: Validate all fields on submit
     const newErrors = {};
     REQUIRED_FIELDS.forEach((f) => {
       const err = validateField(f, formData[f], formData);
       if (err) newErrors[f] = err;
     });
 
-    // ✅ FIXED: Also check cross-field validation
     const mismatch = getPregnancyWeekMismatchError(
       formData.dueDate,
       formData.currentWeek,
@@ -285,7 +297,6 @@ const UpdatePregnancyModal = ({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
-      // ✅ FIXED: Scroll to first error
       const firstErrorField = Object.keys(newErrors)[0];
       const element = document.getElementById(firstErrorField);
       if (element) {
@@ -365,7 +376,6 @@ const UpdatePregnancyModal = ({
               )}
             </div>
 
-            {/* 🔒 CURRENT WEEK - NOT CLICKABLE */}
             <div className="form-group">
               <label htmlFor="currentWeek">Current Week</label>
               <input
@@ -374,13 +384,13 @@ const UpdatePregnancyModal = ({
                 min="1"
                 max="42"
                 value={formData.currentWeek}
-                disabled // ← Makes field completely non-interactable
+                disabled
                 placeholder="Auto-calculated from due date"
                 className={errors.currentWeek ? "input-error" : ""}
                 style={{
                   backgroundColor: "#f5f5f5",
                   cursor: "not-allowed",
-                  pointerEvents: "none", // ← Prevents any click events
+                  pointerEvents: "none",
                   opacity: 0.7,
                 }}
               />
@@ -392,13 +402,12 @@ const UpdatePregnancyModal = ({
               </small>
             </div>
 
-            {/* 🔒 TRIMESTER - NOT CLICKABLE */}
             <div className="form-group">
               <label htmlFor="trimester">Current Trimester</label>
               <select
                 id="trimester"
                 value={formData.trimester}
-                disabled // ← Makes select completely non-interactable
+                disabled
                 className={errors.trimester ? "input-error" : ""}
                 style={{
                   backgroundColor: "#f5f5f5",
