@@ -33,9 +33,7 @@ const PregnancyHeroCard = ({ dashboardData }) => {
             Week {dashboardData?.week ?? "—"}{" "}
             <span className="trimester">{trimesterName}</span>
           </h2>
-          <p className="subtitle">
-            Your baby is growing beautifully this week.
-          </p>
+      
 
           <div className="stats-grid">
             <div className="stat-item">
