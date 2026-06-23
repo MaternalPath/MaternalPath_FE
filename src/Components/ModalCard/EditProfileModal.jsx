@@ -106,7 +106,7 @@ const EditPersonalInformationModal = ({
                   onChange={handlePhoneChange}
                   onBlur={() => handleBlur("phoneNumber")}
                   placeholder="8012345678"
-                  className={errors.phoneNumber ? "input-error" : ""}
+                  className={errors.phoneNumber ? "input-error" : ""} disabled
                 />
               </div>
               {errors.phoneNumber && (

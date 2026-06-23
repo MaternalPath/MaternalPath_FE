@@ -76,6 +76,16 @@
   align-items: center;
   margin-bottom: 16px;
 }
+/* @keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
 
 .modal-header h2 {
   color: var(--primary-dark);
@@ -299,7 +309,7 @@
   font-size: 14px;
   font-weight: 500;
   border-right: 1px solid var(--input-border, #d4d4d4);
-  user-select: none;
+  /* user-select: none; */
 }
 
 .input-with-prefix input {
