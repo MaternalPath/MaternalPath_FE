@@ -1,9 +1,118 @@
-import React from "react";
+// import React from "react";
+// import "./Css/TodaysRemindersCard.css";
+// import { FiCheckCircle, FiCalendar } from "react-icons/fi";
+
+// const normalizeReminders = (reminder) => {
+//   if (!reminder) return [];
+//   if (reminder.data) return normalizeReminders(reminder.data);
+
+//   if (Array.isArray(reminder)) {
+//     return reminder
+//       .filter(Boolean)
+//       .map((item) => {
+//         if (typeof item === "string") return { title: item };
+//         if (typeof item === "object") {
+//           return {
+//             title:
+//               item.title || item.reminder || item.text ||
+//               item.description ||
+//               "Reminder",
+//             subtitle:
+//               item.subtitle || item.description || item.details || "",
+//           };
+//         }
+//         return null;
+//       })
+//       .filter(Boolean);
+//   }
+
+//   if (Array.isArray(reminder?.reminders)) {
+//     return normalizeReminders(reminder.reminders);
+//   }
+
+//   const text =
+//     typeof reminder === "string"
+//       ? reminder
+//       : reminder?.dayNumber || reminder?.title || reminder?.text;
+//   if (!text || text === "No reminder available.") return [];
+
+//   return [
+//     {
+//       title: text,
+//       subtitle: reminder?.subtitle || reminder?.description || "",
+//     },
+//   ];
+// };
+
+// const TodaysRemindersCard = ({ reminder }) => {
+//   const items = normalizeReminders(reminder);
+
+//   return (
+//     <div className="card card-reminders">
+//       <div className="card-header">
+//         <div className="card-title">
+//           <FiCheckCircle size={18} />
+//           Today's Reminders
+//         </div>
+//       </div>
+//       <div className="reminder-list">
+//         {items.length === 0 && (
+//           <p className="reminder-empty">No reminders for today.</p>
+//         )}
+//         {items.map((item, idx) => (
+//           <div key={idx} className="reminder-item">
+//             <div className="reminder-icon">
+//               <FiCalendar size={18} />
+//             </div>
+//             <div className="reminder-content">
+//               <div className="reminder-title">{item.title}</div>
+//               {item.subtitle && (
+//                 <div className="reminder-subtitle">{item.subtitle}</div>
+//               )}
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TodaysRemindersCard;
+
+
+import React, { useEffect, useState } from "react";
 import "./Css/TodaysRemindersCard.css";
 import { FiCheckCircle, FiCalendar } from "react-icons/fi";
+import { getTodaysReminder } from "../../../api/mothers/index"; // adjust path
 
 const normalizeReminders = (reminder) => {
   if (!reminder) return [];
+
+  // Handle API payload structure
+  if (reminder?.reminder?.description) {
+    try {
+      const details = JSON.parse(reminder.reminder.description || "[]");
+      const tips = details[0] || {};
+
+      return [
+        {
+          title: reminder.reminder.title.replace(/"/g, ""),
+          subtitle: tips.wellnessTip || "",
+        },
+        {
+          title: "Nutrition Tip",
+          subtitle: tips.nutritionTip || "",
+        },
+        {
+          title: "Mental Health Tip",
+          subtitle: tips.mentalHealthTip || "",
+        },
+      ].filter((item) => item.subtitle);
+    } catch (error) {
+      console.error("Failed to parse reminder description:", error);
+      return [];
+    }
+  }
   if (reminder.data) return normalizeReminders(reminder.data);
 
   if (Array.isArray(reminder)) {
@@ -11,23 +120,21 @@ const normalizeReminders = (reminder) => {
       .filter(Boolean)
       .map((item) => {
         if (typeof item === "string") return { title: item };
+
         if (typeof item === "object") {
           return {
             title:
               item.title ||
-              item.reminder ||
-              item.text ||
-              item.message ||
-              item.description ||
+            
               "Reminder",
             subtitle:
-              item.subtitle ||
+              item.subtitle|| 
               item.description ||
               item.details ||
-              item.time ||
               "",
           };
         }
+
         return null;
       })
       .filter(Boolean);
@@ -37,21 +144,31 @@ const normalizeReminders = (reminder) => {
     return normalizeReminders(reminder.reminders);
   }
 
-  const text =
-    typeof reminder === "string"
-      ? reminder
-      : reminder?.reminder || reminder?.title || reminder?.text;
-  if (!text || text === "No reminder available.") return [];
-
-  return [
-    {
-      title: text,
-      subtitle: reminder?.subtitle || reminder?.description || "",
-    },
-  ];
+  return [];
 };
 
-const TodaysRemindersCard = ({ dashboardData: reminder }) => {
+const TodaysRemindersCard = () => {
+  const [reminder, setReminder] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadReminder = async () => {
+      try {
+        const response = await getTodaysReminder();
+
+        console.log("Today's Reminder API Response:", response);
+
+        setReminder(response);
+      } catch (error) {
+        console.error("Error loading reminder:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadReminder();
+  }, []);
+
   const items = normalizeReminders(reminder);
 
   return (
@@ -62,23 +179,31 @@ const TodaysRemindersCard = ({ dashboardData: reminder }) => {
           Today's Reminders
         </div>
       </div>
+
       <div className="reminder-list">
-        {items.length === 0 && (
+        {loading ? (
+          <p className="reminder-empty">Loading reminders...</p>
+        ) : items.length === 0 ? (
           <p className="reminder-empty">No reminders for today.</p>
+        ) : (
+          items.map((item, idx) => (
+            <div key={idx} className="reminder-item">
+              <div className="reminder-icon">
+                <FiCalendar size={18} />
+              </div>
+
+              <div className="reminder-content">
+                <div className="reminder-title">{reminder.title}</div>
+
+                {item.subtitle && (
+                  <div className="reminder-subtitle">
+                    {item.subtitle}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
         )}
-        {items.map((item, idx) => (
-          <div key={idx} className="reminder-item">
-            <div className="reminder-icon">
-              <FiCalendar size={18} />
-            </div>
-            <div className="reminder-content">
-              <div className="reminder-title">{item.title}</div>
-              {item.subtitle && (
-                <div className="reminder-subtitle">{item.subtitle}</div>
-              )}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

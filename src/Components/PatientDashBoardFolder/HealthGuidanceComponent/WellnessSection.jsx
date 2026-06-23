@@ -29,7 +29,7 @@ const WellnessSection = ({ data }) => {
         <div className="nutrition-grid">
           <div className="white-card">
             <h4>Iron-Rich Foods</h4>
-            <p>{nutrition.ironRichFoods || "—"}</p>
+            <p>{data.nutrition.ironRichFoods || "—"}</p>
           </div>
           <div className="white-card">
             <h4>Protein Sources</h4>

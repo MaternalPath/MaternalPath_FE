@@ -31,11 +31,11 @@ const HealthOverview = ({ data }) => {
           <div className="focus-row">
             <div className="focus-card">
               <span className="label">This Week's Focus</span>
-              <span className="value">{focus}</span>
+              <span className="value">{data.focus}</span>
             </div>
             <div className="focus-card">
               <span className="label">Health Status</span>
-              <span className="value">{healthStatus}</span>
+              <span className="value">{data.healthStatus}</span>
             </div>
           </div>
         </div>
