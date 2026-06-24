@@ -7,7 +7,7 @@ import "./Styles/PatientDetails.css";
 export default function PatientDetails() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const { patientId: motherId } = useParams();
   const selectedPatient = location.state?.patient || null;
 
@@ -295,9 +295,41 @@ export default function PatientDetails() {
                   <span className="detail-label">Phone Number</span>
                   <span className="detail-value">{phone}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Email Address</span>
-                  <span className="detail-value">{email}</span>
+                <div
+                  className="detail-row"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "8px 0",
+                  }}
+                >
+                  <span
+                    className="detail-label"
+                    style={{
+                      flexShrink: 0,
+                    }}
+                  >
+                    Email Address
+                  </span>
+                  <span
+                    className="detail-value"
+                    style={{
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      display: "inline-block",
+                      minWidth: 0,
+                      marginLeft: "10px",
+                      textAlign: "left",
+                      fontSize: "14px",
+                      maxWidth: "200px",
+                    }}
+                  >
+                    {email.length > 20
+                      ? `${email.split("@")[0].slice(0, 4)}...@${email.split("@")[1]}`
+                      : email}
+                  </span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Pregnancy Week</span>

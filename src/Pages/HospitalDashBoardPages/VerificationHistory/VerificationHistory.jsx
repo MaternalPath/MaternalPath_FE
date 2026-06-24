@@ -221,7 +221,7 @@ const VerificationHistory = () => {
           <FiSearch size={16} className="filter-icon" />
           <input
             type="text"
-            placeholder="Enter Patient ID or Phone Number"
+            placeholder="Enter Patient Full Name or Phone Number"
             value={searchPatientInput}
             onChange={(e) => setSearchPatientInput(e.target.value)}
             onKeyDown={handleSearchKeyDown}
