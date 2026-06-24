@@ -50,7 +50,7 @@ export const updateMotherProfile = async (id, profileData) => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -100,7 +100,7 @@ export const getWeeklyGuidance = async () => {
 
 export const fundWallet = async (payload) => {
   try {
-    const { data } = await apiClient.post("/payment/balance", payload);
+    const { data } = await apiClient.post("/payment/initiate", payload);
     return data;
   } catch (error) {
     console.error("Error funding wallet:", error);

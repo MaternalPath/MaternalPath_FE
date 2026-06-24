@@ -88,7 +88,7 @@ const AppRoutes = () => (
             path="patientDetails/:patientId"
             element={<PatientDetails />}
           />
-          {/* ✅ FIXED: UploadNewBill route moved inside dashboard */}
+       
           <Route path="uploadNewBill" element={<UploadNewBill />} />
           <Route path="uploadedBills" element={<UploadedBills />} />
           <Route path="verificationHistory" element={<VerificationHistory />} />
