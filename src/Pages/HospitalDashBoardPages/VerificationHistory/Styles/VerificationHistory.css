@@ -439,6 +439,9 @@
 }
 
 @media (max-width: 768px) {
+  .verification-history-container {
+    padding: 0;
+  }
   .verification-history-container .header-section {
     flex-direction: column;
     align-items: stretch;

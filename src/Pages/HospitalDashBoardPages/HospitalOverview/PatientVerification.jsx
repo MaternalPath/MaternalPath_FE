@@ -16,7 +16,6 @@ const PatientVerification = () => {
   const [notifications, setNotifications] = useState([]);
   const [notifLoading, setNotifLoading] = useState(true);
 
-  // Fetch recent notifications
   const fetchRecentNotifications = async () => {
     setNotifLoading(true);
     try {
@@ -58,7 +57,7 @@ const PatientVerification = () => {
 
   const handleSearch = async () => {
     if (!searchInput.trim()) {
-      toast.warning("Please enter a Patient ID or Phone Number");
+      toast.warning("Please enter a patient name or phone number");
       return;
     }
 
@@ -66,6 +65,7 @@ const PatientVerification = () => {
     setError(null);
 
     try {
+      // The API expects 'search' query parameter with full name or phone number
       const data = await searchPatient(searchInput.trim());
       const patient = data?.data || data;
 
@@ -78,10 +78,24 @@ const PatientVerification = () => {
       }
     } catch (error) {
       console.error("Error searching patient:", error);
-      const errorMessage =
-        error?.response?.data?.message || "Failed to search patient";
-      setError(errorMessage);
-      toast.error(errorMessage);
+
+      // Handle specific error codes from API
+      if (error?.response?.status === 404) {
+        toast.error("Patient not found");
+        setError("No patient found with the provided name or phone number");
+      } else if (error?.response?.status === 400) {
+        toast.error("Please provide a valid search query");
+        setError("Search query is required");
+      } else if (error?.response?.status === 401) {
+        toast.error("Authentication failed. Please login again.");
+        setError("Missing or invalid authentication token");
+      } else {
+        const errorMessage =
+          error?.response?.data?.message || "Failed to search patient";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+
       setPatientData(null);
     } finally {
       setIsLoading(false);
@@ -101,11 +115,24 @@ const PatientVerification = () => {
     if (e.key === "Enter") handleSearch();
   };
 
-  const walletBalance =
-    patientData?.walletBalance || patientData?.wallet_balance || 0;
-  const savingsGoal =
-    patientData?.deliverySavingsGoal || patientData?.delivery_savings_goal || 1;
+  // Get values from API response with correct field names
+  const patientName = patientData?.patientName || "N/A";
+  const patientId = patientData?.patientId || "N/A";
+  const pregnancyStage = patientData?.pregnancyStage || "Not specified";
+  const pregnancyWeek = patientData?.pregnancyWeek || 0;
+  const preferredHospital = patientData?.preferredHospital || "Not specified";
+  const walletBalance = patientData?.walletBalance || 0;
+  const savingsGoal = patientData?.deliverySavingsGoal || 1;
+  const readinessPercentage = patientData?.readinessPercentage || 0;
+  const status = patientData?.status || "Unknown";
+
   const progressPercentage = Math.min((walletBalance / savingsGoal) * 100, 100);
+
+  // Determine eligibility based on status from API
+  const isEligible = status === "Eligible" || walletBalance >= savingsGoal;
+  const eligibilityText = isEligible
+    ? "Eligible for Admission"
+    : status || "Insufficient Funds";
 
   return (
     <div className="patient-verification-container">
@@ -124,7 +151,7 @@ const PatientVerification = () => {
           <input
             type="text"
             className="patient-verification-search-input"
-            placeholder="Enter Patient ID or Phone Number (e.g., MP-2024-889 or 08012345678)"
+            placeholder="Enter patient full name or phone number (e.g., Ada Okafor or 9024545904)"
             value={searchInput}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
@@ -160,23 +187,16 @@ const PatientVerification = () => {
             <div className="patient-verification-patient-header">
               <div>
                 <h3 className="patient-verification-patient-name">
-                  {patientData.patientName ||
-                    patientData.patient_name ||
-                    patientData.name ||
-                    "N/A"}
+                  {patientName}
                 </h3>
                 <p className="patient-verification-patient-id">
-                  Patient ID:{" "}
-                  {patientData.patientId ||
-                    patientData.patient_id ||
-                    patientData.id ||
-                    "N/A"}
+                  Patient ID: {patientId}
                 </p>
               </div>
-              <div className="patient-verification-eligibility-badge">
-                {walletBalance >= savingsGoal
-                  ? "Eligible for Admission"
-                  : "Insufficient Funds"}
+              <div
+                className={`patient-verification-eligibility-badge ${isEligible ? "eligible" : "ineligible"}`}
+              >
+                {eligibilityText}
               </div>
             </div>
 
@@ -186,9 +206,8 @@ const PatientVerification = () => {
                   Pregnancy Stage
                 </label>
                 <p className="patient-verification-info-value">
-                  {patientData.pregnancyStage ||
-                    patientData.pregnancy_stage ||
-                    "Week 0 · Not specified"}
+                  {pregnancyStage}{" "}
+                  {pregnancyWeek > 0 && `· Week ${pregnancyWeek}`}
                 </p>
               </div>
               <div className="patient-verification-info-item">
@@ -196,10 +215,7 @@ const PatientVerification = () => {
                   Preferred Hospital
                 </label>
                 <p className="patient-verification-info-value">
-                  {patientData.preferredHospital ||
-                    patientData.preferred_hospital ||
-                    patientData.hospital ||
-                    "Not specified"}
+                  {preferredHospital}
                 </p>
               </div>
             </div>
@@ -224,17 +240,22 @@ const PatientVerification = () => {
             </div>
 
             <div className="patient-verification-readiness-section">
-              <label className="patient-verification-readiness-label">
-                Readiness Status
-              </label>
+              <div className="patient-verification-readiness-header">
+                <label className="patient-verification-readiness-label">
+                  Readiness Status
+                </label>
+                <span className="patient-verification-readiness-percentage">
+                  {readinessPercentage}%
+                </span>
+              </div>
               <div className="patient-verification-progress-bar-container">
                 <div
                   className="patient-verification-progress-bar"
-                  style={{ width: `${progressPercentage}%` }}
+                  style={{ width: `${Math.min(readinessPercentage, 100)}%` }}
                 ></div>
               </div>
               <p className="patient-verification-progress-text">
-                {progressPercentage.toFixed(0)}% of goal achieved
+                {readinessPercentage}% of goal achieved
               </p>
             </div>
           </div>

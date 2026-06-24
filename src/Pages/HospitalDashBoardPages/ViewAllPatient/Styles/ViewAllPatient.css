@@ -1,8 +1,9 @@
 .viewallpatient-container {
   width: 100%;
-  min-height: 100vh;
-  background-color: #e8f5f3;
-  padding: 24px;
+  /* min-height: 100vh; */
+  background-color: #e9f7e6;
+  border-radius: 1rem;
+  padding: 20px 15px;
 }
 
 .viewallpatient-header-section {

@@ -9,13 +9,6 @@ import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
 import { RiUploadCloudLine } from "react-icons/ri";
 import { BiMenuAltLeft } from "react-icons/bi";
 
-const VALIDATION_TYPES = [
-  { key: "patienceIdMatched", label: "Patient ID matched" },
-  { key: "fileUploadedProgress", label: "File upload progress" },
-  { key: "billingVerification", label: "Billing Verification" },
-  { key: "requiredFieldComplete", label: "Required fields complete" },
-];
-
 const WORKFLOW_STAGES = [
   { key: "uploadedBill", title: "Upload Bill", subtitle: "Invoice submission" },
   {
@@ -57,20 +50,32 @@ const UploadedNewBill = () => {
   });
 
   const [patientLoading, setPatientLoading] = useState(true);
-
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const [billId, setBillId] = useState(null);
+  const [billNumber, setBillNumber] = useState(null);
   const [billSummary, setBillSummary] = useState(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
 
   const [currentStage, setCurrentStage] = useState(null);
   const [nextStage, setNextStage] = useState(null);
 
-  const [validationResults, setValidationResults] = useState({});
-  const [validatingType, setValidatingType] = useState(null);
+  const formatDateForDisplay = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString;
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
+  };
 
   const fetchPatientDetails = async () => {
     if (!token) {
@@ -133,61 +138,7 @@ const UploadedNewBill = () => {
     return kb > 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb.toFixed(0)} KB`;
   };
 
-  const runValidation = async (id, validationType) => {
-    if (!token || !id) return;
-
-    setValidatingType(validationType);
-    try {
-      const response = await axios.post(
-        `${baseURL}/bill/${id}/system-validation`,
-        { validationType },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      const result = response.data?.data || response.data;
-
-      setValidationResults((prev) => ({
-        ...prev,
-        [validationType]: result,
-      }));
-    } catch (error) {
-      console.error(`Error running ${validationType} validation:`, error);
-      setValidationResults((prev) => ({
-        ...prev,
-        [validationType]: { status: "error" },
-      }));
-    } finally {
-      setValidatingType(null);
-    }
-  };
-
-  const runAllValidations = async (id) => {
-    for (const { key } of VALIDATION_TYPES) {
-      await runValidation(id, key);
-    }
-  };
-
-  const fetchBillSummary = async (id) => {
-    if (!token || !id) return;
-
-    setSummaryLoading(true);
-    try {
-      const response = await axios.get(`${baseURL}/bill/${id}/summary`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { summaryType: "totalAmount" },
-      });
-
-      setBillSummary(response.data?.data || null);
-    } catch (error) {
-      console.error("Error fetching bill summary:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to load bill summary",
-      );
-    } finally {
-      setSummaryLoading(false);
-    }
-  };
-
+  // ✅ Updated handleUpload with both ID types
   const handleUpload = async () => {
     if (!token) {
       toast.error("Authentication token not found.");
@@ -221,8 +172,14 @@ const UploadedNewBill = () => {
       payload.append("fullName", formData.fullName);
       payload.append("maternalId", formData.maternalId);
       payload.append("phoneNumber", formData.phoneNumber);
-      payload.append("expectedDeliveryDate", formData.expectedDeliveryDate);
-      payload.append("referenceNumber", formData.referenceNumber);
+
+      if (formData.expectedDeliveryDate) {
+        payload.append("expectedDeliveryDate", formData.expectedDeliveryDate);
+      }
+      if (formData.referenceNumber) {
+        payload.append("referenceNumber", formData.referenceNumber);
+      }
+
       payload.append("category", formData.category);
       payload.append("amount", formData.amount);
       payload.append("billingDate", formData.billingDate);
@@ -243,9 +200,12 @@ const UploadedNewBill = () => {
         },
       });
 
+      console.log("📤 Upload Response:", response.data);
+
       const resBody = response.data || {};
       const newBill = resBody.data || {};
-      const newBillId = newBill?.id || newBill?.billId || newBill?._id || null;
+      const newBillId = newBill?.id || newBill?.billId || null;
+      const newBillNumber = newBill?.billNumber || null;
 
       if (resBody.workflow) {
         setCurrentStage(resBody.workflow.currentStage || null);
@@ -255,9 +215,23 @@ const UploadedNewBill = () => {
       toast.success(resBody.message || "Bill uploaded successfully!");
 
       if (newBillId) {
+        console.log("📌 Bill UUID:", newBillId);
+        console.log("📌 Bill Number:", newBillNumber);
         setBillId(newBillId);
-        fetchBillSummary(newBillId);
-        runAllValidations(newBillId);
+        setBillNumber(newBillNumber);
+
+        // ✅ Create bill summary from the response data directly
+        const summaryData = {
+          patienceName: newBill.fullName || formData.fullName,
+          category: newBill.category || formData.category,
+          date: newBill.billingDate || formData.billingDate,
+          totalAmount: newBill.amount || formData.amount,
+          status: newBill.verificationWorkFlow || "Pending",
+          billNumber: newBill.billNumber || formData.billNumber,
+        };
+
+        console.log("📊 Bill Summary Data:", summaryData);
+        setBillSummary(summaryData);
       } else {
         console.warn(
           "Upload succeeded but no bill ID was found in the response.",
@@ -279,51 +253,6 @@ const UploadedNewBill = () => {
     })}`;
   };
 
-  const getValidationDisplay = (key) => {
-    const result = validationResults[key];
-
-    if (validatingType === key) {
-      return {
-        icon: "⏳",
-        badgeClass: "uploaded-new-bill-pending-badge",
-        badgeText: "CHECKING",
-        itemClass: "pending",
-      };
-    }
-
-    if (!result) {
-      return {
-        icon: "○",
-        badgeClass: "uploaded-new-bill-pending-badge",
-        badgeText: "PENDING",
-        itemClass: "pending",
-      };
-    }
-
-    const status = result.status || result.valid;
-    const isValid = status === "valid" || status === true || status === "VALID";
-
-    if (key === "fileUploadedProgress" && result.value !== undefined) {
-      return {
-        icon: isValid ? "✓" : "⚠️",
-        badgeClass: isValid
-          ? "uploaded-new-bill-valid-badge"
-          : "uploaded-new-bill-error-badge",
-        badgeText: `${result.value}%`,
-        itemClass: isValid ? "valid" : "error",
-      };
-    }
-
-    return {
-      icon: isValid ? "✓" : "⚠️",
-      badgeClass: isValid
-        ? "uploaded-new-bill-valid-badge"
-        : "uploaded-new-bill-error-badge",
-      badgeText: isValid ? "VALID" : "FAILED",
-      itemClass: isValid ? "valid" : "error",
-    };
-  };
-
   const getStepState = (stageKey) => {
     if (!currentStage) {
       return "upcoming";
@@ -338,7 +267,7 @@ const UploadedNewBill = () => {
 
   return (
     <div className="uploaded-new-bill-overlay">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className="uploaded-new-bill-modal">
         <div className="uploaded-new-bill-header">
           <div>
@@ -354,12 +283,12 @@ const UploadedNewBill = () => {
 
         <div className="uploaded-new-bill-container">
           <div className="uploaded-new-bill-main">
+            {/* Patient Identification Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
                   <MdPersonOutline />
                 </span>
-
                 <h2>Patient Identification</h2>
               </div>
               {patientLoading ? (
@@ -406,9 +335,12 @@ const UploadedNewBill = () => {
                       <input
                         type="text"
                         name="expectedDeliveryDate"
-                        value={formData.expectedDeliveryDate}
+                        value={formatDateForDisplay(
+                          formData.expectedDeliveryDate,
+                        )}
                         readOnly
                         className="uploaded-new-bill-readonly-input"
+                        placeholder="Oct 12, 2026"
                       />
                     </div>
                   </div>
@@ -416,6 +348,7 @@ const UploadedNewBill = () => {
               )}
             </div>
 
+            {/* Bill Details Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -489,6 +422,7 @@ const UploadedNewBill = () => {
               </div>
             </div>
 
+            {/* Document Upload Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -539,6 +473,7 @@ const UploadedNewBill = () => {
               )}
             </div>
 
+            {/* Additional Notes Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -553,6 +488,7 @@ const UploadedNewBill = () => {
               ></textarea>
             </div>
 
+            {/* Action Buttons */}
             <div className="uploaded-new-bill-action-buttons">
               <button
                 className="uploaded-new-bill-btn-cancel"
@@ -571,7 +507,9 @@ const UploadedNewBill = () => {
             </div>
           </div>
 
+          {/* Right Sidebar */}
           <div className="uploaded-new-bill-sidebar">
+            {/* Verification Workflow */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">
                 Verification Workflow
@@ -614,37 +552,7 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
-              <h3 className="uploaded-new-bill-sidebar-title">
-                System Validation
-              </h3>
-              <div className="uploaded-new-bill-validation-items">
-                {VALIDATION_TYPES.map(({ key, label }) => {
-                  const display = getValidationDisplay(key);
-                  return (
-                    <div
-                      key={key}
-                      className={`uploaded-new-bill-validation-item ${display.itemClass}`}
-                    >
-                      <div className="uploaded-new-bill-validation-icon">
-                        {display.icon}
-                      </div>
-                      <div className="uploaded-new-bill-validation-content">
-                        <p className="uploaded-new-bill-validation-label">
-                          {label}
-                        </p>
-                      </div>
-                      <span
-                        className={`uploaded-new-bill-validation-badge ${display.badgeClass}`}
-                      >
-                        {display.badgeText}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
+            {/* Bill Summary */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">Bill Summary</h3>
               {!billId ? (
@@ -655,7 +563,7 @@ const UploadedNewBill = () => {
                 <p className="uploaded-new-bill-summary-placeholder">
                   Loading summary...
                 </p>
-              ) : (
+              ) : billSummary ? (
                 <div className="uploaded-new-bill-summary-items">
                   <div className="uploaded-new-bill-summary-item">
                     <span className="uploaded-new-bill-summary-label">
@@ -706,6 +614,10 @@ const UploadedNewBill = () => {
                     </span>
                   </div>
                 </div>
+              ) : (
+                <p className="uploaded-new-bill-summary-placeholder">
+                  No summary available yet.
+                </p>
               )}
             </div>
           </div>

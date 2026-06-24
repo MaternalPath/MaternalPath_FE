@@ -355,7 +355,7 @@ const VerifyPatient = () => {
         <Search size={15} />
         <input
           type="text"
-          placeholder="Search by Patient ID or Phone Number..."
+          placeholder="Search by Patient Full Name or Phone Number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleSearchKeyDown}
