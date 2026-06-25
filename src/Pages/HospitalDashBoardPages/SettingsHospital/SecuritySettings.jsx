@@ -35,7 +35,7 @@ const SecuritySettings = () => {
               </svg>
               Change Password
             </button>
-          </div>
+          </div>    6
         </div>
 
         <div className="settings-section">

@@ -1,22 +1,24 @@
-.cardQuick {
-  background: #F0FDF4;
+.card-quick {
+  background: #f0fdf4;
   border: 1px solid #d4e3d9;
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 20px;
 }
 
-.section-title {
+.section-title-quick {
+  text-align: center;
   font-size: 16px;
   font-weight: 600;
   color: #1a2e1f;
   margin: 0 0 16px 0;
+  margin-bottom: 15px;
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 10px;
 }
 
 .action-btn {
@@ -47,6 +49,11 @@
 }
 
 @media (max-width: 768px) {
-  .card { padding: 16px; }
-  .grid-2 { grid-template-columns: 1fr; }
+  .card {
+    padding: 16px;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
 }

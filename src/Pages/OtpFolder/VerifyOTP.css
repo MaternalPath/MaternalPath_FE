@@ -343,8 +343,119 @@
   }
 }
 
-    @keyframes otp-spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+@keyframes otp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Small screen additions (≤480px and ≤380px) ── */
+
+@media (max-width: 480px) {
+  .verify-page .verify-left {
+    padding: 16px 14px;
+  }
+
+  .verify-page .verify-left .verify-card {
+    padding: 24px 16px;
+  }
+
+  .verify-page .verify-left .verify-card .verify-title {
+    font-size: 20px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-inputs {
+    gap: 6px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-inputs .otp-input {
+    width: 38px;
+    height: 48px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+
+  .verify-page .verify-left .back-btn {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .verify-page .verify-left {
+    padding: 14px 10px;
+  }
+
+  .verify-page .verify-left .verify-card {
+    padding: 18px 10px;
+    border-radius: 12px;
+  }
+
+  .verify-page .verify-left .verify-card .icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .verify-page .verify-left .verify-card .verify-title {
+    font-size: 18px;
+  }
+
+  .verify-page .verify-left .verify-card .verify-subtitle {
+    font-size: 13px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-inputs {
+    gap: 7px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-inputs .otp-input {
+    width: 40px;
+    height: 47px;
+    font-size: 17px;
+    border-radius: 8px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-dots {
+    gap: 5px;
+  }
+
+  .verify-page .verify-left .verify-card .email-badge {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .verify-page .verify-left .verify-card .info-box {
+    padding: 10px;
+  }
+
+  .verify-page .verify-left .verify-card .info-box p {
+    font-size: 11px;
+  }
+
+  .verify-page .verify-left .security-badge {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .verify-page .verify-header {
+    padding: 10px 12px;
+  }
+
+  .verify-page .verify-left {
+    padding: 12px 8px;
+  }
+
+  .verify-page .verify-left .verify-card {
+    padding: 16px 8px;
+  }
+
+  .verify-page .verify-left .verify-card .otp-form .otp-inputs .otp-input {
+    width: 28px;
+    height: 38px;
+    font-size: 15px;
+    border-radius: 6px;
+  }
+}

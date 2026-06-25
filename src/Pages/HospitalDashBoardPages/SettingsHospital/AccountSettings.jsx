@@ -163,7 +163,7 @@ const AccountSettings = () => {
 
   return (
     <div className="account-settings-container">
-      <ToastContainer
+      {/* <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -174,7 +174,7 @@ const AccountSettings = () => {
         draggable
         pauseOnHover
         style={{ zIndex: 99999 }}
-      />
+      /> */}
 
       <div className="account-settings-content">
         <div className="settings-top-section">

@@ -18,8 +18,8 @@ const QuickActions = () => {
   ];
 
   return (
-    <div className="cardQuick">
-      <h3 className="section-title">Quick Actions</h3>
+    <div className="card-quick">
+      <h3 className="section-title-quick">Quick Actions</h3>
       <div className="grid-2">
         {actions.map((action, idx) => (
           <Link to={action.path} key={idx} style={{textDecoration:"none"}}>

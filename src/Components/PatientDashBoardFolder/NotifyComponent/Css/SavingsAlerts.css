@@ -16,7 +16,7 @@
   gap: 8px;
 }
 
-.grid-2 {
+.grid-scroll {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;

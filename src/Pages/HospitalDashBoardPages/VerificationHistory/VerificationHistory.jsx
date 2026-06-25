@@ -53,6 +53,16 @@ const VerificationHistory = () => {
   const [verificationRecords, setVerificationRecords] = useState([]);
   const [recordsLoading, setRecordsLoading] = useState(true);
   const [searching, setSearching] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Track window resize for mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // ========================
   // MAP RAW API RECORD -> UI SHAPE
@@ -175,8 +185,74 @@ const VerificationHistory = () => {
 
   const isLoadingRecords = recordsLoading || searching;
 
+  // Render mobile card view
+  const renderMobileCards = () => {
+    if (isLoadingRecords) {
+      return (
+        <div className="vh-mobile-loading">
+          <div className="vh-loading-spinner"></div>
+          <p>Loading records...</p>
+        </div>
+      );
+    }
+
+    if (verificationRecords.length === 0) {
+      return (
+        <div className="vh-no-records-mobile">
+          <p>No verification records found.</p>
+        </div>
+      );
+    }
+
+    return verificationRecords.map((record) => (
+      <div key={record.id} className="vh-mobile-card">
+        <div className="vh-card-header">
+          <span className="vh-card-id">{record.verificationId || record.id}</span>
+          <span className={statusClass(record.authorizationStatus || record.status)}>
+            <span className="status-dot" />
+            {record.authorizationStatus || record.status || "Pending"}
+          </span>
+        </div>
+        
+        <div className="vh-card-body">
+          <div className="vh-card-field">
+            <span className="vh-card-label">Patient Name</span>
+            <span className="vh-card-value">{record.patientName}</span>
+          </div>
+          
+          <div className="vh-card-field">
+            <span className="vh-card-label">Pregnancy Week</span>
+            <span className="vh-card-value">{record.pregnancyWeek}</span>
+          </div>
+          
+          <div className="vh-card-field">
+            <span className="vh-card-label">Preferred Hospital</span>
+            <span className="vh-card-value">{record.preferredHospital || record.hospital}</span>
+          </div>
+          
+          <div className="vh-card-field">
+            <span className="vh-card-label">Wallet Amount</span>
+            <span className="vh-card-value amount-cell">{record.amountRequested || "₦0"}</span>
+          </div>
+          
+          <div className="vh-card-field">
+            <span className="vh-card-label">Verification Date</span>
+            <span className="vh-card-value">{record.verificationDate || "—"}</span>
+          </div>
+        </div>
+        
+        {/* <div className="vh-card-actions">
+          <button className="vh-card-action-btn" type="button">
+            <FiEye size={16} />
+            View Details
+          </button>
+        </div> */}
+      </div>
+    ));
+  };
+
   return (
-    <div className="verification-history-container">
+    <div className="verification-historys-container">
       {/* <ToastContainer /> */}
       <header className="header-section">
         <div className="header-content">
@@ -245,63 +321,73 @@ const VerificationHistory = () => {
           </a>
         </div>
 
-        <div className="records-table-wrap">
-          <table className="records-table">
-            <thead>
-              <tr>
-                <th>Verification ID</th>
-                <th>Patient Name</th>
-                <th>Pregnancy Week</th>
-                <th>Preferred Hospital</th>
-                <th>Wallet Amount</th>
-                <th>Verification Status</th>
-                <th>Verification Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {isLoadingRecords ? (
+        {/* Desktop Table View */}
+        {!isMobile && (
+          <div className="records-table-wrap">
+            <table className="records-table">
+              <thead>
                 <tr>
-                  <td colSpan="7" className="no-records">
-                    Loading...
-                  </td>
+                  <th>Verification ID</th>
+                  <th>Patient Name</th>
+                  <th>Pregnancy Week</th>
+                  <th>Preferred Hospital</th>
+                  <th>Wallet Amount</th>
+                  <th>Verification Status</th>
+                  <th>Verification Date</th>
                 </tr>
-              ) : verificationRecords.length > 0 ? (
-                verificationRecords.map((record) => (
-                  <tr key={record.id}>
-                    <td className="verification-id">
-                      {record.verificationId || record.id}
+              </thead>
+              <tbody>
+                {isLoadingRecords ? (
+                  <tr>
+                    <td colSpan="7" className="no-records">
+                      Loading...
                     </td>
-                    <td>{record.patientName}</td>
-                    <td>{record.pregnancyWeek}</td>
-                    <td>{record.preferredHospital || record.hospital}</td>
-                    <td className="amount-cell">
-                      {record.amountRequested || "₦0"}
-                    </td>
-                    <td>
-                      <span
-                        className={statusClass(
-                          record.authorizationStatus || record.status,
-                        )}
-                      >
-                        <span className="status-dot" />
-                        {record.authorizationStatus ||
-                          record.status ||
-                          "Pending"}
-                      </span>
-                    </td>
-                    <td>{record.verificationDate || "—"}</td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="no-records">
-                    No verification records found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ) : verificationRecords.length > 0 ? (
+                  verificationRecords.map((record) => (
+                    <tr key={record.id}>
+                      <td className="verification-id">
+                        {record.verificationId || record.id}
+                      </td>
+                      <td>{record.patientName}</td>
+                      <td>{record.pregnancyWeek}</td>
+                      <td>{record.preferredHospital || record.hospital}</td>
+                      <td className="amount-cell">
+                        {record.amountRequested || "₦0"}
+                      </td>
+                      <td>
+                        <span
+                          className={statusClass(
+                            record.authorizationStatus || record.status,
+                          )}
+                        >
+                          <span className="status-dot" />
+                          {record.authorizationStatus ||
+                            record.status ||
+                            "Pending"}
+                        </span>
+                      </td>
+                      <td>{record.verificationDate || "—"}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="no-records">
+                      No verification records found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Mobile Card View */}
+        {isMobile && (
+          <div className="vh-mobile-cards-container">
+            {renderMobileCards()}
+          </div>
+        )}
       </section>
 
       <RecentActivity />

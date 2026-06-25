@@ -19,37 +19,29 @@ import { FaRegClock } from "react-icons/fa6";
 import ButtonOtp from "../ButtonOtp/ButtonOtp";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const VerifyHosOTP = () => {
   const nav = useNavigate();
   const { state } = useLocation();
-  const email = state?.email || "thecurve22@gmail.com";
+
+  // ✅ Reads email passed from login redirect via location.state
+  // Falls back to empty string — remove the hardcoded email fallback
+  const email = state?.email || "";
+
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const featureCards = [
-    {
-      id: 1,
-      icon: <LuShield size={20} />,
-      title: "Secure Verification",
-      desc: "256-bit encryption",
-    },
-    {
-      id: 2,
-      icon: <LuLock size={20} />,
-      title: "Protected Data",
-      desc: "Your info stays private",
-    },
-    {
-      id: 3,
-      icon: <LuHeart size={20} />,
-      title: "Mother-Centered",
-      desc: "Built with care",
-    },
-  ];
+  // ✅ Redirect to login if no email is present (user landed here directly)
+  useEffect(() => {
+    if (!email) {
+      toast.error("Session expired. Please log in again.");
+      nav("/login", { replace: true });
+    }
+  }, [email, nav]);
 
   useEffect(() => {
     if (timer > 0) {
@@ -75,13 +67,13 @@ const VerifyHosOTP = () => {
     }
   };
 
-  const verifyApi = async (otp) => {
+  const verifyApi = async (otpCode) => {
     setIsLoading(true);
     try {
       const url = `${baseURL}/hospital/verify`;
       const response = await axios.post(url, {
         email,
-        otp,
+        otp: otpCode,
       });
       if (response?.status === 200) {
         toast.success(
@@ -100,34 +92,32 @@ const VerifyHosOTP = () => {
       setIsLoading(false);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
       const response = await verifyApi(code);
       if (response?.status === 200) {
-        nav("/login");
+        // ✅ After successful verification, send back to login
+        toast.info("Account verified! Please log in.");
+        nav("/login", { replace: true });
       }
     }
   };
+
   const resendOtpApi = async () => {
     setIsLoading(true);
     try {
       const url = `${baseURL}/hospital/resend-otp`;
-      const response = await axios.post(url, {
-        email,
-      });
+      const response = await axios.post(url, { email });
       if (response?.status === 200) {
-        toast.success(
-          response?.data?.message || "OTP resend successful!",
-        );
+        toast.success(response?.data?.message || "OTP resent successfully!");
         return response;
       }
     } catch (error) {
       toast.error(
-        error?.response?.data?.message ||
-          error.message ||
-          "OTP resend failed",
+        error?.response?.data?.message || error.message || "OTP resend failed",
       );
       return null;
     } finally {
@@ -148,7 +138,7 @@ const VerifyHosOTP = () => {
 
       <main className="verify-layout">
         <section className="verify-left">
-          <button className="back-btn" onClick={() => nav(-1)}>
+          <button className="back-btn" onClick={() => nav("/login")}>
             <FaArrowLeft size={16} />
             <span>Back to Sign In</span>
           </button>
@@ -164,6 +154,7 @@ const VerifyHosOTP = () => {
               email address.
             </p>
 
+            {/* ✅ Shows the actual email from login */}
             <div className="email-badge">{email}</div>
 
             <div className="info-box">

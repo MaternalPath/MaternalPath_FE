@@ -1,5 +1,4 @@
 .notifys-page {
-  /* background-color: #f5f4ef; */
   min-height: 100vh;
   padding: 15px;
 }
@@ -18,15 +17,35 @@
   gap: 16px;
 }
 
-@media (min-width: 1024px) {
-  .notif-page {
-    padding: 32px;
+/* ============================================ */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================================ */
+
+/* Large screens 1200px and above */
+@media (min-width: 1200px) {
+  .notifys-page {
+    padding: 15px;
+  }
+
+  .notif-page-content {
+    gap: 28px;
+  }
+
+  .notif-main-grid {
+    gap: 24px;
+  }
+}
+
+/* Desktop 1024px - 1199px */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .notifys-page {
+    padding: 15px;
   }
 
   .notif-main-grid {
     flex-direction: row;
     align-items: flex-start;
-    gap: 24px;
+    gap: 20px;
   }
 
   .notif-main-grid > :first-child {
@@ -35,5 +54,104 @@
 
   .notif-main-grid > :last-child {
     flex: 1;
+  }
+
+  .notif-page-content {
+    gap: 24px;
+  }
+}
+
+/* Tablet Landscape 768px - 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .notifys-page {
+    padding: 15px;
+  }
+
+  .notif-main-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .notif-main-grid > :first-child {
+    flex: 1;
+  }
+
+  .notif-main-grid > :last-child {
+    flex: 1;
+  }
+
+  .notif-page-content {
+    gap: 20px;
+  }
+}
+
+/* Tablet Portrait 576px - 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .notifys-page {
+    padding: 0;
+  }
+
+  .notif-main-grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .notif-page-content {
+    gap: 16px;
+  }
+}
+
+/* Mobile Large 421px - 575px */
+@media (max-width: 575px) {
+  .notifys-page {
+    padding: 0;
+  }
+
+  .notif-main-grid {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .notif-page-content {
+    gap: 14px;
+  }
+}
+
+/* Mobile Small 320px - 420px */
+@media (max-width: 420px) {
+  .notifys-page {
+    padding: 0;
+  }
+
+  .notif-main-grid {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .notif-page-content {
+    gap: 12px;
+  }
+}
+
+/* Extra Small Devices 320px and below */
+@media (max-width: 319px) {
+  .notifys-page {
+    padding: 0;
+  }
+
+  .notif-main-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .notif-page-content {
+    gap: 10px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .notifys-page {
+    padding: 15px;
   }
 }

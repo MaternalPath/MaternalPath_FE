@@ -1,6 +1,7 @@
 /* Color Variables */
 :root {
   --primary-color: #1b5e6a;
+  --primary-dark: #0f4d4e;
   --secondary-color: #e8f0f3;
   --border-color: #d4d4d4;
   --text-dark: #1a2332;
@@ -12,12 +13,15 @@
   --toggle-enabled: #7ec689;
   --toggle-disabled: #ccc;
   --input-border: #d1d5db;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --radius: 10px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .notification-preferences-wrapper {
   width: 100%;
   min-height: 60vh;
-  background-color: var(--bg-light);
   padding: 0px 20px;
 }
 
@@ -27,38 +31,64 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.preferences-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--bg-light);
 }
 
 .preferences-title {
   font-size: 20px;
   color: #0f4d4e;
-  margin: 0 0 24px 0;
+  margin: 0;
   font-weight: 700;
   font-style: Bold;
-  font-size: 20px;
   line-height: 30px;
   letter-spacing: 0px;
+}
+
+.preferences-count {
+  font-size: 13px;
+  color: var(--text-gray);
+  background: var(--bg-light);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .pre-notification-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 16px;
 }
 
 .pre-notification-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  padding: 20px 24px;
+  border-radius: var(--radius);
+  transition: var(--transition);
   background-color: #f7f5f0;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.pre-notification-card.active {
+  border-color: rgba(15, 77, 78, 0.15);
+  background: linear-gradient(135deg, #f7f5f0 0%, #f0f8f5 100%);
 }
 
 .pre-notification-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .card-content-holder {
@@ -66,8 +96,35 @@
   margin-right: 16px;
 }
 
+.card-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.card-icon {
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(27, 94, 106, 0.08);
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.pre-notification-card.active .card-icon {
+  background: rgba(27, 94, 106, 0.15);
+}
+
+.card-text {
+  flex: 1;
+}
+
 .content-card-titles {
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
   color: #0f4d4e;
   font-weight: 700;
   font-style: Bold;
@@ -90,8 +147,8 @@
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 28px;
+  width: 56px;
+  height: 30px;
   flex-shrink: 0;
 }
 
@@ -110,79 +167,286 @@
   bottom: 0;
   background-color: var(--toggle-disabled);
   transition: 0.35s ease;
-  border-radius: 28px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .toggle-label::before {
   content: "";
   position: absolute;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   left: 3px;
   bottom: 3px;
   background-color: white;
   transition: 0.3s ease;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-status {
+  font-size: 9px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transition: var(--transition);
+  z-index: 1;
 }
 
 .toggle-input:checked + .toggle-label {
-  background-color: var(--toggle-enabled);
+  background: linear-gradient(135deg, #7ec689 0%, #5aab6e 100%);
 }
 
 .toggle-input:checked + .toggle-label::before {
-  transform: translateX(22px);
+  transform: translateX(26px);
 }
 
-@media (max-width: 768px) {
+.toggle-input:checked + .toggle-label .toggle-status {
+  opacity: 1;
+}
+
+.toggle-input:not(:checked) + .toggle-label .toggle-status {
+  opacity: 0;
+}
+
+/* ============================================ */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================================ */
+
+/* Tablet Portrait 768px - 1023px */
+@media (max-width: 1023px) {
   .notification-preferences-wrapper {
-    padding: 20px 16px;
+    padding: 0px 16px;
   }
 
   .notification-preferences-content {
-    padding: 24px 16px;
+    padding: 30px 24px;
+  }
+
+  .pre-notification-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .preferences-title {
+    font-size: 20px;
+  }
+}
+
+/* Tablet Portrait 576px - 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .notification-preferences-wrapper {
+    padding: 0px 16px;
+  }
+
+  .notification-preferences-content {
+    padding: 24px 20px;
     border-radius: 8px;
+  }
+
+  .preferences-header {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
   }
 
   .preferences-title {
     font-size: 18px;
-    margin-bottom: 20px;
+    line-height: 26px;
   }
 
-  .notification-grid {
+  .preferences-count {
+    font-size: 12px;
+    padding: 3px 12px;
+  }
+
+  .pre-notification-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 
-  .notification-card {
-    padding: 20px;
+  .pre-notification-card {
+    padding: 18px 20px;
   }
 
-  .card-content {
-    margin-right: 12px;
+  .card-icon {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .content-card-titles {
+    font-size: 14px;
+  }
+
+  .content-card-description {
+    font-size: 12px;
+  }
+
+  .toggle-switch {
+    width: 50px;
+    height: 28px;
+  }
+
+  .toggle-label::before {
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+  }
+
+  .toggle-input:checked + .toggle-label::before {
+    transform: translateX(22px);
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile Large 421px - 575px */
+@media (max-width: 575px) {
+  .notification-preferences-wrapper {
+    padding: 0px 12px;
+  }
+
   .notification-preferences-content {
-    padding: 16px;
+    padding: 20px 16px;
     border-radius: 6px;
+  }
+
+  .preferences-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .preferences-title {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .preferences-count {
+    font-size: 12px;
+    padding: 3px 12px;
+  }
+
+  .pre-notification-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pre-notification-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .card-content-holder {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .card-icon-wrapper {
+    gap: 12px;
+  }
+
+  .card-icon {
+    font-size: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+
+  .content-card-titles {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .content-card-description {
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .toggle-switch {
+    width: 48px;
+    height: 26px;
+    align-self: flex-end;
+  }
+
+  .toggle-label::before {
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+  }
+
+  .toggle-input:checked + .toggle-label::before {
+    transform: translateX(22px);
+  }
+
+  .toggle-status {
+    font-size: 8px;
+  }
+}
+
+/* Mobile Small 320px - 420px */
+@media (max-width: 420px) {
+  .notification-preferences-wrapper {
+    padding: 0px 8px;
+  }
+
+  .notification-preferences-content {
+    padding: 16px 12px;
+    border-radius: 4px;
+  }
+
+  .preferences-header {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
   }
 
   .preferences-title {
     font-size: 16px;
-    margin-bottom: 16px;
+    line-height: 24px;
   }
 
-  .notification-card {
-    flex-wrap: wrap;
+  .preferences-count {
+    font-size: 11px;
+    padding: 2px 10px;
+  }
+
+  .pre-notification-grid {
+    gap: 8px;
+  }
+
+  .pre-notification-card {
+    padding: 14px;
+    border-radius: 6px;
     gap: 12px;
-    padding: 16px;
   }
 
-  .card-content-holder {
-    width: 100%;
-    margin-right: 0;
+  .card-icon-wrapper {
+    gap: 10px;
+  }
+
+  .card-icon {
+    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+  }
+
+  .content-card-titles {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .content-card-description {
+    font-size: 11px;
+    line-height: 16px;
   }
 
   .toggle-switch {
@@ -201,16 +465,69 @@
     transform: translateX(20px);
   }
 
-  .card-title {
-    font-size: 14px;
-  }
-
-  .content-card-description {
-    font-size: 12px;
+  .toggle-status {
+    font-size: 7px;
   }
 }
 
+/* Extra Small Devices 320px and below */
+@media (max-width: 319px) {
+  .notification-preferences-wrapper {
+    padding: 0px 4px;
+  }
 
+  .notification-preferences-content {
+    padding: 12px 8px;
+  }
+
+  .preferences-title {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .preferences-count {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+
+  .pre-notification-card {
+    padding: 12px;
+  }
+
+  .card-icon {
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .content-card-titles {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .content-card-description {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .toggle-switch {
+    width: 40px;
+    height: 22px;
+  }
+
+  .toggle-label::before {
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+  }
+
+  .toggle-input:checked + .toggle-label::before {
+    transform: translateX(18px);
+  }
+}
+
+/* Print styles */
 @media print {
   .notification-preferences-wrapper,
   .toggle-switch,

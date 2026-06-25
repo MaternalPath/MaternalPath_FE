@@ -20,37 +20,28 @@ import { FaRegClock } from "react-icons/fa6";
 import ButtonOtp from "./ButtonOtp/ButtonOtp";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
 const VerifyOTP = () => {
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   const { state } = useLocation();
-  const email = state?.email || "thecurve22@gmail.com";
+
+  // ✅ Email comes from login redirect via location.state — hardcoded fallback removed
+  const email = state?.email || "";
+
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
 
-  const featureCards = [
-    {
-      id: 1,
-      icon: <LuShield size={20} />,
-      title: "Secure Verification",
-      desc: "256-bit encryption",
-    },
-    {
-      id: 2,
-      icon: <LuLock size={20} />,
-      title: "Protected Data",
-      desc: "Your info stays private",
-    },
-    {
-      id: 3,
-      icon: <LuHeart size={20} />,
-      title: "Mother-Centered",
-      desc: "Built with care",
-    },
-  ];
+  // ✅ Guard: redirect to login if no email present (user landed here directly)
+  useEffect(() => {
+    if (!email) {
+      toast.error("Session expired. Please log in again.");
+      nav("/login", { replace: true });
+    }
+  }, [email, nav]);
 
   useEffect(() => {
     if (timer > 0) {
@@ -75,9 +66,10 @@ const VerifyOTP = () => {
       inputRefs.current[index - 1].focus();
     }
   };
-  const verifyApi = async (otp) => {
+
+  const verifyApi = async (otpCode) => {
     if (!baseURL) {
-      toast.error("Services not Configured");
+      toast.error("Services not configured");
       return null;
     }
 
@@ -86,7 +78,7 @@ const VerifyOTP = () => {
       const url = `${baseURL}/mother/verify`;
       const response = await axios.post(url, {
         email,
-        otp,
+        otp: otpCode,
       });
       if (response?.status === 200) {
         toast.success(
@@ -105,39 +97,37 @@ const VerifyOTP = () => {
       setIsLoading(false);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const code = otp.join("");
     if (code.length === 6) {
       const response = await verifyApi(code);
       if (response?.status === 200) {
-        nav("/login");
+        // ✅ replace: true prevents user from going back to OTP page
+        toast.info("Account verified! Please log in.");
+        nav("/login", { replace: true });
       }
     }
   };
+
   const resendOtpApi = async () => {
     if (!baseURL) {
-      toast.error("Services not Configured");
+      toast.error("Services not configured");
       return null;
     }
 
     setIsLoading(true);
     try {
       const url = `${baseURL}/mother/resend-otp`;
-      const response = await axios.post(url, {
-        email,
-      });
+      const response = await axios.post(url, { email });
       if (response?.status === 200) {
-        toast.success(
-          response?.data?.message || "OTP verification successful!",
-        );
+        toast.success(response?.data?.message || "OTP resent successfully!");
         return response;
       }
     } catch (error) {
       toast.error(
-        error?.response?.data?.message ||
-          error.message ||
-          "OTP verification failed",
+        error?.response?.data?.message || error.message || "OTP resend failed",
       );
       return null;
     } finally {
@@ -158,7 +148,8 @@ const VerifyOTP = () => {
 
       <main className="verify-layout">
         <section className="verify-left">
-          <button className="back-btn" onClick={() => nav(-1)}>
+          {/* ✅ Explicit /login instead of nav(-1) to avoid redirect loop */}
+          <button className="back-btn" onClick={() => nav("/login")}>
             <FaArrowLeft size={16} />
             <span>Back to Sign In</span>
           </button>
@@ -174,13 +165,14 @@ const VerifyOTP = () => {
               email address.
             </p>
 
+            {/* ✅ Shows the actual email passed from login */}
             <div className="email-badge">{email}</div>
 
             <div className="info-box">
               <LuLock size={16} />
               <p>
                 This code is used for <strong>account verification</strong>. It
-                expires in 1 minutes.
+                expires in 10 minutes.
               </p>
             </div>
 
@@ -198,8 +190,6 @@ const VerifyOTP = () => {
                     ref={(el) => (inputRefs.current[index] = el)}
                     className="otp-input"
                   />
-                  // <Input.OTP disabled {...sharedProps} />
-                  // <Input.OTP length={6} {...sharedProps} />
                 ))}
               </div>
 

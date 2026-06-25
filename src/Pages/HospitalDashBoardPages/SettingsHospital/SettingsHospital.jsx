@@ -9,6 +9,8 @@ import { RiUser3Line } from "react-icons/ri";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { IoCallOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
+import { FaHospitalUser } from "react-icons/fa";
+import { MdEdit, MdSave, MdCancel, MdUpload } from "react-icons/md";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -27,6 +29,7 @@ const SettingsHospital = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const fileInputRef = useRef(null);
 
@@ -63,7 +66,6 @@ const SettingsHospital = () => {
       setFormData(mapped);
       setOriginalData(mapped);
 
-      // FIXED: Logo URL construction
       if (profile.hospitalLogo) {
         if (
           profile.hospitalLogo.startsWith("http://") ||
@@ -71,9 +73,7 @@ const SettingsHospital = () => {
         ) {
           setLogoUrl(profile.hospitalLogo);
         } else {
-          // Get base URL without /api/v1 or similar
           const baseWithoutApi = baseURL.replace(/\/api\/v\d+\/?$/, "");
-          // Ensure the path has a leading slash
           const logoPath = profile.hospitalLogo.startsWith("/")
             ? profile.hospitalLogo
             : `/${profile.hospitalLogo}`;
@@ -158,12 +158,8 @@ const SettingsHospital = () => {
     if (name === "deliveryAmount") {
       const cleaned = value.replace(/[^0-9,.]/g, "");
       const parts = cleaned.split(".");
-      if (parts.length > 2) {
-        return;
-      }
-      if (parts.length === 2 && parts[1].length > 2) {
-        return;
-      }
+      if (parts.length > 2) return;
+      if (parts.length === 2 && parts[1].length > 2) return;
       setFormData((prev) => ({ ...prev, [name]: cleaned }));
       validateField(name, cleaned);
     } else {
@@ -264,6 +260,7 @@ const SettingsHospital = () => {
     }
 
     setIsSaving(true);
+    setUploadProgress(0);
 
     try {
       let rawAmount = formData.deliveryAmount.replace(/,/g, "");
@@ -284,6 +281,12 @@ const SettingsHospital = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total,
+          );
+          setUploadProgress(percentCompleted);
+        },
       });
 
       toast.success("Profile updated successfully!");
@@ -291,6 +294,7 @@ const SettingsHospital = () => {
       await fetchHospitalProfile();
       setErrors({});
       setIsEditing(false);
+      setUploadProgress(0);
     } catch (error) {
       console.error("Error saving hospital profile:", error);
 
@@ -316,6 +320,7 @@ const SettingsHospital = () => {
       } else {
         toast.error("An unexpected error occurred. Please try again.");
       }
+      setUploadProgress(0);
     } finally {
       setIsSaving(false);
     }
@@ -323,13 +328,11 @@ const SettingsHospital = () => {
 
   const hasChanges = () => {
     if (!originalData) return false;
-
     for (let key in originalData) {
       if (formData[key] !== originalData[key]) {
         return true;
       }
     }
-
     if (logoFile) return true;
     return false;
   };
@@ -338,20 +341,17 @@ const SettingsHospital = () => {
     return Object.keys(errors).length === 0 && hasChanges();
   };
 
-  return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+  const getInitials = (name) => {
+    if (!name) return "H";
+    const words = name.trim().split(" ");
+    if (words.length === 1) return words[0].charAt(0).toUpperCase();
+    return (
+      words[0].charAt(0) + words[words.length - 1].charAt(0)
+    ).toUpperCase();
+  };
 
+  return (
+    <main className="hospital-settings-main-container">
       <input
         ref={fileInputRef}
         type="file"
@@ -363,7 +363,10 @@ const SettingsHospital = () => {
       <div className="hospital-settings-container">
         <div className="hospital-settings-header">
           <div className="hospital-settings-title-section">
-            <h1 className="hospital-settings-title">Settings</h1>
+            <div className="hospital-title-badge">
+              <FaHospitalUser className="hospital-title-icon" />
+              <h1 className="hospital-settings-title">Settings</h1>
+            </div>
             <p className="hospital-settings-subtitle">
               Manage hospital account preferences and verification settings.
             </p>
@@ -375,17 +378,7 @@ const SettingsHospital = () => {
                 onClick={handleEditClick}
                 disabled={isLoading || isSaving}
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
+                <MdEdit size={18} />
                 Edit Profile
               </button>
             ) : (
@@ -395,17 +388,7 @@ const SettingsHospital = () => {
                   onClick={handleCancelEdit}
                   disabled={isSaving || isLoading}
                 >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <MdCancel size={18} />
                   Cancel
                 </button>
                 <button
@@ -413,18 +396,7 @@ const SettingsHospital = () => {
                   onClick={handleSaveChanges}
                   disabled={!isFormValid() || isSaving || isLoading}
                 >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                  </svg>
+                  <MdSave size={18} />
                   {isSaving ? "Saving..." : "Save Changes"}
                 </button>
               </>
@@ -432,9 +404,11 @@ const SettingsHospital = () => {
           </div>
         </div>
 
-        <div className="hospital-settings-content">
           <div className="hospital-profile-settings-section">
-            <h2 className="hospital-section-title">Profile Settings</h2>
+            <div className="hospital-section-header">
+              <h2 className="hospital-section-title">Profile Settings</h2>
+              {isEditing && <span className="editing-badge">Editing Mode</span>}
+            </div>
 
             <div className="hospital-logo-upload-section">
               <div className="hospital-logo-icon-container">
@@ -446,12 +420,15 @@ const SettingsHospital = () => {
                     onError={(e) => {
                       console.error("Failed to load image:", logoUrl);
                       e.target.style.display = "none";
-                      // Fallback to icon
                       setLogoUrl(null);
                     }}
                   />
                 ) : (
-                  <PiBuildingOffice className="hospital-logo-icon" />
+                  <div className="hospital-logo-placeholder">
+                    <span className="hospital-logo-initials">
+                      {getInitials(formData.hospitalName)}
+                    </span>
+                  </div>
                 )}
               </div>
               <div className="hospital-logo-info">
@@ -464,15 +441,21 @@ const SettingsHospital = () => {
                   onClick={handleUploadLogo}
                   disabled={!isEditing || isLoading || isSaving}
                 >
-                  <GrUpload />
+                  <MdUpload size={18} />
                   Upload Logo
                 </button>
+                {isEditing && (
+                  <span className="hospital-edit-hint">
+                    Click to upload a new logo
+                  </span>
+                )}
               </div>
             </div>
 
             {isLoading ? (
               <div className="hospital-settings-loading">
-                Loading hospital profile...
+                <div className="loading-spinner"></div>
+                <p>Loading hospital profile...</p>
               </div>
             ) : (
               <div className="hospital-form-grid">
@@ -501,7 +484,10 @@ const SettingsHospital = () => {
                 </div>
 
                 <div className="hospital-form-group">
-                  <label className="hospital-form-label">Delivery Amount</label>
+                  <label className="hospital-form-label">
+                    Delivery Amount
+                    <span className="field-hint">(Optional)</span>
+                  </label>
                   <div className="hospital-input-wrapper">
                     <span className="hospital-currency-symbol">₦</span>
                     <input
@@ -561,7 +547,7 @@ const SettingsHospital = () => {
                       className={`hospital-form-input-Address ${
                         errors.hospitalAddress ? "input-error" : ""
                       } ${!isEditing ? "input-disabled" : ""}`}
-                      placeholder="123 Healthcare Drive, Medical District, City, State 12345"
+                      placeholder="123 Healthcare Drive, Medical District, City, State"
                       rows="3"
                       disabled={!isEditing || isLoading || isSaving}
                       readOnly={!isEditing}
@@ -573,15 +559,28 @@ const SettingsHospital = () => {
                     </span>
                   )}
                 </div>
+
+                {isSaving && uploadProgress > 0 && (
+                  <div className="upload-progress-container">
+                    <div className="upload-progress-bar">
+                      <div
+                        className="upload-progress-fill"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                    <span className="upload-progress-text">
+                      Uploading... {uploadProgress}%
+                    </span>
+                  </div>
+                )}
               </div>
             )}
-          </div>
         </div>
       </div>
       <SecuritySettings />
       <NotificationPreferences />
       <AccountSettings />
-    </>
+    </main>
   );
 };
 

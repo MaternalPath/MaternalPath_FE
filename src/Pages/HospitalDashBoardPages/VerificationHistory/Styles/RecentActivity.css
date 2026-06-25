@@ -538,11 +538,12 @@
 
   .recent-activity-insights-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 15px;
   }
 
   .recent-activity-insight-card {
-    padding: 10px;
+    padding: 20px;
+    gap: 20px;
   }
 
   .recent-activity-insight-value {
