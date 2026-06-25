@@ -39,7 +39,6 @@ export default function PatientDetails() {
     setError(null);
 
     try {
-      // Normalize selected patient data from navigation state
       const normalizedSelectedPatient = selectedPatient
         ? (() => {
             const mother = selectedPatient.mother || {};
@@ -95,7 +94,6 @@ export default function PatientDetails() {
         setPatient(patientData);
       }
 
-      // ✅ Build dashboard data from patient data (since hospital users can't access /patient/dashboard)
       const savingsGoal =
         patientData.savingsGoal || patientData.deliverySavingsGoal || 0;
       const currentSavings = patientData.walletBalance || 0;
@@ -157,7 +155,6 @@ export default function PatientDetails() {
     }
   };
 
-  // Helper function to format pregnancy week
   const formatPregnancyWeek = (weekValue) => {
     if (!weekValue) return "—";
     const weekStr = weekValue.toString();
@@ -165,7 +162,6 @@ export default function PatientDetails() {
     return `Week ${weekStr}`;
   };
 
-  // Helper function to format date
   const formatDate = (dateValue) => {
     if (!dateValue) return "—";
     try {
@@ -231,7 +227,6 @@ export default function PatientDetails() {
     dashboard?.pregnancy?.preferredHospital ||
     "—";
 
-  // Get last verification data
   const lastVerificationStatus =
     dashboard?.pregnancy?.lastVerification?.status ||
     patient?.status ||
@@ -244,7 +239,6 @@ export default function PatientDetails() {
     ? formatDate(lastVerificationDate)
     : "—";
 
-  // Get wallet data
   const savingsGoal = dashboard?.wallet?.savingsGoal || 0;
   const currentSavings = dashboard?.wallet?.currentSavings || 0;
   const remaining =
@@ -257,11 +251,6 @@ export default function PatientDetails() {
       : 0;
 
   const bills = dashboard?.recentBills || [];
-
-  // Determine if patient is verified
-  const isVerified =
-    lastVerificationStatus?.toLowerCase() === "approved" ||
-    lastVerificationDate !== null;
 
   return (
     <div className="patient-details-overlay">
@@ -280,7 +269,6 @@ export default function PatientDetails() {
 
         <div className="patient-details-content">
           <div className="patient-details-grid">
-            {/* Patient Info Card */}
             <div className="patient-info-card">
               <div className="patient-header-row">
                 <div className="patient-avatar">{initials}</div>
@@ -315,20 +303,13 @@ export default function PatientDetails() {
                   <span
                     className="detail-value"
                     style={{
-                      textOverflow: "ellipsis",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      display: "inline-block",
-                      minWidth: 0,
                       marginLeft: "10px",
                       textAlign: "left",
                       fontSize: "14px",
-                      maxWidth: "200px",
+                      wordBreak: "break-all",
                     }}
                   >
-                    {email.length > 20
-                      ? `${email.split("@")[0].slice(0, 4)}...@${email.split("@")[1]}`
-                      : email}
+                    {email}
                   </span>
                 </div>
                 <div className="detail-row">
@@ -346,7 +327,6 @@ export default function PatientDetails() {
               </div>
             </div>
 
-            {/* Wallet Summary Card */}
             <div className="wallet-summary-card">
               <div className="wallet-header">
                 <h3 className="wallet-title">Wallet Summary</h3>
@@ -392,7 +372,6 @@ export default function PatientDetails() {
             </div>
           </div>
 
-          {/* Pregnancy Summary Section */}
           <div className="pregnancy-summary-section">
             <h3 className="section-title">Pregnancy Summary</h3>
             <div className="pregnancy-summary-grid">
@@ -410,16 +389,9 @@ export default function PatientDetails() {
               </div>
               <div className="summary-card">
                 <p className="summary-label">LAST VERIFICATION</p>
-                {isVerified ? (
-                  <div>
-                    <p className="summary-value">{lastVerificationFormatted}</p>
-                    <p className="summary-status approved">
-                      {lastVerificationStatus}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="summary-value not-verified">—</p>
-                )}
+                <p className="summary-value">
+                  {lastVerificationDate ? lastVerificationFormatted : "—"}
+                </p>
               </div>
             </div>
           </div>

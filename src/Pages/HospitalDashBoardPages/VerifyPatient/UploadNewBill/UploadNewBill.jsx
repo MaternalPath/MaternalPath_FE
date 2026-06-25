@@ -138,7 +138,6 @@ const UploadedNewBill = () => {
     return kb > 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb.toFixed(0)} KB`;
   };
 
-  // ✅ Updated handleUpload with both ID types
   const handleUpload = async () => {
     if (!token) {
       toast.error("Authentication token not found.");
@@ -200,8 +199,6 @@ const UploadedNewBill = () => {
         },
       });
 
-      console.log("📤 Upload Response:", response.data);
-
       const resBody = response.data || {};
       const newBill = resBody.data || {};
       const newBillId = newBill?.id || newBill?.billId || null;
@@ -215,22 +212,20 @@ const UploadedNewBill = () => {
       toast.success(resBody.message || "Bill uploaded successfully!");
 
       if (newBillId) {
-        console.log("📌 Bill UUID:", newBillId);
-        console.log("📌 Bill Number:", newBillNumber);
         setBillId(newBillId);
         setBillNumber(newBillNumber);
 
-        // ✅ Create bill summary from the response data directly
         const summaryData = {
-          patienceName: newBill.fullName || formData.fullName,
-          category: newBill.category || formData.category,
-          date: newBill.billingDate || formData.billingDate,
-          totalAmount: newBill.amount || formData.amount,
+          patienceName: formData.fullName,
+          category: formData.category,
+          date: formData.billingDate,
+          totalAmount: formData.amount,
           status: newBill.verificationWorkFlow || "Pending",
-          billNumber: newBill.billNumber || formData.billNumber,
+          billNumber: formData.billNumber,
         };
 
         console.log("📊 Bill Summary Data:", summaryData);
+        console.log("📊 Category selected:", formData.category);
         setBillSummary(summaryData);
       } else {
         console.warn(
@@ -267,7 +262,7 @@ const UploadedNewBill = () => {
 
   return (
     <div className="uploaded-new-bill-overlay">
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <div className="uploaded-new-bill-modal">
         <div className="uploaded-new-bill-header">
           <div>
@@ -283,7 +278,6 @@ const UploadedNewBill = () => {
 
         <div className="uploaded-new-bill-container">
           <div className="uploaded-new-bill-main">
-            {/* Patient Identification Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -348,7 +342,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* Bill Details Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -385,8 +378,8 @@ const UploadedNewBill = () => {
                     onChange={handleInputChange}
                   >
                     <option value="">Select Category</option>
-                    <option value="Antenatal Care">Antenatal Care</option>
-                    <option value="Delivery Services">Delivery Services</option>
+                    <option value="Natural Delivery">Natural Delivery</option>
+                    <option value="C-Section">C-Section</option>
                   </select>
                 </div>
               </div>
@@ -422,7 +415,6 @@ const UploadedNewBill = () => {
               </div>
             </div>
 
-            {/* Document Upload Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -473,7 +465,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* Additional Notes Section */}
             <div className="uploaded-new-bill-card">
               <div className="uploaded-new-bill-section-header">
                 <span className="uploaded-new-bill-icon">
@@ -488,7 +479,6 @@ const UploadedNewBill = () => {
               ></textarea>
             </div>
 
-            {/* Action Buttons */}
             <div className="uploaded-new-bill-action-buttons">
               <button
                 className="uploaded-new-bill-btn-cancel"
@@ -507,9 +497,7 @@ const UploadedNewBill = () => {
             </div>
           </div>
 
-          {/* Right Sidebar */}
           <div className="uploaded-new-bill-sidebar">
-            {/* Verification Workflow */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">
                 Verification Workflow
@@ -552,7 +540,6 @@ const UploadedNewBill = () => {
               )}
             </div>
 
-            {/* Bill Summary */}
             <div className="uploaded-new-bill-card uploaded-new-bill-sidebar-card">
               <h3 className="uploaded-new-bill-sidebar-title">Bill Summary</h3>
               {!billId ? (
@@ -570,7 +557,7 @@ const UploadedNewBill = () => {
                       Patient Name
                     </span>
                     <span className="uploaded-new-bill-summary-value">
-                      {billSummary?.patienceName || formData.fullName}
+                      {billSummary.patienceName}
                     </span>
                   </div>
                   <div className="uploaded-new-bill-summary-item">
@@ -578,7 +565,7 @@ const UploadedNewBill = () => {
                       Category
                     </span>
                     <span className="uploaded-new-bill-summary-value">
-                      {billSummary?.category || formData.category}
+                      {billSummary.category}
                     </span>
                   </div>
                   <div className="uploaded-new-bill-summary-item">
@@ -586,7 +573,7 @@ const UploadedNewBill = () => {
                       Date
                     </span>
                     <span className="uploaded-new-bill-summary-value">
-                      {billSummary?.date || formData.billingDate}
+                      {billSummary.date}
                     </span>
                   </div>
                   <div className="uploaded-new-bill-summary-item total">
@@ -594,9 +581,7 @@ const UploadedNewBill = () => {
                       Total Amount
                     </span>
                     <span className="uploaded-new-bill-summary-value total-value">
-                      {formatAmount(
-                        billSummary?.totalAmount || formData.amount,
-                      )}
+                      {formatAmount(billSummary.totalAmount)}
                     </span>
                   </div>
                   <div className="uploaded-new-bill-summary-item status">

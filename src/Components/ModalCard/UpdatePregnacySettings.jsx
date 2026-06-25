@@ -484,9 +484,9 @@ const UpdatePregnancyModal = ({
                 onBlur={(e) => handleBlur("bloodType", e.target.value)}
                 className={errors.bloodType ? "input-error" : ""}
               >
-                <option value="">Select blood type</option>
+                <option className="option-blood-type" value="">Select blood type</option>
                 {BLOOD_TYPES.map((bt) => (
-                  <option key={bt} value={bt}>
+                  <option className="option-blood-type" key={bt} value={bt}>
                     {bt}
                   </option>
                 ))}

@@ -120,10 +120,25 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error("Login API error:", error);
+
+      const errorMessage = error?.response?.data?.message || "";
+      const isUnverified =
+        error?.response?.status === 403 &&
+        (errorMessage.toLowerCase().includes("not verified") ||
+          errorMessage.toLowerCase().includes("verify"));
+
+      // ✅ If backend returns 403 for unverified users, redirect to OTP
+      if (isUnverified) {
+        toast.info("Please verify your account to continue.");
+        nav(userType === "mother" ? "/otp" : "/hospitalOtp", {
+          state: { email: formData.email, role: userType },
+        });
+        return null;
+      }
+
       const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
       toast.error(
-        error?.response?.data?.message ||
-          `${userDisplayName} login failed. Please try again.`,
+        errorMessage || `${userDisplayName} login failed. Please try again.`,
       );
       return null;
     } finally {
@@ -162,15 +177,25 @@ const LoginPage = () => {
         "";
       if (name) localStorage.setItem("name", name);
 
+      // ✅ Check if user is verified from a 200 response
+      const isVerified =
+        response?.data?.isVerified ??
+        response?.data?.data?.isVerified ??
+        response?.data?.verified ??
+        response?.data?.data?.verified ??
+        true; // default true if the field doesn't exist in response
+
+      if (!isVerified) {
+        toast.info("Please verify your account to continue.");
+        nav(userType === "mother" ? "/otp" : "/hospitalOtp", {
+          state: { email: formData.email, role: userType },
+        });
+        return;
+      }
+
       const isUpdated = Boolean(response?.data?.isUpdated);
       setIsUpdated(isUpdated);
       login(response?.data?.token, userType);
-
-      if (userType === "hospital") {
-        toast.success("🏥 Welcome to the Hospital Dashboard!");
-      } else {
-        toast.success("👶 Welcome to your Pregnancy Dashboard!");
-      }
     }
   };
 

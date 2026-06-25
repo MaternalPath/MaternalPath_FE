@@ -11,8 +11,8 @@
 .hospital-settings-container {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-light);
-  padding: 40px 20px;
+  /* background-color: var(--bg-light); */
+  padding: 40px 15px;
 }
 
 .hospital-settings-header {
@@ -715,6 +715,10 @@
 
   .hospital-section-title {
     font-size: 18px;
+  }
+
+  .hospital-settings-container {
+    padding: 6px;
   }
 
   .hospital-form-input {

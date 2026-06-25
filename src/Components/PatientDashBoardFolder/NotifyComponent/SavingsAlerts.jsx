@@ -40,7 +40,7 @@ const SavingsAlerts = ({ isMobile, data = [] }) => {
       <h3 className="section-title">
         {!isMobile && <FiHome size={18} />} Savings & Wallet Alerts
       </h3>
-      <div className={isMobile ? "savings-scroll" : "grid-2"}>
+      <div className={isMobile ? "savings-scroll" : "grid-scroll"}>
         {alerts.length === 0 && <p>No savings alerts available.</p>}
         {alerts.map((alert, idx) => (
           <div key={alert.id ?? idx} className="mini-card">

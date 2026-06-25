@@ -16,7 +16,7 @@
 .security-settings-container {
   width: 100%;
   min-height: 92vh;
-  background-color: var(--bg-light);
+  /* background-color: var(--bg-light); */
   padding: 0px 20px;
 }
 
@@ -145,7 +145,7 @@
   height: 24px;
   width: 24px;
   left: 2px;
-  bottom: 2px;
+  bottom: 0px;
   background-color: white;
   border-radius: 50%;
   transition: transform 0.3s ease;
@@ -243,11 +243,11 @@
 
 @media (max-width: 768px) {
   .security-settings-container {
-    padding: 20px 16px;
+    padding: 0;
   }
 
   .security-settings-wrapper {
-    padding: 24px 16px;
+    padding: 0;
     border-radius: 8px;
   }
 
@@ -288,7 +288,7 @@
 
 @media (max-width: 480px) {
   .security-settings-container {
-    padding: 16px;
+    padding: 8px;
   }
 
   .security-settings-wrapper {
