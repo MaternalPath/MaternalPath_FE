@@ -25,7 +25,11 @@
     font-weight: 600;
 
     @media (max-width: 768px) {
-      font-size: 28px;
+      font-size: 29px;
+    }
+
+    @media (max-width: 364px) {
+      font-size: 26px;
     }
   }
   .steps-row {

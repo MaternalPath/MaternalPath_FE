@@ -13,7 +13,7 @@ import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
 import VerifyHosOTP from "./Pages/OtpFolder/OtpHospital/VerifyHosOTP";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import DashboardIndex from "./Pages/Dashboard/DashboardIndex ";
+import DashboardIndex from "./Pages/Dashboard/DashboardIndex";
 import PregnancyTracker from "./Pages/PatientDashBoardPages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/PatientDashBoardPages/EmergencyWallet/EmergencyWallet";
 import AddFunds from "./Components/PatientDashBoardFolder/EmergencyComponent/AddFundCom/AddFunds";
@@ -88,7 +88,7 @@ const AppRoutes = () => (
             path="patientDetails/:patientId"
             element={<PatientDetails />}
           />
-       
+
           <Route path="uploadNewBill" element={<UploadNewBill />} />
           <Route path="uploadedBills" element={<UploadedBills />} />
           <Route path="verificationHistory" element={<VerificationHistory />} />

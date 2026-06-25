@@ -12,18 +12,20 @@ import { GrLocation } from "react-icons/gr";
 import { FaHospitalUser } from "react-icons/fa";
 import { MdEdit, MdSave, MdCancel, MdUpload } from "react-icons/md";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const SettingsHospital = () => {
   const [formData, setFormData] = useState({
     hospitalName: "",
-    deliveryAmount: "",
+    deliveryFee: "",
     phoneNumber: "",
-    hospitalAddress: "",
+    address: "",
+    medicalLicenseNumber: "",
   });
 
   const [logoUrl, setLogoUrl] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
+  const [verificationDocUrl, setVerificationDocUrl] = useState(null);
   const [originalData, setOriginalData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -49,38 +51,46 @@ const SettingsHospital = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const profile = response.data?.data || response.data || {};
+      const responseData = response?.data?.data || response?.data || response;
+
+      const profile = Array.isArray(responseData)
+        ? responseData[0]
+        : responseData;
+
+      const logo = Array.isArray(responseData)
+        ? responseData[1]
+        : profile?.hospitalLogo;
+
+      const verificationDoc = Array.isArray(responseData)
+        ? responseData[2]
+        : profile?.verificationDocuments;
 
       const mapped = {
-        hospitalName: profile.hospitalName || "",
-        deliveryAmount:
-          profile.deliveryFee !== undefined && profile.deliveryFee !== null
+        hospitalName: profile?.hospitalName || "",
+        deliveryFee:
+          profile?.deliveryFee !== undefined && profile?.deliveryFee !== null
             ? Number(profile.deliveryFee).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
               })
             : "",
-        phoneNumber: profile.phoneNumber || "",
-        hospitalAddress: profile.address || "",
+        phoneNumber: profile?.phoneNumber || "",
+        address: profile?.address || "",
+        medicalLicenseNumber: profile?.medicalLicenseNumber || "",
       };
 
       setFormData(mapped);
       setOriginalData(mapped);
 
-      if (profile.hospitalLogo) {
-        if (
-          profile.hospitalLogo.startsWith("http://") ||
-          profile.hospitalLogo.startsWith("https://")
-        ) {
-          setLogoUrl(profile.hospitalLogo);
-        } else {
-          const baseWithoutApi = baseURL.replace(/\/api\/v\d+\/?$/, "");
-          const logoPath = profile.hospitalLogo.startsWith("/")
-            ? profile.hospitalLogo
-            : `/${profile.hospitalLogo}`;
-          setLogoUrl(`${baseWithoutApi}${logoPath}`);
-        }
+      if (logo) {
+        setLogoUrl(logo);
       } else {
         setLogoUrl(null);
+      }
+
+      if (verificationDoc) {
+        setVerificationDocUrl(verificationDoc);
+      } else {
+        setVerificationDocUrl(null);
       }
     } catch (error) {
       console.error("Error fetching hospital profile:", error);
@@ -121,26 +131,34 @@ const SettingsHospital = () => {
         }
         break;
 
-      case "deliveryAmount":
+      case "deliveryFee":
         if (value) {
           const cleaned = value.replace(/,/g, "");
           if (isNaN(parseFloat(cleaned)) || parseFloat(cleaned) < 0) {
-            newErrors.deliveryAmount = "Please enter a valid positive number";
+            newErrors.deliveryFee = "Please enter a valid positive number";
           } else {
-            delete newErrors.deliveryAmount;
+            delete newErrors.deliveryFee;
           }
         } else {
-          delete newErrors.deliveryAmount;
+          delete newErrors.deliveryFee;
         }
         break;
 
-      case "hospitalAddress":
+      case "address":
         if (!value.trim()) {
-          newErrors.hospitalAddress = "Hospital address is required";
+          newErrors.address = "Hospital address is required";
         } else if (value.trim().length < 5) {
-          newErrors.hospitalAddress = "Address must be at least 5 characters";
+          newErrors.address = "Address must be at least 5 characters";
         } else {
-          delete newErrors.hospitalAddress;
+          delete newErrors.address;
+        }
+        break;
+
+      case "medicalLicenseNumber":
+        if (!value.trim()) {
+          newErrors.medicalLicenseNumber = "Medical license number is required";
+        } else {
+          delete newErrors.medicalLicenseNumber;
         }
         break;
 
@@ -155,7 +173,7 @@ const SettingsHospital = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "deliveryAmount") {
+    if (name === "deliveryFee") {
       const cleaned = value.replace(/[^0-9,.]/g, "");
       const parts = cleaned.split(".");
       if (parts.length > 2) return;
@@ -214,19 +232,24 @@ const SettingsHospital = () => {
       isValid = false;
     }
 
-    if (formData.deliveryAmount) {
-      const cleaned = formData.deliveryAmount.replace(/,/g, "");
+    if (formData.deliveryFee) {
+      const cleaned = formData.deliveryFee.replace(/,/g, "");
       if (isNaN(parseFloat(cleaned)) || parseFloat(cleaned) < 0) {
-        newErrors.deliveryAmount = "Please enter a valid positive number";
+        newErrors.deliveryFee = "Please enter a valid positive number";
         isValid = false;
       }
     }
 
-    if (!formData.hospitalAddress.trim()) {
-      newErrors.hospitalAddress = "Hospital address is required";
+    if (!formData.address.trim()) {
+      newErrors.address = "Hospital address is required";
       isValid = false;
-    } else if (formData.hospitalAddress.trim().length < 5) {
-      newErrors.hospitalAddress = "Address must be at least 5 characters";
+    } else if (formData.address.trim().length < 5) {
+      newErrors.address = "Address must be at least 5 characters";
+      isValid = false;
+    }
+
+    if (!formData.medicalLicenseNumber.trim()) {
+      newErrors.medicalLicenseNumber = "Medical license number is required";
       isValid = false;
     }
 
@@ -263,20 +286,24 @@ const SettingsHospital = () => {
     setUploadProgress(0);
 
     try {
-      let rawAmount = formData.deliveryAmount.replace(/,/g, "");
+      let rawAmount = formData.deliveryFee.replace(/,/g, "");
       const deliveryFee = rawAmount ? parseFloat(rawAmount) : 0;
 
       const payload = new FormData();
       payload.append("hospitalName", formData.hospitalName.trim());
       payload.append("phoneNumber", formData.phoneNumber.trim());
-      payload.append("address", formData.hospitalAddress.trim());
+      payload.append("address", formData.address.trim());
       payload.append("deliveryFee", deliveryFee.toString());
+      payload.append(
+        "medicalLicenseNumber",
+        formData.medicalLicenseNumber.trim(),
+      );
 
       if (logoFile) {
         payload.append("hospitalLogo", logoFile);
       }
 
-      await axios.put(`${baseURL}/hospital/profile`, payload, {
+      const response = await axios.put(`${baseURL}/hospital/profile`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -310,6 +337,8 @@ const SettingsHospital = () => {
           if (error.response.data?.errors) {
             setErrors(error.response.data.errors);
           }
+        } else if (status === 404) {
+          toast.error("Hospital not found. Please contact support.");
         } else if (status === 500) {
           toast.error("Server error. Please try again later.");
         } else {
@@ -404,177 +433,214 @@ const SettingsHospital = () => {
           </div>
         </div>
 
-          <div className="hospital-profile-settings-section">
-            <div className="hospital-section-header">
-              <h2 className="hospital-section-title">Profile Settings</h2>
-              {isEditing && <span className="editing-badge">Editing Mode</span>}
-            </div>
+        <div className="hospital-profile-settings-section">
+          <div className="hospital-section-header">
+            <h2 className="hospital-section-title">Profile Settings</h2>
+            {isEditing && <span className="editing-badge">Editing Mode</span>}
+          </div>
 
-            <div className="hospital-logo-upload-section">
-              <div className="hospital-logo-icon-container">
-                {logoUrl ? (
-                  <img
-                    src={logoUrl}
-                    alt="Hospital logo"
-                    className="hospital-logo-image"
-                    onError={(e) => {
-                      console.error("Failed to load image:", logoUrl);
-                      e.target.style.display = "none";
-                      setLogoUrl(null);
-                    }}
+          <div className="hospital-logo-upload-section">
+            <div className="hospital-logo-icon-container">
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt="Hospital logo"
+                  className="hospital-logo-image"
+                  onError={(e) => {
+                    console.error("Failed to load image:", logoUrl);
+                    e.target.style.display = "none";
+                    setLogoUrl(null);
+                  }}
+                />
+              ) : (
+                <div className="hospital-logo-placeholder">
+                  <span className="hospital-logo-initials">
+                    {getInitials(formData.hospitalName)}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="hospital-logo-info">
+              <h3 className="hospital-logo-title">Hospital Logo</h3>
+              <p className="hospital-logo-description">
+                Upload your hospital logo (PNG, JPG - Max 5MB)
+              </p>
+              <button
+                className="hospital-btn-upload"
+                onClick={handleUploadLogo}
+                disabled={!isEditing || isLoading || isSaving}
+              >
+                <MdUpload size={18} />
+                Upload Logo
+              </button>
+              {isEditing && (
+                <span className="hospital-edit-hint">
+                  Click to upload a new logo
+                </span>
+              )}
+            </div>
+          </div>
+
+          {verificationDocUrl && !isEditing && (
+            <div className="hospital-verification-doc">
+              <h4>Verification Document</h4>
+              <a
+                href={verificationDocUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="verification-doc-link"
+              >
+                View Verification Document
+              </a>
+            </div>
+          )}
+
+          {isLoading ? (
+            <div className="hospital-settings-loading">
+              <div className="loading-spinner"></div>
+              <p>Loading hospital profile...</p>
+            </div>
+          ) : (
+            <div className="hospital-form-grid">
+              <div className="hospital-form-group">
+                <label className="hospital-form-label">
+                  Hospital Name <span className="required-field">*</span>
+                </label>
+                <div className="hospital-input-wrapper">
+                  <PiBuildingOffice className="hospital-input-icon" />
+                  <input
+                    type="text"
+                    name="hospitalName"
+                    value={formData.hospitalName}
+                    onChange={handleInputChange}
+                    className={`hospital-form-input ${
+                      errors.hospitalName ? "input-error" : ""
+                    } ${!isEditing ? "input-disabled" : ""}`}
+                    placeholder="St. Mary's Hospital"
+                    disabled={!isEditing || isLoading || isSaving}
+                    readOnly={!isEditing}
                   />
-                ) : (
-                  <div className="hospital-logo-placeholder">
-                    <span className="hospital-logo-initials">
-                      {getInitials(formData.hospitalName)}
-                    </span>
-                  </div>
+                </div>
+                {errors.hospitalName && (
+                  <span className="error-message">{errors.hospitalName}</span>
                 )}
               </div>
-              <div className="hospital-logo-info">
-                <h3 className="hospital-logo-title">Hospital Logo</h3>
-                <p className="hospital-logo-description">
-                  Upload your hospital logo (PNG, JPG - Max 5MB)
-                </p>
-                <button
-                  className="hospital-btn-upload"
-                  onClick={handleUploadLogo}
-                  disabled={!isEditing || isLoading || isSaving}
-                >
-                  <MdUpload size={18} />
-                  Upload Logo
-                </button>
-                {isEditing && (
-                  <span className="hospital-edit-hint">
-                    Click to upload a new logo
+
+              <div className="hospital-form-group">
+                <label className="hospital-form-label">
+                  Medical License Number{" "}
+                  <span className="required-field">*</span>
+                </label>
+                <div className="hospital-input-wrapper">
+                  <RiUser3Line className="hospital-input-icon" />
+                  <input
+                    type="text"
+                    name="medicalLicenseNumber"
+                    value={formData.medicalLicenseNumber}
+                    onChange={handleInputChange}
+                    className={`hospital-form-input ${
+                      errors.medicalLicenseNumber ? "input-error" : ""
+                    } ${!isEditing ? "input-disabled" : ""}`}
+                    placeholder="MED-12345"
+                    disabled={!isEditing || isLoading || isSaving}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                {errors.medicalLicenseNumber && (
+                  <span className="error-message">
+                    {errors.medicalLicenseNumber}
                   </span>
                 )}
               </div>
-            </div>
 
-            {isLoading ? (
-              <div className="hospital-settings-loading">
-                <div className="loading-spinner"></div>
-                <p>Loading hospital profile...</p>
-              </div>
-            ) : (
-              <div className="hospital-form-grid">
-                <div className="hospital-form-group">
-                  <label className="hospital-form-label">
-                    Hospital Name <span className="required-field">*</span>
-                  </label>
-                  <div className="hospital-input-wrapper">
-                    <PiBuildingOffice className="hospital-input-icon" />
-                    <input
-                      type="text"
-                      name="hospitalName"
-                      value={formData.hospitalName}
-                      onChange={handleInputChange}
-                      className={`hospital-form-input ${
-                        errors.hospitalName ? "input-error" : ""
-                      } ${!isEditing ? "input-disabled" : ""}`}
-                      placeholder="St. Mary's Hospital"
-                      disabled={!isEditing || isLoading || isSaving}
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  {errors.hospitalName && (
-                    <span className="error-message">{errors.hospitalName}</span>
-                  )}
+              <div className="hospital-form-group">
+                <label className="hospital-form-label">
+                  Delivery Fee
+                  <span className="field-hint">(Optional)</span>
+                </label>
+                <div className="hospital-input-wrapper">
+                  <span className="hospital-currency-symbol">₦</span>
+                  <input
+                    type="text"
+                    name="deliveryFee"
+                    value={formData.deliveryFee}
+                    onChange={handleInputChange}
+                    className={`hospital-form-input ${
+                      errors.deliveryFee ? "input-error" : ""
+                    } ${!isEditing ? "input-disabled" : ""}`}
+                    placeholder="300,000.00"
+                    disabled={!isEditing || isLoading || isSaving}
+                    readOnly={!isEditing}
+                  />
                 </div>
-
-                <div className="hospital-form-group">
-                  <label className="hospital-form-label">
-                    Delivery Amount
-                    <span className="field-hint">(Optional)</span>
-                  </label>
-                  <div className="hospital-input-wrapper">
-                    <span className="hospital-currency-symbol">₦</span>
-                    <input
-                      type="text"
-                      name="deliveryAmount"
-                      value={formData.deliveryAmount}
-                      onChange={handleInputChange}
-                      className={`hospital-form-input ${
-                        errors.deliveryAmount ? "input-error" : ""
-                      } ${!isEditing ? "input-disabled" : ""}`}
-                      placeholder="300,000.00"
-                      disabled={!isEditing || isLoading || isSaving}
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  {errors.deliveryAmount && (
-                    <span className="error-message">
-                      {errors.deliveryAmount}
-                    </span>
-                  )}
-                </div>
-
-                <div className="hospital-form-group">
-                  <label className="hospital-form-label">
-                    Phone Number <span className="required-field">*</span>
-                  </label>
-                  <div className="hospital-input-wrapper">
-                    <IoCallOutline className="hospital-input-icon" />
-                    <input
-                      type="tel"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleInputChange}
-                      className={`hospital-form-input ${
-                        errors.phoneNumber ? "input-error" : ""
-                      } ${!isEditing ? "input-disabled" : ""}`}
-                      placeholder="+1 (555) 123-4567"
-                      disabled={!isEditing || isLoading || isSaving}
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  {errors.phoneNumber && (
-                    <span className="error-message">{errors.phoneNumber}</span>
-                  )}
-                </div>
-
-                <div className="hospital-form-group hospital-form-group-full">
-                  <label className="hospital-form-label">
-                    Hospital Address <span className="required-field">*</span>
-                  </label>
-                  <div className="hospital-input-wrapper">
-                    <GrLocation className="hospital-inputAddress-icon" />
-                    <textarea
-                      name="hospitalAddress"
-                      value={formData.hospitalAddress}
-                      onChange={handleInputChange}
-                      className={`hospital-form-input-Address ${
-                        errors.hospitalAddress ? "input-error" : ""
-                      } ${!isEditing ? "input-disabled" : ""}`}
-                      placeholder="123 Healthcare Drive, Medical District, City, State"
-                      rows="3"
-                      disabled={!isEditing || isLoading || isSaving}
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  {errors.hospitalAddress && (
-                    <span className="error-message">
-                      {errors.hospitalAddress}
-                    </span>
-                  )}
-                </div>
-
-                {isSaving && uploadProgress > 0 && (
-                  <div className="upload-progress-container">
-                    <div className="upload-progress-bar">
-                      <div
-                        className="upload-progress-fill"
-                        style={{ width: `${uploadProgress}%` }}
-                      ></div>
-                    </div>
-                    <span className="upload-progress-text">
-                      Uploading... {uploadProgress}%
-                    </span>
-                  </div>
+                {errors.deliveryFee && (
+                  <span className="error-message">{errors.deliveryFee}</span>
                 )}
               </div>
-            )}
+
+              <div className="hospital-form-group">
+                <label className="hospital-form-label">
+                  Phone Number <span className="required-field">*</span>
+                </label>
+                <div className="hospital-input-wrapper">
+                  <IoCallOutline className="hospital-input-icon" />
+                  <input
+                    type="tel"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    className={`hospital-form-input ${
+                      errors.phoneNumber ? "input-error" : ""
+                    } ${!isEditing ? "input-disabled" : ""}`}
+                    placeholder="+1 (555) 123-4567"
+                    disabled={!isEditing || isLoading || isSaving}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                {errors.phoneNumber && (
+                  <span className="error-message">{errors.phoneNumber}</span>
+                )}
+              </div>
+
+              <div className="hospital-form-group hospital-form-group-full">
+                <label className="hospital-form-label">
+                  Hospital Address <span className="required-field">*</span>
+                </label>
+                <div className="hospital-input-wrapper">
+                  <GrLocation className="hospital-inputAddress-icon" />
+                  <textarea
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className={`hospital-form-input-Address ${
+                      errors.address ? "input-error" : ""
+                    } ${!isEditing ? "input-disabled" : ""}`}
+                    placeholder="123 Healthcare Drive, Medical District, City, State"
+                    rows="3"
+                    disabled={!isEditing || isLoading || isSaving}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                {errors.address && (
+                  <span className="error-message">{errors.address}</span>
+                )}
+              </div>
+
+              {isSaving && uploadProgress > 0 && (
+                <div className="upload-progress-container">
+                  <div className="upload-progress-bar">
+                    <div
+                      className="upload-progress-fill"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                  <span className="upload-progress-text">
+                    Uploading... {uploadProgress}%
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <SecuritySettings />

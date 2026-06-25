@@ -570,13 +570,15 @@
   }
 }
 
-@media (max-width: 467px) {
+@media (max-width: 763px) {
   .mp-login-container {
     flex-direction: column;
   }
 
   .mp-login-left {
     padding: 32px 20px;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
   .mp-login-card {

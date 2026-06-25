@@ -9,7 +9,7 @@ import { useRole } from "../../context/RoleContext";
 
 const DashboardHeader = ({ onMenuClick, onLogoutClick }) => {
   const navigate = useNavigate();
-  const { role, profilePicture } = useRole();
+  const { role, profilePicture, hospitalLogo } = useRole();
 
   const handleNotificationsClick = () => {
     const targetRoute =
@@ -56,7 +56,13 @@ const DashboardHeader = ({ onMenuClick, onLogoutClick }) => {
           onClick={handleProfileClick}
           type="button"
         >
-          {profilePicture ? (
+          {role === "hospital" && hospitalLogo ? (
+            <img
+              src={hospitalLogo}
+              alt="Hospital Logo"
+              className="dashboard-header-avatar-img"
+            />
+          ) : profilePicture ? (
             <img
               src={profilePicture}
               alt="Profile"
