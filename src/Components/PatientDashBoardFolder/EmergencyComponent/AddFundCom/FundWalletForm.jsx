@@ -114,3 +114,11 @@ const FundWalletForm = ({ amount, setAmount, paymentMethod, setPaymentMethod, wa
 };
 
 export default FundWalletForm;
+
+
+
+"https://test-checkout.korapay.com/KPY-PI-202606241355IvkH6d28361/pay"
+
+
+
+

@@ -29,19 +29,19 @@ const WellnessSection = ({ data }) => {
         <div className="nutrition-grid">
           <div className="white-card">
             <h4>Iron-Rich Foods</h4>
-            <p>{data.nutrition.ironRichFoods || "—"}</p>
+            <p>{data.ironRichFoods || "—"}</p>
           </div>
           <div className="white-card">
             <h4>Protein Sources</h4>
-            <p>{nutrition.proteinSources || "—"}</p>
+            <p>{data.proteinSources || "—"}</p>
           </div>
           <div className="white-card">
             <h4>Calcium-Rich Foods</h4>
-            <p>{nutrition.calciumRichFoods || "—"}</p>
+            <p>{data.calciumRichFoods || "—"}</p>
           </div>
           <div className="white-card">
             <h4>Whole Grains</h4>
-            <p>{nutrition.wholeGrains || "—"}</p>
+            <p>{data.wholeGrains || "—"}</p>
           </div>
         </div>
 

@@ -47,7 +47,6 @@ const buildMonthlyData = (monthlySavings) => {
     return { month, amount, status };
   });
 
-  // Show a 6-month window: 3 prior, current, and next 2 (clamped).
   const start = Math.max(0, currentIdx - 3);
   const end = Math.min(MONTH_ORDER.length, start + 6);
   return months.slice(start, end);
