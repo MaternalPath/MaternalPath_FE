@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./VerifyOTP.css";
 import verifyIllustration from "/src/assets/IllustrationPanel.png";
-import mobileVerification from "/src/assets/mobileOtp.png";
 import {
   LuShield,
   LuLock,
@@ -12,9 +11,9 @@ import {
   LuCircleHelp,
 } from "react-icons/lu";
 import { GoShieldCheck } from "react-icons/go";
-import AuthHeader from "/src/Components/AuthHr&FrComponent/Header/AuthHeader";
-import AuthFooter from "/src/Components/AuthHr&FrComponent/Fotter/AuthFooter";
-import Progress from "/src/Components/AuthHr&FrComponent/ProgressBar/Progress";
+import AuthHeader from "../../Components/AuthHr&FrComponent/Header/AuthHeader";
+import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter"; // Fixed typo: Fotter -> Footer
+import Progress from "../../Components/AuthHr&FrComponent/ProgressBar/Progress";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
 import ButtonOtp from "./ButtonOtp/ButtonOtp";
@@ -23,23 +22,29 @@ import { toast } from "react-toastify";
 
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
-const VerifyOTP = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const VerifyHosOTP = () => {
   const nav = useNavigate();
   const { state } = useLocation();
 
-  // ✅ Email comes from login redirect via location.state — hardcoded fallback removed
-  const email = state?.email || "";
+  // ✅ Persist email across refresh using sessionStorage
+  const [email] = useState(() => {
+    if (state?.email) {
+      sessionStorage.setItem("verify_email", state.email);
+      return state.email;
+    }
+    return sessionStorage.getItem("verify_email") || "";
+  });
 
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ Guard: redirect to login if no email present (user landed here directly)
+  // ✅ Only redirect if there's truly no email after checking storage
   useEffect(() => {
     if (!email) {
-      toast.error("Session expired. Please log in again.");
-      nav("/login", { replace: true });
+      toast.error("Session expired. Please sign up or log in again.");
+      nav("/signup", { replace: true }); // Send to signup since this is post-signup flow
     }
   }, [email, nav]);
 
@@ -59,6 +64,11 @@ const VerifyOTP = () => {
     if (element.value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
+
+    // Auto submit when all 6 digits entered
+    if (newOtp.every((digit) => digit !== "") && newOtp.join("").length === 6) {
+      handleSubmit(null, newOtp.join(""));
+    }
   };
 
   const handleKeyDown = (e, index) => {
@@ -67,25 +77,36 @@ const VerifyOTP = () => {
     }
   };
 
-  const verifyApi = async (otpCode) => {
-    if (!baseURL) {
-      toast.error("Services not configured");
-      return null;
-    }
+  // ✅ Handle paste for OTP
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    if (pasted.length) {
+      const newOtp = [...otp];
+      pasted.split("").forEach((char, idx) => {
+        if (idx < 6) newOtp[idx] = char;
+      });
+      setOtp(newOtp);
+      inputRefs.current[Math.min(pasted.length - 1, 5)]?.focus();
 
+      if (pasted.length === 6) {
+        handleSubmit(null, pasted);
+      }
+    }
+  };
+
+  const verifyApi = async (otpCode) => {
     setIsLoading(true);
     try {
-      const url = `${baseURL}/mother/verify`;
+      const url = `${baseURL}/hospital/verify`;
       const response = await axios.post(url, {
         email,
         otp: otpCode,
       });
-      if (response?.status === 200) {
-        toast.success(
-          response?.data?.message || "OTP verification successful!",
-        );
-        return response;
-      }
+      return response;
     } catch (error) {
       toast.error(
         error?.response?.data?.message ||
@@ -98,38 +119,52 @@ const VerifyOTP = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const code = otp.join("");
-    if (code.length === 6) {
-      const response = await verifyApi(code);
-      if (response?.status === 200) {
-        // ✅ replace: true prevents user from going back to OTP page
-        toast.info("Account verified! Please log in.");
-        nav("/login", { replace: true });
-      }
+  const handleSubmit = async (e, otpCode = null) => {
+    if (e) e.preventDefault();
+    const code = otpCode || otp.join("");
+
+    if (code.length !== 6) {
+      toast.error("Please enter all 6 digits");
+      return;
+    }
+
+    const response = await verifyApi(code);
+    if (response?.status === 200) {
+      // ✅ Clean up stored email after successful verification
+      sessionStorage.removeItem("verify_email");
+      toast.success(
+        response?.data?.message || "Account verified successfully!",
+      );
+
+      // ✅ Flow: Signup -> OTP -> Login -> Dashboard
+      nav("/login", {
+        replace: true,
+        state: { verified: true, email }, // Let login page know they just verified
+      });
     }
   };
 
   const resendOtpApi = async () => {
-    if (!baseURL) {
-      toast.error("Services not configured");
-      return null;
+    if (!email) {
+      toast.error("Email not found. Please sign up again.");
+      nav("/signup", { replace: true });
+      return;
     }
 
     setIsLoading(true);
     try {
-      const url = `${baseURL}/mother/resend-otp`;
+      const url = `${baseURL}/hospital/resend-otp`;
       const response = await axios.post(url, { email });
       if (response?.status === 200) {
         toast.success(response?.data?.message || "OTP resent successfully!");
-        return response;
+        setTimer(60); // Only start timer after successful resend
+        setOtp(new Array(6).fill("")); // Clear old OTP
+        inputRefs.current[0]?.focus();
       }
     } catch (error) {
       toast.error(
         error?.response?.data?.message || error.message || "OTP resend failed",
       );
-      return null;
     } finally {
       setIsLoading(false);
     }
@@ -148,10 +183,9 @@ const VerifyOTP = () => {
 
       <main className="verify-layout">
         <section className="verify-left">
-          {/* ✅ Explicit /login instead of nav(-1) to avoid redirect loop */}
-          <button className="back-btn" onClick={() => nav("/login")}>
+          <button className="back-btn" onClick={() => nav("/signupUser")}>
             <FaArrowLeft size={16} />
-            <span>Back to Sign In</span>
+            <span>Back to Sign Up</span>
           </button>
 
           <div className="verify-card">
@@ -165,8 +199,7 @@ const VerifyOTP = () => {
               email address.
             </p>
 
-            {/* ✅ Shows the actual email passed from login */}
-            <div className="email-badge">{email}</div>
+            <div className="email-badge">{email || "No email found"}</div>
 
             <div className="info-box">
               <LuLock size={16} />
@@ -183,12 +216,15 @@ const VerifyOTP = () => {
                   <input
                     key={index}
                     type="text"
+                    inputMode="numeric"
                     maxLength="1"
                     value={data}
                     onChange={(e) => handleChange(e.target, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
+                    onPaste={index === 0 ? handlePaste : undefined}
                     ref={(el) => (inputRefs.current[index] = el)}
                     className="otp-input"
+                    disabled={isLoading}
                   />
                 ))}
               </div>
@@ -209,10 +245,7 @@ const VerifyOTP = () => {
                       type="button"
                       className="resend-btn"
                       disabled={isLoading}
-                      onClick={() => {
-                        setTimer(60);
-                        resendOtpApi();
-                      }}
+                      onClick={resendOtpApi}
                     >
                       {isLoading ? "Resending..." : "Resend code"}
                     </button>
@@ -255,7 +288,7 @@ const VerifyOTP = () => {
             className="illustration"
           />
           <img
-            src={mobileVerification}
+            src={"/src/assets/mobileOtp.png"}
             alt="Verification"
             className="mobile-illustration"
           />
@@ -267,4 +300,4 @@ const VerifyOTP = () => {
   );
 };
 
-export default VerifyOTP;
+export default VerifyHosOTP;

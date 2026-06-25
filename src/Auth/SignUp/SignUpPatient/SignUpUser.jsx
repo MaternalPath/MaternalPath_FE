@@ -261,6 +261,9 @@ const SignUp = () => {
       return response;
     } catch (error) {
       console.error("Signup API error:", error);
+      console.log("Backend full response:", error.response);
+      console.log("Backend data:", error.response?.data);
+
       toast(error?.response?.data?.message || error.message || "Signup failed");
       return null;
     } finally {

@@ -622,7 +622,7 @@
   .mp-bottom-links {
     /* justify-content: space-between; */
     gap: 10px;
-    font-size: 13px;
+    font-size: 12px;
   }
   .mp-login-right {
     display: none;
