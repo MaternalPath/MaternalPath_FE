@@ -122,20 +122,17 @@ const LoginPage = () => {
       console.error("Login API error:", error);
 
       const errorMessage = error?.response?.data?.message || "";
+      const isUnverified =
+        error?.response?.status === 403 &&
+        (errorMessage.toLowerCase().includes("not verified") ||
+          errorMessage.toLowerCase().includes("verify"));
 
-      // ✅ Intercept unverified email error and redirect to OTP
-      if (
-        errorMessage.toLowerCase().includes("verify your email") ||
-        errorMessage.toLowerCase().includes("not verified") ||
-        errorMessage.toLowerCase().includes("please verify")
-      ) {
-        toast.info("Please verify your email to continue.");
-        nav(
-          userType === "mother" ? "/otpVerification" : "/otpVerificationHos",
-          {
-            state: { email: formData.email, role: userType },
-          },
-        );
+      // ✅ If backend returns 403 for unverified users, redirect to OTP
+      if (isUnverified) {
+        toast.info("Please verify your account to continue.");
+        nav(userType === "mother" ? "/otp" : "/hospitalOtp", {
+          state: { email: formData.email, role: userType },
+        });
         return null;
       }
 
