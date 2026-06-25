@@ -43,9 +43,17 @@ const LoginPage = () => {
     }
   }, [token, nav]);
 
+  useEffect(() => {
+    if (location.state?.justVerified) {
+      toast.success("Email verified successfully. Please log in to continue.");
+      setFormData((prev) => ({ ...prev, email: location.state.email || "" }));
+      setUserType(location.state.role || "mother");
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
   const validateField = (name, value) => {
     let error = "";
-
     if (name === "email") {
       if (!value.trim()) {
         error = "Email or phone is required";
@@ -56,7 +64,6 @@ const LoginPage = () => {
         error = "Enter a valid email or phone number";
       }
     }
-
     if (name === "password") {
       if (!value) {
         error = "Password is required";
@@ -64,7 +71,6 @@ const LoginPage = () => {
         error = "Password must be at least 6 characters";
       }
     }
-
     return error;
   };
 
@@ -72,11 +78,9 @@ const LoginPage = () => {
     const newErrors = {};
     newErrors.email = validateField("email", formData.email);
     newErrors.password = validateField("password", formData.password);
-
     Object.keys(newErrors).forEach((key) => {
       if (!newErrors[key]) delete newErrors[key];
     });
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -89,7 +93,6 @@ const LoginPage = () => {
 
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
-
     if (errors[field]) {
       setErrors({ ...errors, [field]: "" });
     }
@@ -110,30 +113,25 @@ const LoginPage = () => {
         emailOrPhoneNumber: formData.email,
         password: formData.password,
       });
+
       if (response?.status === 200) {
         const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
         toast.success(
-          response?.data?.message ||
-            `${userDisplayName} login successful! Welcome back.`,
+          response?.data?.message || `${userDisplayName} login successful!`,
         );
         return response;
       }
     } catch (error) {
-      console.error("Login API error:", error);
-
       const errorMessage = error?.response?.data?.message || "";
-      const isUnverified =
-        error?.response?.status === 403 &&
-        (errorMessage.toLowerCase().includes("not verified") ||
-          errorMessage.toLowerCase().includes("verify"));
+      const status = error?.response?.status;
 
-      // ✅ If backend returns 403 for unverified users, redirect to OTP
-      if (isUnverified) {
-        toast.info("Please verify your account to continue.");
-        nav(userType === "mother" ? "/otp" : "/hospitalOtp", {
-          state: { email: formData.email, role: userType },
-        });
-        return null;
+      // Catch your exact backend response: 400 + "Please verify your email before logging in"
+      const isUnverifiedError =
+        status === 400 &&
+        errorMessage.toLowerCase().includes("verify your email");
+
+      if (isUnverifiedError) {
+        return { requiresOtp: true, error: error.response.data };
       }
 
       const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
@@ -150,57 +148,47 @@ const LoginPage = () => {
     e.preventDefault();
     setTouched({ email: true, password: true });
 
-    if (!validateForm()) {
+    if (!validateForm()) return;
+
+    const result = await loginApi();
+
+    // Auto route to OTP if backend says email not verified
+    if (result?.requiresOtp) {
+      toast.info("Please verify your account to continue.");
+      const otpRoute =
+        userType === "mother" ? "/otpVerification" : "/otpVerificationHos";
+      nav(otpRoute, {
+        state: { email: formData.email, role: userType },
+        replace: true,
+      });
       return;
     }
 
-    const response = await loginApi();
-    if (response?.status === 200) {
+    if (result?.status === 200) {
       const userId =
-        response?.data?.id ||
-        response?.data?.userId ||
-        response?.data?.user_id ||
-        response?.data?.data?.id ||
-        response?.data?.data?.userId ||
-        response?.data?.data?.user_id ||
+        result?.data?.id ||
+        result?.data?.userId ||
+        result?.data?.data?.id ||
         "";
-
       if (userId) {
         localStorage.setItem("userid", String(userId));
         localStorage.setItem("userId", String(userId));
       }
 
-      const name =
-        response?.data?.name ||
-        response?.data?.data?.name ||
-        response?.data?.user?.name ||
-        "";
+      const name = result?.data?.name || result?.data?.data?.name || "";
       if (name) localStorage.setItem("name", name);
 
-      // ✅ Check if user is verified from a 200 response
+      // Backend should return isVerified: true now, but we double check
       const isVerified =
-        response?.data?.isVerified ??
-        response?.data?.data?.isVerified ??
-        response?.data?.verified ??
-        response?.data?.data?.verified ??
-        true; // default true if the field doesn't exist in response
+        result?.data?.isVerified ??
+        result?.data?.data?.isVerified ??
+        result?.data?.verified ??
+        result?.data?.data?.verified ??
+        true;
 
-      if (!isVerified) {
-        toast.info("Please verify your account to continue.");
-        nav(userType === "mother" ? "/otp" : "/hospitalOtp", {
-          state: { email: formData.email, role: userType },
-        });
-        return;
-      }
-
-      const isUpdated = Boolean(response?.data?.isUpdated);
-      setIsUpdated(isUpdated);
-      login(response?.data?.token, userType);
+      setIsUpdated(Boolean(result?.data?.isUpdated));
+      login(result?.data?.token, userType, isVerified);
     }
-  };
-
-  const handleGoogleLogin = () => {
-    setErrors({ submit: "Google login not connected yet" });
   };
 
   return (
@@ -248,9 +236,7 @@ const LoginPage = () => {
               <div className="mp-form-group">
                 <label>EMAIL ADDRESS </label>
                 <div
-                  className={`mp-input-wrapper ${
-                    errors.email && touched.email ? "error" : ""
-                  }`}
+                  className={`mp-input-wrapper ${errors.email && touched.email ? "error" : ""}`}
                 >
                   <MdEmail />
                   <input
@@ -269,9 +255,7 @@ const LoginPage = () => {
               <div className="mp-form-group">
                 <label>PASSWORD</label>
                 <div
-                  className={`mp-input-wrapper ${
-                    errors.password && touched.password ? "error" : ""
-                  }`}
+                  className={`mp-input-wrapper ${errors.password && touched.password ? "error" : ""}`}
                 >
                   <MdLock />
                   <input
@@ -349,11 +333,9 @@ const LoginPage = () => {
               Pregnancy tracking, health guidance, and emergency wallet — all in
               one place.
             </p>
-
             <div className="mp-illustration">
               <img src={loginImg} alt="Pregnant woman with phone" />
             </div>
-
             <div className="mp-feature-tags">
               <span>Pregnancy Tracker</span>
               <span>Emergency Wallet</span>

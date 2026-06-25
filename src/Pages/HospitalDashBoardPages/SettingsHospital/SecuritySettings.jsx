@@ -35,7 +35,7 @@ const SecuritySettings = () => {
               </svg>
               Change Password
             </button>
-          </div>    6
+          </div>
         </div>
 
         <div className="settings-section">
@@ -69,7 +69,7 @@ const SecuritySettings = () => {
               <div className="device-name">Chrome on Windows</div>
               <div className="login-meta">New York, USA • 2 hours ago</div>
             </div>
-            <div className="current-session-badge">Current Session</div>
+            {/* <div className="current-session-badge">Current Session</div> */}
           </div>
 
           <div className="login-item">
