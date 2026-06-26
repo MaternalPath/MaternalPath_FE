@@ -1,5 +1,3 @@
-
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,7 +13,6 @@ import LandingPage from "./Pages/LandingPage/landingPage";
 import About from "./Pages/About/About";
 import VerifyHosOTP from "./Pages/OtpFolder/OtpHospital/VerifyHosOTP";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-// import DashboardIndex from "./Pages/Dashboard/DashboardIndex ";
 import DashboardIndex from "./Pages/Dashboard/DashboardIndex";
 import PregnancyTracker from "./Pages/PatientDashBoardPages/PregnancyTracker/PregnancyTracker";
 import EmergencyWallet from "./Pages/PatientDashBoardPages/EmergencyWallet/EmergencyWallet";
@@ -44,9 +41,9 @@ import TeamSection from "./Components/AboutComponent/TeamSection";
 import TermsLayout from "./Pages/TermsLayout/TermsLayout";
 import UploadNewBill from "./Pages/HospitalDashBoardPages/VerifyPatient/UploadNewBill/UploadNewBill";
 import PrivacySettings from "./Pages/PrivacySettingsLayout/PrivacySettings";
-import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
 import FundsFailed from "./Pages/ConfirmationPage/FundsFailed";
-import PrivateRouting from "./Lib/PrivateRouting";
+import FundsSuccess from "./Pages/ConfirmationPage/FundsSuccess";
+import PrivateRouting, { RoleRoute } from "./Lib/PrivateRouting";
 import PublicRoute from "./Lib/PublicRoute";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 import PatientDetails from "./Pages/HospitalDashBoardPages/VerifyPatient/PatientDetails";
@@ -63,11 +60,8 @@ const AppRoutes = () => (
         <Route path="/teamSection" element={<TeamSection />} />
         <Route path="/terms" element={<TermsLayout />} />
         <Route path="/privacySettings" element={<PrivacySettings />} />
-        <Route path="/fundsSuccess" element={<FundsSuccess />} />
-        <Route path="/fundsFailed" element={<FundsFailed />} />
         <Route path="/faq" element={<FaqHome />} />
       </Route>
-
       <Route path="/login" element={<Login />} />
       <Route path="/signupUser" element={<Signup />} />
       <Route path="/signupHospital" element={<SignUpAdmin />} />
@@ -82,37 +76,45 @@ const AppRoutes = () => (
       <Route path="/checkEmail" element={<CheckEmail />} />
       <Route path="/createNewPassword" element={<CreateNewPassword />} />
       <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
-
       <Route element={<PrivateRouting />}>
+        <Route path="/fundsSuccess" element={<FundsSuccess />} />
+              <Route path="/fundsFailed" element={<FundsFailed />} />
+
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<DashboardIndex />} />
-          <Route path="hospitalOverview" element={<HospitalOverview />} />
-          <Route path="hospitalDashboard" element={<HospitalOverview />} />
-          <Route path="verifyPatient" element={<VerifyPatient />} />
-          <Route
-            path="patientDetails/:patientId"
-            element={<PatientDetails />}
-          />
+          <Route element={<RoleRoute allowedRole="hospital" />}>
+            <Route path="hospitalOverview" element={<HospitalOverview />} />
+            <Route path="hospitalDashboard" element={<HospitalOverview />} />
+            <Route path="verifyPatient" element={<VerifyPatient />} />
+            <Route
+              path="patientDetails/:patientId"
+              element={<PatientDetails />}
+            />
 
-          <Route path="uploadNewBill" element={<UploadNewBill />} />
-          <Route path="uploadedBills" element={<UploadedBills />} />
-          <Route path="verificationHistory" element={<VerificationHistory />} />
-          <Route path="viewAllPatient" element={<ViewAllPatient />} />
-          <Route
-            path="notificationsHospital"
-            element={<NotificationsHospital />}
-          />
-          <Route path="settingsHospital" element={<SettingsHospital />} />
+            <Route path="uploadNewBill" element={<UploadNewBill />} />
+            <Route path="uploadedBills" element={<UploadedBills />} />
+            <Route
+              path="verificationHistory"
+              element={<VerificationHistory />}
+            />
+            <Route path="viewAllPatient" element={<ViewAllPatient />} />
+            <Route
+              path="notificationsHospital"
+              element={<NotificationsHospital />}
+            />
+            <Route path="settingsHospital" element={<SettingsHospital />} />
+          </Route>
+          <Route element={<RoleRoute allowedRole="mother" />}>
+            <Route path="pregnancyTracker" element={<PregnancyTracker />} />
+            <Route path="emergencyWallet" element={<EmergencyWallet />} />
+            <Route path="addFunds" element={<AddFunds />} />
+            <Route path="healthGuidance" element={<HealthGuidance />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
           <Route path="settings" element={<Settings />} />
-          <Route path="pregnancyTracker" element={<PregnancyTracker />} />
-          <Route path="emergencyWallet" element={<EmergencyWallet />} />
-          <Route path="addFunds" element={<AddFunds />} />
-          <Route path="healthGuidance" element={<HealthGuidance />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="profile" element={<Profile />} />
         </Route>
       </Route>
-
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Router>
