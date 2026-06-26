@@ -61,3 +61,52 @@
     order: -1;
   }
 }
+.payment-iframe-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+}
+
+.payment-iframe-wrapper > div:last-child {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-iframe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.payment-iframe-header h3 {
+  margin: 0;
+}
+
+.payment-iframe-header button {
+  border: none;
+  background: #f3f4f6;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.payment-iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 12px;
+}

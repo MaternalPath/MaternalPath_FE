@@ -117,3 +117,13 @@ export const getMotherNotifications = async () => {
     throw error;
   }
 };
+
+export const getPaymentHistory = async () => {
+  try {
+    const { data } = await apiClient.get("/payment/history");
+    return data;
+  } catch (error) {
+    console.error("Error loading payment history:", error);
+    throw error.response?.data?.message || "Error loading payment history";
+  }
+};
