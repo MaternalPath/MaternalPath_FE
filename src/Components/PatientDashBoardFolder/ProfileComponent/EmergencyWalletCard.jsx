@@ -42,7 +42,7 @@ const EmergencyWalletCard = ({ data = {}, onEditClick }) => {
         </div>
         <div className="info-item">
           <div className="info-label">Current Balance</div>
-          <div className="info-value">₦{data?.currentBalance || "Not Set yet"}</div>
+          <div className="info-value">₦{data[3]?.currentBalance || "Not Set yet"}</div>
         </div>
         <div className="info-item">
           <div className="info-label">Weekly Contribution</div>
