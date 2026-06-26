@@ -20,15 +20,15 @@ const WalletSummaryCard = ({ data, onAddFunds }) => {
     return "Needs Attention";
   };
 
-  return (
-    <section className="wallet-summary-card">
+  return ( 
+    <section className="wallets-summary-card">
       <div className="summary-main">
         <div className="balance-section">
           <h2>{formatCurrency(data.currentBalance)}</h2>
           <p className="label">Current Savings Balance</p>
           <p className="subtext">You're making great progress toward your delivery goal.</p>
           
-          <div className="stats-grid">
+          <div className="stats-grid-wallet">
             <div className="stat-item">
               <span className="stat-label">Delivery Savings Goal</span>
               <span className="stat-value">{formatCurrency(data.savingsGoal)}</span>
