@@ -41,7 +41,7 @@ const TeamSection = () => {
     },
     {
       id: 6,
-      name: "Michael Monah",
+      name: "Michael Wonah",
       role: "Backend Developer",
       img: img4,
     },

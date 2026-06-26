@@ -52,6 +52,7 @@ import PlatformFeatures from "./PlatformFeatures";
 import Secure from "./Secure";
 import Confidence from "./Confidence";
 import Footer from "../../Components/Footer/Footer";
+import SafeSecureSection from "./SafeSecureSection";
 // import imageImportBg from "https://i.postimg.cc/NjTpJYvn/prenant-woman.png";
 
 const HeroSection = () => {
@@ -88,6 +89,7 @@ const HeroSection = () => {
       <Works />
       <Journey />
       <PlatformFeatures />
+      <SafeSecureSection />
       <Secure />
       <Confidence />
       <Footer />
