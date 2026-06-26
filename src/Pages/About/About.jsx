@@ -10,12 +10,14 @@ import TeamSection from "/src/Components/AboutComponent/TeamSection";
 import CtaSection from "/src/Components/AboutComponent/CtaSection";
 import "./About.css";
 import Footer from "../../Components/Footer/Footer";
+import PregnancyWalletCards from "/src/Components/AboutComponent/PregnancyWalletCards";
 const About = () => {
   return (
     <>
       <Header />
       <div className="about-page">
         <HeroSection />
+        <PregnancyWalletCards />
         <OriginSection />
         <ChallengeSection />
         <MissionVisionSection />
