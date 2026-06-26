@@ -7,6 +7,7 @@ const TOKEN_KEY = "token";
 const PROFILE_PICTURE_KEY = "profilePicture";
 const HOSPITAL_LOGO_KEY = "hospitalLogo";
 const EMAIL_VERIFIED_KEY = "emailVerified";
+const EMAIL_KEY = "email";
 
 const readRole = () => {
   const stored = localStorage.getItem(ROLE_KEY);
@@ -48,10 +49,12 @@ export const RoleProvider = ({ children }) => {
 
   const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
-  const login = (newToken, newRole, verified = false) => {
+  const login = (newToken, newRole, verified = false, email = "") => {
     localStorage.setItem(TOKEN_KEY, newToken);
     localStorage.setItem(ROLE_KEY, newRole);
     localStorage.setItem(EMAIL_VERIFIED_KEY, String(verified));
+    // Use the single EMAIL_KEY constant for consistency
+    if (email) localStorage.setItem(EMAIL_KEY, email);
     setToken(newToken);
     setRole(newRole);
     setEmailVerifiedState(verified);
@@ -88,9 +91,7 @@ export const RoleProvider = ({ children }) => {
   };
 
   const fetchHospitalProfile = async () => {
-    if (!token || role !== "hospital" || !baseURL) {
-      return;
-    }
+    if (!token || role !== "hospital" || !baseURL) return;
 
     setIsLoading(true);
     try {
@@ -98,8 +99,9 @@ export const RoleProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const responseData = response?.data?.data || response?.data || response;
+      const responseData = response?.data?.data || response;
 
+      // Extract logo URL
       let logoUrl = null;
       if (Array.isArray(responseData)) {
         logoUrl = responseData[1] || null;
@@ -107,13 +109,18 @@ export const RoleProvider = ({ children }) => {
         logoUrl = responseData?.hospitalLogo || null;
       }
 
+      // FIX: Clear priority rule — profilePicture takes precedence over logo.
+      // Only fall back to logo if no dedicated profilePicture exists.
       if (logoUrl) {
         setHospitalLogo(logoUrl);
-        setProfilePicture(logoUrl);
       }
 
       if (responseData?.profilePicture) {
+        // Dedicated profile picture exists — use it
         setProfilePicture(responseData.profilePicture);
+      } else if (logoUrl) {
+        // No profile picture — fall back to hospital logo
+        setProfilePicture(logoUrl);
       }
     } catch (error) {
       console.error("Error fetching hospital profile:", error);
@@ -126,6 +133,7 @@ export const RoleProvider = ({ children }) => {
     if (role === "hospital" && token && emailVerified) {
       fetchHospitalProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [role, token, emailVerified]);
 
   const logout = () => {
@@ -138,6 +146,7 @@ export const RoleProvider = ({ children }) => {
     localStorage.removeItem(PROFILE_PICTURE_KEY);
     localStorage.removeItem(HOSPITAL_LOGO_KEY);
     localStorage.removeItem(EMAIL_VERIFIED_KEY);
+    localStorage.removeItem(EMAIL_KEY);
     setToken(null);
     setRole(DEFAULT_ROLE);
     setIsUpdatedState(false);

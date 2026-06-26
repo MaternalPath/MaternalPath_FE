@@ -9,7 +9,6 @@ import {
   MdShield,
 } from "react-icons/md";
 import { PiBaby } from "react-icons/pi";
-import { FcGoogle } from "react-icons/fc";
 import { GiHospital } from "react-icons/gi";
 import loginImg from "/src/assets/Login.png";
 import { CiHeart } from "react-icons/ci";
@@ -22,10 +21,13 @@ import AuthFooter from "../../Components/AuthHr&FrComponent/Fotter/AuthFooter";
 
 const baseURL = import.meta.env.VITE_BASE_URL?.trim();
 
+// Single constant for the email localStorage key — matches EMAIL_KEY in RoleContext
+const EMAIL_KEY = "email";
+
 const LoginPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { login, setIsUpdated, token } = useRole();
+  const { login, setIsUpdated } = useRole();
   const [userType, setUserType] = useState("mother");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,14 +36,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false,
   });
-
-  useEffect(() => {
-    if (token) {
-      nav("/dashboard", { replace: true });
-    }
-  }, [token, nav]);
 
   useEffect(() => {
     if (location.state?.justVerified) {
@@ -98,6 +93,17 @@ const LoginPage = () => {
     }
   };
 
+  // Redirects to the correct OTP page, saving email under the single EMAIL_KEY
+  const redirectToOtp = (email, role) => {
+    localStorage.setItem(EMAIL_KEY, email);
+    const otpRoute =
+      role === "hospital" ? "/otpVerificationHos" : "/otpVerification";
+    nav(otpRoute, {
+      state: { email, role },
+      replace: true,
+    });
+  };
+
   const loginApi = async () => {
     if (!baseURL) {
       toast.error("Login service is not configured");
@@ -108,24 +114,18 @@ const LoginPage = () => {
     try {
       const endpoint =
         userType === "mother" ? "mother/loginmother" : "hospital/login";
-      const url = `${baseURL}/${endpoint}`;
-      const response = await axios.post(url, {
+      const response = await axios.post(`${baseURL}/${endpoint}`, {
         emailOrPhoneNumber: formData.email,
         password: formData.password,
       });
 
       if (response?.status === 200) {
-        const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
-        toast.success(
-          response?.data?.message || `${userDisplayName} login successful!`,
-        );
         return response;
       }
     } catch (error) {
       const errorMessage = error?.response?.data?.message || "";
       const status = error?.response?.status;
 
-      // Catch your exact backend response: 400 + "Please verify your email before logging in"
       const isUnverifiedError =
         status === 400 &&
         errorMessage.toLowerCase().includes("verify your email");
@@ -152,42 +152,55 @@ const LoginPage = () => {
 
     const result = await loginApi();
 
-    // Auto route to OTP if backend says email not verified
+    // API flagged account as needing OTP verification
     if (result?.requiresOtp) {
       toast.info("Please verify your account to continue.");
-      const otpRoute =
-        userType === "mother" ? "/otpVerification" : "/otpVerificationHos";
-      nav(otpRoute, {
-        state: { email: formData.email, role: userType },
-        replace: true,
-      });
+      redirectToOtp(formData.email, userType);
       return;
     }
 
     if (result?.status === 200) {
-      const userId =
-        result?.data?.id ||
-        result?.data?.userId ||
-        result?.data?.data?.id ||
-        "";
+      const responseBody = result?.data || {};
+
+      // Different response shapes per role:
+      // Mother:   { token, id, name, isUpdated, ... }         ← token at top level
+      // Hospital: { token, message, data: { id, email, ... }} ← token at top level, details nested
+      const token = responseBody?.token;
+      const nestedData = responseBody?.data || {};
+
+      // The backend returns 200 + a token only for verified, active accounts.
+      // If somehow the token is missing on a 200, treat it as an error.
+      if (!token) {
+        toast.error("Login failed. Please try again.");
+        return;
+      }
+
+      // Merge top-level and nested fields so userId/name work for both roles
+      const userId = responseBody?.id || nestedData?.id || "";
       if (userId) {
         localStorage.setItem("userid", String(userId));
         localStorage.setItem("userId", String(userId));
       }
 
-      const name = result?.data?.name || result?.data?.data?.name || "";
+      const name =
+        responseBody?.name ||
+        nestedData?.hospitalName ||
+        nestedData?.name ||
+        "";
       if (name) localStorage.setItem("name", name);
 
-      // Backend should return isVerified: true now, but we double check
-      const isVerified =
-        result?.data?.isVerified ??
-        result?.data?.data?.isVerified ??
-        result?.data?.verified ??
-        result?.data?.data?.verified ??
-        true;
+      setIsUpdated(Boolean(responseBody?.isUpdated));
 
-      setIsUpdated(Boolean(result?.data?.isUpdated));
-      login(result?.data?.token, userType, isVerified);
+      // Mark as verified=true because a 200+token from the backend confirms it.
+      // Unverified users never reach here — the catch block handles them via requiresOtp.
+      login(token, userType, true, formData.email);
+
+      const userDisplayName = userType === "mother" ? "Mother" : "Hospital";
+      toast.success(
+        responseBody?.message || `${userDisplayName} login successful!`,
+      );
+
+      nav("/dashboard", { replace: true });
     }
   };
 
@@ -234,14 +247,14 @@ const LoginPage = () => {
 
             <form onSubmit={handleSubmit} className="mp-login-form" noValidate>
               <div className="mp-form-group">
-                <label>EMAIL ADDRESS </label>
+                <label>EMAIL ADDRESS</label>
                 <div
                   className={`mp-input-wrapper ${errors.email && touched.email ? "error" : ""}`}
                 >
                   <MdEmail />
                   <input
                     type="text"
-                    placeholder="Enter your email "
+                    placeholder="Enter your email"
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
                     onBlur={() => handleBlur("email")}
