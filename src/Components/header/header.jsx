@@ -3,12 +3,20 @@ import "./header.css";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useNavigate, NavLink } from "react-router-dom";
 import logo from "/src/assets/header.png";
+import { useRole } from "../../context/RoleContext";
 
 const Header = () => {
   const nav = useNavigate();
+  const { token, logout } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  const handleLogout = () => {
+    logout();
+    nav("/login");
+    closeMobileMenu();
+  };
 
   const navItems = [
     { path: "/", label: "Home" },
@@ -43,15 +51,34 @@ const Header = () => {
           </div>
 
           <div className="header-right">
-            <button className="header-right-1" onClick={() => nav("/login")}>
-              Log In
-            </button>
-            <button
-              className="header-right-2"
-              onClick={() => nav("/getStarted")}
-            >
-              Get Started
-            </button>
+            {token ? (
+              <>
+                <button className="header-right-1" onClick={handleLogout}>
+                  Log Out
+                </button>
+                <button
+                  className="header-right-2"
+                  onClick={() => nav("/dashboard")}
+                >
+                  Dashboard
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="header-right-1"
+                  onClick={() => nav("/login")}
+                >
+                  Log In
+                </button>
+                <button
+                  className="header-right-2"
+                  onClick={() => nav("/getStarted")}
+                >
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
 
           <button
@@ -89,24 +116,43 @@ const Header = () => {
           </nav>
 
           <div className="header-mobile-actions">
-            <button
-              className="header-right-1"
-              onClick={() => {
-                nav("/login");
-                closeMobileMenu();
-              }}
-            >
-              Log In
-            </button>
-            <button
-              className="header-right-2"
-              onClick={() => {
-                nav("/getStarted");
-                closeMobileMenu();
-              }}
-            >
-              Get Started
-            </button>
+            {token ? (
+              <>
+                <button className="header-right-1" onClick={handleLogout}>
+                  Log Out
+                </button>
+                <button
+                  className="header-right-2"
+                  onClick={() => {
+                    nav("/dashboard");
+                    closeMobileMenu();
+                  }}
+                >
+                  Dashboard
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="header-right-1"
+                  onClick={() => {
+                    nav("/login");
+                    closeMobileMenu();
+                  }}
+                >
+                  Log In
+                </button>
+                <button
+                  className="header-right-2"
+                  onClick={() => {
+                    nav("/getStarted");
+                    closeMobileMenu();
+                  }}
+                >
+                  Get Started
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
