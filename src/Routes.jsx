@@ -78,7 +78,7 @@ const AppRoutes = () => (
       <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
       <Route element={<PrivateRouting />}>
         <Route path="/fundsSuccess" element={<FundsSuccess />} />
-              <Route path="/fundsFailed" element={<FundsFailed />} />
+        <Route path="/fundsFailed" element={<FundsFailed />} />
 
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<DashboardIndex />} />
@@ -121,4 +121,3 @@ const AppRoutes = () => (
 );
 
 export default AppRoutes;
-

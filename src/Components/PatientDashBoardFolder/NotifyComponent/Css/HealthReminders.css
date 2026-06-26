@@ -26,7 +26,13 @@
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.health-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .health-card {
@@ -101,9 +107,51 @@
 }
 
 @media (max-width: 768px) {
-  .card { padding: 16px; background: transparent; border: none; }
-  .section-title { font-size: 18px; }
-  .health-card { padding: 16px; }
-  .health-card h4 { font-size: 14px; }
-  .health-card p { font-size: 12px; margin: 0; }
+  .card {
+    background: transparent;
+    border: none;
+    padding: 0 16px;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 14px 0;
+  }
+
+  .health-scroll {
+    gap: 10px;
+    padding-bottom: 6px;
+  }
+
+  .health-card {
+    min-width: 130px;
+    max-width: 150px;
+    padding: 16px 12px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .health-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+  }
+
+  .health-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+
+  .health-card p {
+    font-size: 11px;
+    color: #5a6f61;
+    margin: 0;
+    line-height: 1.4;
+  }
 }
