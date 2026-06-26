@@ -1,0 +1,68 @@
+.pwc-wrapper {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .pwc-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pwc-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pwc-label {
+    font-size: 13px;
+    color: #4a9d8f;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .pwc-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a2e2b;
+    margin: 0;
+  }
+
+  .pwc-progress-track {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .pwc-progress-fill {
+    height: 100%;
+    background: #2d6e63;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  .pwc-sub {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pwc-check-icon {
+    color: #4a9d8f;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+}
