@@ -1,4 +1,4 @@
-import "./PregnancyWalletCards.css";
+import "./Css/PregnancyWalletCards.css";
 import { BsCheckCircle } from "react-icons/bs";
 
 const PregnancyWalletCards = ({

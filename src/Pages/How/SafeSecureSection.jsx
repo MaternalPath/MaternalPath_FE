@@ -1,4 +1,4 @@
-import "./SafeSecureSection.css";
+import "./HowStyles/SafeSecureSection.css";
 import { MdOutlineShield } from "react-icons/md";
 import { LuBookOpen } from "react-icons/lu";
 import { BsLightningCharge } from "react-icons/bs";
