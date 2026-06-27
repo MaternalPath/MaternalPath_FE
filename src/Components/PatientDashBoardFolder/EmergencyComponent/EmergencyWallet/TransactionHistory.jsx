@@ -1,9 +1,66 @@
+
 import React from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import "./Css/TransactionHistory.css";
 
 const TransactionHistory = ({ transactions }) => {
   const formatCurrency = (num) => `₦${Number(num).toLocaleString()}`;
+
+
+  const getStatusStyle = (status) => {
+    const statusLower = status?.toLowerCase();
+    
+    if (statusLower === 'failed') {
+      return {
+        backgroundColor: '#fee2e2',
+        color: '#991b1b',
+        padding: '0.25rem 0.75rem',
+        borderRadius: '20px',
+        fontSize: '0.75rem',
+        fontWeight: '500',
+        display: 'inline-block',
+        textTransform: 'capitalize'
+      };
+    }
+    
+    if (statusLower === 'processing' || statusLower === 'pending') {
+      return {
+        backgroundColor: '#fef9c3',
+        color: '#854d0e',
+        padding: '0.25rem 0.75rem',
+        borderRadius: '20px',
+        fontSize: '0.75rem',
+        fontWeight: '500',
+        display: 'inline-block',
+        textTransform: 'capitalize'
+      };
+    }
+    
+    if (statusLower === 'successful' || statusLower === 'success' || statusLower === 'completed') {
+      return {
+        backgroundColor: '#dcfce7',
+        color: '#166534',
+        padding: '0.25rem 0.75rem',
+        borderRadius: '20px',
+        fontSize: '0.75rem',
+        fontWeight: '500',
+        display: 'inline-block',
+        textTransform: 'capitalize'
+      };
+    }
+    
+  
+    return {
+      backgroundColor: '#f3f4f6',
+      color: '#374151',
+      padding: '0.25rem 0.75rem',
+      borderRadius: '20px',
+      fontSize: '0.75rem',
+      fontWeight: '500',
+      display: 'inline-block',
+      textTransform: 'capitalize'
+    };
+  };
 
   return (
     <section className="transaction-history-card">
@@ -44,7 +101,9 @@ const TransactionHistory = ({ transactions }) => {
                     {formatCurrency(tx.amount)}
                   </td>
                   <td data-label="Status">
-                    <span className="status-badge">{tx.status}</span>
+                    <span style={getStatusStyle(tx.status)}>
+                      {tx.status}
+                    </span>
                   </td>
                 </tr>
               ))}
