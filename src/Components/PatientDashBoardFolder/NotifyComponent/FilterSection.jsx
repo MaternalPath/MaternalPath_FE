@@ -15,7 +15,7 @@ const FilterSection = ({ activeFilter, setActiveFilter, searchQuery, setSearchQu
   const filters = isMobile ? mobileFilters : desktopFilters;
 
   return (
-    <div className="card filter-card">
+    <div className="cardQuick filter-card">
       <div className="filters">
         {filters.map((filter, idx) => (
           <button 

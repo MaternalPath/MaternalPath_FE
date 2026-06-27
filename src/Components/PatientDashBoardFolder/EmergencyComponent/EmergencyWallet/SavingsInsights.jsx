@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { FiCheck, FiTrendingUp, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiCheck,
+  FiTrendingUp,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import "./Css/SavingsInsights.css";
 
 const SavingsInsights = ({ monthlyData, data }) => {
@@ -59,20 +64,36 @@ const SavingsInsights = ({ monthlyData, data }) => {
     <div className="savings-insights-wrapper">
       <div className="desktop-view">
         <section className="savings-progress-card">
-          <h3><span className="icon">📊</span> Savings Progress</h3>
+          <h3>
+            <span className="icon">📊</span> Savings Progress
+          </h3>
           <div className="months-list">
             {monthlyData.map((item) => (
               <div key={item.month} className={`month-item ${item.status}`}>
                 <div className="month-left">
-                  <div className={`month-icon ${item.status === 'active' ? 'active' : ''}`}>
-                    {item.status === 'done' ? <FiCheck /> : item.status === 'active' ? <div className="dot" /> : null}
+                  <div
+                    className={`month-icon ${item.status === "active" ? "active" : ""}`}
+                  >
+                    {item.status === "done" ? (
+                      <FiCheck />
+                    ) : item.status === "active" ? (
+                      <div className="dot" />
+                    ) : null}
                   </div>
                   <div>
                     <span className="month-name">{item.month}</span>
-                    {item.isTarget && <span className="target-label">Target: {formatCurrency(item.amount)}</span>}
+                    {item.isTarget && (
+                      <span className="target-label">
+                        Target: {formatCurrency(item.amount)}
+                      </span>
+                    )}
                   </div>
                 </div>
-                {!item.isTarget && <span className="month-amount">{formatCurrency(item.amount)}</span>}
+                {!item.isTarget && (
+                  <span className="month-amount">
+                    {formatCurrency(item.amount)}
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -98,8 +119,12 @@ const SavingsInsights = ({ monthlyData, data }) => {
               ) : (
                 <>
                   <p className="insight-label">{insight.label}</p>
-                  {insight.value && <p className="insight-value">{insight.value}</p>}
-                  {insight.text && <p className="insight-text">{insight.text}</p>}
+                  {insight.value && (
+                    <p className="insight-value">{insight.value}</p>
+                  )}
+                  {insight.text && (
+                    <p className="insight-text">{insight.text}</p>
+                  )}
                 </>
               )}
             </div>
@@ -109,15 +134,21 @@ const SavingsInsights = ({ monthlyData, data }) => {
 
       <div className="mobile-view">
         <section className="savings-progress-card">
-          <h3><span className="icon">📊</span> Savings Progress</h3>
+          <h3>
+            <span className="icon">📊</span> Savings Progress
+          </h3>
           <div className="months-grid-mobile">
             {monthlyData.slice(0, 3).map((item) => (
               <div key={item.month} className={`month-card ${item.status}`}>
-                <div className={`month-icon ${item.status === 'done' ? 'done' : ''}`}>
-                  {item.status === 'done' && <FiCheck />}
+                <div
+                  className={`month-icon ${item.status === "done" ? "done" : ""}`}
+                >
+                  {item.status === "done" && <FiCheck />}
                 </div>
                 <span className="month-name">{item.month}</span>
-                <span className="month-amount">{formatCurrency(item.amount)}</span>
+                <span className="month-amount">
+                  {formatCurrency(item.amount)}
+                </span>
               </div>
             ))}
           </div>
@@ -126,7 +157,13 @@ const SavingsInsights = ({ monthlyData, data }) => {
         <section className="savings-insights-card mobile-carousel">
           <h3>Savings Insights</h3>
           <div className="carousel-container">
-            <div className="carousel-track" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            <div
+              className="carousel-track"
+              style={{
+                transform: `translateX(-${currentSlide * 100}%)`,
+                touchAction: "pan-y",
+              }}
+            >
               {insights.map((insight, idx) => (
                 <div
                   key={idx}
@@ -145,8 +182,12 @@ const SavingsInsights = ({ monthlyData, data }) => {
                   ) : (
                     <div className="insight-content-full">
                       <p className="insight-label">{insight.label}</p>
-                      {insight.value && <p className="insight-value">{insight.value}</p>}
-                      {insight.text && <p className="insight-text">{insight.text}</p>}
+                      {insight.value && (
+                        <p className="insight-value">{insight.value}</p>
+                      )}
+                      {insight.text && (
+                        <p className="insight-text">{insight.text}</p>
+                      )}
                     </div>
                   )}
                 </div>
@@ -167,7 +208,7 @@ const SavingsInsights = ({ monthlyData, data }) => {
             {insights.map((_, idx) => (
               <button
                 key={idx}
-                className={`dot ${currentSlide === idx ? 'active' : ''}`}
+                className={`dot ${currentSlide === idx ? "active" : ""}`}
                 onClick={() => setCurrentSlide(idx)}
               />
             ))}

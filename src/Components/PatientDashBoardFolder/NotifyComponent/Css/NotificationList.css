@@ -37,39 +37,6 @@
 }
 
 @media (max-width: 768px) {
-  .card {
-    background: #ffffff;
-    border: none;
-    border-radius: 0;
-    padding: 0 16px;
-    margin-bottom: 8px;
-  }
-
-  .section-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a2e1f;
-    margin: 0 0 12px 0;
-  }
-
-  .notif-list {
-    gap: 10px;
-  }
-
-  .load-more {
-    background: none;
-    border: none;
-    color: #0F766E;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    padding: 12px 0;
-    margin-top: 8px;
-    width: 100%;
-  }
-
-  .load-more:hover {
-    background: none;
-    text-decoration: underline;
-  }
+  .card { padding: 16px; }
+  .load-more { background: none; border: none; color: #0d5c3e; }
 }

@@ -58,3 +58,31 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .quick-actions-card {
+    padding: 16px;
+  }
+
+  .quick-actions-card .actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .quick-actions-card .action-btn {
+    padding: 16px 8px;
+    border-radius: 12px;
+    min-height: 88px; /* ensures 44px+ touch target */
+  }
+
+  .quick-actions-card .action-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .quick-actions-card .action-label {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+}

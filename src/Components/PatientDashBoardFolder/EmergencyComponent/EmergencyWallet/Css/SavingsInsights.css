@@ -384,3 +384,57 @@
   width: 24px;
   border-radius: 4px;
 }
+
+
+@media (max-width: 768px) {
+  .savings-progress-card,
+  .savings-insights-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .savings-progress-card .months-grid-mobile {
+    gap: 8px; /* was 12px */
+  }
+
+  .savings-progress-card .month-card {
+    padding: 12px 8px; /* tighter */
+    border-radius: 12px;
+  }
+
+  .savings-progress-card .month-card .month-name {
+    font-size: 12px;
+  }
+
+  .savings-progress-card .month-card .month-amount {
+    font-size: 11px;
+  }
+
+  /* Carousel fixes */
+  .savings-insights-card.mobile-carousel .carousel-container {
+    margin: 0 -8px; /* extend to edges for swipe area */
+    padding: 0 8px;
+  }
+
+  .savings-insights-card.mobile-carousel .carousel-btn {
+    display: none; /* hide arrows on mobile, use swipe only */
+  }
+
+  .savings-insights-card.mobile-carousel .insight-slide {
+    padding: 16px;
+    min-height: 140px; /* consistent height, no layout shift */
+  }
+
+  .savings-insights-card.mobile-carousel .carousel-dots {
+    margin-top: 12px;
+  }
+
+  .savings-insights-card.mobile-carousel .carousel-dots .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .savings-insights-card.mobile-carousel .carousel-dots .dot.active {
+    width: 20px;
+  }
+}

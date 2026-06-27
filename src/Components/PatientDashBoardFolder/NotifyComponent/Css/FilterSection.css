@@ -2,7 +2,7 @@
   background: #F0FDF4;
   border: 1px solid #d4e3d9;
   border-radius: 16px;
-  padding: 24px;
+  padding: 15px;
   margin-bottom: 20px;
 }
 
@@ -95,10 +95,10 @@
 
 @media (max-width: 768px) {
   .cardQuick {
-    background: #ffffff;
+    background: none;
     border: none;
     border-radius: 0;
-    padding: 0 16px;
+    padding: 0;
     margin-bottom: 8px;
   }
 

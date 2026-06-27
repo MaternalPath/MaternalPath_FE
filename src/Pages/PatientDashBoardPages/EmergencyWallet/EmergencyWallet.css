@@ -1,14 +1,8 @@
 .emergency-wallet-page {
   min-height: 100vh;
-  /* background: var(--bg-shade); */
-  /* background-color: #f7f5f2; */
   padding: 15px;
   font-family: var(--font-family);
   margin: 0 auto;
-
-  @media (max-width: 768px) {
-    padding: 0;
-  }
 }
 
 .wallet-content {
@@ -23,8 +17,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
 
-  @media (max-width: 968px) {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .emergency-wallet-page {
+    padding: 0px;
+  }
+  .wallet-content {
+    gap: 16px; 
   }
 }

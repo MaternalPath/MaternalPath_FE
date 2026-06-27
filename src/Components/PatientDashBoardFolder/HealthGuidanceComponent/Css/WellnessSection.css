@@ -238,3 +238,154 @@
   line-height: 1.4;
   margin-top: 12px;
 }
+
+@media (max-width: 768px) {
+  .card-section {
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    margin-bottom: 14px;
+  }
+
+  .section-title h3 {
+    font-size: 14px;
+  }
+
+  .apple {
+    font-size: 15px;
+  }
+
+  /* Nutrition Guidance */
+  .nutrition-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .white-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .white-card h4 {
+    font-size: 12px;
+  }
+
+  .white-card p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .hydration-banner {
+    padding: 12px;
+    gap: 10px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+  }
+
+  .hydration-icon {
+    font-size: 16px;
+  }
+
+  .hydration-banner h4 {
+    font-size: 12px;
+  }
+
+  .hydration-banner p {
+    font-size: 11px;
+  }
+
+  .avoid-heading {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .avoid-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .avoid-card {
+    padding: 10px;
+    font-size: 11px;
+    border-radius: 12px;
+  }
+
+  .avoid-card svg {
+    font-size: 13px;
+  }
+
+  /* Wellness & Self-Care */
+  .wellness-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .white-card.wellness {
+    padding: 12px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .icon-box {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  /* Symptoms Row */
+  .symptoms-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .symptom-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .symptom-header h3 {
+    font-size: 13px;
+  }
+
+  .symptom-header svg {
+    font-size: 15px;
+  }
+
+  .symptom-sub {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+
+  .symptom-list {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .symptom-item {
+    padding: 9px 10px;
+    font-size: 11px;
+    border-radius: 10px;
+  }
+
+  .symptom-list.red svg {
+    font-size: 13px;
+  }
+
+  .symptom-note {
+    font-size: 10px;
+  }
+
+  .emergency-box {
+    padding: 10px 12px;
+    font-size: 10px;
+    line-height: 1.4;
+    border-radius: 12px;
+    margin-top: 10px;
+  }
+}
