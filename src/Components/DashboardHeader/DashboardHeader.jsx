@@ -7,9 +7,13 @@ import logo from "/src/assets/header.png";
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../context/RoleContext";
 
-const DashboardHeader = ({ onMenuClick, onLogoutClick }) => {
+const DashboardHeader = ({ onMenuClick }) => {
   const navigate = useNavigate();
   const { role, profilePicture, hospitalLogo } = useRole();
+
+  const handleLogoClick = () => {
+    navigate("/");
+  };
 
   const handleNotificationsClick = () => {
     const targetRoute =
@@ -32,11 +36,11 @@ const DashboardHeader = ({ onMenuClick, onLogoutClick }) => {
       <div className="sidebar-logo">
         <img
           src={logo}
-          onClick={onLogoutClick}
+          onClick={handleLogoClick} // <-- changed from onLogoutClick
           alt="MaternalPath"
           className="sidebar-logo-image"
           style={{ cursor: "pointer" }}
-          title="Exit to homepage"
+          title="Go to Dashboard Home" // <-- changed tooltip
         />
       </div>
 
