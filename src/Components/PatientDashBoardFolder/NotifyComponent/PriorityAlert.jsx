@@ -27,7 +27,7 @@ const PriorityAlert = ({ isMobile, data = [] }) => {
     }) || items[0];
 
   return (
-    <div className="card">
+    <div className="card-priority">
       {!isMobile && <h3 className="section-title">Priority Alerts</h3>}
       <div className="priority-alert">
         <div className="alert-icon">

@@ -96,3 +96,28 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .reminder-cards-grid {
+    gap: 12px;
+  }
+
+  .reminder-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .reminder-card .card-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .reminder-card .card-content h4 {
+    font-size: 13px;
+  }
+
+  .reminder-card .card-content p {
+    font-size: 11px;
+  }
+}

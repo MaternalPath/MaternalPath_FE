@@ -26,13 +26,7 @@
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  padding-bottom: 8px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.savings-scroll::-webkit-scrollbar {
-  display: none;
+  padding-bottom: 4px;
 }
 
 .mini-card {
@@ -79,52 +73,6 @@
 }
 
 @media (max-width: 768px) {
-  .card {
-    background: transparent;
-    border: none;
-    padding: 0 16px;
-    margin-bottom: 8px;
-  }
-
-  .section-title {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0 0 14px 0;
-  }
-
-  .savings-scroll {
-    gap: 10px;
-    padding-bottom: 6px;
-  }
-
-  .mini-card {
-    min-width: 230px;
-    max-width: 260px;
-    border-radius: 14px;
-    padding: 14px;
-    gap: 12px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .mini-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-  }
-
-  .mini-card h4 {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .mini-card p {
-    font-size: 12px;
-    margin: 0 0 6px 0;
-  }
-
-  .notif-meta {
-    font-size: 11px;
-  }
+  .card { padding: 16px; background: transparent; border: none; }
+  .section-title { font-size: 18px; }
 }

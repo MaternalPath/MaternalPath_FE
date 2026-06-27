@@ -14,7 +14,9 @@ const TransactionHistory = ({ transactions }) => {
 
       <div className="table-wrapper">
         {transactions.length === 0 ? (
-          <p style={{ padding: "1.5rem", textAlign: "center", color: "#6b7280" }}>
+          <p
+            style={{ padding: "1.5rem", textAlign: "center", color: "#6b7280" }}
+          >
             No transactions yet.
           </p>
         ) : (
@@ -31,15 +33,17 @@ const TransactionHistory = ({ transactions }) => {
             <tbody>
               {transactions.map((tx, idx) => (
                 <tr key={idx}>
-                  <td>{tx.date}</td>
-                  <td>
+                  <td data-label="Date">{tx.date}</td>
+                  <td data-label="Type">
                     <span className="tx-type">
                       <FiArrowUpRight /> {tx.type}
                     </span>
                   </td>
-                  <td>{tx.desc}</td>
-                  <td className="amount">{formatCurrency(tx.amount)}</td>
-                  <td>
+                  <td data-label="Description">{tx.desc}</td>
+                  <td data-label="Amount" className="amount">
+                    {formatCurrency(tx.amount)}
+                  </td>
+                  <td data-label="Status">
                     <span className="status-badge">{tx.status}</span>
                   </td>
                 </tr>

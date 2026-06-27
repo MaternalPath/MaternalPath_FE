@@ -100,9 +100,59 @@
     .transaction-table {
       font-size: 12px;
 
-      th, td {
+      th,
+      td {
         padding: 10px 8px;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .transaction-history-card {
+    padding: 16px;
+  }
+
+  .transaction-history-card .table-wrapper {
+    overflow-x: visible; /* no horizontal scroll */
+  }
+
+  .transaction-table thead {
+    display: none; /* hide headers */
+  }
+
+  .transaction-table,
+  .transaction-table tbody,
+  .transaction-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .transaction-table tr {
+    background: var(--bg-shade);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--grey-outline);
+  }
+
+  .transaction-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border: none;
+    font-size: 13px;
+  }
+
+  .transaction-table td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: var(--text-tint);
+    font-size: 12px;
+  }
+
+  .transaction-table td.amount {
+    font-size: 15px;
   }
 }

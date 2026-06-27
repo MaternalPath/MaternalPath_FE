@@ -160,3 +160,232 @@
   margin-left: auto;
   color: #9ca3af;
 }
+
+@media (max-width: 768px) {
+  /* === Educational Resources Header === */
+  .resources-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 16px;
+    padding: 0 2px;
+  }
+
+  .resources-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+  }
+
+  .view-all {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-deep-teal);
+    background: #f0f7f2;
+    border: 1px solid #d7e0d7;
+    border-radius: 999px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+  }
+
+  .view-all:active {
+    transform: scale(0.96);
+    background: #e6f4ea;
+  }
+
+  /* === Resources: Horizontal Carousel on Mobile === */
+  .resources-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px 2px;
+    margin: 0 -2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .resources-grid::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .resource-card {
+    min-width: 260px; /* fixed width for swipe */
+    max-width: 260px;
+    scroll-snap-align: start;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .resource-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .tag {
+    align-self: flex-start;
+    background: #f0f7f2;
+    border: 1px solid #d7e0d7;
+    color: var(--primary-deep-teal);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    letter-spacing: 0.2px;
+  }
+
+  .resource-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 6px 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2; */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resource-card p {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+    flex-grow: 1;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 3; */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resource-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+    margin-top: auto;
+  }
+
+  .resource-footer span {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+
+  .resource-footer button {
+    background: var(--primary-deep-teal);
+    border: none;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+  }
+
+  .resource-footer button:active {
+    opacity: 0.8;
+  }
+
+  .resource-footer button svg {
+    font-size: 12px;
+  }
+
+  /* Dots indicator below carousel */
+  .resources-grid-wrapper {
+    position: relative;
+  }
+
+  .resources-grid-wrapper::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+    border-radius: 2px;
+  }
+
+  /* Health Reminders */
+  .section-title.plain h3 {
+    font-size: 14px;
+  }
+
+  .reminders-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .reminder-card {
+    padding: 12px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .reminder-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .reminder-card h4 {
+    font-size: 12px;
+  }
+
+  .reminder-card p {
+    font-size: 11px;
+  }
+
+  .reminder-card .time {
+    font-size: 10px;
+  }
+
+  /* Quick Actions */
+  .quick-title {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .action-btn {
+    padding: 14px 12px;
+    font-size: 12px;
+    min-height: 48px;
+    border-radius: 14px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .action-btn:active {
+    transform: scale(0.98);
+  }
+
+  .action-btn svg:first-child {
+    font-size: 15px;
+  }
+
+  .action-btn .chev {
+    font-size: 14px;
+  }
+}
