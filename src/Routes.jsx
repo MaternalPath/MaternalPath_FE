@@ -48,6 +48,7 @@ import PublicRoute from "./Lib/PublicRoute";
 import ScrollToTop from "./Components/StopScroll/ScrollToTop";
 import PatientDetails from "./Pages/HospitalDashBoardPages/VerifyPatient/PatientDetails";
 import ViewAllPatient from "./Pages/HospitalDashBoardPages/ViewAllPatient/ViewAllPatient";
+import WalletModal from './Components/ModalCard/WalletModal'
 
 const AppRoutes = () => (
   <Router>
@@ -99,9 +100,10 @@ const AppRoutes = () => (
             />
             <Route path="viewAllPatient" element={<ViewAllPatient />} />
             <Route
-              path="notificationsHospital"
-              element={<NotificationsHospital />}
+              path="walletModal"
+              element={<WalletModal />}
             />
+
             <Route path="settingsHospital" element={<SettingsHospital />} />
           </Route>
           <Route element={<RoleRoute allowedRole="mother" />}>

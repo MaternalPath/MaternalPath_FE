@@ -50,8 +50,8 @@ const WellnessSection = ({ data }) => {
           <div>
             <h4>Hydration Reminder</h4>
             <p>
-              {nutrition.hydrationReminder ||
-                "Drink 8-10 glasses of water daily to stay hydrated"}
+              {nutrition.hydrationReminder }
+                {/* "Drink 8-10 glasses of water daily to stay hydrated" */}
             </p>
           </div>
         </div>
