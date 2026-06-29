@@ -1,4 +1,3 @@
-/* ===== DESKTOP STYLES ===== */
 .reminders-card {
   background: #e6f5f1;
   border-radius: 20px;
@@ -38,7 +37,6 @@
   justify-content: center;
   color: var(--primary-deep-teal);
   flex-shrink: 0;
-  font-size: 18px;
 }
 
 .reminder-content h4 {
@@ -137,10 +135,9 @@
   display: none;
 }
 
-/* ===== MOBILE STYLES ===== */
 @media (max-width: 768px) {
   .desktop-only {
-    display: none !important;
+    display: none;
   }
 
   .mobile-only {
@@ -148,139 +145,95 @@
   }
 
   .mobile-section {
-    margin: 0 16px 20px 16px;
+    margin-bottom: 24px;
   }
 
-  .mobile-section-title {
-    color: var(--text-hue);
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 12px 0;
-  }
-
-  /* Weekly Care Reminders */
-  .care-reminders-list {
+  .reminders-carousel {
     display: flex;
-    flex-direction: column;
     gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
   }
 
-  .care-reminder-card {
+  .reminder-card {
     background: var(--bg-cards);
     border-radius: 16px;
     padding: 16px;
-    border: 1px solid var(--grey-tint);
+    min-width: 280px;
+    flex-shrink: 0;
   }
 
-  .reminder-card-header {
+  .reminder-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
-  .reminder-card-header h4 {
+  .reminder-header h4 {
     color: var(--text-hue);
     font-size: 14px;
     font-weight: 600;
     margin: 0;
   }
 
-  .check-box {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--grey-hue);
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grey-hue);
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: transparent;
-    flex-shrink: 0;
   }
 
-  .check-box.checked {
-    background: var(--primary-deep-teal);
-    border-color: var(--primary-deep-teal);
-    color: white;
-  }
-
-  .reminder-card-desc {
+  .reminder-desc {
     color: var(--text-tint);
     font-size: 12px;
-    margin: 0 0 10px 0;
-    line-height: 1.4;
+    margin: 0 0 12px 0;
   }
 
-  .reminder-progress-line {
+  .reminder-progress {
     height: 3px;
     background: var(--grey-tint);
     border-radius: 2px;
     margin-bottom: 6px;
-    overflow: hidden;
   }
 
-  .progress-line-fill {
-    height: 100%;
-    background: var(--primary-deep-teal);
-    transition: width 0.3s ease;
-  }
-
-  .reminder-status-text {
+  .reminder-status {
     color: var(--text-tint);
     font-size: 11px;
   }
 
-  /* Timeline Mobile Carousel */
-  .mobile-carousel-wrapper {
+  .carousel-container {
     position: relative;
-    overflow: hidden;
-    border-radius: 16px;
   }
 
-  .mobile-carousel-track {
-    display: flex;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .mobile-carousel-card {
-    min-width: 100%;
+  .timeline-card-mobile {
     background: var(--bg-cards);
     border-radius: 16px;
     padding: 20px;
-    box-sizing: border-box;
-    border: 1px solid var(--grey-tint);
   }
 
-  .timeline-card h4 {
+  .timeline-card-mobile h4 {
     color: var(--text-hue);
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 4px 0;
   }
 
-  .timeline-weeks-text {
-    color: var(--text-tint);
-    font-size: 12px;
-    margin: 0 0 12px 0;
-  }
-
-  .timeline-tags-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .timeline-tag-pill {
+  .timeline-tag {
     background: var(--bg-shade);
     color: var(--text-tones);
-    padding: 6px 12px;
-    border-radius: 14px;
+    padding: 8px 14px;
+    border-radius: 16px;
     font-size: 12px;
   }
 
-  .carousel-nav-btn {
+  .carousel-arrow {
     position: absolute;
-    right: 12px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
     width: 32px;
@@ -292,42 +245,26 @@
     align-items: center;
     justify-content: center;
     color: var(--text-tones);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
-  .carousel-indicators {
+  .carousel-dots {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     margin-top: 12px;
   }
 
-  .indicator-dot {
+  .carousel-dots .dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: var(--grey-hue);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.2s;
   }
 
-  .indicator-dot.active {
+  .carousel-dots .dot.active {
     background: var(--primary-deep-teal);
     width: 20px;
     border-radius: 3px;
-  }
-
-  .empty-state {
-    background: var(--bg-cards);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    color: var(--text-tint);
-    font-size: 13px;
-    border: 1px solid var(--grey-tint);
   }
 }
