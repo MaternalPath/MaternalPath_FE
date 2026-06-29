@@ -89,19 +89,56 @@
 }
 
 @media (max-width: 768px) {
-  .actions-row {
-    grid-template-columns: 1fr;
+  .quick-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  .quick-actions-card {
+  .quick-action-btn {
     background: var(--bg-cards);
+    border: 1px solid var(--grey-tint);
+    border-radius: 16px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: center;
   }
 
-  .wellness-card {
+  .action-icon-circle {
+    width: 44px;
+    height: 44px;
+    background: #e8f5f1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-deep-teal);
+    font-size: 20px;
+  }
+
+  .action-label {
+    color: var(--text-hue);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .wellness-card.mobile-only {
     background: #fef7f7;
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    margin: 0 16px 16px 16px;
   }
 
-  .wellness-card .wellness-icon {
+  .wellness-card.wellness-icon {
     color: #ec4899;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 16px;
   }
 }
