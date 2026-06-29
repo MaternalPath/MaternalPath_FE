@@ -134,6 +134,7 @@ const parseTrimesterEntry = (entry) => {
 
 const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
   const [activeMobileIdx, setActiveMobileIdx] = useState(0);
+  const [timelineSlide, setTimelineSlide] = useState(0);
 
   const timeline = useMemo(() => {
     const source =
@@ -185,24 +186,26 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
       </section>
 
       <section className="mobile-section mobile-only">
-        <h3 className="section-title">Weekly Care Reminders</h3>
-        <div className="reminders-carousel">
-          {mobileReminders.length === 0 && <p>No reminders from backend.</p>}
+        <h3 className="mobile-section-title">Weekly Care Reminders</h3>
+        <div className="care-reminders-list">
+          {mobileReminders.length === 0 && (
+            <div className="empty-state">No reminders from backend.</div>
+          )}
           {mobileReminders.map((item, i) => (
-            <div key={i} className="reminder-card">
-              <div className="reminder-header">
+            <div key={i} className="care-reminder-card">
+              <div className="reminder-card-header">
                 <h4>{item.title}</h4>
-                <div className="check-icon">
+                <div className="check-box">
                   <FiCheck />
                 </div>
               </div>
-              <p className="reminder-desc">{item.desc}</p>
-              <div className="reminder-progress">
-                <div className="progress-line"></div>
+              <p className="reminder-card-desc">
+                {item.desc || "Daily • Morning"}
+              </p>
+              <div className="reminder-progress-line">
+                <div className="progress-line-fill" style={{ width: "0%" }} />
               </div>
-              {item.status && (
-                <span className="reminder-status">{item.status}</span>
-              )}
+              <span className="reminder-status-text">Not Started</span>
             </div>
           ))}
         </div>
@@ -239,41 +242,52 @@ const CareSection = ({ timeline: timelineProp, weeklyCare }) => {
       </section>
 
       <section className="mobile-section mobile-only">
-        <h3 className="section-title">Pregnancy Timeline</h3>
+        <h3 className="mobile-section-title">Pregnancy Timeline</h3>
         {timeline.length === 0 ? (
-          <p>No timeline from backend.</p>
+          <div className="empty-state">No timeline from backend.</div>
         ) : (
           <>
-            <div className="carousel-container">
-              <div className="timeline-card-mobile">
-                <h4>{activeMobile?.name}</h4>
-                <p className="timeline-weeks">{activeMobile?.weeks}</p>
-                <div className="timeline-tags">
-                  {activeMobile?.tags.map((tag, i) => (
-                    <span key={i} className="timeline-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <button
-                className="carousel-arrow"
-                onClick={() =>
-                  setActiveMobileIdx((idx) => (idx + 1) % timeline.length)
-                }
+            <div className="mobile-carousel-wrapper">
+              <div
+                className="mobile-carousel-track"
+                style={{ transform: `translateX(-${timelineSlide * 100}%)` }}
               >
-                <FiChevronRight />
-              </button>
+                {timeline.map((item, idx) => (
+                  <div key={idx} className="mobile-carousel-card timeline-card">
+                    <h4>{item.name}</h4>
+                    <p className="timeline-weeks-text">{item.weeks}</p>
+                    <div className="timeline-tags-wrap">
+                      {item.tags.map((tag, i) => (
+                        <span key={i} className="timeline-tag-pill">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {timeline.length > 1 && (
+                <button
+                  className="carousel-nav-btn"
+                  onClick={() =>
+                    setTimelineSlide((prev) => (prev + 1) % timeline.length)
+                  }
+                >
+                  <FiChevronRight />
+                </button>
+              )}
             </div>
-            <div className="carousel-dots">
-              {timeline.map((_, i) => (
-                <span
-                  key={i}
-                  className={`dot ${i === activeMobileIdx ? "active" : ""}`}
-                  onClick={() => setActiveMobileIdx(i)}
-                ></span>
-              ))}
-            </div>
+            {timeline.length > 1 && (
+              <div className="carousel-indicators">
+                {timeline.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`indicator-dot ${i === timelineSlide ? "active" : ""}`}
+                    onClick={() => setTimelineSlide(i)}
+                  />
+                ))}
+              </div>
+            )}
           </>
         )}
       </section>
