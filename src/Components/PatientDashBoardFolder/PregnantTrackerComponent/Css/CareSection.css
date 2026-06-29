@@ -1,3 +1,4 @@
+/* ===== DESKTOP STYLES ===== */
 .reminders-card {
   background: #e6f5f1;
   border-radius: 20px;
@@ -37,6 +38,7 @@
   justify-content: center;
   color: var(--primary-deep-teal);
   flex-shrink: 0;
+  font-size: 18px;
 }
 
 .reminder-content h4 {
@@ -135,7 +137,27 @@
   display: none;
 }
 
+/* ===== MOBILE STYLES ===== */
 @media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .mobile-section {
+    margin: 0 16px 20px 16px;
+  }
+
+  .mobile-section-title {
+    color: var(--text-hue);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+  }
+
   /* Weekly Care Reminders */
   .care-reminders-list {
     display: flex;
@@ -176,10 +198,17 @@
     flex-shrink: 0;
   }
 
+  .check-box.checked {
+    background: var(--primary-deep-teal);
+    border-color: var(--primary-deep-teal);
+    color: white;
+  }
+
   .reminder-card-desc {
     color: var(--text-tint);
     font-size: 12px;
     margin: 0 0 10px 0;
+    line-height: 1.4;
   }
 
   .reminder-progress-line {
@@ -193,6 +222,7 @@
   .progress-line-fill {
     height: 100%;
     background: var(--primary-deep-teal);
+    transition: width 0.3s ease;
   }
 
   .reminder-status-text {
@@ -200,7 +230,27 @@
     font-size: 11px;
   }
 
-  /* Timeline Mobile */
+  /* Timeline Mobile Carousel */
+  .mobile-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .mobile-carousel-track {
+    display: flex;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-carousel-card {
+    min-width: 100%;
+    background: var(--bg-cards);
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--grey-tint);
+  }
+
   .timeline-card h4 {
     color: var(--text-hue);
     font-size: 16px;
@@ -228,6 +278,49 @@
     font-size: 12px;
   }
 
+  .carousel-nav-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--bg-cards);
+    border: 1px solid var(--grey-hue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tones);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--grey-hue);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .indicator-dot.active {
+    background: var(--primary-deep-teal);
+    width: 20px;
+    border-radius: 3px;
+  }
+
   .empty-state {
     background: var(--bg-cards);
     border-radius: 16px;
@@ -235,5 +328,6 @@
     text-align: center;
     color: var(--text-tint);
     font-size: 13px;
+    border: 1px solid var(--grey-tint);
   }
 }
