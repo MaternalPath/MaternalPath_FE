@@ -65,7 +65,7 @@ const buildTransactions = (history) => {
 
 const EmergencyWallet = () => {
   const navigate = useNavigate();
-  const [walletResp, setWalletResp] = useState(null);
+  const [walletResp, setWalletResp] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

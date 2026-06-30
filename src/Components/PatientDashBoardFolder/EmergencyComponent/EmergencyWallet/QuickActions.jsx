@@ -1,5 +1,6 @@
 import React from "react";
 import { FiPlus, FiTarget, FiDownload, FiHome } from "react-icons/fi";
+import { GiHospital } from "react-icons/gi";
 import "./Css/QuickActions.css";
 
 const QuickActions = ({ onAddFunds }) => {
