@@ -16,8 +16,8 @@ const Dashboard = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [logoutMode, setLogoutMode] = useState("login");
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   const { role, logout, isUpdated } = useRole();
   const navItems = getNavItems(role);

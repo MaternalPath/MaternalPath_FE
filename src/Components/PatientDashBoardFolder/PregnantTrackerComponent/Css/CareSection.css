@@ -136,104 +136,135 @@
 }
 
 @media (max-width: 768px) {
-  /* Weekly Care Reminders */
-  .care-reminders-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  .desktop-only {
+    display: none;
   }
 
-  .care-reminder-card {
+  .mobile-only {
+    display: block;
+  }
+
+  .mobile-section {
+    margin-bottom: 24px;
+  }
+
+  .reminders-carousel {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .reminder-card {
     background: var(--bg-cards);
     border-radius: 16px;
     padding: 16px;
-    border: 1px solid var(--grey-tint);
+    min-width: 280px;
+    flex-shrink: 0;
   }
 
-  .reminder-card-header {
+  .reminder-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
-  .reminder-card-header h4 {
+  .reminder-header h4 {
     color: var(--text-hue);
     font-size: 14px;
     font-weight: 600;
     margin: 0;
   }
 
-  .check-box {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--grey-hue);
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grey-hue);
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: transparent;
-    flex-shrink: 0;
   }
 
-  .reminder-card-desc {
+  .reminder-desc {
     color: var(--text-tint);
     font-size: 12px;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
   }
 
-  .reminder-progress-line {
+  .reminder-progress {
     height: 3px;
     background: var(--grey-tint);
     border-radius: 2px;
     margin-bottom: 6px;
-    overflow: hidden;
   }
 
-  .progress-line-fill {
-    height: 100%;
-    background: var(--primary-deep-teal);
-  }
-
-  .reminder-status-text {
+  .reminder-status {
     color: var(--text-tint);
     font-size: 11px;
   }
 
-  /* Timeline Mobile */
-  .timeline-card h4 {
+  .carousel-container {
+    position: relative;
+  }
+
+  .timeline-card-mobile {
+    background: var(--bg-cards);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .timeline-card-mobile h4 {
     color: var(--text-hue);
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 4px 0;
   }
 
-  .timeline-weeks-text {
-    color: var(--text-tint);
-    font-size: 12px;
-    margin: 0 0 12px 0;
-  }
-
-  .timeline-tags-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .timeline-tag-pill {
+  .timeline-tag {
     background: var(--bg-shade);
     color: var(--text-tones);
-    padding: 6px 12px;
-    border-radius: 14px;
+    padding: 8px 14px;
+    border-radius: 16px;
     font-size: 12px;
   }
 
-  .empty-state {
+  .carousel-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
     background: var(--bg-cards);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    color: var(--text-tint);
-    font-size: 13px;
+    border: 1px solid var(--grey-hue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tones);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .carousel-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--grey-hue);
+  }
+
+  .carousel-dots .dot.active {
+    background: var(--primary-deep-teal);
+    width: 20px;
+    border-radius: 3px;
   }
 }

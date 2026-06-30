@@ -56,7 +56,7 @@ const WalletSummaryCard = ({ data, onAddFunds }) => {
               <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
             </div>
             <div className="progress-markers">
-              <span>₦0</span>
+              <span>{data.currentBalance}</span>
               <span>{formatCurrency(data.savingsGoal)}</span>
             </div>
           </div>

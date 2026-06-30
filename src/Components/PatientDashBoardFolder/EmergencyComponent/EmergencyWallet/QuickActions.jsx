@@ -1,5 +1,6 @@
 import React from "react";
 import { FiPlus, FiTarget, FiDownload, FiHome } from "react-icons/fi";
+import { GiHospital } from "react-icons/gi";
 import "./Css/QuickActions.css";
 
 const QuickActions = ({ onAddFunds }) => {
@@ -7,7 +8,9 @@ const QuickActions = ({ onAddFunds }) => {
     { icon: <FiPlus />, label: "Add Funds", onClick: onAddFunds },
     { icon: <FiTarget />, label: "Update Savings Goal", onClick: () => {} },
     { icon: <FiDownload />, label: "Download Statement", onClick: () => {} },
+    { icon: <GiHospital />, label: "Verify OTP(Fund Release)", onClick: () => {} },
     { icon: <FiHome />, label: "View Hospital Readiness", onClick: () => {} },
+    
   ];
 
   return (
